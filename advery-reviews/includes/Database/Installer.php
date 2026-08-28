@@ -10,7 +10,7 @@ namespace Advery\Reviews\Database;
 class Installer {
 
 	const DB_VERSION_OPTION = 'advery_reviews_db_version';
-	const DB_VERSION        = '1.2.0';
+	const DB_VERSION        = '1.3.0';
 
 	public static function reviews_table() {
 		global $wpdb;
@@ -44,7 +44,7 @@ class Installer {
 			spam_score int(11) NOT NULL DEFAULT 0,
 			meta longtext NULL,
 			external_source varchar(30) NOT NULL DEFAULT '',
-			external_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			external_id varchar(191) NOT NULL DEFAULT '',
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			PRIMARY KEY  (id),
 			KEY object (object_type, object_id, status),

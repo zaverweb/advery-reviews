@@ -24,7 +24,11 @@ class CommentsTakeover {
 	 * @return string
 	 */
 	public function template( $theme_template ) {
-		if ( Targets::current() ) {
+		$target = Targets::current();
+		// Replace the comments area on any enabled target EXCEPT WooCommerce
+		// products — Woo has its own review system and reviews tab, so we never
+		// take that over.
+		if ( $target && 'product' !== $target[0] ) {
 			return ADVERY_REVIEWS_PATH . 'includes/Frontend/comments-template.php';
 		}
 		return $theme_template;

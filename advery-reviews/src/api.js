@@ -34,4 +34,6 @@ export const api = {
 	migrationExport: ( data ) =>
 		apiFetch( { path: `${ base }/migration/export`, method: 'POST', data } ),
 	exportCsv: () => apiFetch( { path: `${ base }/export-csv` } ),
+	importData: ( data ) =>
+		apiFetch( { path: `${ base }/migration/import-data`, method: 'POST', data } ),
 };

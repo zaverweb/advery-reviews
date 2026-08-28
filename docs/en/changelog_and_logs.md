@@ -12,6 +12,13 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.6.0 (Comments-everywhere-except-Woo + generic file importer)
+- **Native comments replaced everywhere the owner enables it — except WooCommerce products.** `replace_comments` now takes over the comments area on any enabled post type (posts, pages, CPTs), but **never on products** (Woo keeps its own review system/tab). Verified live: a post target loads our widget; products fall through to the theme/Woo.
+- **Generic file importer** (`Migration\DataImporter`): import review data prepared elsewhere — a spreadsheet, another platform's export, or an externally-scraped dataset (the plugin doesn't scrape; the owner supplies the rows as CSV/JSON, parsed in the browser). Map columns and set two keys: a **target key** (which column identifies each review's post — by post id, slug, title, or a meta value; **if the target post doesn't exist the row is skipped**) and a **unique key** (`external_source` + an id column) so **re-imports update instead of duplicating**. Auto-maps common headers; batched; per-row skip reasons. New REST route `migration/import-data`; a "Import from a file" section in the Migration tab.
+- **DB → 1.3.0:** `external_id` widened `bigint`→`varchar(191)` so provider ids (e.g. Google review ids) fit, not just numeric comment ids. Additive `dbDelta` migration; `ReviewRepository`/`CommentImporter` handle it as a string.
+- **Verified live:** import by post-id + by slug lookup, skip when the target business doesn't exist (with reason), and re-run de-dup → update.
+- Recorded for later: a **separate, standalone Import/Export plugin** (all post types, taxonomies, our review comments, custom fields, Rank Math meta) — see features_and_ideas.md §9.
+
 ### Version 0.5.0 (Phase 2 — Elementor, Gutenberg block, Woo schema merge)
 - **Elementor widget** (`Integrations\ElementorBridge` + `Elementor\ReviewsWidget`): a native "Advery Reviews" widget that renders the exact same server-side markup as the shortcode (same styling, loading modes, schema). Controls for current-page vs a specific post id; editor placeholder when the page isn't a review target. Feature-detected — inert without Elementor; supports both the 3.5+ and legacy registration hooks. Verified live (Elementor + Pro active on the sample site): the widget registers.
 - **Gutenberg block** (`Integrations\GutenbergBlock`, `advery/reviews`): a dynamic, server-rendered block with a `ServerSideRender` editor preview via a tiny no-build script — so the front-end HTML is crawlable and identical to the other placements. Verified live: block registers and its `render_callback` outputs the widget.

@@ -15,6 +15,7 @@ use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Migration\CommentImporter;
 use Advery\Reviews\Migration\CommentExporter;
 use Advery\Reviews\Migration\CsvExporter;
+use Advery\Reviews\Migration\DataImporter;
 use Advery\Reviews\Email\Digest;
 
 /**
@@ -143,6 +144,15 @@ class RestController {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'export_csv' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/migration/import-data',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'import_data' ],
 				'permission_callback' => [ $this, 'can_manage' ],
 			]
 		);
@@ -464,6 +474,24 @@ class RestController {
 			],
 			200
 		);
+	}
+
+	/**
+	 * Generic data import (CSV/JSON parsed client-side into rows). Processed in
+	 * batches the admin sends one at a time.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function import_data( WP_REST_Request $req ) {
+		$rows    = (array) $req->get_param( 'rows' );
+		$mapping = (array) $req->get_param( 'mapping' );
+		$options = [ 'update_existing' => (bool) $req->get_param( 'update_existing' ) ];
+
+		$result           = DataImporter::import( $rows, $mapping, $options );
+		$result['counts'] = ReviewRepository::status_counts();
+
+		return new WP_REST_Response( $result, 200 );
 	}
 
 	/* ---------------- Helpers ---------------- */

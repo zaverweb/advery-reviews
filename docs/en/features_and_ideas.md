@@ -78,6 +78,12 @@ If you want the sample generator to ever run on production, it must keep the vis
 
 ---
 
+## 5.2 Generic file importer (SHIPPED v0.6.0) + external/scraped data
+Rather than each provider's API, the plugin ships a **generic CSV/JSON importer** (`Migration\DataImporter`) for review data prepared elsewhere — a spreadsheet, another platform's export, or an externally-scraped dataset (the plugin does not scrape; the owner supplies the rows). The admin maps columns and sets the two **key** kinds: a **target key** (which column identifies each review's post, resolved by post id / slug / title / meta — if the target doesn't exist the row is skipped) and a **unique key** (`external_source` + an id column) so re-imports **update instead of duplicating**. `external_id` was widened to `varchar(191)` (DB 1.3.0) to hold provider ids (e.g. Google review ids). Compliance still applies: only import reviews you have rights to, and keep non-owned reviews out of your own `aggregateRating`.
+
+## 9. Future: a standalone custom Import/Export plugin (separate project, after this)
+A general WordPress content migrator (its own plugin): export/import **all post types, taxonomies, our custom review comments, custom fields, and third-party meta such as Rank Math** per post, so a whole site's content + SEO data moves cleanly between installs. Scope recorded for after the Reviews plugin is complete; not started.
+
 ## 6. Carried-over v0.1 follow-ups
 - **Gutenberg block** (currently shortcode + auto-append only).
 - **Front-end "load more"** wired to the existing `/list` REST endpoint.

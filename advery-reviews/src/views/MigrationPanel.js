@@ -10,6 +10,7 @@ import {
 	Spinner,
 } from '@wordpress/components';
 import { api } from '../api';
+import DataImportPanel from './DataImportPanel';
 
 export default function MigrationPanel( { boot, notify } ) {
 	const [ preview, setPreview ] = useState( null );
@@ -198,6 +199,8 @@ export default function MigrationPanel( { boot, notify } ) {
 						{ __( 'Download CSV', 'advery-reviews' ) }
 					</Button>
 				</PanelBody>
+
+				<DataImportPanel notify={ notify } />
 			</Panel>
 		</div>
 	);

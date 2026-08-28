@@ -33,7 +33,7 @@ class ReviewRepository {
 			'spam_score'      => (int) ( $data['spam_score'] ?? 0 ),
 			'meta'            => isset( $data['meta'] ) ? wp_json_encode( $data['meta'] ) : null,
 			'external_source' => (string) ( $data['external_source'] ?? '' ),
-			'external_id'     => (int) ( $data['external_id'] ?? 0 ),
+			'external_id'     => (string) ( $data['external_id'] ?? '' ),
 			// Allow importers to preserve the original timestamp.
 			'created_at'      => ! empty( $data['created_at'] ) ? $data['created_at'] : current_time( 'mysql' ),
 		];
@@ -41,7 +41,7 @@ class ReviewRepository {
 		$ok = $wpdb->insert(
 			Installer::reviews_table(),
 			$row,
-			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%s' ]
+			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s' ]
 		);
 
 		if ( ! $ok ) {
@@ -352,19 +352,24 @@ class ReviewRepository {
 
 	/**
 	 * Find a review id by its external source + id (import de-duplication).
+	 * external_id is a string so it fits provider ids (e.g. Google review ids)
+	 * as well as numeric comment ids.
 	 *
 	 * @param string $source
-	 * @param int    $external_id
+	 * @param string $external_id
 	 * @return int 0 when none.
 	 */
 	public static function find_id_by_external( $source, $external_id ) {
 		global $wpdb;
+		if ( '' === (string) $external_id ) {
+			return 0;
+		}
 		$table = Installer::reviews_table();
 		return (int) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT id FROM {$table} WHERE external_source = %s AND external_id = %d LIMIT 1",
+				"SELECT id FROM {$table} WHERE external_source = %s AND external_id = %s LIMIT 1",
 				$source,
-				$external_id
+				(string) $external_id
 			)
 		);
 	}
@@ -419,7 +424,7 @@ class ReviewRepository {
 		$row['object_id']       = (int) $row['object_id'];
 		$row['rating']          = (int) $row['rating'];
 		$row['author_user_id']  = (int) $row['author_user_id'];
-		$row['external_id']     = isset( $row['external_id'] ) ? (int) $row['external_id'] : 0;
+		$row['external_id']     = isset( $row['external_id'] ) ? (string) $row['external_id'] : '';
 		$row['external_source'] = isset( $row['external_source'] ) ? $row['external_source'] : '';
 		$row['spam_score']      = isset( $row['spam_score'] ) ? (int) $row['spam_score'] : 0;
 		if ( isset( $row['meta'] ) && is_string( $row['meta'] ) ) {
