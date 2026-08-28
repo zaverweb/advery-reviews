@@ -43,6 +43,46 @@
 .advery-reviews__content {
 	color: #333;
 }
+.advery-reviews__more {
+	margin: 0.5em 0 1.5em;
+	text-align: center;
+}
+.advery-reviews__loadmore {
+	background: none;
+	border: 1px solid #2271b1;
+	color: #2271b1;
+	border-radius: 6px;
+	padding: 0.5em 1.4em;
+	cursor: pointer;
+	font-size: 0.95em;
+}
+.advery-reviews__loadmore:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+.advery-reviews__pager {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 0.5em 0 1.5em;
+}
+.advery-reviews__page {
+	min-width: 34px;
+	background: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 0.35em 0.6em;
+	cursor: pointer;
+}
+.advery-reviews__page.is-active {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+}
+.advery-reviews__list {
+	transition: opacity 0.15s ease;
+}
+
 .advery-reviews__form {
 	background: rgba( 0, 0, 0, 0.02 );
 	border: 1px solid rgba( 0, 0, 0, 0.08 );

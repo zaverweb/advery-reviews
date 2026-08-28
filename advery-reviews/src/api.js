@@ -26,4 +26,6 @@ export const api = {
 		apiFetch( { path: `${ base }/reviews/bulk`, method: 'POST', data: { ids, action } } ),
 	saveSettings: ( settings ) =>
 		apiFetch( { path: `${ base }/settings`, method: 'POST', data: { settings } } ),
+	maintenance: ( action ) =>
+		apiFetch( { path: `${ base }/maintenance`, method: 'POST', data: { action } } ),
 };

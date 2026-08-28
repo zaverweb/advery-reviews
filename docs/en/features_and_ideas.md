@@ -1,6 +1,15 @@
 # Advery Reviews — Features & Roadmap
 
-Status: **planning / recorded for approval.** Nothing in this file is built yet unless the changelog says so. Items are grouped, each with the requested behaviour, expert notes, and (where relevant) a compliance flag. Implementation is phased and approval-gated.
+Status: **phased build in progress.** Done: **anti-spam (v0.2.0)**; **input-security hardening, SEO-safe loading modes, native-comment replacement, custom CSS, and table hygiene / orphan cleanup / optimize (v0.3.0)**. **Immediate next: comment migration** (WP comments + WooCommerce reviews ⇄ the plugin, with field mapping so comments aren't lost, and re-run de-dup — see §5.1). Items below carry the requested behaviour, expert notes, and (where relevant) a compliance flag.
+
+## 5.1 Comment migration (immediate next)
+**Requested:** migrate comments from WooCommerce reviews and normal WordPress post comments into the plugin **and back** (vice versa); during migration also move the extra fields so nothing is lost; de-dup on re-run.
+
+**Design (expert):**
+- **Import** WP comments (`comment_type` in `''`/`comment`) and WooCommerce reviews (`comment_type = review`, rating in `commentmeta.rating`) into `advery_reviews`, mapping: comment → content, `comment_author`/`comment_author_email`/`user_id`, `comment_date` → created_at, approval → status (`1`→approved, `0`→pending, `spam`→spam), and Woo's `rating` → rating. Store provenance `external_source = 'wp_comment'|'wc_review'` + `external_id = comment_ID` (roadmap columns) so a **re-run upserts** (skip/update) instead of duplicating. Extra/unmapped comment meta is preserved in the review `meta` JSON.
+- **Export back**: recreate WP comments / Woo reviews from plugin rows (guarded to avoid loops), for reversibility.
+- **Non-destructive by default**: importing copies; a separate explicit option deletes the source comments only if the owner asks. After import, `Maintenance::rebuild_stats()` refreshes aggregates.
+- Batched (WP-Cron or AJAX chunks) for large sites; a dry-run count first.
 
 ---
 

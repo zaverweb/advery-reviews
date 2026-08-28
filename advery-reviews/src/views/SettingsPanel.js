@@ -8,6 +8,7 @@ import {
 	RadioControl,
 	SelectControl,
 	TextControl,
+	TextareaControl,
 	Button,
 	Notice,
 } from '@wordpress/components';
@@ -16,6 +17,21 @@ import { api } from '../api';
 export default function SettingsPanel( { boot, notify } ) {
 	const [ s, setS ] = useState( boot.settings );
 	const [ saving, setSaving ] = useState( false );
+	const [ busy, setBusy ] = useState( '' );
+
+	const maintenance = async ( action ) => {
+		setBusy( action );
+		try {
+			const res = await api.maintenance( action );
+			notify( 'success', action === 'optimize'
+				? __( 'Tables optimized.', 'advery-reviews' )
+				: __( 'Removed', 'advery-reviews' ) + ' ' + res.removed + ' ' + __( 'orphaned reviews.', 'advery-reviews' ) );
+		} catch ( e ) {
+			notify( 'error', e.message );
+		} finally {
+			setBusy( '' );
+		}
+	};
 
 	const set = ( patch ) => setS( { ...s, ...patch } );
 	const as = s.antispam || {};
@@ -293,6 +309,47 @@ export default function SettingsPanel( { boot, notify } ) {
 						onChange={ ( v ) => set( { reviews_per_page: parseInt( v, 10 ) || 10 } ) }
 						__nextHasNoMarginBottom
 					/>
+					<SelectControl
+						label={ __( 'Loading mode', 'advery-reviews' ) }
+						help={ __( 'The page URL never changes and the first page is server-rendered, so SEO is unaffected.', 'advery-reviews' ) }
+						value={ s.load_mode }
+						options={ [
+							{ label: __( 'All on one page', 'advery-reviews' ), value: 'all' },
+							{ label: __( '“Load more” button (AJAX)', 'advery-reviews' ), value: 'load_more' },
+							{ label: __( 'Numbered pagination (AJAX)', 'advery-reviews' ), value: 'paginate' },
+						] }
+						onChange={ ( v ) => set( { load_mode: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<ToggleControl
+						label={ __( 'Replace the theme’s native comments with reviews', 'advery-reviews' ) }
+						help={ __( 'Takes over the comments area on enabled post types — no theme editing or page builder required.', 'advery-reviews' ) }
+						checked={ !! s.replace_comments }
+						onChange={ ( v ) => set( { replace_comments: v } ) }
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+
+				<PanelBody title={ __( 'Custom CSS', 'advery-reviews' ) } initialOpen={ false }>
+					<TextareaControl
+						label={ __( 'Custom CSS', 'advery-reviews' ) }
+						help={ __( 'Printed wherever the reviews widget renders. Style any .advery-reviews__* class.', 'advery-reviews' ) }
+						value={ s.custom_css }
+						rows={ 8 }
+						onChange={ ( v ) => set( { custom_css: v } ) }
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+
+				<PanelBody title={ __( 'Maintenance', 'advery-reviews' ) } initialOpen={ false }>
+					<p className="advery-rv-hint">{ __( 'Remove reviews whose post/term was deleted, and optimize the tables.', 'advery-reviews' ) }</p>
+					<Button variant="secondary" isBusy={ busy === 'purge' } disabled={ !! busy } onClick={ () => maintenance( 'purge' ) }>
+						{ __( 'Purge orphaned reviews', 'advery-reviews' ) }
+					</Button>
+					{ ' ' }
+					<Button variant="secondary" isBusy={ busy === 'optimize' } disabled={ !! busy } onClick={ () => maintenance( 'optimize' ) }>
+						{ __( 'Optimize tables', 'advery-reviews' ) }
+					</Button>
 				</PanelBody>
 
 				<PanelBody title={ __( 'Schema (JSON-LD)', 'advery-reviews' ) } initialOpen={ false }>

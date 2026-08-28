@@ -31,6 +31,9 @@ class Settings {
 			// Front-end display.
 			'auto_append'        => true,      // append the widget to enabled post types
 			'reviews_per_page'   => 10,
+			'load_mode'          => 'all',     // 'all' | 'load_more' | 'paginate'
+			'replace_comments'   => false,     // take over the native WP comments area
+			'custom_css'         => '',        // owner CSS, printed where the widget renders
 
 			// Schema (only used when Advery Schema Plus is active).
 			'schema_output'      => true,

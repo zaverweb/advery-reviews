@@ -2,6 +2,8 @@
 namespace Advery\Reviews;
 
 use Advery\Reviews\Frontend\Display;
+use Advery\Reviews\Frontend\CommentsTakeover;
+use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Schema\SchemaBridge;
 use Advery\Reviews\Email\Notifier;
 use Advery\Reviews\Email\Digest;
@@ -23,6 +25,12 @@ class Plugin {
 
 		// Front-end display + submission.
 		( new Display() )->register();
+
+		// Optional takeover of the native comments area (no page builder needed).
+		( new CommentsTakeover() )->register();
+
+		// Table hygiene: remove reviews when their post/term is deleted.
+		( new Maintenance() )->register();
 
 		// Schema.org aggregateRating/review injection (no-op without the core).
 		( new SchemaBridge() )->register();

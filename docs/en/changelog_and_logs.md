@@ -12,6 +12,14 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.3.0 (Security hardening + display & integration)
+- **Input security (`Support\Sanitizer`)** — one place all visitor input passes through before storage. Forces valid UTF-8, strips null bytes and C0/C1 control characters (the "disallowed character" injection vector), removes `<script>/<style>/<iframe>/<object>/<embed>/<form>` and all `on*=` event handlers, and restricts the review body to a tiny HTML allowlist (kses also neutralises `javascript:` URLs). Names/titles keep no HTML at all. Length caps are enforced. Verified live: `<script>`, `onclick`, `javascript:`, null/control bytes all stripped; safe formatting (`<b>`) kept.
+- **CAPTCHA is not load-bearing:** the layered SpamGuard (honeypot + signed timing + rate limit + blocklist + duplicate) protects a site that never configures a CAPTCHA; CAPTCHA is one optional extra layer.
+- **Loading modes (SEO-safe):** all-on-one-page (fully server-rendered), a **“Load more”** button (AJAX append), or **numbered pagination** (AJAX replace). The **page URL never changes** (no query params, no history writes) and the **first page is server-rendered**, so crawlers read reviews and canonical/SEO is untouched. Per-page count configurable; `/list` returns `total`/`page`/`per_page`.
+- **Native comment replacement (`Frontend\CommentsTakeover`):** an option to take over the theme's comments area with the reviews widget via the `comments_template` filter — no theme edits, **no page builder / Elementor required**. Auto-append is suppressed when this is on (no double output).
+- **Custom CSS:** an owner CSS box printed inline wherever the widget renders (`<` stripped to prevent a `</style>` breakout).
+- **Table hygiene (`Support\Maintenance`):** reviews are removed automatically when their post/product (`deleted_post`) or term (`delete_term`) is deleted; an admin can **purge orphaned reviews** and **OPTIMIZE** the tables from Settings → Maintenance. Verified live: auto-cleanup on delete, orphan purge, optimize.
+
 ### Version 0.2.0 (Phase 1 — layered anti-spam)
 - **New `SpamGuard`** — a layered, score-based evaluator run on every submission. Cheap local checks first; each adds to a spam score with a human-readable reason; two hard-reject checks short-circuit. Score → outcome: `reject` / `spam` / `hold` / `approve` (approve still respects the moderation setting).
 - **Layers (all toggleable, sensible defaults on):** honeypot; **signed timing token** (form filled faster than N seconds ⇒ bot); **link limit** (hold/spam over the max); **word/phrase blocklist** (plain + `re:` regex, seed list shipped); **email/domain blocklist** + **disposable-email** list; **rate limiting** (per IP/email, per window + per day); **duplicate content**; **min/max words** and **max chars**; **trusted fast-track** (logged-in author with a prior approved review auto-approves); optional **Akismet** signal.

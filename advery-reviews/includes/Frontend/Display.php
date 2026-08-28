@@ -32,17 +32,27 @@ class Display {
 		$provider = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
 		$this->enqueue_captcha( $provider, $as['captcha_site_key'] );
 
+		// Owner custom CSS, printed inline against our stylesheet handle.
+		$css = (string) Settings::get( 'custom_css', '' );
+		if ( '' !== trim( $css ) ) {
+			wp_add_inline_style( 'advery-reviews-front', $css );
+		}
+
 		wp_localize_script(
 			'advery-reviews-front',
 			'AdveryReviewsFront',
 			[
-				'rest'    => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'captcha' => [ 'provider' => $provider, 'siteKey' => $provider !== 'none' ? $as['captcha_site_key'] : '' ],
-				'i18n'    => [
-					'sending' => __( 'Sending…', 'advery-reviews' ),
-					'submit'  => __( 'Submit review', 'advery-reviews' ),
-					'error'   => __( 'Something went wrong. Please try again.', 'advery-reviews' ),
+				'rest'     => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
+				'listBase' => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/list' ) ),
+				'nonce'    => wp_create_nonce( 'wp_rest' ),
+				'captcha'  => [ 'provider' => $provider, 'siteKey' => $provider !== 'none' ? $as['captcha_site_key'] : '' ],
+				'i18n'     => [
+					'sending'  => __( 'Sending…', 'advery-reviews' ),
+					'submit'   => __( 'Submit review', 'advery-reviews' ),
+					'error'    => __( 'Something went wrong. Please try again.', 'advery-reviews' ),
+					'loadMore' => __( 'Load more reviews', 'advery-reviews' ),
+					'loading'  => __( 'Loading…', 'advery-reviews' ),
+					'anonymous' => __( 'Anonymous', 'advery-reviews' ),
 				],
 			]
 		);
@@ -91,6 +101,11 @@ class Display {
 		if ( ! Settings::get( 'auto_append' ) ) {
 			return $content;
 		}
+		// Avoid double output: if we've taken over the comments area, that
+		// renders the widget instead.
+		if ( Settings::get( 'replace_comments' ) ) {
+			return $content;
+		}
 		$target = Targets::current();
 		if ( ! $target || 'term' === $target[0] ) {
 			return $content; // term archives don't run the_content per-item
@@ -133,16 +148,23 @@ class Display {
 		}
 
 		$agg     = Aggregate::for( $object_type, $object_id );
-		$reviews = ReviewRepository::approved_for( $object_type, $object_id, (int) Settings::get( 'reviews_per_page', 10 ) );
+		$total   = (int) $agg['review_count'];
+		$per     = max( 1, (int) Settings::get( 'reviews_per_page', 10 ) );
+		$mode    = Settings::get( 'load_mode', 'all' );
+		// 'all' server-renders every review (best for bots); paged modes render
+		// the first page server-side and fetch the rest over AJAX.
+		$limit   = ( 'all' === $mode ) ? 1000 : $per;
+		$reviews = ReviewRepository::approved_for( $object_type, $object_id, $limit );
 		$logged  = is_user_logged_in();
 		$can     = ! ( 'logged_in' === Settings::get( 'who_can_submit' ) && ! $logged );
 		$token   = SpamGuard::issue_token();
 		$as      = Settings::antispam();
 		$captcha = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
+		$pages   = ( $per > 0 ) ? (int) ceil( $total / $per ) : 1;
 
 		ob_start();
 		?>
-		<div class="advery-reviews" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>">
+		<div class="advery-reviews" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>" data-load-mode="<?php echo esc_attr( $mode ); ?>" data-per-page="<?php echo esc_attr( $per ); ?>" data-total="<?php echo esc_attr( $total ); ?>" data-page="1">
 			<div class="advery-reviews__summary">
 				<span class="advery-reviews__avg"><?php echo esc_html( number_format_i18n( $agg['avg'], 1 ) ); ?></span>
 				<span class="advery-reviews__stars" aria-hidden="true"><?php echo esc_html( $this->stars( $agg['avg'] ) ); ?></span>
@@ -173,6 +195,18 @@ class Display {
 					</li>
 				<?php endforeach; ?>
 			</ul>
+
+			<?php if ( 'load_more' === $mode && $total > $per ) : ?>
+				<div class="advery-reviews__more">
+					<button type="button" class="advery-reviews__loadmore"><?php esc_html_e( 'Load more reviews', 'advery-reviews' ); ?></button>
+				</div>
+			<?php elseif ( 'paginate' === $mode && $pages > 1 ) : ?>
+				<nav class="advery-reviews__pager" aria-label="<?php esc_attr_e( 'Reviews pages', 'advery-reviews' ); ?>">
+					<?php for ( $p = 1; $p <= $pages; $p++ ) : ?>
+						<button type="button" class="advery-reviews__page<?php echo 1 === $p ? ' is-active' : ''; ?>" data-page="<?php echo (int) $p; ?>"><?php echo (int) $p; ?></button>
+					<?php endfor; ?>
+				</nav>
+			<?php endif; ?>
 
 			<?php if ( $can ) : ?>
 				<form class="advery-reviews__form">

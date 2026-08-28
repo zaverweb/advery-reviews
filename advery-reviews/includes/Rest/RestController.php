@@ -7,9 +7,11 @@ use WP_Error;
 use Advery\Reviews\Support\Settings;
 use Advery\Reviews\Support\Targets;
 use Advery\Reviews\Support\Aggregate;
+use Advery\Reviews\Support\Sanitizer;
 use Advery\Reviews\Database\ReviewRepository;
 use Advery\Reviews\Database\StatsRepository;
 use Advery\Reviews\AntiSpam\SpamGuard;
+use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Email\Digest;
 
 /**
@@ -96,6 +98,15 @@ class RestController {
 				'permission_callback' => [ $this, 'can_manage' ],
 			]
 		);
+		register_rest_route(
+			$ns,
+			'/maintenance',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'maintenance' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
 	}
 
 	public function can_manage() {
@@ -135,8 +146,10 @@ class RestController {
 		}
 
 		$rating  = max( 0, min( 5, (int) $req->get_param( 'rating' ) ) );
-		$content = trim( (string) $req->get_param( 'content' ) );
-		$title   = sanitize_text_field( (string) $req->get_param( 'title' ) );
+		// Sanitize BEFORE any length/validation checks so control-character or
+		// invalid-UTF-8 payloads can't slip through or skew the length test.
+		$content = Sanitizer::content( (string) $req->get_param( 'content' ) );
+		$title   = Sanitizer::text( (string) $req->get_param( 'title' ), 200 );
 
 		if ( Settings::get( 'rating_required' ) && $rating < 1 ) {
 			return new WP_Error( 'advery_reviews_rating', __( 'Please choose a rating.', 'advery-reviews' ), [ 'status' => 400 ] );
@@ -148,13 +161,13 @@ class RestController {
 		if ( $logged_in ) {
 			$user         = wp_get_current_user();
 			$user_id      = (int) $user->ID;
-			$author_name  = $user->display_name;
-			$author_email = $user->user_email;
+			$author_name  = Sanitizer::text( $user->display_name, 150 );
+			$author_email = Sanitizer::email( $user->user_email );
 		} else {
 			$user_id      = 0;
-			$author_name  = sanitize_text_field( (string) $req->get_param( 'author_name' ) );
-			$author_email = sanitize_email( (string) $req->get_param( 'author_email' ) );
-			if ( '' === $author_name || ! is_email( $author_email ) ) {
+			$author_name  = Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 );
+			$author_email = Sanitizer::email( (string) $req->get_param( 'author_email' ) );
+			if ( '' === $author_name || '' === $author_email ) {
 				return new WP_Error( 'advery_reviews_author', __( 'Please enter your name and a valid email.', 'advery-reviews' ), [ 'status' => 400 ] );
 			}
 		}
@@ -209,7 +222,7 @@ class RestController {
 				'author_email'   => $author_email,
 				'author_user_id' => $user_id,
 				'title'          => $title,
-				'content'        => wp_kses_post( $content ),
+				'content'        => $content, // already sanitized via Sanitizer::content()
 				'status'         => $status,
 				'author_ip'      => $ip,
 				'spam_score'     => (int) $guard['score'],
@@ -251,11 +264,15 @@ class RestController {
 		$per  = max( 1, min( 50, (int) ( $req->get_param( 'per_page' ) ?: Settings::get( 'reviews_per_page', 10 ) ) ) );
 
 		$items = ReviewRepository::approved_for( $type, $id, $per, ( $page - 1 ) * $per );
+		$agg   = Aggregate::for( $type, $id );
 
 		return new WP_REST_Response(
 			[
-				'aggregate' => Aggregate::for( $type, $id ),
+				'aggregate' => $agg,
 				'items'     => array_map( [ $this, 'public_shape' ], $items ),
+				'page'      => $page,
+				'per_page'  => $per,
+				'total'     => (int) $agg['review_count'],
 			],
 			200
 		);
@@ -337,6 +354,33 @@ class RestController {
 		return new WP_REST_Response( [ 'ok' => true, 'settings' => Settings::all() ], 200 );
 	}
 
+	/**
+	 * Table maintenance: purge orphaned reviews and/or optimize the tables.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function maintenance( WP_REST_Request $req ) {
+		$action  = sanitize_key( (string) $req->get_param( 'action' ) );
+		$removed = 0;
+
+		if ( 'purge' === $action || 'all' === $action ) {
+			$removed = Maintenance::purge_orphans();
+		}
+		if ( 'optimize' === $action || 'all' === $action ) {
+			Maintenance::optimize();
+		}
+
+		return new WP_REST_Response(
+			[
+				'ok'      => true,
+				'removed' => $removed,
+				'counts'  => ReviewRepository::status_counts(),
+			],
+			200
+		);
+	}
+
 	/* ---------------- Helpers ---------------- */
 
 	private function sanitize_settings( array $in ) {
@@ -362,6 +406,10 @@ class RestController {
 			'min_content_length' => max( 0, (int) ( $in['min_content_length'] ?? 0 ) ),
 			'auto_append'        => ! empty( $in['auto_append'] ),
 			'reviews_per_page'   => max( 1, min( 50, (int) ( $in['reviews_per_page'] ?? $d['reviews_per_page'] ) ) ),
+			'load_mode'          => in_array( ( $in['load_mode'] ?? '' ), [ 'all', 'load_more', 'paginate' ], true ) ? $in['load_mode'] : $d['load_mode'],
+			'replace_comments'   => ! empty( $in['replace_comments'] ),
+			// CSS never needs '<'; removing it prevents a </style> breakout.
+			'custom_css'         => str_replace( '<', '', (string) ( $in['custom_css'] ?? '' ) ),
 			'schema_output'      => ! empty( $in['schema_output'] ),
 			'woo_merge_native'   => ! empty( $in['woo_merge_native'] ),
 			'email_instant'      => ! empty( $in['email_instant'] ),
