@@ -35,6 +35,12 @@ class Settings {
 			'replace_comments'   => false,     // take over the native WP comments area
 			'custom_css'         => '',        // owner CSS, printed where the widget renders
 
+			// Our relationship to each reviewed post type, which decides the AI
+			// reply voice: 'owner' (we sell/run it — reply as the business) vs
+			// 'listing' (a third-party directory entry — we are the platform, not
+			// the business, and must not speak for it). Map post_type => role.
+			'roles'              => [],        // e.g. [ 'product' => 'owner', 'listing' => 'listing' ]
+
 			// Schema (only used when Advery Schema Plus is active).
 			'schema_output'      => true,
 			'woo_merge_native'   => false,     // merge Woo native ratings into the aggregate
@@ -68,6 +74,7 @@ class Settings {
 			'max_tokens'  => 600,
 			'daily_cap'   => 200,         // max AI calls per day (0 = unlimited)
 			'moderation_autospam' => false, // let moderation-assist auto-mark SPAM verdicts
+			'business_context'    => '',    // optional "about us" the reply can draw on
 			'tasks'       => [
 				'reply'     => [ 'enabled' => true, 'prompt' => '' ],
 				'moderate'  => [ 'enabled' => false, 'prompt' => '' ],
@@ -161,6 +168,23 @@ class Settings {
 	 */
 	public static function save( array $values ) {
 		return update_option( self::OPTION, wp_parse_args( $values, self::defaults() ) );
+	}
+
+	/**
+	 * Our relationship to a reviewed post type: 'owner' (we run/sell it) or
+	 * 'listing' (a third-party directory entry we don't own). Drives the AI
+	 * reply voice. Products default to 'owner'; everything else defaults to
+	 * 'owner' unless the site owner marks it as a directory 'listing'.
+	 *
+	 * @param string $post_type
+	 * @return string
+	 */
+	public static function role_for( $post_type ) {
+		$roles = self::get( 'roles', [] );
+		if ( is_array( $roles ) && isset( $roles[ $post_type ] ) && 'listing' === $roles[ $post_type ] ) {
+			return 'listing';
+		}
+		return 'owner';
 	}
 
 	/**

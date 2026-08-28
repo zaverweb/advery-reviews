@@ -56,7 +56,18 @@ class Tasks {
 			case 'translate':
 				$lines = [];
 				if ( ! empty( $ctx['business'] ) ) {
-					$lines[] = 'Business: ' . $ctx['business'];
+					$lines[] = 'Item / business being reviewed: ' . $ctx['business'];
+				}
+				if ( 'reply' === $task ) {
+					if ( ! empty( $ctx['site_name'] ) ) {
+						$lines[] = 'Our website: ' . $ctx['site_name'] . ( ! empty( $ctx['site_description'] ) ? ' — ' . $ctx['site_description'] : '' );
+					}
+					if ( ! empty( $ctx['page_excerpt'] ) ) {
+						$lines[] = "Page content (for context):\n" . $ctx['page_excerpt'];
+					}
+					if ( ! empty( $ctx['business_context'] ) ) {
+						$lines[] = "About us (use only if relevant):\n" . $ctx['business_context'];
+					}
 				}
 				if ( isset( $ctx['rating'] ) && $ctx['rating'] > 0 ) {
 					$lines[] = 'Rating: ' . (int) $ctx['rating'] . '/5';
@@ -72,6 +83,24 @@ class Tasks {
 				return (string) ( $ctx['content'] ?? '' );
 		}
 		return (string) ( $ctx['content'] ?? '' );
+	}
+
+	/**
+	 * Relationship clause appended to the reply system prompt so the AI knows
+	 * whether it speaks AS the business (owner/seller) or AS the platform (a
+	 * third-party listing in our directory — we must not speak for the business).
+	 *
+	 * @param string $role 'owner' | 'listing'
+	 * @return string
+	 */
+	public static function role_clause( $role ) {
+		if ( 'listing' === $role ) {
+			return ' IMPORTANT RELATIONSHIP: the item reviewed is a THIRD-PARTY business listed in our directory. '
+				. 'We are the DIRECTORY / platform, NOT that business. Do NOT speak on the business behalf, do NOT apologise or make promises for them, and never pretend to be their owner or staff. '
+				. 'Reply briefly and neutrally as the platform: thank the reviewer for sharing their experience of the listed business on our site; if the review is negative, acknowledge it and note the feedback helps others and will be shared with the listing. Keep it short.';
+		}
+		return ' RELATIONSHIP: this is OUR OWN product/service on OUR site and you ARE the owner/seller replying. '
+			. 'Use the page content and About-us context provided to be specific and accurate; do not invent facts beyond that context.';
 	}
 
 	/**

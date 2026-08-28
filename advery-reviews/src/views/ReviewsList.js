@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, Fragment } from '@wordpress/element';
+import { useState, useEffect, useCallback } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	Button,
@@ -6,8 +6,6 @@ import {
 	Spinner,
 	CheckboxControl,
 	TextareaControl,
-	Flex,
-	FlexItem,
 } from '@wordpress/components';
 import { api } from '../api';
 
@@ -20,7 +18,8 @@ const STATUS_TABS = [
 ];
 
 function stars( n ) {
-	return n > 0 ? '★'.repeat( n ) + '☆'.repeat( 5 - n ) : '—';
+	n = Math.max( 0, Math.min( 5, parseInt( n, 10 ) || 0 ) );
+	return '★'.repeat( n ) + '☆'.repeat( 5 - n );
 }
 
 export default function ReviewsList( { counts, setCounts, notify } ) {
@@ -127,27 +126,25 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 
 	return (
 		<div className="advery-rv-list">
-			<Flex className="advery-rv-list__filters" align="center" wrap>
-				<FlexItem>
-					<div className="advery-rv-tabs">
-						{ STATUS_TABS.map( ( t ) => (
-							<button
-								key={ t.key }
-								className={ 'advery-rv-tab' + ( status === t.key ? ' is-active' : '' ) }
-								onClick={ () => {
-									setStatus( t.key );
-									setPage( 1 );
-								} }
-							>
-								{ t.label }
-								{ t.key && counts[ t.key ] != null && (
-									<span className="advery-rv-tab__count">{ counts[ t.key ] }</span>
-								) }
-							</button>
-						) ) }
-					</div>
-				</FlexItem>
-				<FlexItem>
+			<div className="advery-rv-toolbar">
+				<div className="advery-rv-tabs">
+					{ STATUS_TABS.map( ( t ) => (
+						<button
+							key={ t.key }
+							className={ 'advery-rv-tab' + ( status === t.key ? ' is-active' : '' ) }
+							onClick={ () => {
+								setStatus( t.key );
+								setPage( 1 );
+							} }
+						>
+							{ t.label }
+							{ t.key && counts[ t.key ] != null && (
+								<span className="advery-rv-tab__count">{ counts[ t.key ] }</span>
+							) }
+						</button>
+					) ) }
+				</div>
+				<div className="advery-rv-search">
 					<SearchControl
 						value={ search }
 						onChange={ ( v ) => {
@@ -157,12 +154,12 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 						placeholder={ __( 'Search reviews…', 'advery-reviews' ) }
 						__nextHasNoMarginBottom
 					/>
-				</FlexItem>
-			</Flex>
+				</div>
+			</div>
 
 			{ selected.length > 0 && (
 				<div className="advery-rv-bulk">
-					<span>{ sprintf( __( '%d selected:', 'advery-reviews' ), selected.length ) }</span>
+					<span>{ sprintf( __( '%d selected', 'advery-reviews' ), selected.length ) }</span>
 					<Button variant="secondary" onClick={ () => runBulk( 'approved' ) }>{ __( 'Approve', 'advery-reviews' ) }</Button>
 					<Button variant="secondary" onClick={ () => runBulk( 'pending' ) }>{ __( 'Pending', 'advery-reviews' ) }</Button>
 					<Button variant="secondary" onClick={ () => runBulk( 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button>
@@ -172,67 +169,49 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 
 			{ loading ? (
 				<div className="advery-rv-loading"><Spinner /></div>
+			) : data.items.length === 0 ? (
+				<div className="advery-rv-empty">{ __( 'No reviews found.', 'advery-reviews' ) }</div>
 			) : (
-				<table className="advery-rv-table widefat striped">
-					<thead>
-						<tr>
-							<th className="check-column"></th>
-							<th>{ __( 'Rating', 'advery-reviews' ) }</th>
-							<th>{ __( 'Review', 'advery-reviews' ) }</th>
-							<th>{ __( 'Item', 'advery-reviews' ) }</th>
-							<th>{ __( 'Status', 'advery-reviews' ) }</th>
-							<th>{ __( 'Actions', 'advery-reviews' ) }</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ data.items.length === 0 && (
-							<tr><td colSpan={ 6 }>{ __( 'No reviews found.', 'advery-reviews' ) }</td></tr>
-						) }
-						{ data.items.map( ( r ) => (
-							<Fragment key={ r.id }>
-							<tr>
-								<td className="check-column">
-									<CheckboxControl
-										checked={ selected.includes( r.id ) }
-										onChange={ () => toggle( r.id ) }
-										__nextHasNoMarginBottom
-									/>
-								</td>
-								<td className="advery-rv-stars">{ stars( r.rating ) }</td>
-								<td>
-									<strong>{ r.author_name }</strong>
-									{ r.title && <div className="advery-rv-rtitle">{ r.title }</div> }
-									<div className="advery-rv-excerpt">{ r.content.replace( /<[^>]+>/g, '' ).slice( 0, 140 ) }</div>
-									<div className="advery-rv-meta">
-										{ r.author_email } · { r.created_at }
-										{ r.spam_score > 0 && (
-											<span className="advery-rv-spam">
-												{ ' · ' }{ __( 'spam', 'advery-reviews' ) } { r.spam_score }
-												{ r.meta && r.meta.spam_reasons && r.meta.spam_reasons.length > 0
-													? ' (' + r.meta.spam_reasons.join( ', ' ) + ')'
-													: '' }
-											</span>
-										) }
-									</div>
-								</td>
-								<td>
+				<div className="advery-rv-cards">
+					{ data.items.map( ( r ) => (
+						<article key={ r.id } className={ 'advery-rv-card is-' + r.status }>
+							<div className="advery-rv-card__select">
+								<CheckboxControl
+									checked={ selected.includes( r.id ) }
+									onChange={ () => toggle( r.id ) }
+									__nextHasNoMarginBottom
+								/>
+							</div>
+							<div className="advery-rv-card__avatar" aria-hidden="true">
+								{ ( r.author_name || '?' ).trim().charAt( 0 ).toUpperCase() }
+							</div>
+							<div className="advery-rv-card__body">
+								<div className="advery-rv-card__head">
+									<span className="advery-rv-card__author">{ r.author_name }</span>
+									<span className="advery-rv-card__stars">{ stars( r.rating ) }</span>
+									<span className={ 'advery-rv-badge is-' + r.status }>{ r.status }</span>
+									{ r.spam_score > 0 && (
+										<span className="advery-rv-spam" title={ r.meta && r.meta.spam_reasons ? r.meta.spam_reasons.join( ', ' ) : '' }>
+											{ __( 'spam', 'advery-reviews' ) } { r.spam_score }
+										</span>
+									) }
+								</div>
+								{ r.title && <div className="advery-rv-card__title">{ r.title }</div> }
+								<div className="advery-rv-card__content">{ r.content.replace( /<[^>]+>/g, '' ) }</div>
+								<div className="advery-rv-card__meta">
+									{ r.author_email } · { r.created_at } ·{ ' ' }
 									{ r.link ? <a href={ r.link } target="_blank" rel="noreferrer">{ r.label }</a> : r.label }
-									<div className="advery-rv-meta">{ r.object_type }</div>
-								</td>
-								<td><span className={ 'advery-rv-badge is-' + r.status }>{ r.status }</span></td>
-								<td className="advery-rv-actions">
-									{ r.status !== 'approved' && <Button variant="link" onClick={ () => act( r.id, 'approved' ) }>{ __( 'Approve', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'pending' && <Button variant="link" onClick={ () => act( r.id, 'pending' ) }>{ __( 'Pending', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'spam' && <Button variant="link" onClick={ () => act( r.id, 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'trash' && <Button variant="link" onClick={ () => act( r.id, 'trash' ) }>{ __( 'Trash', 'advery-reviews' ) }</Button> }
-									<Button variant="link" isDestructive onClick={ () => act( r.id, 'delete' ) }>{ __( 'Delete', 'advery-reviews' ) }</Button>
-									<Button variant="link" onClick={ () => openReply( r ) }>{ ( r.meta && r.meta.reply ) ? __( 'Edit reply', 'advery-reviews' ) : __( 'Reply', 'advery-reviews' ) }</Button>
-									<Button variant="link" isBusy={ aiBusy === 'mod' + r.id } onClick={ () => aiModerate( r ) }>{ __( 'AI check', 'advery-reviews' ) }</Button>
-								</td>
-							</tr>
-							{ replyFor === r.id && (
-								<tr className="advery-rv-replyrow">
-									<td colSpan={ 6 }>
+									<span className="advery-rv-card__type"> ({ r.object_type })</span>
+								</div>
+
+								{ replyFor !== r.id && r.meta && r.meta.reply && (
+									<div className="advery-rv-existing-reply">
+										<strong>{ __( 'Your reply:', 'advery-reviews' ) }</strong> { r.meta.reply }
+									</div>
+								) }
+
+								{ replyFor === r.id && (
+									<div className="advery-rv-reply-editor">
 										<TextareaControl
 											label={ __( 'Owner reply', 'advery-reviews' ) }
 											rows={ 3 }
@@ -242,25 +221,26 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 										/>
 										<div className="advery-rv-reply-actions">
 											<Button variant="secondary" isBusy={ aiBusy === 'draft' } onClick={ () => draftReply( r ) }>{ __( 'Draft with AI', 'advery-reviews' ) }</Button>
-											{ ' ' }
 											<Button variant="primary" onClick={ () => saveReply( r ) }>{ __( 'Save reply', 'advery-reviews' ) }</Button>
-											{ ' ' }
 											<Button variant="tertiary" onClick={ () => setReplyFor( 0 ) }>{ __( 'Cancel', 'advery-reviews' ) }</Button>
 										</div>
-									</td>
-								</tr>
-							) }
-							{ replyFor !== r.id && r.meta && r.meta.reply && (
-								<tr className="advery-rv-replyrow">
-									<td colSpan={ 6 }>
-										<div className="advery-rv-existing-reply"><strong>{ __( 'Reply:', 'advery-reviews' ) }</strong> { r.meta.reply }</div>
-									</td>
-								</tr>
-							) }
-							</Fragment>
-						) ) }
-					</tbody>
-				</table>
+									</div>
+								) }
+
+								<div className="advery-rv-card__actions">
+									{ r.status !== 'approved' && <Button variant="link" onClick={ () => act( r.id, 'approved' ) }>{ __( 'Approve', 'advery-reviews' ) }</Button> }
+									{ r.status !== 'pending' && <Button variant="link" onClick={ () => act( r.id, 'pending' ) }>{ __( 'Pending', 'advery-reviews' ) }</Button> }
+									{ r.status !== 'spam' && <Button variant="link" onClick={ () => act( r.id, 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button> }
+									{ r.status !== 'trash' && <Button variant="link" onClick={ () => act( r.id, 'trash' ) }>{ __( 'Trash', 'advery-reviews' ) }</Button> }
+									<Button variant="link" isDestructive onClick={ () => act( r.id, 'delete' ) }>{ __( 'Delete', 'advery-reviews' ) }</Button>
+									<span className="advery-rv-card__sep" />
+									<Button variant="link" onClick={ () => openReply( r ) }>{ ( r.meta && r.meta.reply ) ? __( 'Edit reply', 'advery-reviews' ) : __( 'Reply', 'advery-reviews' ) }</Button>
+									<Button variant="link" isBusy={ aiBusy === 'mod' + r.id } onClick={ () => aiModerate( r ) }>{ __( 'AI check', 'advery-reviews' ) }</Button>
+								</div>
+							</div>
+						</article>
+					) ) }
+				</div>
 			) }
 
 			{ totalPages > 1 && (

@@ -12,6 +12,12 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.9.0 (Relationship-aware AI replies + admin redesign)
+- **AI replies now know our relationship to the reviewed item.** A per-post-type role (Settings → AI): **owner/seller** (our own product/service — the AI replies as the business, drawing on the reviewed page's content, the site name/description, and an optional “About your business” context) vs **directory listing** (a third-party business we merely list — the AI replies as the platform and is explicitly told **not** to speak for the business, apologise or make promises on its behalf, or pretend to be its owner). Products default to owner; mark directory CPTs as listings. Verified live: the role clause switches correctly.
+- **The reply prompt gets real page context** — the reviewed post/product excerpt, the site name + tagline, and the owner's business description — so replies are specific and accurate rather than generic.
+- **Admin redesign.** A clean, card-based moderation UI: a gradient header with **stat tiles** (pending / approved / spam / total), status **pill** filters, and each review as a **card** (avatar, author, stars, status badge, content, item link, spam score) with inline reply editing and clear actions. Replaces the cramped table.
+- **A live demo** post with sample reviews (and a native comment) is set up on the sample site for testing.
+
 ### Version 0.8.0 (AI subsystem — replies, moderation, translate, summarize)
 - **Provider-agnostic AI** (`AI\`): a `ProviderInterface` + adapters for **Anthropic Claude, OpenAI, OpenRouter, Ollama (self-hosted), and Google Gemini**. One `Client` picks the configured provider, enforces a **daily call cap** and per-task enable, builds the prompts, calls the model, writes an **audit log** (task/provider/ok/time — no prompt text), and returns clean text or a `WP_Error`. Ollama needs no key.
 - **Clear prompt system** (`AI\Tasks`) tuned to sound natural and human. Tasks, each with an editable prompt:

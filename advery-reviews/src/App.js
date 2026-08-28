@@ -52,9 +52,33 @@ export default function App() {
 		);
 	}
 
+	const total = ( counts.pending || 0 ) + ( counts.approved || 0 ) + ( counts.spam || 0 ) + ( counts.trash || 0 );
+	const tiles = [
+		{ key: 'pending', label: __( 'Pending', 'advery-reviews' ), value: counts.pending || 0, tone: 'amber' },
+		{ key: 'approved', label: __( 'Approved', 'advery-reviews' ), value: counts.approved || 0, tone: 'green' },
+		{ key: 'spam', label: __( 'Spam', 'advery-reviews' ), value: counts.spam || 0, tone: 'red' },
+		{ key: 'total', label: __( 'Total', 'advery-reviews' ), value: total, tone: 'blue' },
+	];
+
 	return (
 		<div className="advery-rv">
-			<h1 className="advery-rv__title">{ __( 'Advery Reviews', 'advery-reviews' ) }</h1>
+			<header className="advery-rv__head">
+				<div className="advery-rv__brand">
+					<span className="advery-rv__logo" aria-hidden="true">★</span>
+					<div>
+						<h1 className="advery-rv__title">{ __( 'Advery Reviews', 'advery-reviews' ) }</h1>
+						<p className="advery-rv__sub">{ __( 'Ratings, moderation, replies and migration', 'advery-reviews' ) }</p>
+					</div>
+				</div>
+				<div className="advery-rv__tiles">
+					{ tiles.map( ( t ) => (
+						<div key={ t.key } className={ 'advery-rv__tile is-' + t.tone }>
+							<span className="advery-rv__tile-value">{ t.value }</span>
+							<span className="advery-rv__tile-label">{ t.label }</span>
+						</div>
+					) ) }
+				</div>
+			</header>
 
 			{ flash && (
 				<Notice status={ flash.status } isDismissible onRemove={ () => setFlash( null ) }>

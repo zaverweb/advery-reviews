@@ -1,83 +1,215 @@
+/* Advery Reviews — admin UI. Clean, card-based, WP-admin friendly. */
+
 .advery-rv {
-	max-width: 1100px;
-
-	&__title {
-		margin-bottom: 0.5em;
-	}
+	--rv-border: #e2e4e7;
+	--rv-muted: #6b7280;
+	--rv-bg: #fff;
+	max-width: 1080px;
+	margin-top: 8px;
 }
 
-.advery-rv-loading {
+/* Header + stat tiles */
+.advery-rv__head {
 	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+	background: linear-gradient( 135deg, #2271b1, #135e96 );
+	color: #fff;
+	padding: 18px 22px;
+	border-radius: 12px;
+	margin-bottom: 18px;
+	box-shadow: 0 2px 10px rgba( 19, 94, 150, 0.18 );
+}
+.advery-rv__brand {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.advery-rv__logo {
+	font-size: 28px;
+	line-height: 1;
+	background: rgba( 255, 255, 255, 0.18 );
+	width: 48px;
+	height: 48px;
+	display: flex;
+	align-items: center;
 	justify-content: center;
-	padding: 60px 0;
+	border-radius: 12px;
 }
-
-.advery-rv-tabs {
+.advery-rv__title {
+	margin: 0;
+	color: #fff;
+	font-size: 20px;
+	line-height: 1.2;
+}
+.advery-rv__sub {
+	margin: 2px 0 0;
+	opacity: 0.85;
+	font-size: 13px;
+}
+.advery-rv__tiles {
 	display: flex;
-	gap: 4px;
+	gap: 10px;
 	flex-wrap: wrap;
 }
+.advery-rv__tile {
+	background: rgba( 255, 255, 255, 0.14 );
+	border-radius: 10px;
+	padding: 8px 16px;
+	min-width: 74px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+}
+.advery-rv__tile-value {
+	font-size: 22px;
+	font-weight: 700;
+	line-height: 1.1;
+}
+.advery-rv__tile-label {
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	opacity: 0.9;
+}
+.advery-rv__tile.is-amber .advery-rv__tile-value { color: #ffe08a; }
+.advery-rv__tile.is-green .advery-rv__tile-value { color: #b8f0c6; }
+.advery-rv__tile.is-red .advery-rv__tile-value { color: #ffc2bd; }
+
+/* Tabs (native TabPanel) spacing */
+.advery-rv__tabs .components-tab-panel__tabs { gap: 2px; }
+
+.advery-rv-loading { display: flex; justify-content: center; padding: 60px 0; }
+.advery-rv-empty {
+	text-align: center;
+	color: var(--rv-muted);
+	padding: 48px 0;
+	background: var(--rv-bg);
+	border: 1px dashed var(--rv-border);
+	border-radius: 10px;
+}
+
+/* Toolbar: status pills + search */
+.advery-rv-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 14px 0;
+}
+.advery-rv-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .advery-rv-tab {
-	background: none;
+	background: #f0f0f1;
 	border: 1px solid transparent;
-	border-radius: 4px 4px 0 0;
-	padding: 6px 12px;
+	border-radius: 999px;
+	padding: 6px 14px;
 	cursor: pointer;
-	color: #2271b1;
+	color: #1d2327;
 	font-size: 13px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	transition: background 0.15s ease;
 
-	&.is-active {
-		font-weight: 600;
-		color: #1d2327;
-		border-color: #c3c4c7;
-		border-bottom-color: #fff;
-		background: #fff;
-	}
-	&__count {
-		display: inline-block;
-		margin-inline-start: 6px;
-		background: #d63638;
-		color: #fff;
-		border-radius: 10px;
-		padding: 0 7px;
-		font-size: 11px;
-	}
+	&:hover { background: #e5e7eb; }
+	&.is-active { background: #2271b1; color: #fff; }
 }
-
-.advery-rv-list__filters {
-	margin: 12px 0;
-	gap: 16px;
+.advery-rv-tab__count {
+	background: rgba( 0, 0, 0, 0.12 );
+	border-radius: 999px;
+	padding: 0 7px;
+	font-size: 11px;
+	line-height: 18px;
 }
+.advery-rv-tab.is-active .advery-rv-tab__count { background: rgba( 255, 255, 255, 0.25 ); }
+.advery-rv-search { min-width: 220px; }
 
 .advery-rv-bulk {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	margin: 8px 0;
-	padding: 8px 12px;
-	background: #f6f7f7;
-	border-radius: 6px;
+	padding: 8px 14px;
+	background: #eef4fb;
+	border: 1px solid #cfe0f3;
+	border-radius: 8px;
 }
 
-.advery-rv-table {
-	th, td { vertical-align: top; }
-	.check-column { width: 28px; }
+/* Cards */
+.advery-rv-cards { display: flex; flex-direction: column; gap: 12px; }
+.advery-rv-card {
+	display: flex;
+	gap: 12px;
+	background: var(--rv-bg);
+	border: 1px solid var(--rv-border);
+	border-inline-start: 4px solid #c3c4c7;
+	border-radius: 10px;
+	padding: 14px 16px;
+	box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.04 );
+	transition: box-shadow 0.15s ease;
+
+	&:hover { box-shadow: 0 3px 12px rgba( 0, 0, 0, 0.08 ); }
+	&.is-pending { border-inline-start-color: #dba617; }
+	&.is-approved { border-inline-start-color: #1a7f37; }
+	&.is-spam { border-inline-start-color: #d63638; }
+	&.is-trash { border-inline-start-color: #8c8f94; opacity: 0.75; }
 }
-.advery-rv-stars {
-	color: #f5a623;
-	white-space: nowrap;
-	font-size: 15px;
+.advery-rv-card__select { padding-top: 2px; }
+.advery-rv-card__avatar {
+	width: 40px;
+	height: 40px;
+	flex: 0 0 40px;
+	border-radius: 50%;
+	background: #eef2f7;
+	color: #2271b1;
+	font-weight: 700;
+	font-size: 17px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-.advery-rv-rtitle { font-weight: 600; }
-.advery-rv-excerpt { margin: 2px 0; }
-.advery-rv-meta { color: #767676; font-size: 12px; }
-.advery-rv-actions .components-button { padding: 0 6px; }
+.advery-rv-card__body { flex: 1; min-width: 0; }
+.advery-rv-card__head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.advery-rv-card__author { font-weight: 600; }
+.advery-rv-card__stars { color: #f5a623; letter-spacing: 1px; }
+.advery-rv-card__title { font-weight: 600; margin-top: 4px; }
+.advery-rv-card__content { margin: 4px 0; color: #2c3338; white-space: pre-wrap; }
+.advery-rv-card__meta { color: var(--rv-muted); font-size: 12px; }
+.advery-rv-card__type { color: #8c8f94; }
+.advery-rv-card__actions {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 2px;
+	margin-top: 8px;
+	border-top: 1px solid #f0f0f1;
+	padding-top: 6px;
+}
+.advery-rv-card__actions .components-button { padding: 0 8px; height: 28px; }
+.advery-rv-card__sep { flex: 1; }
+
+.advery-rv-spam {
+	color: #d63638;
+	font-size: 12px;
+	background: #fcebea;
+	border-radius: 6px;
+	padding: 1px 7px;
+}
 
 .advery-rv-badge {
 	display: inline-block;
-	padding: 2px 8px;
-	border-radius: 10px;
-	font-size: 12px;
+	padding: 2px 10px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 600;
 	text-transform: capitalize;
 	background: #f0f0f1;
 
@@ -87,16 +219,31 @@
 	&.is-trash { background: #f0f0f1; color: #646970; }
 }
 
+.advery-rv-existing-reply {
+	margin-top: 8px;
+	padding: 8px 12px;
+	background: #f6f7f7;
+	border-inline-start: 3px solid #c3c4c7;
+	border-radius: 6px;
+	font-size: 13px;
+}
+.advery-rv-reply-editor {
+	margin-top: 8px;
+	padding: 10px 12px;
+	background: #f6f9fc;
+	border: 1px solid #d5e3f0;
+	border-radius: 8px;
+}
+.advery-rv-reply-actions { display: flex; gap: 8px; margin-top: 6px; }
+
 .advery-rv-pager {
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	margin: 16px 0;
+	justify-content: center;
+	margin: 18px 0;
 }
 
-.advery-rv-replyrow td { background: #f6f7f7; }
-.advery-rv-reply-actions { margin-top: 6px; }
-.advery-rv-existing-reply { padding: 4px 0; color: #3c434a; }
-
+/* Shared bits used by settings/migration panels */
 .advery-rv-hint { color: #757575; font-style: italic; margin-top: 0; }
 .advery-rv-save { margin: 20px 0 40px; }

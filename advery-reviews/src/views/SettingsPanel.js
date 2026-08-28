@@ -1,5 +1,5 @@
 import { useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	Panel,
 	PanelBody,
@@ -51,6 +51,16 @@ export default function SettingsPanel( { boot, notify } ) {
 		}
 	};
 	const aiPrompts = ( boot.ai && boot.ai.prompts ) || {};
+	const roles = s.roles || {};
+	const setRole = ( pt, isListing ) => {
+		const next = { ...roles };
+		if ( isListing ) {
+			next[ pt ] = 'listing';
+		} else {
+			delete next[ pt ];
+		}
+		set( { roles: next } );
+	};
 	const toggleIn = ( key, slug, on ) => {
 		const cur = new Set( s[ key ] || [] );
 		on ? cur.add( slug ) : cur.delete( slug );
@@ -404,6 +414,27 @@ export default function SettingsPanel( { boot, notify } ) {
 						onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
 					/>
+					<TextareaControl
+						label={ __( 'About your business (context for replies)', 'advery-reviews' ) }
+						help={ __( 'Optional. A short description of who you are, used when drafting replies for your own products/services.', 'advery-reviews' ) }
+						rows={ 3 }
+						value={ ai.business_context || '' }
+						onChange={ ( v ) => setAi( { business_context: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<div style={ { borderTop: '1px solid #eee', paddingTop: 8, marginTop: 8 } }>
+						<strong>{ __( 'Reply voice per content type', 'advery-reviews' ) }</strong>
+						<p className="advery-rv-hint">{ __( 'For a directory of third-party businesses, mark the listing type below — replies will speak as the platform, never on the business’s behalf. Leave off for your own products/services.', 'advery-reviews' ) }</p>
+						{ ( boot.postTypes || [] ).map( ( pt ) => (
+							<CheckboxControl
+								key={ pt.slug }
+								label={ sprintf( __( '“%1$s” is a third-party directory listing (we are not the business)', 'advery-reviews' ), pt.label ) }
+								checked={ roles[ pt.slug ] === 'listing' }
+								onChange={ ( on ) => setRole( pt.slug, on ) }
+								__nextHasNoMarginBottom
+							/>
+						) ) }
+					</div>
 					{ [
 						[ 'reply', __( 'Reply drafting', 'advery-reviews' ) ],
 						[ 'moderate', __( 'Moderation assist', 'advery-reviews' ) ],

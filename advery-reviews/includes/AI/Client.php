@@ -84,7 +84,11 @@ class Client {
 
 		$system = ! empty( $task_cfg['prompt'] ) ? $task_cfg['prompt'] : Tasks::default_prompt( $task );
 		$system = Tasks::fill( $system, $ctx );
-		$user   = Tasks::user_message( $task, $ctx );
+		if ( 'reply' === $task ) {
+			// Tell the model who it is relative to the reviewed item.
+			$system .= Tasks::role_clause( $ctx['role'] ?? 'owner' );
+		}
+		$user = Tasks::user_message( $task, $ctx );
 
 		$result = $provider->chat(
 			$system,

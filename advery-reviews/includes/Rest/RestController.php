@@ -582,11 +582,40 @@ class RestController {
 			'target'   => sanitize_text_field( (string) $req->get_param( 'target' ) ) ?: 'English',
 		];
 
+		// Reply needs to know our relationship to the item and the page context.
+		if ( 'reply' === $task ) {
+			$ctx['role']             = Settings::role_for( get_post_type( $review['object_id'] ) );
+			$ctx['site_name']        = get_bloginfo( 'name' );
+			$ctx['site_description'] = get_bloginfo( 'description' );
+			$ctx['business_context'] = (string) ( Settings::ai()['business_context'] ?? '' );
+			$ctx['page_excerpt']     = $this->page_excerpt( $review['object_type'], $review['object_id'] );
+		}
+
 		$out = AIClient::run( $task, $ctx );
 		if ( 'moderate' === $task && ! is_wp_error( $out ) ) {
 			return new WP_REST_Response( [ 'ok' => true, 'verdict' => AIClient::moderation_verdict( $out ), 'raw' => $out ], 200 );
 		}
 		return $this->ai_result( $out );
+	}
+
+	/**
+	 * A short plain-text excerpt of the reviewed item, for AI reply context.
+	 *
+	 * @param string $object_type
+	 * @param int    $object_id
+	 * @return string
+	 */
+	private function page_excerpt( $object_type, $object_id ) {
+		if ( 'term' === $object_type ) {
+			$term = get_term( (int) $object_id );
+			return ( $term && ! is_wp_error( $term ) ) ? wp_trim_words( wp_strip_all_tags( $term->description ), 120 ) : '';
+		}
+		$post = get_post( (int) $object_id );
+		if ( ! $post ) {
+			return '';
+		}
+		$text = $post->post_excerpt ? $post->post_excerpt : $post->post_content;
+		return wp_trim_words( wp_strip_all_tags( strip_shortcodes( $text ) ), 120 );
 	}
 
 	private function ai_result( $out ) {
@@ -639,6 +668,7 @@ class RestController {
 			'replace_comments'   => ! empty( $in['replace_comments'] ),
 			// CSS never needs '<'; removing it prevents a </style> breakout.
 			'custom_css'         => str_replace( '<', '', (string) ( $in['custom_css'] ?? '' ) ),
+			'roles'              => $this->sanitize_roles( is_array( $in['roles'] ?? null ) ? $in['roles'] : [] ),
 			'schema_output'      => ! empty( $in['schema_output'] ),
 			'woo_merge_native'   => ! empty( $in['woo_merge_native'] ),
 			'email_instant'      => ! empty( $in['email_instant'] ),
@@ -647,6 +677,21 @@ class RestController {
 			'antispam'           => $this->sanitize_antispam( is_array( $in['antispam'] ?? null ) ? $in['antispam'] : [] ),
 			'ai'                 => $this->sanitize_ai( is_array( $in['ai'] ?? null ) ? $in['ai'] : [] ),
 		];
+	}
+
+	/**
+	 * @param array $in post_type => role
+	 * @return array<string,string>
+	 */
+	private function sanitize_roles( array $in ) {
+		$out = [];
+		foreach ( $in as $pt => $role ) {
+			$pt = sanitize_key( (string) $pt );
+			if ( '' !== $pt && 'listing' === $role ) {
+				$out[ $pt ] = 'listing';
+			}
+		}
+		return $out;
 	}
 
 	/**
@@ -676,6 +721,7 @@ class RestController {
 			'max_tokens'          => min( 4000, max( 32, (int) ( $in['max_tokens'] ?? $d['max_tokens'] ) ) ),
 			'daily_cap'           => max( 0, (int) ( $in['daily_cap'] ?? $d['daily_cap'] ) ),
 			'moderation_autospam' => ! empty( $in['moderation_autospam'] ),
+			'business_context'    => sanitize_textarea_field( (string) ( $in['business_context'] ?? '' ) ),
 			'tasks'               => $tasks,
 		];
 	}
