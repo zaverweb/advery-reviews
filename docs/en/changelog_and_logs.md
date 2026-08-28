@@ -12,6 +12,14 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.4.0 (Comment migration — WP/Woo ⇄ plugin)
+- **Import** (`Migration\CommentImporter`): brings WordPress post comments and WooCommerce product reviews into the plugin's tables, mapping every field — content, author name/email/user, date → created_at, approval → status (`1`→approved, `0`→pending, `spam`/`trash` preserved), Woo's `rating` → rating. Extra comment meta is preserved in the review `meta` JSON so nothing is lost. **Non-destructive by default** (copies; an explicit opt-in can delete the source comments). De-duplicates on re-run via `(external_source, external_id)`; batched for large sites.
+- **Export** (`Migration\CommentExporter`): recreates native WP comments / Woo reviews from natively-collected plugin reviews (reversible, idempotent). Each exported comment is flagged (`_advery_exported`) and the importer skips it, so import and export **can never loop**.
+- **CSV backup** (`Migration\CsvExporter`): download every review as CSV.
+- **DB → 1.2.0:** `advery_reviews` gains `external_source` (varchar) + `external_id` (bigint) with an index, for import de-duplication. Additive `dbDelta` migration.
+- **Admin:** a new **Migration** tab — preview counts, source selection (WP comments / Woo reviews), update-existing and delete-source options, batched progress, reverse export, and CSV download.
+- **Verified live:** import (3 comments → reviews, statuses mapped, `<script>` sanitized), re-run de-dup (all skipped), update-existing, reverse export (comment created with rating + loop-guard flag), loop guard (exported comment excluded from import), idempotent re-export, CSV output.
+
 ### Version 0.3.0 (Security hardening + display & integration)
 - **Input security (`Support\Sanitizer`)** — one place all visitor input passes through before storage. Forces valid UTF-8, strips null bytes and C0/C1 control characters (the "disallowed character" injection vector), removes `<script>/<style>/<iframe>/<object>/<embed>/<form>` and all `on*=` event handlers, and restricts the review body to a tiny HTML allowlist (kses also neutralises `javascript:` URLs). Names/titles keep no HTML at all. Length caps are enforced. Verified live: `<script>`, `onclick`, `javascript:`, null/control bytes all stripped; safe formatting (`<b>`) kept.
 - **CAPTCHA is not load-bearing:** the layered SpamGuard (honeypot + signed timing + rate limit + blocklist + duplicate) protects a site that never configures a CAPTCHA; CAPTCHA is one optional extra layer.

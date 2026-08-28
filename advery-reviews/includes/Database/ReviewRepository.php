@@ -30,15 +30,18 @@ class ReviewRepository {
 			'content'        => (string) ( $data['content'] ?? '' ),
 			'status'         => in_array( ( $data['status'] ?? '' ), self::STATUSES, true ) ? $data['status'] : 'pending',
 			'author_ip'      => (string) ( $data['author_ip'] ?? '' ),
-			'spam_score'     => (int) ( $data['spam_score'] ?? 0 ),
-			'meta'           => isset( $data['meta'] ) ? wp_json_encode( $data['meta'] ) : null,
-			'created_at'     => current_time( 'mysql' ),
+			'spam_score'      => (int) ( $data['spam_score'] ?? 0 ),
+			'meta'            => isset( $data['meta'] ) ? wp_json_encode( $data['meta'] ) : null,
+			'external_source' => (string) ( $data['external_source'] ?? '' ),
+			'external_id'     => (int) ( $data['external_id'] ?? 0 ),
+			// Allow importers to preserve the original timestamp.
+			'created_at'      => ! empty( $data['created_at'] ) ? $data['created_at'] : current_time( 'mysql' ),
 		];
 
 		$ok = $wpdb->insert(
 			Installer::reviews_table(),
 			$row,
-			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
+			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%d', '%s' ]
 		);
 
 		if ( ! $ok ) {
@@ -348,15 +351,77 @@ class ReviewRepository {
 	}
 
 	/**
+	 * Find a review id by its external source + id (import de-duplication).
+	 *
+	 * @param string $source
+	 * @param int    $external_id
+	 * @return int 0 when none.
+	 */
+	public static function find_id_by_external( $source, $external_id ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$table} WHERE external_source = %s AND external_id = %d LIMIT 1",
+				$source,
+				$external_id
+			)
+		);
+	}
+
+	/**
+	 * Generic column update. Recomputes the object's aggregate when a field
+	 * affecting it (status/rating) changes.
+	 *
+	 * @param int   $id
+	 * @param array $fields associative column => value (whitelisted here)
+	 * @return bool
+	 */
+	public static function update( $id, array $fields ) {
+		global $wpdb;
+
+		$review = self::find( $id );
+		if ( ! $review ) {
+			return false;
+		}
+
+		$allowed = [ 'rating', 'author_name', 'author_email', 'author_user_id', 'title', 'content', 'status', 'created_at', 'spam_score' ];
+		$set     = [];
+		$fmt     = [];
+		foreach ( $allowed as $col ) {
+			if ( ! array_key_exists( $col, $fields ) ) {
+				continue;
+			}
+			$set[ $col ] = $fields[ $col ];
+			$fmt[]       = in_array( $col, [ 'rating', 'author_user_id', 'spam_score' ], true ) ? '%d' : '%s';
+		}
+		if ( array_key_exists( 'meta', $fields ) ) {
+			$set['meta'] = wp_json_encode( $fields['meta'] );
+			$fmt[]       = '%s';
+		}
+		if ( empty( $set ) ) {
+			return false;
+		}
+
+		$ok = false !== $wpdb->update( Installer::reviews_table(), $set, [ 'id' => $id ], $fmt, [ '%d' ] );
+		if ( $ok ) {
+			StatsRepository::recompute( $review['object_type'], $review['object_id'] );
+		}
+		return $ok;
+	}
+
+	/**
 	 * @param array $row
 	 * @return array
 	 */
 	private static function hydrate( array $row ) {
-		$row['id']             = (int) $row['id'];
-		$row['object_id']      = (int) $row['object_id'];
-		$row['rating']         = (int) $row['rating'];
-		$row['author_user_id'] = (int) $row['author_user_id'];
-		$row['spam_score']     = isset( $row['spam_score'] ) ? (int) $row['spam_score'] : 0;
+		$row['id']              = (int) $row['id'];
+		$row['object_id']       = (int) $row['object_id'];
+		$row['rating']          = (int) $row['rating'];
+		$row['author_user_id']  = (int) $row['author_user_id'];
+		$row['external_id']     = isset( $row['external_id'] ) ? (int) $row['external_id'] : 0;
+		$row['external_source'] = isset( $row['external_source'] ) ? $row['external_source'] : '';
+		$row['spam_score']      = isset( $row['spam_score'] ) ? (int) $row['spam_score'] : 0;
 		if ( isset( $row['meta'] ) && is_string( $row['meta'] ) ) {
 			$decoded     = json_decode( $row['meta'], true );
 			$row['meta'] = is_array( $decoded ) ? $decoded : [];

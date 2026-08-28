@@ -28,4 +28,10 @@ export const api = {
 		apiFetch( { path: `${ base }/settings`, method: 'POST', data: { settings } } ),
 	maintenance: ( action ) =>
 		apiFetch( { path: `${ base }/maintenance`, method: 'POST', data: { action } } ),
+	migrationPreview: () => apiFetch( { path: `${ base }/migration/preview` } ),
+	migrationImport: ( data ) =>
+		apiFetch( { path: `${ base }/migration/import`, method: 'POST', data } ),
+	migrationExport: ( data ) =>
+		apiFetch( { path: `${ base }/migration/export`, method: 'POST', data } ),
+	exportCsv: () => apiFetch( { path: `${ base }/export-csv` } ),
 };

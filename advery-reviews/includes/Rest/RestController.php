@@ -12,6 +12,9 @@ use Advery\Reviews\Database\ReviewRepository;
 use Advery\Reviews\Database\StatsRepository;
 use Advery\Reviews\AntiSpam\SpamGuard;
 use Advery\Reviews\Support\Maintenance;
+use Advery\Reviews\Migration\CommentImporter;
+use Advery\Reviews\Migration\CommentExporter;
+use Advery\Reviews\Migration\CsvExporter;
 use Advery\Reviews\Email\Digest;
 
 /**
@@ -104,6 +107,42 @@ class RestController {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'maintenance' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/migration/preview',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'migration_preview' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/migration/import',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'migration_import' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/migration/export',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'migration_export' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/export-csv',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'export_csv' ],
 				'permission_callback' => [ $this, 'can_manage' ],
 			]
 		);
@@ -376,6 +415,52 @@ class RestController {
 				'ok'      => true,
 				'removed' => $removed,
 				'counts'  => ReviewRepository::status_counts(),
+			],
+			200
+		);
+	}
+
+	/* ---------------- Migration ---------------- */
+
+	public function migration_preview() {
+		return new WP_REST_Response(
+			[
+				'import' => CommentImporter::preview(),
+				'export' => CommentExporter::preview(),
+			],
+			200
+		);
+	}
+
+	public function migration_import( WP_REST_Request $req ) {
+		$result = CommentImporter::run(
+			[
+				'sources'         => array_map( 'sanitize_key', (array) $req->get_param( 'sources' ) ),
+				'update_existing' => (bool) $req->get_param( 'update_existing' ),
+				'delete_source'   => (bool) $req->get_param( 'delete_source' ),
+				'limit'           => (int) ( $req->get_param( 'limit' ) ?: 100 ),
+				'offset'          => (int) ( $req->get_param( 'offset' ) ?: 0 ),
+			]
+		);
+		$result['counts'] = ReviewRepository::status_counts();
+		return new WP_REST_Response( $result, 200 );
+	}
+
+	public function migration_export( WP_REST_Request $req ) {
+		$result = CommentExporter::run(
+			[
+				'limit'  => (int) ( $req->get_param( 'limit' ) ?: 100 ),
+				'offset' => (int) ( $req->get_param( 'offset' ) ?: 0 ),
+			]
+		);
+		return new WP_REST_Response( $result, 200 );
+	}
+
+	public function export_csv() {
+		return new WP_REST_Response(
+			[
+				'filename' => 'advery-reviews-' . gmdate( 'Ymd-His' ) . '.csv',
+				'csv'      => CsvExporter::generate(),
 			],
 			200
 		);

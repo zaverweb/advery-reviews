@@ -4,6 +4,7 @@ import { Spinner, Notice, TabPanel } from '@wordpress/components';
 import { api } from './api';
 import ReviewsList from './views/ReviewsList';
 import SettingsPanel from './views/SettingsPanel';
+import MigrationPanel from './views/MigrationPanel';
 
 export default function App() {
 	const [ loading, setLoading ] = useState( true );
@@ -66,22 +67,18 @@ export default function App() {
 				tabs={ [
 					{ name: 'reviews', title: __( 'Reviews', 'advery-reviews' ) },
 					{ name: 'settings', title: __( 'Settings', 'advery-reviews' ) },
+					{ name: 'migration', title: __( 'Migration', 'advery-reviews' ) },
 				] }
 			>
-				{ ( tab ) =>
-					tab.name === 'reviews' ? (
-						<ReviewsList
-							counts={ counts }
-							setCounts={ setCounts }
-							notify={ notify }
-						/>
-					) : (
-						<SettingsPanel
-							boot={ boot }
-							notify={ notify }
-						/>
-					)
-				}
+				{ ( tab ) => {
+					if ( tab.name === 'reviews' ) {
+						return <ReviewsList counts={ counts } setCounts={ setCounts } notify={ notify } />;
+					}
+					if ( tab.name === 'migration' ) {
+						return <MigrationPanel boot={ boot } notify={ notify } />;
+					}
+					return <SettingsPanel boot={ boot } notify={ notify } />;
+				} }
 			</TabPanel>
 		</div>
 	);
