@@ -1,0 +1,52 @@
+<?php
+namespace Advery\Reviews;
+
+use Advery\Reviews\Frontend\Display;
+use Advery\Reviews\Schema\SchemaBridge;
+use Advery\Reviews\Email\Notifier;
+use Advery\Reviews\Email\Digest;
+use Advery\Reviews\Admin\AdminPage;
+use Advery\Reviews\Admin\DashboardWidget;
+use Advery\Reviews\Rest\RestController;
+use Advery\Reviews\Database\Installer;
+
+/**
+ * Bootstrapper: wires the plugin's subsystems and nothing else. The plugin is
+ * fully standalone (collection, moderation, display, email); the schema bridge
+ * only does anything when Advery Schema Plus is active — its filter simply
+ * never fires otherwise.
+ */
+class Plugin {
+
+	public function boot() {
+		load_plugin_textdomain( 'advery-reviews', false, dirname( plugin_basename( ADVERY_REVIEWS_FILE ) ) . '/languages' );
+
+		// Front-end display + submission.
+		( new Display() )->register();
+
+		// Schema.org aggregateRating/review injection (no-op without the core).
+		( new SchemaBridge() )->register();
+
+		// Email: instant notification + scheduled digest.
+		( new Notifier() )->register();
+		( new Digest() )->register();
+
+		// REST API (front + admin).
+		add_action(
+			'rest_api_init',
+			function () {
+				( new RestController() )->register_routes();
+			}
+		);
+
+		if ( is_admin() ) {
+			$admin = new AdminPage();
+			add_action( 'admin_menu', [ $admin, 'register_menu' ] );
+			add_action( 'admin_enqueue_scripts', [ $admin, 'enqueue' ] );
+			add_action( 'admin_init', [ $admin, 'maybe_upgrade' ] );
+
+			$widget = new DashboardWidget();
+			add_action( 'wp_dashboard_setup', [ $widget, 'register' ] );
+		}
+	}
+}

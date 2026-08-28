@@ -1,0 +1,6 @@
+/dist/
+.DS_Store
+
+# Local-only deploy scripts (server details; kept out of the repo).
+/deploy.sh
+/deploy-reviews.sh

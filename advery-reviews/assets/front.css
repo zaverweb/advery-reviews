@@ -1,0 +1,111 @@
+.advery-reviews {
+	margin: 2em 0;
+	font-size: 15px;
+}
+.advery-reviews__summary {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 1em;
+	padding-bottom: 0.6em;
+	border-bottom: 1px solid rgba( 0, 0, 0, 0.08 );
+}
+.advery-reviews__avg {
+	font-size: 1.6em;
+	font-weight: 700;
+	line-height: 1;
+}
+.advery-reviews__stars {
+	color: #f5a623;
+	letter-spacing: 1px;
+}
+.advery-reviews__count {
+	color: #767676;
+}
+.advery-reviews__list {
+	list-style: none;
+	margin: 0 0 1.5em;
+	padding: 0;
+}
+.advery-reviews__item {
+	padding: 0.9em 0;
+	border-bottom: 1px solid rgba( 0, 0, 0, 0.06 );
+}
+.advery-reviews__item-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.advery-reviews__title {
+	font-weight: 600;
+	margin-top: 0.2em;
+}
+.advery-reviews__content {
+	color: #333;
+}
+.advery-reviews__form {
+	background: rgba( 0, 0, 0, 0.02 );
+	border: 1px solid rgba( 0, 0, 0, 0.08 );
+	border-radius: 8px;
+	padding: 1.2em;
+	max-width: 560px;
+}
+.advery-reviews__form h3 {
+	margin-top: 0;
+}
+.advery-reviews__form input[type="text"],
+.advery-reviews__form input[type="email"],
+.advery-reviews__form textarea {
+	display: block;
+	width: 100%;
+	margin-bottom: 0.7em;
+	padding: 0.6em;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	box-sizing: border-box;
+}
+.advery-reviews__rating-input {
+	margin-bottom: 0.8em;
+}
+.advery-reviews__star-btn {
+	background: none;
+	border: none;
+	font-size: 1.7em;
+	line-height: 1;
+	color: #f5a623;
+	cursor: pointer;
+	padding: 0 2px;
+}
+.advery-reviews__star-btn.is-on {
+	color: #f5a623;
+}
+.advery-reviews__hp {
+	position: absolute !important;
+	left: -9999px !important;
+	height: 0;
+	width: 0;
+	overflow: hidden;
+}
+.advery-reviews__submit {
+	background: #2271b1;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	padding: 0.6em 1.4em;
+	font-size: 1em;
+	cursor: pointer;
+}
+.advery-reviews__submit:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+.advery-reviews__msg {
+	margin: 0.8em 0 0;
+	min-height: 1.2em;
+}
+.advery-reviews__msg.is-success {
+	color: #1a7f37;
+}
+.advery-reviews__msg.is-error {
+	color: #c0392b;
+}

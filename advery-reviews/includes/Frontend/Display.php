@@ -1,0 +1,173 @@
+<?php
+namespace Advery\Reviews\Frontend;
+
+use Advery\Reviews\Support\Settings;
+use Advery\Reviews\Support\Targets;
+use Advery\Reviews\Support\Aggregate;
+use Advery\Reviews\Database\ReviewRepository;
+
+/**
+ * Front-end rendering: a `[advery_reviews]` shortcode (and optional auto-append
+ * to enabled post types) that shows the rating summary, the approved reviews,
+ * and a submission form. A small vanilla-JS file (no framework on the front
+ * end) handles the star picker and the REST submission.
+ */
+class Display {
+
+	public function register() {
+		add_shortcode( 'advery_reviews', [ $this, 'shortcode' ] );
+		add_filter( 'the_content', [ $this, 'maybe_append' ], 20 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
+	}
+
+	public function enqueue() {
+		if ( ! Targets::current() ) {
+			return;
+		}
+		wp_enqueue_style( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.css', [], ADVERY_REVIEWS_VERSION );
+		wp_enqueue_script( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.js', [], ADVERY_REVIEWS_VERSION, true );
+		wp_localize_script(
+			'advery-reviews-front',
+			'AdveryReviewsFront',
+			[
+				'rest'  => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'i18n'  => [
+					'sending' => __( 'Sending…', 'advery-reviews' ),
+					'submit'  => __( 'Submit review', 'advery-reviews' ),
+					'error'   => __( 'Something went wrong. Please try again.', 'advery-reviews' ),
+				],
+			]
+		);
+	}
+
+	/**
+	 * Auto-append the widget to the content of enabled singular targets.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	public function maybe_append( $content ) {
+		if ( is_admin() || ! in_the_loop() || ! is_main_query() ) {
+			return $content;
+		}
+		if ( ! Settings::get( 'auto_append' ) ) {
+			return $content;
+		}
+		$target = Targets::current();
+		if ( ! $target || 'term' === $target[0] ) {
+			return $content; // term archives don't run the_content per-item
+		}
+		return $content . $this->render( $target[0], $target[1] );
+	}
+
+	/**
+	 * `[advery_reviews]` — optional type/id atts, else the current target.
+	 *
+	 * @param array $atts
+	 * @return string
+	 */
+	public function shortcode( $atts ) {
+		$atts   = shortcode_atts( [ 'type' => '', 'id' => 0 ], $atts, 'advery_reviews' );
+		$type   = $atts['type'] ? sanitize_key( $atts['type'] ) : '';
+		$id     = (int) $atts['id'];
+
+		if ( ! $type || ! $id ) {
+			$target = Targets::current();
+			if ( ! $target ) {
+				return '';
+			}
+			list( $type, $id ) = $target;
+		}
+
+		return $this->render( $type, $id );
+	}
+
+	/**
+	 * Render the whole widget for a target.
+	 *
+	 * @param string $object_type
+	 * @param int    $object_id
+	 * @return string
+	 */
+	public function render( $object_type, $object_id ) {
+		if ( ! Targets::is_enabled( $object_type, $object_id ) ) {
+			return '';
+		}
+
+		$agg     = Aggregate::for( $object_type, $object_id );
+		$reviews = ReviewRepository::approved_for( $object_type, $object_id, (int) Settings::get( 'reviews_per_page', 10 ) );
+		$logged  = is_user_logged_in();
+		$can     = ! ( 'logged_in' === Settings::get( 'who_can_submit' ) && ! $logged );
+
+		ob_start();
+		?>
+		<div class="advery-reviews" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>">
+			<div class="advery-reviews__summary">
+				<span class="advery-reviews__avg"><?php echo esc_html( number_format_i18n( $agg['avg'], 1 ) ); ?></span>
+				<span class="advery-reviews__stars" aria-hidden="true"><?php echo esc_html( $this->stars( $agg['avg'] ) ); ?></span>
+				<span class="advery-reviews__count">
+					<?php
+					printf(
+						/* translators: %d: review count */
+						esc_html( _n( '%d review', '%d reviews', $agg['review_count'], 'advery-reviews' ) ),
+						(int) $agg['review_count']
+					);
+					?>
+				</span>
+			</div>
+
+			<ul class="advery-reviews__list">
+				<?php foreach ( $reviews as $r ) : ?>
+					<li class="advery-reviews__item">
+						<div class="advery-reviews__item-head">
+							<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
+							<?php if ( $r['rating'] > 0 ) : ?>
+								<span class="advery-reviews__stars" aria-label="<?php echo esc_attr( sprintf( '%d / 5', $r['rating'] ) ); ?>"><?php echo esc_html( $this->stars( $r['rating'] ) ); ?></span>
+							<?php endif; ?>
+						</div>
+						<?php if ( $r['title'] ) : ?>
+							<div class="advery-reviews__title"><?php echo esc_html( $r['title'] ); ?></div>
+						<?php endif; ?>
+						<div class="advery-reviews__content"><?php echo wp_kses_post( wpautop( $r['content'] ) ); ?></div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+
+			<?php if ( $can ) : ?>
+				<form class="advery-reviews__form">
+					<h3><?php esc_html_e( 'Write a review', 'advery-reviews' ); ?></h3>
+					<div class="advery-reviews__rating-input" role="radiogroup" aria-label="<?php esc_attr_e( 'Your rating', 'advery-reviews' ); ?>">
+						<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
+							<button type="button" class="advery-reviews__star-btn" data-value="<?php echo (int) $i; ?>" aria-label="<?php echo esc_attr( sprintf( '%d', $i ) ); ?>">☆</button>
+						<?php endfor; ?>
+						<input type="hidden" name="rating" value="0" />
+					</div>
+					<?php if ( ! $logged ) : ?>
+						<input type="text" name="author_name" placeholder="<?php esc_attr_e( 'Your name', 'advery-reviews' ); ?>" required />
+						<input type="email" name="author_email" placeholder="<?php esc_attr_e( 'Your email', 'advery-reviews' ); ?>" required />
+					<?php endif; ?>
+					<input type="text" name="title" placeholder="<?php esc_attr_e( 'Title (optional)', 'advery-reviews' ); ?>" />
+					<textarea name="content" rows="4" placeholder="<?php esc_attr_e( 'Your review', 'advery-reviews' ); ?>" required></textarea>
+					<input type="text" name="website_hp" class="advery-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+					<button type="submit" class="advery-reviews__submit"><?php esc_html_e( 'Submit review', 'advery-reviews' ); ?></button>
+					<p class="advery-reviews__msg" role="status" aria-live="polite"></p>
+				</form>
+			<?php else : ?>
+				<p class="advery-reviews__login"><?php esc_html_e( 'Please log in to leave a review.', 'advery-reviews' ); ?></p>
+			<?php endif; ?>
+		</div>
+		<?php
+		return ob_get_clean();
+	}
+
+	/**
+	 * @param float $value
+	 * @return string
+	 */
+	private function stars( $value ) {
+		$full = (int) round( $value );
+		$full = max( 0, min( 5, $full ) );
+		return str_repeat( '★', $full ) . str_repeat( '☆', 5 - $full );
+	}
+}

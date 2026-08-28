@@ -1,0 +1,5 @@
+node_modules/
+npm-debug.log*
+.DS_Store
+
+# The compiled build/ output IS committed so the plugin runs without a build step.
