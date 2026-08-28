@@ -5,6 +5,9 @@ use Advery\Reviews\Frontend\Display;
 use Advery\Reviews\Frontend\CommentsTakeover;
 use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Schema\SchemaBridge;
+use Advery\Reviews\Integrations\WooSchema;
+use Advery\Reviews\Integrations\ElementorBridge;
+use Advery\Reviews\Integrations\GutenbergBlock;
 use Advery\Reviews\Email\Notifier;
 use Advery\Reviews\Email\Digest;
 use Advery\Reviews\Admin\AdminPage;
@@ -34,6 +37,15 @@ class Plugin {
 
 		// Schema.org aggregateRating/review injection (no-op without the core).
 		( new SchemaBridge() )->register();
+
+		// Merge our collected product reviews into WooCommerce's own schema.
+		( new WooSchema() )->register();
+
+		// Gutenberg block (dynamic, server-rendered).
+		( new GutenbergBlock() )->register();
+
+		// Elementor widget (feature-detected; inert without Elementor).
+		( new ElementorBridge() )->register();
 
 		// Email: instant notification + scheduled digest.
 		( new Notifier() )->register();

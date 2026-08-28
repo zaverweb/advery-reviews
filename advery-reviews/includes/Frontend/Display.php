@@ -15,6 +15,18 @@ use Advery\Reviews\Database\ReviewRepository;
  */
 class Display {
 
+	/** Targets already printed this request (de-dup: shortcode/block/Elementor vs auto-append). */
+	private static $printed = [];
+
+	/**
+	 * @param string $object_type
+	 * @param int    $object_id
+	 * @return bool
+	 */
+	public static function already_printed( $object_type, $object_id ) {
+		return isset( self::$printed[ $object_type . ':' . (int) $object_id ] );
+	}
+
 	public function register() {
 		add_shortcode( 'advery_reviews', [ $this, 'shortcode' ] );
 		add_filter( 'the_content', [ $this, 'maybe_append' ], 20 );
@@ -110,6 +122,10 @@ class Display {
 		if ( ! $target || 'term' === $target[0] ) {
 			return $content; // term archives don't run the_content per-item
 		}
+		// Already placed by a shortcode / block / Elementor widget → don't repeat.
+		if ( self::already_printed( $target[0], $target[1] ) ) {
+			return $content;
+		}
 		return $content . $this->render( $target[0], $target[1] );
 	}
 
@@ -146,6 +162,10 @@ class Display {
 		if ( ! Targets::is_enabled( $object_type, $object_id ) ) {
 			return '';
 		}
+
+		// Mark this target as printed so auto-append doesn't duplicate it when a
+		// shortcode / block / Elementor widget already placed it.
+		self::$printed[ $object_type . ':' . (int) $object_id ] = true;
 
 		$agg     = Aggregate::for( $object_type, $object_id );
 		$total   = (int) $agg['review_count'];

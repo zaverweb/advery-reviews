@@ -12,6 +12,12 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.5.0 (Phase 2 — Elementor, Gutenberg block, Woo schema merge)
+- **Elementor widget** (`Integrations\ElementorBridge` + `Elementor\ReviewsWidget`): a native "Advery Reviews" widget that renders the exact same server-side markup as the shortcode (same styling, loading modes, schema). Controls for current-page vs a specific post id; editor placeholder when the page isn't a review target. Feature-detected — inert without Elementor; supports both the 3.5+ and legacy registration hooks. Verified live (Elementor + Pro active on the sample site): the widget registers.
+- **Gutenberg block** (`Integrations\GutenbergBlock`, `advery/reviews`): a dynamic, server-rendered block with a `ServerSideRender` editor preview via a tiny no-build script — so the front-end HTML is crawlable and identical to the other placements. Verified live: block registers and its `render_callback` outputs the widget.
+- **De-dup guard:** the shortcode, block and Elementor widget mark the target as printed; **auto-append is suppressed** when the widget was already placed on the page, so reviews never appear twice. Verified live.
+- **WooCommerce schema merge** (`Integrations\WooSchema`): when "merge Woo native ratings" is on, our collected product reviews are merged into **WooCommerce's own** `woocommerce_structured_data_product` output (a single combined `aggregateRating` + appended `review` nodes) instead of a competing block — no duplicate/conflicting product schema. Feature-detected (only with WooCommerce active).
+
 ### Version 0.4.0 (Comment migration — WP/Woo ⇄ plugin)
 - **Import** (`Migration\CommentImporter`): brings WordPress post comments and WooCommerce product reviews into the plugin's tables, mapping every field — content, author name/email/user, date → created_at, approval → status (`1`→approved, `0`→pending, `spam`/`trash` preserved), Woo's `rating` → rating. Extra comment meta is preserved in the review `meta` JSON so nothing is lost. **Non-destructive by default** (copies; an explicit opt-in can delete the source comments). De-duplicates on re-run via `(external_source, external_id)`; batched for large sites.
 - **Export** (`Migration\CommentExporter`): recreates native WP comments / Woo reviews from natively-collected plugin reviews (reversible, idempotent). Each exported comment is flagged (`_advery_exported`) and the importer skips it, so import and export **can never loop**.
