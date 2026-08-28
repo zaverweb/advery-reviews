@@ -12,6 +12,16 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.8.0 (AI subsystem — replies, moderation, translate, summarize)
+- **Provider-agnostic AI** (`AI\`): a `ProviderInterface` + adapters for **Anthropic Claude, OpenAI, OpenRouter, Ollama (self-hosted), and Google Gemini**. One `Client` picks the configured provider, enforces a **daily call cap** and per-task enable, builds the prompts, calls the model, writes an **audit log** (task/provider/ok/time — no prompt text), and returns clean text or a `WP_Error`. Ollama needs no key.
+- **Clear prompt system** (`AI\Tasks`) tuned to sound natural and human. Tasks, each with an editable prompt:
+  - **Reply drafting** — drafts the owner's reply to a real review in the review's own language, warm and specific, no invented facts, never pretending to be the customer. Admin: a **Reply** action per review with **“Draft with AI”**, an editable box, and Save; the saved reply shows under the review on the front end (“Response from the owner”).
+  - **Moderation assist** — an **AI check** action returns APPROVE / REVIEW / SPAM as a signal (never auto-destructive).
+  - **Translate** and **Summarize** (review highlights).
+- **AI settings tab**: provider, key, model, base-URL override, temperature, max-tokens, daily cap, per-task toggles + prompt overrides, and a **test** button.
+- **No fake reviews.** The AI operates only on genuine reviews (reply/moderate/translate/summarize). It does not — and will not — generate fabricated reviews; that is illegal (FTC 2024, EU UCPD, UK DMCC) and a Google-penalty risk. To grow real ratings, use review-request collection (roadmap).
+- **Verified live:** graceful, no-fatal handling when unconfigured; all five providers instantiate with correct default models; owner-reply storage and front-end display.
+
 ### Version 0.7.0 (Anti-spam hardening — links, length, injection, all fields)
 - **No links by default.** `max_links` defaults to **0** and the link detector now catches every form the user listed — `https://` / `http://`, `www.`, bare domains (`example.com`, `example.co.uk`), IPv4 (`192.168.1.1`), `<a href>`, `[url]…[/url]`, and obfuscated links (`example dot com`, `example[.]com`, `example (dot) com`, `example . com`). Obfuscation is normalised to a dot first, then bare domains match only a known-TLD list, so ordinary phrases ("dot matrix", "Mr. Smith", "4.99", "e.g.") are **not** false-positives (verified: 11/11 link forms caught, 0/6 false positives). Detection runs across the **review, title and name**. New `link_action` option **Reject with a message** is the default.
 - **Character limits.** Default **10–1500 characters** for the review (measured on the visible plain text), plus a configurable **author-name cap (default 35)**. Enforced as hard rejects with clear messages.

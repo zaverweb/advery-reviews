@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect, useCallback, Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	Button,
 	SearchControl,
 	Spinner,
 	CheckboxControl,
+	TextareaControl,
 	Flex,
 	FlexItem,
 } from '@wordpress/components';
@@ -29,6 +30,9 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 	const [ data, setData ] = useState( { items: [], total: 0 } );
 	const [ loading, setLoading ] = useState( false );
 	const [ selected, setSelected ] = useState( [] );
+	const [ replyFor, setReplyFor ] = useState( 0 );
+	const [ replyText, setReplyText ] = useState( '' );
+	const [ aiBusy, setAiBusy ] = useState( '' );
 	const perPage = 20;
 
 	const load = useCallback( async () => {
@@ -81,6 +85,43 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 		setSelected( ( prev ) =>
 			prev.includes( id ) ? prev.filter( ( x ) => x !== id ) : [ ...prev, id ]
 		);
+
+	const openReply = ( r ) => {
+		setReplyFor( r.id );
+		setReplyText( ( r.meta && r.meta.reply ) || '' );
+	};
+	const draftReply = async ( r ) => {
+		setAiBusy( 'draft' );
+		try {
+			const res = await api.ai( 'reply', { review_id: r.id } );
+			setReplyText( res.text || '' );
+		} catch ( e ) {
+			notify( 'error', e.message );
+		} finally {
+			setAiBusy( '' );
+		}
+	};
+	const saveReply = async ( r ) => {
+		try {
+			await api.saveReply( r.id, replyText );
+			notify( 'success', __( 'Reply saved.', 'advery-reviews' ) );
+			setReplyFor( 0 );
+			await load();
+		} catch ( e ) {
+			notify( 'error', e.message );
+		}
+	};
+	const aiModerate = async ( r ) => {
+		setAiBusy( 'mod' + r.id );
+		try {
+			const res = await api.ai( 'moderate', { review_id: r.id } );
+			notify( 'success', __( 'AI verdict: ', 'advery-reviews' ) + ( res.verdict || '' ) );
+		} catch ( e ) {
+			notify( 'error', e.message );
+		} finally {
+			setAiBusy( '' );
+		}
+	};
 
 	const totalPages = Math.max( 1, Math.ceil( data.total / perPage ) );
 
@@ -148,7 +189,8 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 							<tr><td colSpan={ 6 }>{ __( 'No reviews found.', 'advery-reviews' ) }</td></tr>
 						) }
 						{ data.items.map( ( r ) => (
-							<tr key={ r.id }>
+							<Fragment key={ r.id }>
+							<tr>
 								<td className="check-column">
 									<CheckboxControl
 										checked={ selected.includes( r.id ) }
@@ -184,8 +226,38 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 									{ r.status !== 'spam' && <Button variant="link" onClick={ () => act( r.id, 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button> }
 									{ r.status !== 'trash' && <Button variant="link" onClick={ () => act( r.id, 'trash' ) }>{ __( 'Trash', 'advery-reviews' ) }</Button> }
 									<Button variant="link" isDestructive onClick={ () => act( r.id, 'delete' ) }>{ __( 'Delete', 'advery-reviews' ) }</Button>
+									<Button variant="link" onClick={ () => openReply( r ) }>{ ( r.meta && r.meta.reply ) ? __( 'Edit reply', 'advery-reviews' ) : __( 'Reply', 'advery-reviews' ) }</Button>
+									<Button variant="link" isBusy={ aiBusy === 'mod' + r.id } onClick={ () => aiModerate( r ) }>{ __( 'AI check', 'advery-reviews' ) }</Button>
 								</td>
 							</tr>
+							{ replyFor === r.id && (
+								<tr className="advery-rv-replyrow">
+									<td colSpan={ 6 }>
+										<TextareaControl
+											label={ __( 'Owner reply', 'advery-reviews' ) }
+											rows={ 3 }
+											value={ replyText }
+											onChange={ setReplyText }
+											__nextHasNoMarginBottom
+										/>
+										<div className="advery-rv-reply-actions">
+											<Button variant="secondary" isBusy={ aiBusy === 'draft' } onClick={ () => draftReply( r ) }>{ __( 'Draft with AI', 'advery-reviews' ) }</Button>
+											{ ' ' }
+											<Button variant="primary" onClick={ () => saveReply( r ) }>{ __( 'Save reply', 'advery-reviews' ) }</Button>
+											{ ' ' }
+											<Button variant="tertiary" onClick={ () => setReplyFor( 0 ) }>{ __( 'Cancel', 'advery-reviews' ) }</Button>
+										</div>
+									</td>
+								</tr>
+							) }
+							{ replyFor !== r.id && r.meta && r.meta.reply && (
+								<tr className="advery-rv-replyrow">
+									<td colSpan={ 6 }>
+										<div className="advery-rv-existing-reply"><strong>{ __( 'Reply:', 'advery-reviews' ) }</strong> { r.meta.reply }</div>
+									</td>
+								</tr>
+							) }
+							</Fragment>
 						) ) }
 					</tbody>
 				</table>

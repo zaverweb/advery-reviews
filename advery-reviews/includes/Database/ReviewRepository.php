@@ -416,6 +416,31 @@ class ReviewRepository {
 	}
 
 	/**
+	 * Store (or clear, when $text is empty) the owner's reply on a review, in
+	 * its meta. Kept in meta so no schema change is needed.
+	 *
+	 * @param int    $id
+	 * @param string $text
+	 * @param string $by
+	 * @return bool
+	 */
+	public static function set_reply( $id, $text, $by = '' ) {
+		$review = self::find( $id );
+		if ( ! $review ) {
+			return false;
+		}
+		$meta = is_array( $review['meta'] ) ? $review['meta'] : [];
+		if ( '' === trim( (string) $text ) ) {
+			unset( $meta['reply'], $meta['reply_by'], $meta['reply_at'] );
+		} else {
+			$meta['reply']    = (string) $text;
+			$meta['reply_by'] = (string) $by;
+			$meta['reply_at'] = current_time( 'mysql' );
+		}
+		return self::update( $id, [ 'meta' => $meta ] );
+	}
+
+	/**
 	 * @param array $row
 	 * @return array
 	 */

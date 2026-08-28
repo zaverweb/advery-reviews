@@ -36,6 +36,21 @@ export default function SettingsPanel( { boot, notify } ) {
 	const set = ( patch ) => setS( { ...s, ...patch } );
 	const as = s.antispam || {};
 	const setAs = ( patch ) => set( { antispam: { ...as, ...patch } } );
+	const ai = s.ai || {};
+	const setAi = ( patch ) => set( { ai: { ...ai, ...patch } } );
+	const setAiTask = ( key, patch ) =>
+		set( { ai: { ...ai, tasks: { ...( ai.tasks || {} ), [ key ]: { ...( ( ai.tasks || {} )[ key ] || {} ), ...patch } } } } );
+	const [ aiTest, setAiTest ] = useState( null );
+	const runAiTest = async () => {
+		setAiTest( { busy: true } );
+		try {
+			const res = await api.ai( 'test' );
+			setAiTest( res.ok ? { ok: true, sample: res.sample } : { ok: false, message: res.message } );
+		} catch ( e ) {
+			setAiTest( { ok: false, message: e.message } );
+		}
+	};
+	const aiPrompts = ( boot.ai && boot.ai.prompts ) || {};
 	const toggleIn = ( key, slug, on ) => {
 		const cur = new Set( s[ key ] || [] );
 		on ? cur.add( slug ) : cur.delete( slug );
@@ -345,6 +360,83 @@ export default function SettingsPanel( { boot, notify } ) {
 						onChange={ ( v ) => set( { replace_comments: v } ) }
 						__nextHasNoMarginBottom
 					/>
+				</PanelBody>
+
+				<PanelBody title={ __( 'AI (replies, moderation, translate)', 'advery-reviews' ) } initialOpen={ false }>
+					<p className="advery-rv-hint">{ __( 'AI works on REAL reviews only — drafting owner replies, assisting moderation, translating and summarizing. It never generates fake reviews.', 'advery-reviews' ) }</p>
+					<SelectControl
+						label={ __( 'Provider', 'advery-reviews' ) }
+						value={ ai.provider }
+						options={ [
+							{ label: 'Anthropic (Claude)', value: 'anthropic' },
+							{ label: 'OpenAI', value: 'openai' },
+							{ label: 'OpenRouter', value: 'openrouter' },
+							{ label: 'Ollama (self-hosted)', value: 'ollama' },
+							{ label: 'Google Gemini', value: 'gemini' },
+						] }
+						onChange={ ( v ) => setAi( { provider: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="password"
+						label={ __( 'API key', 'advery-reviews' ) }
+						help={ ai.provider === 'ollama' ? __( 'Not required for Ollama.', 'advery-reviews' ) : '' }
+						value={ ai.api_key }
+						onChange={ ( v ) => setAi( { api_key: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						label={ __( 'Model (blank = provider default)', 'advery-reviews' ) }
+						value={ ai.model }
+						onChange={ ( v ) => setAi( { model: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						label={ __( 'Base URL (optional override)', 'advery-reviews' ) }
+						value={ ai.base_url }
+						onChange={ ( v ) => setAi( { base_url: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Daily call limit (0 = unlimited)', 'advery-reviews' ) }
+						value={ ai.daily_cap }
+						onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+					{ [
+						[ 'reply', __( 'Reply drafting', 'advery-reviews' ) ],
+						[ 'moderate', __( 'Moderation assist', 'advery-reviews' ) ],
+						[ 'translate', __( 'Translate', 'advery-reviews' ) ],
+						[ 'summarize', __( 'Summarize', 'advery-reviews' ) ],
+					].map( ( [ key, label ] ) => (
+						<div key={ key } style={ { borderTop: '1px solid #eee', paddingTop: 8, marginTop: 8 } }>
+							<ToggleControl
+								label={ label }
+								checked={ !! ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].enabled ) }
+								onChange={ ( v ) => setAiTask( key, { enabled: v } ) }
+								__nextHasNoMarginBottom
+							/>
+							<TextareaControl
+								label={ __( 'Prompt (blank = built-in default)', 'advery-reviews' ) }
+								placeholder={ aiPrompts[ key ] || '' }
+								rows={ 3 }
+								value={ ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].prompt ) || '' }
+								onChange={ ( v ) => setAiTask( key, { prompt: v } ) }
+								__nextHasNoMarginBottom
+							/>
+						</div>
+					) ) }
+					<div style={ { marginTop: 12 } }>
+						<Button variant="secondary" isBusy={ aiTest && aiTest.busy } onClick={ runAiTest }>
+							{ __( 'Save, then test the connection', 'advery-reviews' ) }
+						</Button>
+					</div>
+					{ aiTest && ! aiTest.busy && (
+						<Notice status={ aiTest.ok ? 'success' : 'error' } isDismissible onRemove={ () => setAiTest( null ) }>
+							{ aiTest.ok ? __( 'Working. Sample reply: ', 'advery-reviews' ) + aiTest.sample : aiTest.message }
+						</Notice>
+					) }
 				</PanelBody>
 
 				<PanelBody title={ __( 'Custom CSS', 'advery-reviews' ) } initialOpen={ false }>

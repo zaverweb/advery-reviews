@@ -16,6 +16,9 @@ use Advery\Reviews\Migration\CommentImporter;
 use Advery\Reviews\Migration\CommentExporter;
 use Advery\Reviews\Migration\CsvExporter;
 use Advery\Reviews\Migration\DataImporter;
+use Advery\Reviews\AI\Client as AIClient;
+use Advery\Reviews\AI\Tasks as AITasks;
+use Advery\Reviews\AI\AuditLog;
 use Advery\Reviews\Email\Digest;
 
 /**
@@ -153,6 +156,24 @@ class RestController {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'import_data' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/ai/(?P<task>[a-z]+)',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'ai_task' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/reviews/(?P<id>\d+)/reply',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'save_reply' ],
 				'permission_callback' => [ $this, 'can_manage' ],
 			]
 		);
@@ -349,6 +370,16 @@ class RestController {
 				'wooActive'  => Targets::woo_active(),
 				'coreActive' => defined( 'ADVERY_SCHEMA_VERSION' ),
 				'version'    => ADVERY_REVIEWS_VERSION,
+				'ai'         => [
+					'configured' => AIClient::configured(),
+					'today'      => AuditLog::today(),
+					'prompts'    => [
+						'reply'     => AITasks::default_prompt( 'reply' ),
+						'moderate'  => AITasks::default_prompt( 'moderate' ),
+						'translate' => AITasks::default_prompt( 'translate' ),
+						'summarize' => AITasks::default_prompt( 'summarize' ),
+					],
+				],
 			],
 			200
 		);
@@ -504,6 +535,81 @@ class RestController {
 		return new WP_REST_Response( $result, 200 );
 	}
 
+	/* ---------------- AI ---------------- */
+
+	/**
+	 * Run an AI task. `test` verifies the provider; `reply`/`translate` operate
+	 * on a review; `summarize` on an object's approved reviews.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function ai_task( WP_REST_Request $req ) {
+		$task = sanitize_key( (string) $req['task'] );
+
+		if ( 'test' === $task ) {
+			$out = AIClient::run( 'reply', [ 'business' => get_bloginfo( 'name' ), 'rating' => 5, 'author' => 'Test', 'content' => 'Everything was great, thank you!' ] );
+			if ( is_wp_error( $out ) ) {
+				return new WP_REST_Response( [ 'ok' => false, 'message' => $out->get_error_message() ], 200 );
+			}
+			return new WP_REST_Response( [ 'ok' => true, 'sample' => $out ], 200 );
+		}
+
+		if ( 'summarize' === $task ) {
+			$type  = sanitize_key( (string) $req->get_param( 'object_type' ) );
+			$id    = (int) $req->get_param( 'object_id' );
+			$parts = [];
+			foreach ( ReviewRepository::approved_for( $type, $id, 30 ) as $r ) {
+				$parts[] = '- (' . $r['rating'] . '/5) ' . $r['content'];
+			}
+			if ( empty( $parts ) ) {
+				return new WP_Error( 'advery_ai_none', __( 'No reviews to summarize.', 'advery-reviews' ), [ 'status' => 400 ] );
+			}
+			$out = AIClient::run( 'summarize', [ 'content' => implode( "\n", $parts ) ] );
+			return $this->ai_result( $out );
+		}
+
+		// reply / translate / moderate operate on a single review.
+		$review = ReviewRepository::find( (int) $req->get_param( 'review_id' ) );
+		if ( ! $review ) {
+			return new WP_Error( 'advery_ai_review', __( 'Review not found.', 'advery-reviews' ), [ 'status' => 404 ] );
+		}
+		$ctx = [
+			'business' => Targets::label( $review['object_type'], $review['object_id'] ),
+			'rating'   => $review['rating'],
+			'author'   => $review['author_name'],
+			'content'  => $review['content'],
+			'target'   => sanitize_text_field( (string) $req->get_param( 'target' ) ) ?: 'English',
+		];
+
+		$out = AIClient::run( $task, $ctx );
+		if ( 'moderate' === $task && ! is_wp_error( $out ) ) {
+			return new WP_REST_Response( [ 'ok' => true, 'verdict' => AIClient::moderation_verdict( $out ), 'raw' => $out ], 200 );
+		}
+		return $this->ai_result( $out );
+	}
+
+	private function ai_result( $out ) {
+		if ( is_wp_error( $out ) ) {
+			return new WP_Error( $out->get_error_code(), $out->get_error_message(), [ 'status' => 400 ] );
+		}
+		return new WP_REST_Response( [ 'ok' => true, 'text' => $out ], 200 );
+	}
+
+	/**
+	 * Save (or clear) the owner reply on a review.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function save_reply( WP_REST_Request $req ) {
+		$id   = (int) $req['id'];
+		$text = \Advery\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'text' ), 2000 );
+		$by   = wp_get_current_user()->display_name;
+		$ok   = ReviewRepository::set_reply( $id, $text, $by );
+		return new WP_REST_Response( [ 'ok' => $ok ], $ok ? 200 : 400 );
+	}
+
 	/* ---------------- Helpers ---------------- */
 
 	private function sanitize_settings( array $in ) {
@@ -539,6 +645,38 @@ class RestController {
 			'email_recipient'    => sanitize_email( (string) ( $in['email_recipient'] ?? '' ) ),
 			'digest_frequency'   => in_array( ( $in['digest_frequency'] ?? '' ), [ 'off', 'weekly', 'monthly' ], true ) ? $in['digest_frequency'] : $d['digest_frequency'],
 			'antispam'           => $this->sanitize_antispam( is_array( $in['antispam'] ?? null ) ? $in['antispam'] : [] ),
+			'ai'                 => $this->sanitize_ai( is_array( $in['ai'] ?? null ) ? $in['ai'] : [] ),
+		];
+	}
+
+	/**
+	 * Whitelist + coerce the nested AI config.
+	 *
+	 * @param array $in
+	 * @return array
+	 */
+	private function sanitize_ai( array $in ) {
+		$d = Settings::ai_defaults();
+
+		$tasks = [];
+		foreach ( $d['tasks'] as $key => $def ) {
+			$t             = is_array( $in['tasks'][ $key ] ?? null ) ? $in['tasks'][ $key ] : [];
+			$tasks[ $key ] = [
+				'enabled' => ! empty( $t['enabled'] ),
+				'prompt'  => sanitize_textarea_field( (string) ( $t['prompt'] ?? '' ) ),
+			];
+		}
+
+		return [
+			'provider'            => in_array( ( $in['provider'] ?? '' ), [ 'anthropic', 'openai', 'openrouter', 'ollama', 'gemini' ], true ) ? $in['provider'] : $d['provider'],
+			'api_key'             => trim( sanitize_text_field( (string) ( $in['api_key'] ?? '' ) ) ),
+			'base_url'            => esc_url_raw( (string) ( $in['base_url'] ?? '' ) ),
+			'model'               => sanitize_text_field( (string) ( $in['model'] ?? '' ) ),
+			'temperature'         => min( 2.0, max( 0.0, (float) ( $in['temperature'] ?? $d['temperature'] ) ) ),
+			'max_tokens'          => min( 4000, max( 32, (int) ( $in['max_tokens'] ?? $d['max_tokens'] ) ) ),
+			'daily_cap'           => max( 0, (int) ( $in['daily_cap'] ?? $d['daily_cap'] ) ),
+			'moderation_autospam' => ! empty( $in['moderation_autospam'] ),
+			'tasks'               => $tasks,
 		];
 	}
 

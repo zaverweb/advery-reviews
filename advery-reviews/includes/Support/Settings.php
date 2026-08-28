@@ -46,7 +46,48 @@ class Settings {
 
 			// Anti-spam (layered, score-based). See antispam_defaults().
 			'antispam'           => self::antispam_defaults(),
+
+			// AI subsystem (reply drafting, moderation assist, translate, summarize).
+			'ai'                 => self::ai_defaults(),
 		];
+	}
+
+	/**
+	 * AI defaults. One provider + model, a daily call cap, and per-task enable +
+	 * optional prompt override (empty prompt ⇒ the built-in default is used).
+	 *
+	 * @return array
+	 */
+	public static function ai_defaults() {
+		return [
+			'provider'    => 'anthropic', // anthropic|openai|openrouter|ollama|gemini
+			'api_key'     => '',
+			'base_url'    => '',          // optional override
+			'model'       => '',          // empty ⇒ provider default
+			'temperature' => 0.7,
+			'max_tokens'  => 600,
+			'daily_cap'   => 200,         // max AI calls per day (0 = unlimited)
+			'moderation_autospam' => false, // let moderation-assist auto-mark SPAM verdicts
+			'tasks'       => [
+				'reply'     => [ 'enabled' => true, 'prompt' => '' ],
+				'moderate'  => [ 'enabled' => false, 'prompt' => '' ],
+				'translate' => [ 'enabled' => true, 'prompt' => '' ],
+				'summarize' => [ 'enabled' => true, 'prompt' => '' ],
+			],
+		];
+	}
+
+	/**
+	 * @return array Merged AI config.
+	 */
+	public static function ai() {
+		$stored = self::get( 'ai', [] );
+		$ai     = wp_parse_args( is_array( $stored ) ? $stored : [], self::ai_defaults() );
+		// Ensure every task key exists.
+		foreach ( self::ai_defaults()['tasks'] as $k => $def ) {
+			$ai['tasks'][ $k ] = wp_parse_args( $ai['tasks'][ $k ] ?? [], $def );
+		}
+		return $ai;
 	}
 
 	/**

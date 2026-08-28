@@ -36,4 +36,8 @@ export const api = {
 	exportCsv: () => apiFetch( { path: `${ base }/export-csv` } ),
 	importData: ( data ) =>
 		apiFetch( { path: `${ base }/migration/import-data`, method: 'POST', data } ),
+	ai: ( task, data ) =>
+		apiFetch( { path: `${ base }/ai/${ task }`, method: 'POST', data: data || {} } ),
+	saveReply: ( id, text ) =>
+		apiFetch( { path: `${ base }/reviews/${ id }/reply`, method: 'POST', data: { text } } ),
 };

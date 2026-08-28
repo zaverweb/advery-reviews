@@ -212,6 +212,12 @@ class Display {
 							<div class="advery-reviews__title"><?php echo esc_html( $r['title'] ); ?></div>
 						<?php endif; ?>
 						<div class="advery-reviews__content"><?php echo wp_kses_post( wpautop( $r['content'] ) ); ?></div>
+						<?php if ( ! empty( $r['meta']['reply'] ) ) : ?>
+							<div class="advery-reviews__reply">
+								<span class="advery-reviews__reply-label"><?php esc_html_e( 'Response from the owner', 'advery-reviews' ); ?></span>
+								<div class="advery-reviews__reply-text"><?php echo wp_kses_post( wpautop( $r['meta']['reply'] ) ); ?></div>
+							</div>
+						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
