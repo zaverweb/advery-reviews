@@ -41,8 +41,10 @@ class Settings {
 			// the business, and must not speak for it). Map post_type => role.
 			'roles'              => [],        // e.g. [ 'product' => 'owner', 'listing' => 'listing' ]
 
-			// Schema (only used when Advery Schema Plus is active).
-			'schema_output'      => true,
+			// Schema (JSON-LD aggregateRating / review).
+			'schema_output'      => true,      // master on/off
+			'schema_mode'        => 'auto',    // 'auto' | 'core' | 'standalone' | 'off'
+			'schema_type'        => 'LocalBusiness', // @type for standalone non-product items
 			'woo_merge_native'   => false,     // merge Woo native ratings into the aggregate
 
 			// Email reporting.

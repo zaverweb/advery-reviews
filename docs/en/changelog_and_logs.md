@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.10.0 (Schema mode — works with or without Advery Schema Plus)
+- **Backlog item 1/7.** A **`schema_mode`** setting gives the owner the choice: **Auto** (use Advery Schema Plus when it's active so ratings merge into the page's connected `@graph`; otherwise emit our own), **Standalone** (always print this plugin's own JSON-LD `aggregateRating` + `review`, no core plugin needed), **Core only** (only via Advery Schema Plus), or **Off**. New `Schema\StandaloneSchema` prints a self-contained block on the reviewed item's page with a configurable `@type` (default `LocalBusiness`; products always `Product` and are left to WooCommerce). `SchemaBridge` now stands down in standalone/off mode, so the two never duplicate.
+- **Full inline help** on the schema settings (what each mode does, with examples) — the start of the documentation pass requested for every option.
+- **Verified live:** standalone emits `LocalBusiness` + `aggregateRating` (4.5) for the demo post; auto correctly defers to the active core plugin; core/off stay silent.
+
 ### Version 0.9.0 (Relationship-aware AI replies + admin redesign)
 - **AI replies now know our relationship to the reviewed item.** A per-post-type role (Settings → AI): **owner/seller** (our own product/service — the AI replies as the business, drawing on the reviewed page's content, the site name/description, and an optional “About your business” context) vs **directory listing** (a third-party business we merely list — the AI replies as the platform and is explicitly told **not** to speak for the business, apologise or make promises on its behalf, or pretend to be its owner). Products default to owner; mark directory CPTs as listings. Verified live: the role clause switches correctly.
 - **The reply prompt gets real page context** — the reviewed post/product excerpt, the site name + tagline, and the owner's business description — so replies are specific and accurate rather than generic.

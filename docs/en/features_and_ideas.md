@@ -84,6 +84,15 @@ Rather than each provider's API, the plugin ships a **generic CSV/JSON importer*
 ## 9. Future: a standalone custom Import/Export plugin (separate project, after this)
 A general WordPress content migrator (its own plugin): export/import **all post types, taxonomies, our custom review comments, custom fields, and third-party meta such as Rank Math** per post, so a whole site's content + SEO data moves cleanly between installs. Scope recorded for after the Reviews plugin is complete; not started.
 
+## 5.3 Backlog requested 2026-08-28 (do ONE at a time, in order)
+1. **Schema mode — works with OR without Advery Schema Plus, the owner's choice.** A `schema_mode` setting: `auto` (use the core plugin if active, else emit our own), `core` (only via Advery Schema Plus), `standalone` (always emit our own JSON-LD `aggregateRating`/`review`), `off`. Standalone emits a self-contained block for the reviewed item (configurable `@type`); products are left to WooCommerce to avoid duplicates. **(FIRST — in progress.)**
+2. **Inline help + examples on every option.** This plugin has few installs and no tutorials online, so every setting/field in the admin must carry a clear description and a concrete example, so an operator can use it correctly.
+3. **Categorised, filterable comments + per-post metabox.** Admin: filter by object type (product vs post vs term/business) and by a specific post/taxonomy. On each post's edit screen, a metabox showing that post's reviews, with the ability to add a review under any name/details and approve / reject / spam it right there.
+4. **Approval modes like WordPress:** auto-approve, manual approval, and **AI approval** as an option; **default = hold for moderation (draft/pending)**.
+5. **Reporting/analytics:** which category/page/business received the most reviews, over time.
+6. **Honeypot fix:** the current hidden field `name="website_hp"` triggers browser/password-manager autofill (the word “website”), causing false-positive spam rejections for real users. Rename to a neutral, autofill-resistant field, keep it inert, and lean on the timing token.
+7. **Configurable, responsive appearance for the front-end widget:** colours and styles tunable per site type via a settings section (e.g. border-radius on/off, primary/star colours, density, layout), with CSS-variable output and full responsiveness.
+
 ## 6. Carried-over v0.1 follow-ups
 - **Gutenberg block** (currently shortcode + auto-append only).
 - **Front-end "load more"** wired to the existing `/list` REST endpoint.

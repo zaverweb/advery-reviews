@@ -33,6 +33,12 @@ class SchemaBridge {
 		if ( ! is_array( $node ) || ! Settings::get( 'schema_output' ) ) {
 			return $node;
 		}
+		// Only augment the core's nodes in auto/core modes. In 'standalone' or
+		// 'off' the StandaloneSchema class (or nothing) handles output instead.
+		$mode = Settings::get( 'schema_mode', 'auto' );
+		if ( 'auto' !== $mode && 'core' !== $mode ) {
+			return $node;
+		}
 
 		$target = Targets::current();
 		if ( ! $target ) {

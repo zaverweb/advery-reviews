@@ -5,6 +5,7 @@ use Advery\Reviews\Frontend\Display;
 use Advery\Reviews\Frontend\CommentsTakeover;
 use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Schema\SchemaBridge;
+use Advery\Reviews\Schema\StandaloneSchema;
 use Advery\Reviews\Integrations\WooSchema;
 use Advery\Reviews\Integrations\ElementorBridge;
 use Advery\Reviews\Integrations\GutenbergBlock;
@@ -35,8 +36,11 @@ class Plugin {
 		// Table hygiene: remove reviews when their post/term is deleted.
 		( new Maintenance() )->register();
 
-		// Schema.org aggregateRating/review injection (no-op without the core).
+		// Schema.org aggregateRating/review injection via the core (no-op without it).
 		( new SchemaBridge() )->register();
+
+		// Standalone JSON-LD for when the core isn't used (schema_mode).
+		( new StandaloneSchema() )->register();
 
 		// Merge our collected product reviews into WooCommerce's own schema.
 		( new WooSchema() )->register();

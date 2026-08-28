@@ -493,17 +493,46 @@ export default function SettingsPanel( { boot, notify } ) {
 				</PanelBody>
 
 				<PanelBody title={ __( 'Schema (JSON-LD)', 'advery-reviews' ) } initialOpen={ false }>
-					{ ! boot.coreActive && (
-						<Notice status="warning" isDismissible={ false }>
-							{ __( 'Advery Schema Plus is not active — schema injection is idle until it is.', 'advery-reviews' ) }
-						</Notice>
-					) }
+					<p className="advery-rv-hint">{ __( 'Outputs star-rating structured data so Google can show rating stars in search results. Works with or without the Advery Schema Plus plugin — your choice below.', 'advery-reviews' ) }</p>
 					<ToggleControl
-						label={ __( 'Inject aggregateRating / review into the graph', 'advery-reviews' ) }
+						label={ __( 'Enable rating/review schema', 'advery-reviews' ) }
 						checked={ !! s.schema_output }
 						onChange={ ( v ) => set( { schema_output: v } ) }
 						__nextHasNoMarginBottom
 					/>
+					{ s.schema_output && (
+						<>
+							<SelectControl
+								label={ __( 'How to output schema', 'advery-reviews' ) }
+								help={ boot.coreActive
+									? __( 'Auto (recommended): uses Advery Schema Plus (detected) so ratings merge into your page’s connected @graph. Standalone: this plugin prints its own JSON-LD instead. Core-only: only via Advery Schema Plus. Off: no schema.', 'advery-reviews' )
+									: __( 'Auto/Standalone: this plugin prints its own JSON-LD (Advery Schema Plus is not installed, which is fine). Core-only would need that plugin. Example: leave on “Auto”.', 'advery-reviews' ) }
+								value={ s.schema_mode }
+								options={ [
+									{ label: __( 'Auto — use Advery Schema Plus if present, else standalone', 'advery-reviews' ), value: 'auto' },
+									{ label: __( 'Standalone — always this plugin’s own JSON-LD', 'advery-reviews' ), value: 'standalone' },
+									{ label: __( 'Core only — via Advery Schema Plus', 'advery-reviews' ), value: 'core' },
+									{ label: __( 'Off', 'advery-reviews' ), value: 'off' },
+								] }
+								onChange={ ( v ) => set( { schema_mode: v } ) }
+								__nextHasNoMarginBottom
+							/>
+							{ ( s.schema_mode === 'standalone' || ( s.schema_mode === 'auto' && ! boot.coreActive ) ) && (
+								<TextControl
+									label={ __( 'Standalone @type for non-product items', 'advery-reviews' ) }
+									help={ __( 'The schema.org type used when this plugin prints its own JSON-LD for a post/page/term. Examples: LocalBusiness, Service, Product, Organization, Book, Recipe. Products always use “Product”.', 'advery-reviews' ) }
+									value={ s.schema_type }
+									onChange={ ( v ) => set( { schema_type: v } ) }
+									__nextHasNoMarginBottom
+								/>
+							) }
+							{ s.schema_mode === 'core' && ! boot.coreActive && (
+								<Notice status="warning" isDismissible={ false }>
+									{ __( 'Core-only is selected but Advery Schema Plus is not active, so no schema will be output. Switch to Auto or Standalone.', 'advery-reviews' ) }
+								</Notice>
+							) }
+						</>
+					) }
 					{ boot.wooActive && (
 						<ToggleControl
 							label={ __( 'Merge WooCommerce native ratings into the aggregate', 'advery-reviews' ) }

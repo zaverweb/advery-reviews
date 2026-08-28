@@ -670,6 +670,8 @@ class RestController {
 			'custom_css'         => str_replace( '<', '', (string) ( $in['custom_css'] ?? '' ) ),
 			'roles'              => $this->sanitize_roles( is_array( $in['roles'] ?? null ) ? $in['roles'] : [] ),
 			'schema_output'      => ! empty( $in['schema_output'] ),
+			'schema_mode'        => in_array( ( $in['schema_mode'] ?? '' ), [ 'auto', 'core', 'standalone', 'off' ], true ) ? $in['schema_mode'] : 'auto',
+			'schema_type'        => sanitize_text_field( (string) ( $in['schema_type'] ?? 'LocalBusiness' ) ) ?: 'LocalBusiness',
 			'woo_merge_native'   => ! empty( $in['woo_merge_native'] ),
 			'email_instant'      => ! empty( $in['email_instant'] ),
 			'email_recipient'    => sanitize_email( (string) ( $in['email_recipient'] ?? '' ) ),
