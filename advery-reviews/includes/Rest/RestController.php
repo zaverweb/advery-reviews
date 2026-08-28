@@ -194,27 +194,34 @@ class RestController {
 			return new WP_Error( 'advery_reviews_login', __( 'Please log in to leave a review.', 'advery-reviews' ), [ 'status' => 401 ] );
 		}
 
-		$rating  = max( 0, min( 5, (int) $req->get_param( 'rating' ) ) );
-		// Sanitize BEFORE any length/validation checks so control-character or
-		// invalid-UTF-8 payloads can't slip through or skew the length test.
-		$content = Sanitizer::content( (string) $req->get_param( 'content' ) );
-		$title   = Sanitizer::text( (string) $req->get_param( 'title' ), 200 );
+		$as     = Settings::antispam();
+		$rating = max( 0, min( 5, (int) $req->get_param( 'rating' ) ) );
+
+		// Keep the raw input for link/injection detection (before HTML is
+		// stripped), and the sanitized values for storage. Every field is length-
+		// capped and cleaned; the review body is reduced to plain text.
+		$raw_content = (string) $req->get_param( 'content' );
+		$raw_title   = (string) $req->get_param( 'title' );
+		$content     = Sanitizer::content( $raw_content, (int) $as['max_chars'] );
+		$title       = Sanitizer::text( $raw_title, 120 );
 
 		if ( Settings::get( 'rating_required' ) && $rating < 1 ) {
 			return new WP_Error( 'advery_reviews_rating', __( 'Please choose a rating.', 'advery-reviews' ), [ 'status' => 400 ] );
 		}
-		if ( '' === $content || mb_strlen( $content ) < (int) Settings::get( 'min_content_length', 0 ) ) {
+		if ( '' === $content ) {
 			return new WP_Error( 'advery_reviews_content', __( 'Please write your review.', 'advery-reviews' ), [ 'status' => 400 ] );
 		}
 
 		if ( $logged_in ) {
 			$user         = wp_get_current_user();
 			$user_id      = (int) $user->ID;
-			$author_name  = Sanitizer::text( $user->display_name, 150 );
+			$raw_name     = (string) $user->display_name;
+			$author_name  = Sanitizer::text( $raw_name, (int) $as['max_name_chars'] );
 			$author_email = Sanitizer::email( $user->user_email );
 		} else {
 			$user_id      = 0;
-			$author_name  = Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 );
+			$raw_name     = (string) $req->get_param( 'author_name' );
+			$author_name  = Sanitizer::text( $raw_name, (int) $as['max_name_chars'] );
 			$author_email = Sanitizer::email( (string) $req->get_param( 'author_email' ) );
 			if ( '' === $author_name || '' === $author_email ) {
 				return new WP_Error( 'advery_reviews_author', __( 'Please enter your name and a valid email.', 'advery-reviews' ), [ 'status' => 400 ] );
@@ -236,6 +243,9 @@ class RestController {
 				'content'        => $content,
 				'title'          => $title,
 				'author_name'    => $author_name,
+				'raw_content'    => $raw_content,
+				'raw_title'      => $raw_title,
+				'raw_name'       => $raw_name,
 				'author_email'   => $author_email,
 				'author_user_id' => $user_id,
 				'author_ip'      => $ip,
@@ -545,7 +555,7 @@ class RestController {
 			'timing_enabled'      => ! empty( $in['timing_enabled'] ),
 			'timing_min'          => max( 0, (int) ( $in['timing_min'] ?? $d['timing_min'] ) ),
 			'max_links'           => max( 0, (int) ( $in['max_links'] ?? $d['max_links'] ) ),
-			'link_action'         => in_array( ( $in['link_action'] ?? '' ), [ 'off', 'hold', 'spam' ], true ) ? $in['link_action'] : $d['link_action'],
+			'link_action'         => in_array( ( $in['link_action'] ?? '' ), [ 'off', 'hold', 'spam', 'reject' ], true ) ? $in['link_action'] : $d['link_action'],
 			'blocklist_words'     => sanitize_textarea_field( (string) ( $in['blocklist_words'] ?? '' ) ),
 			'blocklist_emails'    => sanitize_textarea_field( (string) ( $in['blocklist_emails'] ?? '' ) ),
 			'block_disposable'    => ! empty( $in['block_disposable'] ),
@@ -554,9 +564,9 @@ class RestController {
 			'rate_max'            => max( 1, (int) ( $in['rate_max'] ?? $d['rate_max'] ) ),
 			'rate_day_max'        => max( 0, (int) ( $in['rate_day_max'] ?? $d['rate_day_max'] ) ),
 			'duplicate_check'     => ! empty( $in['duplicate_check'] ),
-			'min_words'           => max( 0, (int) ( $in['min_words'] ?? 0 ) ),
-			'max_words'           => max( 0, (int) ( $in['max_words'] ?? 0 ) ),
+			'min_chars'           => max( 0, (int) ( $in['min_chars'] ?? $d['min_chars'] ) ),
 			'max_chars'           => max( 0, (int) ( $in['max_chars'] ?? $d['max_chars'] ) ),
+			'max_name_chars'      => max( 1, (int) ( $in['max_name_chars'] ?? $d['max_name_chars'] ) ),
 			'trusted_autoapprove' => ! empty( $in['trusted_autoapprove'] ),
 			'hold_threshold'      => max( 1, (int) ( $in['hold_threshold'] ?? $d['hold_threshold'] ) ),
 			'spam_threshold'      => max( 1, (int) ( $in['spam_threshold'] ?? $d['spam_threshold'] ) ),

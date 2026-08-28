@@ -49,20 +49,24 @@ class Sanitizer {
 	}
 
 	/**
-	 * The review body: force valid UTF-8, strip control bytes, then restrict to
-	 * the small HTML allowlist (kses also neutralises `javascript:` URLs and
-	 * event-handler attributes). Never trust the raw input.
+	 * The review body: PLAIN TEXT only. Reviews never need HTML, and allowing
+	 * any markup is an injection surface, so we strip ALL tags (script/style and
+	 * their contents first, then every remaining tag) while keeping line breaks.
+	 * Forces valid UTF-8 and removes control bytes. Never trust the raw input.
 	 *
 	 * @param string $value
 	 * @param int    $max
 	 * @return string
 	 */
-	public static function content( $value, $max = 5000 ) {
+	public static function content( $value, $max = 1500 ) {
 		$value = self::normalize( (string) $value, true );   // keep \n and \t
-		// Defence in depth: drop obvious script/style/handler constructs before kses.
+		// Remove script/style/iframe/object/embed/form WITH their contents first,
+		// so their inner text can't survive tag-stripping.
 		$value = preg_replace( '#<\s*(script|style|iframe|object|embed|form)[^>]*>.*?<\s*/\s*\1\s*>#is', '', $value );
+		// Drop any event-handler attributes defensively (in case of stray markup).
 		$value = preg_replace( '#\son\w+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)#i', '', $value );
-		$value = wp_kses( $value, self::ALLOWED_HTML );
+		// Strip every remaining tag but keep line breaks. false = don't collapse breaks.
+		$value = wp_strip_all_tags( $value, false );
 		$value = trim( $value );
 		return self::cap( $value, $max );
 	}

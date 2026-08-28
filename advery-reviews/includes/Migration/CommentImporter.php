@@ -149,7 +149,7 @@ class CommentImporter {
 			'author_email'    => Sanitizer::email( $comment->comment_author_email ),
 			'author_user_id'  => (int) $comment->user_id,
 			'title'           => '',
-			'content'         => Sanitizer::content( $comment->comment_content ),
+			'content'         => Sanitizer::content( $comment->comment_content, 20000 ),
 			'status'          => $status,
 			'author_ip'       => (string) $comment->comment_author_IP,
 			'external_source' => $source,

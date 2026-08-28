@@ -60,8 +60,8 @@ class Settings {
 		return [
 			'timing_enabled'      => true,
 			'timing_min'          => 3,       // seconds; faster ⇒ likely bot
-			'max_links'           => 2,
-			'link_action'         => 'hold',  // 'off' | 'hold' | 'spam'
+			'max_links'           => 0,       // 0 = no links allowed at all (default)
+			'link_action'         => 'reject', // 'off' | 'hold' | 'spam' | 'reject'
 			'blocklist_words'     => "viagra\ncialis\ncasino\nporn\nloan\nseo service\ncrypto\nbinary option",
 			'blocklist_emails'    => '',
 			'block_disposable'    => true,
@@ -70,9 +70,9 @@ class Settings {
 			'rate_max'            => 3,        // per window (IP or email)
 			'rate_day_max'        => 20,      // per day (0 = off)
 			'duplicate_check'     => true,
-			'min_words'           => 0,
-			'max_words'           => 0,       // 0 = off
-			'max_chars'           => 5000,
+			'min_chars'           => 10,      // minimum review characters (visible text)
+			'max_chars'           => 1500,    // maximum review characters
+			'max_name_chars'      => 35,      // cap on the author name length
 			'trusted_autoapprove' => true,
 			'hold_threshold'      => 2,       // score ≥ ⇒ hold for moderation
 			'spam_threshold'      => 5,       // score ≥ ⇒ mark spam

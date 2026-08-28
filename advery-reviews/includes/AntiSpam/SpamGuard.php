@@ -64,22 +64,35 @@ class SpamGuard {
 		$reasons = [];
 
 		$content    = (string) ( $sub['content'] ?? '' );
+		$title      = (string) ( $sub['title'] ?? '' );
+		$name       = (string) ( $sub['author_name'] ?? '' );
 		$email      = (string) ( $sub['author_email'] ?? '' );
 		$user_id    = (int) ( $sub['author_user_id'] ?? 0 );
 		$ip         = (string) ( $sub['author_ip'] ?? '' );
-		$word_count = self::word_count( $content );
+		// Length is measured on the visible plain text.
+		$plain      = trim( wp_strip_all_tags( $content ) );
+		$char_count = function_exists( 'mb_strlen' ) ? mb_strlen( $plain ) : strlen( $plain );
 
 		// --- Hard rejects (short-circuit) ---
 
-		// Length bounds.
-		if ( $as['max_chars'] > 0 && mb_strlen( $content ) > $as['max_chars'] ) {
-			return self::reject( __( 'Your review is too long.', 'advery-reviews' ) );
+		// Character bounds (default 10–1500).
+		if ( $as['min_chars'] > 0 && $char_count < $as['min_chars'] ) {
+			return self::reject(
+				sprintf(
+					/* translators: %d: minimum characters */
+					__( 'Your review is too short (at least %d characters).', 'advery-reviews' ),
+					(int) $as['min_chars']
+				)
+			);
 		}
-		if ( $as['min_words'] > 0 && $word_count < $as['min_words'] ) {
-			return self::reject( __( 'Please write a little more.', 'advery-reviews' ) );
-		}
-		if ( $as['max_words'] > 0 && $word_count > $as['max_words'] ) {
-			return self::reject( __( 'Your review is too long.', 'advery-reviews' ) );
+		if ( $as['max_chars'] > 0 && $char_count > $as['max_chars'] ) {
+			return self::reject(
+				sprintf(
+					/* translators: %d: maximum characters */
+					__( 'Your review is too long (at most %d characters).', 'advery-reviews' ),
+					(int) $as['max_chars']
+				)
+			);
 		}
 
 		// CAPTCHA (if configured).
@@ -127,19 +140,21 @@ class SpamGuard {
 			}
 		}
 
-		// Links in content.
-		$links = self::count_links( $content );
+		// Links in ANY field (content, title, name) — plain, marked-up or
+		// obfuscated. Checked on the RAW input (before HTML was stripped) so a
+		// href inside a stray anchor is still caught. Default max_links = 0.
+		$raw_blob = ( $sub['raw_content'] ?? $content ) . " \n " . ( $sub['raw_title'] ?? $title ) . " \n " . ( $sub['raw_name'] ?? $name );
+		$links    = self::count_links( $raw_blob );
 		if ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] ) {
-			if ( 'spam' === $as['link_action'] ) {
-				$score += 6;
-			} else {
-				$score += 3;
+			if ( 'reject' === $as['link_action'] ) {
+				return self::reject( __( 'Links are not allowed in reviews.', 'advery-reviews' ) );
 			}
-			$reasons[] = 'too-many-links(' . $links . ')';
+			$score += ( 'spam' === $as['link_action'] ) ? 6 : 3;
+			$reasons[] = 'links(' . $links . ')';
 		}
 
 		// Blocklisted words / phrases (plain + regex lines starting with re:).
-		if ( self::matches_blocklist( $content . ' ' . (string) ( $sub['title'] ?? '' ), $as['blocklist_words'] ) ) {
+		if ( self::matches_blocklist( $content . ' ' . $title . ' ' . $name, $as['blocklist_words'] ) ) {
 			$score += 5;
 			$reasons[] = 'blocklisted-word';
 		}
@@ -204,10 +219,38 @@ class SpamGuard {
 		return count( preg_split( '/\s+/u', $text ) );
 	}
 
+	/** Common TLDs used to recognise a bare/obfuscated domain like "example.com". */
+	const TLDS = 'com|net|org|io|co|info|biz|xyz|online|site|shop|store|app|dev|me|tv|cc|ly|gg|ai|link|click|top|live|life|world|fun|pro|tech|space|website|blog|uk|us|ca|de|fr|ru|ir|in|au|nl|it|es|se|no|fi|pl|br|jp|cn|kr|tr|ua|cz|gr|ro|hu|be|ch|at|dk|pt|ie|nz|mx|ar|cl|za|sg|hk|ae|sa|il|id|my|th|vn|ph|eu';
+
+	/**
+	 * Count link-like signals in text, catching plain, obfuscated and marked-up
+	 * links. Obfuscation ("example dot com", "example[.]com", "example (dot)
+	 * com") is normalised to a dot first, then bare domains are matched only
+	 * against a known-TLD list so ordinary phrases like "dot matrix" don't count.
+	 *
+	 * @param string $text
+	 * @return int
+	 */
 	private static function count_links( $text ) {
-		return preg_match_all( '#\bhttps?://#i', $text )
-			+ preg_match_all( '#\bwww\.#i', $text )
-			+ preg_match_all( '#\[url[=\]]#i', $text );
+		$t = strtolower( (string) $text );
+
+		$count = 0;
+		// Definite signals.
+		$count += preg_match_all( '#https?://#i', $t );                 // http(s)://
+		$count += preg_match_all( '#\bwww\.[a-z0-9-]#i', $t );          // www.something
+		$count += preg_match_all( '#<a\b#i', $t );                      // <a ...>
+		$count += preg_match_all( '#\[url[=\]]#i', $t );                // [url]...[/url]
+		$count += preg_match_all( '#\b(?:\d{1,3}\.){3}\d{1,3}\b#', $t ); // IPv4
+
+		// De-obfuscate: " dot ", "(dot)", "[dot]", "{dot}", "[.]", "(.)" → "."
+		$deob = preg_replace( '#\s*[\(\[\{]?\s*(?:dot|d0t)\s*[\)\]\}]?\s*#i', '.', $t );
+		$deob = preg_replace( '#[\(\[\{]\s*\.\s*[\)\]\}]#', '.', $deob );   // [.] (.) {.}
+		$deob = preg_replace( '#\s+\.\s+#', '.', $deob );                    // "example . com"
+
+		// Bare domain with a known TLD (word.tld or word.tld.tld).
+		$count += preg_match_all( '#\b[a-z0-9][a-z0-9-]{1,}\.(?:' . self::TLDS . ')(?:\.[a-z]{2,})?\b#i', $deob );
+
+		return $count;
 	}
 
 	private static function matches_blocklist( $text, $list ) {

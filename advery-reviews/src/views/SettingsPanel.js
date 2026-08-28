@@ -125,13 +125,7 @@ export default function SettingsPanel( { boot, notify } ) {
 						onChange={ ( v ) => set( { rating_required: v } ) }
 						__nextHasNoMarginBottom
 					/>
-					<TextControl
-						type="number"
-						label={ __( 'Minimum review length (characters)', 'advery-reviews' ) }
-						value={ s.min_content_length }
-						onChange={ ( v ) => set( { min_content_length: parseInt( v, 10 ) || 0 } ) }
-						__nextHasNoMarginBottom
-					/>
+					<p className="advery-rv-hint">{ __( 'Length limits and injection/link protection are under Anti-spam.', 'advery-reviews' ) }</p>
 				</PanelBody>
 
 				<PanelBody title={ __( 'Anti-spam', 'advery-reviews' ) } initialOpen={ false }>
@@ -153,7 +147,8 @@ export default function SettingsPanel( { boot, notify } ) {
 
 					<TextControl
 						type="number"
-						label={ __( 'Max links allowed in a review', 'advery-reviews' ) }
+						label={ __( 'Max links allowed in a review (0 = none)', 'advery-reviews' ) }
+						help={ __( 'Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”, “example[.]com”) in the review, title and name.', 'advery-reviews' ) }
 						value={ as.max_links }
 						onChange={ ( v ) => setAs( { max_links: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
@@ -165,8 +160,30 @@ export default function SettingsPanel( { boot, notify } ) {
 							{ label: __( 'Ignore', 'advery-reviews' ), value: 'off' },
 							{ label: __( 'Hold for moderation', 'advery-reviews' ), value: 'hold' },
 							{ label: __( 'Mark as spam', 'advery-reviews' ), value: 'spam' },
+							{ label: __( 'Reject with a message', 'advery-reviews' ), value: 'reject' },
 						] }
 						onChange={ ( v ) => setAs( { link_action: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Minimum review length (characters)', 'advery-reviews' ) }
+						value={ as.min_chars }
+						onChange={ ( v ) => setAs( { min_chars: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Maximum review length (characters)', 'advery-reviews' ) }
+						value={ as.max_chars }
+						onChange={ ( v ) => setAs( { max_chars: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Maximum author name length (characters)', 'advery-reviews' ) }
+						value={ as.max_name_chars }
+						onChange={ ( v ) => setAs( { max_name_chars: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
 					/>
 

@@ -60,7 +60,7 @@ class DataImporter {
 			}
 			list( $object_type, $object_id ) = $target;
 
-			$content = isset( $cols['content'] ) && '' !== $cols['content'] ? Sanitizer::content( (string) self::col( $row, $cols['content'] ) ) : '';
+			$content = isset( $cols['content'] ) && '' !== $cols['content'] ? Sanitizer::content( (string) self::col( $row, $cols['content'] ), 20000 ) : '';
 			if ( '' === $content && empty( $cols['allow_empty_content'] ) ) {
 				$skipped++;
 				continue;
