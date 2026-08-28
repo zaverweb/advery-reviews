@@ -30,13 +30,15 @@ class ReviewRepository {
 			'content'        => (string) ( $data['content'] ?? '' ),
 			'status'         => in_array( ( $data['status'] ?? '' ), self::STATUSES, true ) ? $data['status'] : 'pending',
 			'author_ip'      => (string) ( $data['author_ip'] ?? '' ),
+			'spam_score'     => (int) ( $data['spam_score'] ?? 0 ),
+			'meta'           => isset( $data['meta'] ) ? wp_json_encode( $data['meta'] ) : null,
 			'created_at'     => current_time( 'mysql' ),
 		];
 
 		$ok = $wpdb->insert(
 			Installer::reviews_table(),
 			$row,
-			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%s' ]
+			[ '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s' ]
 		);
 
 		if ( ! $ok ) {
@@ -287,6 +289,65 @@ class ReviewRepository {
 	}
 
 	/**
+	 * Count reviews from an IP or email since a datetime (rate limiting).
+	 *
+	 * @param string $ip
+	 * @param string $email
+	 * @param string $since MySQL datetime
+	 * @return int
+	 */
+	public static function count_recent( $ip, $email, $since ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$table} WHERE created_at >= %s AND ( ( author_ip <> '' AND author_ip = %s ) OR ( author_email <> '' AND author_email = %s ) )",
+				$since,
+				$ip,
+				$email
+			)
+		);
+	}
+
+	/**
+	 * Whether a user has any approved review (trusted fast-track).
+	 *
+	 * @param int $user_id
+	 * @return bool
+	 */
+	public static function has_approved_by_user( $user_id ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$table} WHERE author_user_id = %d AND status = 'approved' LIMIT 1",
+				$user_id
+			)
+		);
+	}
+
+	/**
+	 * Whether identical content was already submitted for this object.
+	 *
+	 * @param string $object_type
+	 * @param int    $object_id
+	 * @param string $content
+	 * @return bool
+	 */
+	public static function content_exists( $object_type, $object_id, $content ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+		return (bool) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM {$table} WHERE object_type = %s AND object_id = %d AND content = %s LIMIT 1",
+				$object_type,
+				$object_id,
+				$content
+			)
+		);
+	}
+
+	/**
 	 * @param array $row
 	 * @return array
 	 */
@@ -295,6 +356,13 @@ class ReviewRepository {
 		$row['object_id']      = (int) $row['object_id'];
 		$row['rating']         = (int) $row['rating'];
 		$row['author_user_id'] = (int) $row['author_user_id'];
+		$row['spam_score']     = isset( $row['spam_score'] ) ? (int) $row['spam_score'] : 0;
+		if ( isset( $row['meta'] ) && is_string( $row['meta'] ) ) {
+			$decoded     = json_decode( $row['meta'], true );
+			$row['meta'] = is_array( $decoded ) ? $decoded : [];
+		} else {
+			$row['meta'] = [];
+		}
 		return $row;
 	}
 }

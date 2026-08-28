@@ -18,6 +18,8 @@ export default function SettingsPanel( { boot, notify } ) {
 	const [ saving, setSaving ] = useState( false );
 
 	const set = ( patch ) => setS( { ...s, ...patch } );
+	const as = s.antispam || {};
+	const setAs = ( patch ) => set( { antispam: { ...as, ...patch } } );
 	const toggleIn = ( key, slug, on ) => {
 		const cur = new Set( s[ key ] || [] );
 		on ? cur.add( slug ) : cur.delete( slug );
@@ -112,6 +114,166 @@ export default function SettingsPanel( { boot, notify } ) {
 						label={ __( 'Minimum review length (characters)', 'advery-reviews' ) }
 						value={ s.min_content_length }
 						onChange={ ( v ) => set( { min_content_length: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+
+				<PanelBody title={ __( 'Anti-spam', 'advery-reviews' ) } initialOpen={ false }>
+					<p className="advery-rv-hint">{ __( 'Layered, score-based. Each check adds to a spam score; the thresholds decide hold vs spam. Sensible defaults are on.', 'advery-reviews' ) }</p>
+
+					<ToggleControl
+						label={ __( 'Timing check (reject too-fast bot submissions)', 'advery-reviews' ) }
+						checked={ !! as.timing_enabled }
+						onChange={ ( v ) => setAs( { timing_enabled: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Minimum seconds to fill the form', 'advery-reviews' ) }
+						value={ as.timing_min }
+						onChange={ ( v ) => setAs( { timing_min: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+
+					<TextControl
+						type="number"
+						label={ __( 'Max links allowed in a review', 'advery-reviews' ) }
+						value={ as.max_links }
+						onChange={ ( v ) => setAs( { max_links: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<SelectControl
+						label={ __( 'When over the link limit', 'advery-reviews' ) }
+						value={ as.link_action }
+						options={ [
+							{ label: __( 'Ignore', 'advery-reviews' ), value: 'off' },
+							{ label: __( 'Hold for moderation', 'advery-reviews' ), value: 'hold' },
+							{ label: __( 'Mark as spam', 'advery-reviews' ), value: 'spam' },
+						] }
+						onChange={ ( v ) => setAs( { link_action: v } ) }
+						__nextHasNoMarginBottom
+					/>
+
+					<TextControl
+						label={ __( 'Blocked words / phrases (one per line; prefix re: for regex)', 'advery-reviews' ) }
+						value={ as.blocklist_words }
+						onChange={ ( v ) => setAs( { blocklist_words: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						label={ __( 'Blocked emails / domains (one per line)', 'advery-reviews' ) }
+						value={ as.blocklist_emails }
+						onChange={ ( v ) => setAs( { blocklist_emails: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<ToggleControl
+						label={ __( 'Block disposable email domains', 'advery-reviews' ) }
+						checked={ !! as.block_disposable }
+						onChange={ ( v ) => setAs( { block_disposable: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<ToggleControl
+						label={ __( 'Reject duplicate content', 'advery-reviews' ) }
+						checked={ !! as.duplicate_check }
+						onChange={ ( v ) => setAs( { duplicate_check: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<ToggleControl
+						label={ __( 'Auto-approve trusted authors (logged-in with a prior approved review)', 'advery-reviews' ) }
+						checked={ !! as.trusted_autoapprove }
+						onChange={ ( v ) => setAs( { trusted_autoapprove: v } ) }
+						__nextHasNoMarginBottom
+					/>
+
+					<hr />
+					<ToggleControl
+						label={ __( 'Rate limiting', 'advery-reviews' ) }
+						checked={ !! as.rate_enabled }
+						onChange={ ( v ) => setAs( { rate_enabled: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Window (seconds)', 'advery-reviews' ) }
+						value={ as.rate_window }
+						onChange={ ( v ) => setAs( { rate_window: parseInt( v, 10 ) || 1 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Max submissions per window (per IP/email)', 'advery-reviews' ) }
+						value={ as.rate_max }
+						onChange={ ( v ) => setAs( { rate_max: parseInt( v, 10 ) || 1 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Max per day (0 = off)', 'advery-reviews' ) }
+						value={ as.rate_day_max }
+						onChange={ ( v ) => setAs( { rate_day_max: parseInt( v, 10 ) || 0 } ) }
+						__nextHasNoMarginBottom
+					/>
+
+					<hr />
+					<TextControl
+						type="number"
+						label={ __( 'Hold threshold (score ≥ ⇒ hold)', 'advery-reviews' ) }
+						value={ as.hold_threshold }
+						onChange={ ( v ) => setAs( { hold_threshold: parseInt( v, 10 ) || 1 } ) }
+						__nextHasNoMarginBottom
+					/>
+					<TextControl
+						type="number"
+						label={ __( 'Spam threshold (score ≥ ⇒ spam)', 'advery-reviews' ) }
+						value={ as.spam_threshold }
+						onChange={ ( v ) => setAs( { spam_threshold: parseInt( v, 10 ) || 1 } ) }
+						__nextHasNoMarginBottom
+					/>
+
+					<hr />
+					<SelectControl
+						label={ __( 'CAPTCHA provider', 'advery-reviews' ) }
+						value={ as.captcha_provider }
+						options={ [
+							{ label: __( 'None', 'advery-reviews' ), value: 'none' },
+							{ label: 'reCAPTCHA v3', value: 'recaptcha_v3' },
+							{ label: 'reCAPTCHA v2', value: 'recaptcha_v2' },
+							{ label: 'hCaptcha', value: 'hcaptcha' },
+							{ label: 'Cloudflare Turnstile', value: 'turnstile' },
+						] }
+						onChange={ ( v ) => setAs( { captcha_provider: v } ) }
+						__nextHasNoMarginBottom
+					/>
+					{ as.captcha_provider !== 'none' && (
+						<>
+							<TextControl
+								label={ __( 'Site key', 'advery-reviews' ) }
+								value={ as.captcha_site_key }
+								onChange={ ( v ) => setAs( { captcha_site_key: v } ) }
+								__nextHasNoMarginBottom
+							/>
+							<TextControl
+								label={ __( 'Secret key', 'advery-reviews' ) }
+								value={ as.captcha_secret_key }
+								onChange={ ( v ) => setAs( { captcha_secret_key: v } ) }
+								__nextHasNoMarginBottom
+							/>
+							{ as.captcha_provider === 'recaptcha_v3' && (
+								<TextControl
+									type="number"
+									step="0.1"
+									label={ __( 'reCAPTCHA v3 score threshold (0–1)', 'advery-reviews' ) }
+									value={ as.captcha_threshold }
+									onChange={ ( v ) => setAs( { captcha_threshold: parseFloat( v ) || 0 } ) }
+									__nextHasNoMarginBottom
+								/>
+							) }
+						</>
+					) }
+					<ToggleControl
+						label={ __( 'Use Akismet as an extra signal (if configured)', 'advery-reviews' ) }
+						checked={ !! as.akismet_enabled }
+						onChange={ ( v ) => setAs( { akismet_enabled: v } ) }
 						__nextHasNoMarginBottom
 					/>
 				</PanelBody>

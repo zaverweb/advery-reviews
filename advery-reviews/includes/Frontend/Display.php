@@ -4,6 +4,7 @@ namespace Advery\Reviews\Frontend;
 use Advery\Reviews\Support\Settings;
 use Advery\Reviews\Support\Targets;
 use Advery\Reviews\Support\Aggregate;
+use Advery\Reviews\AntiSpam\SpamGuard;
 use Advery\Reviews\Database\ReviewRepository;
 
 /**
@@ -26,19 +27,55 @@ class Display {
 		}
 		wp_enqueue_style( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.css', [], ADVERY_REVIEWS_VERSION );
 		wp_enqueue_script( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.js', [], ADVERY_REVIEWS_VERSION, true );
+
+		$as       = Settings::antispam();
+		$provider = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
+		$this->enqueue_captcha( $provider, $as['captcha_site_key'] );
+
 		wp_localize_script(
 			'advery-reviews-front',
 			'AdveryReviewsFront',
 			[
-				'rest'  => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
-				'nonce' => wp_create_nonce( 'wp_rest' ),
-				'i18n'  => [
+				'rest'    => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'captcha' => [ 'provider' => $provider, 'siteKey' => $provider !== 'none' ? $as['captcha_site_key'] : '' ],
+				'i18n'    => [
 					'sending' => __( 'Sending…', 'advery-reviews' ),
 					'submit'  => __( 'Submit review', 'advery-reviews' ),
 					'error'   => __( 'Something went wrong. Please try again.', 'advery-reviews' ),
 				],
 			]
 		);
+	}
+
+	/**
+	 * Enqueue the provider's widget script (public site key only).
+	 *
+	 * @param string $provider
+	 * @param string $site_key
+	 */
+	private function enqueue_captcha( $provider, $site_key ) {
+		if ( 'none' === $provider || '' === $site_key ) {
+			return;
+		}
+		$src = '';
+		switch ( $provider ) {
+			case 'recaptcha_v3':
+				$src = 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $site_key );
+				break;
+			case 'recaptcha_v2':
+				$src = 'https://www.google.com/recaptcha/api.js';
+				break;
+			case 'hcaptcha':
+				$src = 'https://js.hcaptcha.com/1/api.js';
+				break;
+			case 'turnstile':
+				$src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+				break;
+		}
+		if ( $src ) {
+			wp_enqueue_script( 'advery-reviews-captcha', $src, [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+		}
 	}
 
 	/**
@@ -99,6 +136,9 @@ class Display {
 		$reviews = ReviewRepository::approved_for( $object_type, $object_id, (int) Settings::get( 'reviews_per_page', 10 ) );
 		$logged  = is_user_logged_in();
 		$can     = ! ( 'logged_in' === Settings::get( 'who_can_submit' ) && ! $logged );
+		$token   = SpamGuard::issue_token();
+		$as      = Settings::antispam();
+		$captcha = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
 
 		ob_start();
 		?>
@@ -150,6 +190,15 @@ class Display {
 					<input type="text" name="title" placeholder="<?php esc_attr_e( 'Title (optional)', 'advery-reviews' ); ?>" />
 					<textarea name="content" rows="4" placeholder="<?php esc_attr_e( 'Your review', 'advery-reviews' ); ?>" required></textarea>
 					<input type="text" name="website_hp" class="advery-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+					<input type="hidden" name="advery_ts" value="<?php echo esc_attr( $token['ts'] ); ?>" />
+					<input type="hidden" name="advery_tk" value="<?php echo esc_attr( $token['tk'] ); ?>" />
+					<?php if ( 'recaptcha_v2' === $captcha ) : ?>
+						<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $as['captcha_site_key'] ); ?>"></div>
+					<?php elseif ( 'hcaptcha' === $captcha ) : ?>
+						<div class="h-captcha" data-sitekey="<?php echo esc_attr( $as['captcha_site_key'] ); ?>"></div>
+					<?php elseif ( 'turnstile' === $captcha ) : ?>
+						<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( $as['captcha_site_key'] ); ?>"></div>
+					<?php endif; ?>
 					<button type="submit" class="advery-reviews__submit"><?php esc_html_e( 'Submit review', 'advery-reviews' ); ?></button>
 					<p class="advery-reviews__msg" role="status" aria-live="polite"></p>
 				</form>

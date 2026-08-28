@@ -29,8 +29,10 @@ A fast, self-contained ratings & reviews plugin for any post type, taxonomy term
 - **Schema\\SchemaBridge**: hooks the core `advery_schema_render_node` filter; attaches `aggregateRating` / `review` to the item node (matched by directory-listing post id or node `url` == item permalink). Woo product schema left to Woo.
 - **Integrations\\WooCommerce**: read-only native rating.
 
+## Subsystems added in v0.2.0
+- **AntiSpam\\** (shipped): `SpamGuard` (layered, score-based; honeypot, signed timing token, link/word/length rules, blocklist, rate limit, disposable-email, duplicate, thresholds → reject/spam/hold/approve), `CaptchaVerifier` (reCAPTCHA v2/v3, hCaptcha, Turnstile), `DisposableDomains`, `Akismet` (optional signal). Reviews table gained `spam_score` + `meta` (DB 1.1.0).
+
 ## Planned subsystems (roadmap — see features_and_ideas.md)
-- **AntiSpam\\**: layered, score-based checks (honeypot, timing, link/word rules, blocklist, rate limit, disposable-email, optional CAPTCHA providers, optional Akismet). One `SpamGuard` returning a score + reason; thresholds map to auto-approve / hold / spam.
 - **Integrations\\Elementor**: a native Elementor widget rendering the same `Display`, with an auto-append de-dupe guard.
 - **AI\\**: a provider-agnostic client (`ProviderInterface` + adapters), a `TaskRunner` with per-task enable + prompt/model/temperature/limits, used only for **legitimate** tasks (moderation assistance, owner reply drafting, translation/summary). Cost/rate caps + audit log.
 - **Sample\\** (demo content, compliance-gated): a clearly-labelled sample/demo review generator for **staging/demo** environments only — see the Compliance section in features_and_ideas.md. Sample rows carry `origin='sample'` and are excluded from public schema by default.

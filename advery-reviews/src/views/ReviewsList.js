@@ -161,7 +161,17 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 									<strong>{ r.author_name }</strong>
 									{ r.title && <div className="advery-rv-rtitle">{ r.title }</div> }
 									<div className="advery-rv-excerpt">{ r.content.replace( /<[^>]+>/g, '' ).slice( 0, 140 ) }</div>
-									<div className="advery-rv-meta">{ r.author_email } · { r.created_at }</div>
+									<div className="advery-rv-meta">
+										{ r.author_email } · { r.created_at }
+										{ r.spam_score > 0 && (
+											<span className="advery-rv-spam">
+												{ ' · ' }{ __( 'spam', 'advery-reviews' ) } { r.spam_score }
+												{ r.meta && r.meta.spam_reasons && r.meta.spam_reasons.length > 0
+													? ' (' + r.meta.spam_reasons.join( ', ' ) + ')'
+													: '' }
+											</span>
+										) }
+									</div>
 								</td>
 								<td>
 									{ r.link ? <a href={ r.link } target="_blank" rel="noreferrer">{ r.label }</a> : r.label }

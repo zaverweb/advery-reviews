@@ -44,6 +44,12 @@
 			msg.textContent = cfg.i18n ? cfg.i18n.sending : 'Sending…';
 			submit.disabled = true;
 
+			getCaptchaToken().then( function ( captchaToken ) {
+				send( captchaToken );
+			} );
+		} );
+
+		function send( captchaToken ) {
 			var payload = {
 				object_type: root.getAttribute( 'data-object-type' ),
 				object_id: root.getAttribute( 'data-object-id' ),
@@ -52,7 +58,10 @@
 				content: valueOf( form, 'content' ),
 				author_name: valueOf( form, 'author_name' ),
 				author_email: valueOf( form, 'author_email' ),
-				website_hp: valueOf( form, 'website_hp' )
+				website_hp: valueOf( form, 'website_hp' ),
+				advery_ts: valueOf( form, 'advery_ts' ),
+				advery_tk: valueOf( form, 'advery_tk' ),
+				captcha_token: captchaToken
 			};
 
 			fetch( cfg.rest, {
@@ -83,7 +92,27 @@
 					msg.className = 'advery-reviews__msg is-error';
 					msg.textContent = cfg.i18n ? cfg.i18n.error : 'Error';
 				} );
-		} );
+		}
+
+		function getCaptchaToken() {
+			var c = cfg.captcha || {};
+			if ( c.provider === 'recaptcha_v3' && window.grecaptcha && c.siteKey ) {
+				return new Promise( function ( resolve ) {
+					grecaptcha.ready( function () {
+						grecaptcha.execute( c.siteKey, { action: 'submit' } )
+							.then( resolve )
+							.catch( function () { resolve( '' ); } );
+					} );
+				} );
+			}
+			var names = {
+				recaptcha_v2: 'g-recaptcha-response',
+				hcaptcha: 'h-captcha-response',
+				turnstile: 'cf-turnstile-response'
+			};
+			var field = names[ c.provider ];
+			return Promise.resolve( field ? valueOf( form, field ) : '' );
+		}
 	}
 
 	function valueOf( form, name ) {

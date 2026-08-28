@@ -9,6 +9,7 @@ use Advery\Reviews\Support\Targets;
 use Advery\Reviews\Support\Aggregate;
 use Advery\Reviews\Database\ReviewRepository;
 use Advery\Reviews\Database\StatsRepository;
+use Advery\Reviews\AntiSpam\SpamGuard;
 use Advery\Reviews\Email\Digest;
 
 /**
@@ -163,7 +164,41 @@ class RestController {
 			return new WP_Error( 'advery_reviews_dupe', __( 'You have already reviewed this.', 'advery-reviews' ), [ 'status' => 409 ] );
 		}
 
-		$status = 'auto' === Settings::get( 'moderation' ) ? 'approved' : 'pending';
+		$ip = $this->client_ip();
+
+		// Layered anti-spam. Returns an outcome the status derives from.
+		$guard = SpamGuard::evaluate(
+			[
+				'object_type'    => $object_type,
+				'object_id'      => $object_id,
+				'content'        => $content,
+				'title'          => $title,
+				'author_name'    => $author_name,
+				'author_email'   => $author_email,
+				'author_user_id' => $user_id,
+				'author_ip'      => $ip,
+				'ts'             => (int) $req->get_param( 'advery_ts' ),
+				'tk'             => (string) $req->get_param( 'advery_tk' ),
+				'website_hp'     => (string) $req->get_param( 'website_hp' ),
+				'captcha_token'  => (string) $req->get_param( 'captcha_token' ),
+			]
+		);
+
+		if ( 'reject' === $guard['outcome'] ) {
+			return new WP_Error(
+				'advery_reviews_rejected',
+				isset( $guard['message'] ) ? $guard['message'] : __( 'Your review could not be accepted.', 'advery-reviews' ),
+				[ 'status' => 400 ]
+			);
+		}
+
+		if ( 'spam' === $guard['outcome'] ) {
+			$status = 'spam';
+		} elseif ( 'hold' === $guard['outcome'] ) {
+			$status = 'pending';
+		} else {
+			$status = 'auto' === Settings::get( 'moderation' ) ? 'approved' : 'pending';
+		}
 
 		$id = ReviewRepository::create(
 			[
@@ -176,7 +211,9 @@ class RestController {
 				'title'          => $title,
 				'content'        => wp_kses_post( $content ),
 				'status'         => $status,
-				'author_ip'      => $this->client_ip(),
+				'author_ip'      => $ip,
+				'spam_score'     => (int) $guard['score'],
+				'meta'           => [ 'spam_reasons' => $guard['reasons'] ],
 			]
 		);
 
@@ -184,7 +221,10 @@ class RestController {
 			return new WP_Error( 'advery_reviews_failed', __( 'Could not save your review.', 'advery-reviews' ), [ 'status' => 500 ] );
 		}
 
-		do_action( 'advery_reviews_created', $id );
+		// Don't email the owner for auto-classified spam.
+		if ( 'spam' !== $status ) {
+			do_action( 'advery_reviews_created', $id );
+		}
 
 		return new WP_REST_Response(
 			[
@@ -327,6 +367,43 @@ class RestController {
 			'email_instant'      => ! empty( $in['email_instant'] ),
 			'email_recipient'    => sanitize_email( (string) ( $in['email_recipient'] ?? '' ) ),
 			'digest_frequency'   => in_array( ( $in['digest_frequency'] ?? '' ), [ 'off', 'weekly', 'monthly' ], true ) ? $in['digest_frequency'] : $d['digest_frequency'],
+			'antispam'           => $this->sanitize_antispam( is_array( $in['antispam'] ?? null ) ? $in['antispam'] : [] ),
+		];
+	}
+
+	/**
+	 * Whitelist + coerce the nested anti-spam config.
+	 *
+	 * @param array $in
+	 * @return array
+	 */
+	private function sanitize_antispam( array $in ) {
+		$d = Settings::antispam_defaults();
+
+		return [
+			'timing_enabled'      => ! empty( $in['timing_enabled'] ),
+			'timing_min'          => max( 0, (int) ( $in['timing_min'] ?? $d['timing_min'] ) ),
+			'max_links'           => max( 0, (int) ( $in['max_links'] ?? $d['max_links'] ) ),
+			'link_action'         => in_array( ( $in['link_action'] ?? '' ), [ 'off', 'hold', 'spam' ], true ) ? $in['link_action'] : $d['link_action'],
+			'blocklist_words'     => sanitize_textarea_field( (string) ( $in['blocklist_words'] ?? '' ) ),
+			'blocklist_emails'    => sanitize_textarea_field( (string) ( $in['blocklist_emails'] ?? '' ) ),
+			'block_disposable'    => ! empty( $in['block_disposable'] ),
+			'rate_enabled'        => ! empty( $in['rate_enabled'] ),
+			'rate_window'         => max( 1, (int) ( $in['rate_window'] ?? $d['rate_window'] ) ),
+			'rate_max'            => max( 1, (int) ( $in['rate_max'] ?? $d['rate_max'] ) ),
+			'rate_day_max'        => max( 0, (int) ( $in['rate_day_max'] ?? $d['rate_day_max'] ) ),
+			'duplicate_check'     => ! empty( $in['duplicate_check'] ),
+			'min_words'           => max( 0, (int) ( $in['min_words'] ?? 0 ) ),
+			'max_words'           => max( 0, (int) ( $in['max_words'] ?? 0 ) ),
+			'max_chars'           => max( 0, (int) ( $in['max_chars'] ?? $d['max_chars'] ) ),
+			'trusted_autoapprove' => ! empty( $in['trusted_autoapprove'] ),
+			'hold_threshold'      => max( 1, (int) ( $in['hold_threshold'] ?? $d['hold_threshold'] ) ),
+			'spam_threshold'      => max( 1, (int) ( $in['spam_threshold'] ?? $d['spam_threshold'] ) ),
+			'captcha_provider'    => in_array( ( $in['captcha_provider'] ?? '' ), [ 'none', 'recaptcha_v2', 'recaptcha_v3', 'hcaptcha', 'turnstile' ], true ) ? $in['captcha_provider'] : 'none',
+			'captcha_site_key'    => sanitize_text_field( (string) ( $in['captcha_site_key'] ?? '' ) ),
+			'captcha_secret_key'  => sanitize_text_field( (string) ( $in['captcha_secret_key'] ?? '' ) ),
+			'captcha_threshold'   => min( 1.0, max( 0.0, (float) ( $in['captcha_threshold'] ?? $d['captcha_threshold'] ) ) ),
+			'akismet_enabled'     => ! empty( $in['akismet_enabled'] ),
 		];
 	}
 
