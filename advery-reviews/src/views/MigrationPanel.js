@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
-	Panel,
-	PanelBody,
 	CheckboxControl,
 	ToggleControl,
 	Button,
@@ -126,82 +124,82 @@ export default function MigrationPanel( { boot, notify } ) {
 
 	return (
 		<div className="advery-rv-migration">
-			<Panel>
-				<PanelBody title={ __( 'Import comments → reviews', 'advery-reviews' ) } initialOpen>
-					<p className="advery-rv-hint">
-						{ sprintf(
-							__( 'Available: %1$d WordPress comments, %2$d WooCommerce reviews. Already imported: %3$d. Importing copies them (non-destructive) and de-duplicates on re-run.', 'advery-reviews' ),
-							preview.import.wp,
-							preview.import.wc,
-							preview.import.imported
-						) }
+			<p className="advery-rv-mig-intro">
+				{ __( 'Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates.', 'advery-reviews' ) }
+			</p>
+
+			<div className="advery-rv-mig-card">
+				<div className="advery-rv-mig-card__head">
+					<span className="advery-rv-mig-card__icon" aria-hidden="true">⬇️</span>
+					<div>
+						<h3 className="advery-rv-mig-card__title">{ __( 'Import existing comments', 'advery-reviews' ) }</h3>
+						<p className="advery-rv-mig-card__desc">
+							{ __( 'Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates.', 'advery-reviews' ) }
+						</p>
+					</div>
+				</div>
+				<div className="advery-rv-mig-card__body">
+					<p className="advery-rv-stat-row">
+						<span>{ sprintf( __( '%d WordPress comments', 'advery-reviews' ), preview.import.wp ) }</span>
+						<span>{ sprintf( __( '%d WooCommerce reviews', 'advery-reviews' ), preview.import.wc ) }</span>
+						<span>{ sprintf( __( '%d already imported', 'advery-reviews' ), preview.import.imported ) }</span>
 					</p>
-					<CheckboxControl
-						label={ sprintf( __( 'WordPress post comments (%d)', 'advery-reviews' ), preview.import.wp ) }
-						checked={ sources.includes( 'wp_comment' ) }
-						onChange={ ( on ) => toggleSource( 'wp_comment', on ) }
-						__nextHasNoMarginBottom
-					/>
-					<CheckboxControl
-						label={ sprintf( __( 'WooCommerce product reviews (%d)', 'advery-reviews' ), preview.import.wc ) }
-						checked={ sources.includes( 'wc_review' ) }
-						onChange={ ( on ) => toggleSource( 'wc_review', on ) }
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={ __( 'Update reviews already imported (otherwise skip)', 'advery-reviews' ) }
-						checked={ updateExisting }
-						onChange={ setUpdateExisting }
-						__nextHasNoMarginBottom
-					/>
-					<ToggleControl
-						label={ __( 'Delete the source comments after importing (destructive)', 'advery-reviews' ) }
-						checked={ deleteSource }
-						onChange={ setDeleteSource }
-						__nextHasNoMarginBottom
-					/>
+					<CheckboxControl label={ sprintf( __( 'Include WordPress post comments (%d)', 'advery-reviews' ), preview.import.wp ) } checked={ sources.includes( 'wp_comment' ) } onChange={ ( on ) => toggleSource( 'wp_comment', on ) } __nextHasNoMarginBottom />
+					<CheckboxControl label={ sprintf( __( 'Include WooCommerce product reviews (%d)', 'advery-reviews' ), preview.import.wc ) } checked={ sources.includes( 'wc_review' ) } onChange={ ( on ) => toggleSource( 'wc_review', on ) } __nextHasNoMarginBottom />
+					<ToggleControl label={ __( 'Update items already imported', 'advery-reviews' ) } help={ __( 'On: re-importing refreshes reviews you imported before. Off: they’re skipped.', 'advery-reviews' ) } checked={ updateExisting } onChange={ setUpdateExisting } __nextHasNoMarginBottom />
+					<ToggleControl label={ __( 'Delete the original comments after importing', 'advery-reviews' ) } help={ __( 'Off (recommended): keep a copy in the comment tables. On: permanently remove the source comments once imported.', 'advery-reviews' ) } checked={ deleteSource } onChange={ setDeleteSource } __nextHasNoMarginBottom />
 					{ deleteSource && (
-						<Notice status="warning" isDismissible={ false }>
-							{ __( 'The original comments will be permanently deleted after import.', 'advery-reviews' ) }
-						</Notice>
+						<Notice status="warning" isDismissible={ false }>{ __( 'The original comments will be permanently deleted after import.', 'advery-reviews' ) }</Notice>
 					) }
-					<div style={ { marginTop: 12 } }>
-						<Button variant="primary" isBusy={ running === 'import' } disabled={ !! running || ! sources.length } onClick={ runImport }>
-							{ __( 'Import now', 'advery-reviews' ) }
-						</Button>
+					<div className="advery-rv-mig-actions">
+						<Button variant="primary" isBusy={ running === 'import' } disabled={ !! running || ! sources.length } onClick={ runImport }>{ __( 'Import now', 'advery-reviews' ) }</Button>
 						{ running === 'import' && progress && (
-							<span style={ { marginInlineStart: 10 } }>
-								{ sprintf( __( 'imported %1$d, updated %2$d, skipped %3$d…', 'advery-reviews' ), progress.imported, progress.updated, progress.skipped ) }
-							</span>
+							<span className="advery-rv-mig-progress">{ sprintf( __( 'imported %1$d · updated %2$d · skipped %3$d…', 'advery-reviews' ), progress.imported, progress.updated, progress.skipped ) }</span>
 						) }
 					</div>
-				</PanelBody>
+				</div>
+			</div>
 
-				<PanelBody title={ __( 'Export reviews → comments', 'advery-reviews' ) } initialOpen={ false }>
-					<p className="advery-rv-hint">
-						{ sprintf(
-							__( '%1$d natively-collected reviews can be recreated as WordPress/WooCommerce comments (reversible; loop-guarded). Already exported: %2$d.', 'advery-reviews' ),
-							preview.export.eligible,
-							preview.export.exported
-						) }
+			<div className="advery-rv-mig-card">
+				<div className="advery-rv-mig-card__head">
+					<span className="advery-rv-mig-card__icon" aria-hidden="true">⬆️</span>
+					<div>
+						<h3 className="advery-rv-mig-card__title">{ __( 'Export reviews back to comments', 'advery-reviews' ) }</h3>
+						<p className="advery-rv-mig-card__desc">
+							{ __( 'Recreate native WordPress / WooCommerce comments from the reviews you collected here — handy if another tool reads the comment tables. Safe to run repeatedly; it won’t loop or duplicate.', 'advery-reviews' ) }
+						</p>
+					</div>
+				</div>
+				<div className="advery-rv-mig-card__body">
+					<p className="advery-rv-stat-row">
+						<span>{ sprintf( __( '%d reviews eligible', 'advery-reviews' ), preview.export.eligible ) }</span>
+						<span>{ sprintf( __( '%d already exported', 'advery-reviews' ), preview.export.exported ) }</span>
 					</p>
-					<Button variant="secondary" isBusy={ running === 'export' } disabled={ !! running } onClick={ runExport }>
-						{ __( 'Export to comments', 'advery-reviews' ) }
-					</Button>
-					{ running === 'export' && progress && (
-						<span style={ { marginInlineStart: 10 } }>{ sprintf( __( 'exported %d…', 'advery-reviews' ), progress.exported ) }</span>
-					) }
-				</PanelBody>
+					<div className="advery-rv-mig-actions">
+						<Button variant="secondary" isBusy={ running === 'export' } disabled={ !! running } onClick={ runExport }>{ __( 'Export to comments', 'advery-reviews' ) }</Button>
+						{ running === 'export' && progress && (
+							<span className="advery-rv-mig-progress">{ sprintf( __( 'exported %d…', 'advery-reviews' ), progress.exported ) }</span>
+						) }
+					</div>
+				</div>
+			</div>
 
-				<PanelBody title={ __( 'Backup', 'advery-reviews' ) } initialOpen={ false }>
-					<p className="advery-rv-hint">{ __( 'Download every review as a CSV file.', 'advery-reviews' ) }</p>
-					<Button variant="secondary" isBusy={ running === 'csv' } disabled={ !! running } onClick={ downloadCsv }>
-						{ __( 'Download CSV', 'advery-reviews' ) }
-					</Button>
-				</PanelBody>
+			<div className="advery-rv-mig-card">
+				<div className="advery-rv-mig-card__head">
+					<span className="advery-rv-mig-card__icon" aria-hidden="true">💾</span>
+					<div>
+						<h3 className="advery-rv-mig-card__title">{ __( 'Backup (CSV)', 'advery-reviews' ) }</h3>
+						<p className="advery-rv-mig-card__desc">{ __( 'Download every review as a CSV file — a spreadsheet you can keep as a backup or move to another site.', 'advery-reviews' ) }</p>
+					</div>
+				</div>
+				<div className="advery-rv-mig-card__body">
+					<div className="advery-rv-mig-actions">
+						<Button variant="secondary" isBusy={ running === 'csv' } disabled={ !! running } onClick={ downloadCsv }>{ __( 'Download CSV', 'advery-reviews' ) }</Button>
+					</div>
+				</div>
+			</div>
 
-				<DataImportPanel notify={ notify } />
-			</Panel>
+			<DataImportPanel notify={ notify } />
 		</div>
 	);
 }

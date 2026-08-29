@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.13.1 (UI fixes)
+- **Header stat tiles are readable again.** They became clickable links in 0.13.0 and inherited the blue link colour on the blue header; forced back to white text.
+- **Settings inputs no longer stretch full width** — text/select fields are capped (~380px), numbers narrower (~130px), textareas (~560px), so the forms look tidy.
+- **Migration screen redesigned** into clean card sections (icon + title + a short, plain-language description + status pills), replacing the bare accordion, with simpler wording throughout.
+
 ### Version 0.13.0 (Separate admin pages + sidebar settings — far less scrolling)
 - **Settings and Migration are now their own admin sub-pages** (submenus under “Reviews”), instead of tabs on one screen — cleaner navigation and no giant scroll. A slim in-app nav (Reviews / Settings / Migration) mirrors the WordPress submenu.
 - **Settings uses a sidebar + single-section layout:** a left list of sections (Collection, Submission rules, Anti-spam, Display, AI, Schema, Email, Custom CSS, Maintenance) shows **one focused section at a time** on the right — much less scrolling, better accessibility, far less clutter. Fully responsive (the sidebar wraps on top on mobile). Verified the layout in a rendered preview at both mobile and desktop widths.

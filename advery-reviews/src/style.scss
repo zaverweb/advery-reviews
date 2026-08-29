@@ -56,7 +56,13 @@
 	display: flex;
 	flex-direction: column;
 	backdrop-filter: blur( 2px );
+	color: #fff;                 /* readable on the blue header, even as a link */
+	text-decoration: none;
+	transition: background 0.15s ease;
 }
+.advery-rv__tile:hover,
+.advery-rv__tile:focus { background: rgba( 255, 255, 255, 0.26 ); color: #fff; }
+.advery-rv__tile-value { color: #fff; }
 .advery-rv__tile-value { font-size: 23px; font-weight: 700; line-height: 1.1; }
 .advery-rv__tile-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.92; }
 .advery-rv__tile.is-amber .advery-rv__tile-value { color: #ffe08a; }
@@ -308,6 +314,49 @@
 .advery-rv-settings__title { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
 .advery-rv-settings__pane .components-base-control { margin-bottom: 14px; }
 .advery-rv-settings__pane hr { border: 0; border-top: 1px solid #eef0f3; margin: 16px 0; }
+
+/* Inputs shouldn't stretch the full pane width — keep them a comfortable size */
+.advery-rv-settings__pane .components-text-control__input,
+.advery-rv-settings__pane .components-select-control__input,
+.advery-rv-settings__pane select,
+.advery-rv-settings__pane input[type="text"],
+.advery-rv-settings__pane input[type="email"],
+.advery-rv-settings__pane input[type="password"] { max-width: 380px; }
+.advery-rv-settings__pane input[type="number"] { max-width: 130px; }
+.advery-rv-settings__pane .components-textarea-control__input,
+.advery-rv-settings__pane textarea { max-width: 560px; }
+
+/* Migration — clean card sections */
+.advery-rv-mig-intro { color: var(--rv-muted); margin: 0 0 16px; max-width: 720px; line-height: 1.55; }
+.advery-rv-mig-card {
+	background: var(--rv-surface);
+	border: 1px solid var(--rv-border);
+	border-radius: 12px;
+	padding: 16px 18px;
+	margin-bottom: 14px;
+	box-shadow: var(--rv-shadow);
+}
+.advery-rv-mig-card__head { display: flex; gap: 12px; align-items: flex-start; }
+.advery-rv-mig-card__icon {
+	flex: 0 0 40px; width: 40px; height: 40px;
+	display: flex; align-items: center; justify-content: center;
+	background: var(--rv-soft); border-radius: 10px; font-size: 20px;
+}
+.advery-rv-mig-card__title { margin: 0 0 3px; font-size: 15px; }
+.advery-rv-mig-card__desc { margin: 0; color: var(--rv-muted); font-size: 13px; line-height: 1.55; max-width: 640px; }
+.advery-rv-mig-card__body { margin-top: 12px; }
+.advery-rv-mig-card__body input[type="text"],
+.advery-rv-mig-card__body select { max-width: 380px; }
+.advery-rv-mig-card__body textarea { max-width: 560px; }
+.advery-rv-stat-row {
+	display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px;
+}
+.advery-rv-stat-row span {
+	background: var(--rv-soft); border: 1px solid var(--rv-border);
+	border-radius: 999px; padding: 3px 12px; font-size: 12px; color: var(--rv-ink);
+}
+.advery-rv-mig-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.advery-rv-mig-progress { color: var(--rv-muted); font-size: 13px; }
 
 /* Responsive */
 @media ( max-width: 782px ) {

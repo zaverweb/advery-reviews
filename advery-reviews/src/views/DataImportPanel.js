@@ -1,7 +1,6 @@
 import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
-	PanelBody,
 	SelectControl,
 	TextControl,
 	ToggleControl,
@@ -158,11 +157,17 @@ export default function DataImportPanel( { notify } ) {
 	};
 
 	return (
-		<PanelBody title={ __( 'Import from a file (CSV / JSON)', 'advery-reviews' ) } initialOpen={ false }>
-			<p className="advery-rv-hint">
-				{ __( 'Import review data prepared elsewhere (a spreadsheet, another platform, an external dataset). Map the columns, choose how each review’s target post is identified, and a unique key so re-imports update instead of duplicating.', 'advery-reviews' ) }
-			</p>
-
+		<div className="advery-rv-mig-card">
+			<div className="advery-rv-mig-card__head">
+				<span className="advery-rv-mig-card__icon" aria-hidden="true">📄</span>
+				<div>
+					<h3 className="advery-rv-mig-card__title">{ __( 'Import from a file (CSV / JSON)', 'advery-reviews' ) }</h3>
+					<p className="advery-rv-mig-card__desc">
+						{ __( 'Import review data prepared elsewhere — a spreadsheet, another platform’s export, or a dataset collected outside WordPress. After choosing a file you’ll map its columns and set a unique key so re-imports update instead of duplicating.', 'advery-reviews' ) }
+					</p>
+				</div>
+			</div>
+			<div className="advery-rv-mig-card__body">
 			<input type="file" accept=".csv,.json,text/csv,application/json" onChange={ onFile } />
 
 			{ columns.length > 0 && (
@@ -294,6 +299,7 @@ export default function DataImportPanel( { notify } ) {
 					</div>
 				</>
 			) }
-		</PanelBody>
+			</div>
+		</div>
 	);
 }
