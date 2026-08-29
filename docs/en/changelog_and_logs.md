@@ -12,6 +12,9 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.11.0 (Inline help + examples on every setting)
+- **Backlog item 2/7.** Because the plugin has few installs and no online tutorials, **every option in Settings now carries a clear description and a concrete example** so an operator can configure it correctly without guessing: who-can-submit, moderation, one-per-user, rating-required; all anti-spam controls (timing, link limit + action, min/max characters, name cap, blocklists with a regex example, disposable-email, duplicate, trusted, rate-limit window/max/day, hold/spam thresholds, every CAPTCHA field, Akismet); display (auto-append, per-page, loading mode, comment replacement); AI (provider, key, model, base URL, daily cap, business context, per-type reply voice, per-task prompts, test); custom CSS; maintenance; schema; and email reports. No behaviour change — documentation only.
+
 ### Version 0.10.0 (Schema mode — works with or without Advery Schema Plus)
 - **Backlog item 1/7.** A **`schema_mode`** setting gives the owner the choice: **Auto** (use Advery Schema Plus when it's active so ratings merge into the page's connected `@graph`; otherwise emit our own), **Standalone** (always print this plugin's own JSON-LD `aggregateRating` + `review`, no core plugin needed), **Core only** (only via Advery Schema Plus), or **Off**. New `Schema\StandaloneSchema` prints a self-contained block on the reviewed item's page with a configurable `@type` (default `LocalBusiness`; products always `Product` and are left to WooCommerce). `SchemaBridge` now stands down in standalone/off mode, so the two never duplicate.
 - **Full inline help** on the schema settings (what each mode does, with examples) — the start of the documentation pass requested for every option.

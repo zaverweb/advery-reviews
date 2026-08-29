@@ -84,7 +84,7 @@ export default function SettingsPanel( { boot, notify } ) {
 		<div className="advery-rv-settings">
 			<Panel>
 				<PanelBody title={ __( 'Where reviews are collected', 'advery-reviews' ) } initialOpen>
-					<p className="advery-rv-hint">{ __( 'Post types that can receive reviews (the form appears on these).', 'advery-reviews' ) }</p>
+					<p className="advery-rv-hint">{ __( 'Tick each post type that should accept reviews — the review form and list then appear on those pages. Example: tick “Post” for a blog, or a “Service” custom type for a services site.', 'advery-reviews' ) }</p>
 					{ ( boot.postTypes || [] ).map( ( pt ) => (
 						<CheckboxControl
 							key={ pt.slug }
@@ -95,7 +95,7 @@ export default function SettingsPanel( { boot, notify } ) {
 						/>
 					) ) }
 					<hr />
-					<p className="advery-rv-hint">{ __( 'Taxonomies whose term archives can receive reviews.', 'advery-reviews' ) }</p>
+					<p className="advery-rv-hint">{ __( 'Tick a taxonomy to allow reviews on its term (archive) pages — e.g. reviewing a whole “Brand” or “City” page, not just single posts. Leave all off if you don’t need this.', 'advery-reviews' ) }</p>
 					{ ( boot.taxonomies || [] ).map( ( tx ) => (
 						<CheckboxControl
 							key={ tx.slug }
@@ -110,7 +110,7 @@ export default function SettingsPanel( { boot, notify } ) {
 							<hr />
 							<ToggleControl
 								label={ __( 'WooCommerce products', 'advery-reviews' ) }
-								help={ __( 'Collect reviews on products and read WooCommerce’s native ratings.', 'advery-reviews' ) }
+								help={ __( 'Collect reviews on your products and read WooCommerce’s own star ratings. Turn off to leave products entirely to WooCommerce.', 'advery-reviews' ) }
 								checked={ !! s.woo_enabled }
 								onChange={ ( v ) => set( { woo_enabled: v } ) }
 								__nextHasNoMarginBottom
@@ -122,6 +122,7 @@ export default function SettingsPanel( { boot, notify } ) {
 				<PanelBody title={ __( 'Submission rules', 'advery-reviews' ) } initialOpen={ false }>
 					<RadioControl
 						label={ __( 'Who can submit', 'advery-reviews' ) }
+						help={ __( 'Example: “Anyone” for a public shop (visitors give a name + email); “Logged-in users only” for a members site to cut spam.', 'advery-reviews' ) }
 						selected={ s.who_can_submit }
 						options={ [
 							{ label: __( 'Anyone (name + email)', 'advery-reviews' ), value: 'anyone' },
@@ -131,6 +132,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					/>
 					<RadioControl
 						label={ __( 'Moderation', 'advery-reviews' ) }
+						help={ __( 'Manual (recommended): a new review waits as “Pending” until you approve it. Auto-approve: it’s published immediately — faster, but riskier.', 'advery-reviews' ) }
 						selected={ s.moderation }
 						options={ [
 							{ label: __( 'Hold for approval (manual)', 'advery-reviews' ), value: 'manual' },
@@ -140,12 +142,14 @@ export default function SettingsPanel( { boot, notify } ) {
 					/>
 					<ToggleControl
 						label={ __( 'One review per user / email', 'advery-reviews' ) }
+						help={ __( 'Stops the same person reviewing one item repeatedly. Matched by their account when logged in, otherwise by email address.', 'advery-reviews' ) }
 						checked={ !! s.one_per_user }
 						onChange={ ( v ) => set( { one_per_user: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<ToggleControl
 						label={ __( 'Rating required', 'advery-reviews' ) }
+						help={ __( 'On: the visitor must pick a star rating. Off: text-only comments (no stars) are allowed too.', 'advery-reviews' ) }
 						checked={ !! s.rating_required }
 						onChange={ ( v ) => set( { rating_required: v } ) }
 						__nextHasNoMarginBottom
@@ -154,10 +158,11 @@ export default function SettingsPanel( { boot, notify } ) {
 				</PanelBody>
 
 				<PanelBody title={ __( 'Anti-spam', 'advery-reviews' ) } initialOpen={ false }>
-					<p className="advery-rv-hint">{ __( 'Layered, score-based. Each check adds to a spam score; the thresholds decide hold vs spam. Sensible defaults are on.', 'advery-reviews' ) }</p>
+					<p className="advery-rv-hint">{ __( 'Layered and score-based: each check below adds points to a “spam score”, and the two thresholds decide whether a review is held or marked spam. The defaults are sensible — only change them if you see a problem.', 'advery-reviews' ) }</p>
 
 					<ToggleControl
 						label={ __( 'Timing check (reject too-fast bot submissions)', 'advery-reviews' ) }
+						help={ __( 'A real person needs a few seconds to write a review; bots submit instantly. Recommended: on.', 'advery-reviews' ) }
 						checked={ !! as.timing_enabled }
 						onChange={ ( v ) => setAs( { timing_enabled: v } ) }
 						__nextHasNoMarginBottom
@@ -165,6 +170,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Minimum seconds to fill the form', 'advery-reviews' ) }
+						help={ __( 'Example: 3. A submission faster than this is treated as a likely bot.', 'advery-reviews' ) }
 						value={ as.timing_min }
 						onChange={ ( v ) => setAs( { timing_min: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
@@ -173,13 +179,14 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Max links allowed in a review (0 = none)', 'advery-reviews' ) }
-						help={ __( 'Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”, “example[.]com”) in the review, title and name.', 'advery-reviews' ) }
+						help={ __( 'Recommended: 0. Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”, “example[.]com”) across the review, title and name.', 'advery-reviews' ) }
 						value={ as.max_links }
 						onChange={ ( v ) => setAs( { max_links: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
 						label={ __( 'When over the link limit', 'advery-reviews' ) }
+						help={ __( 'Recommended: “Reject with a message” so the visitor knows links aren’t allowed. “Spam”/“Hold” keep it hidden for you to review.', 'advery-reviews' ) }
 						value={ as.link_action }
 						options={ [
 							{ label: __( 'Ignore', 'advery-reviews' ), value: 'off' },
@@ -193,6 +200,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Minimum review length (characters)', 'advery-reviews' ) }
+						help={ __( 'Example: 10 — blocks one-word “ok”/“good” submissions.', 'advery-reviews' ) }
 						value={ as.min_chars }
 						onChange={ ( v ) => setAs( { min_chars: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
@@ -200,6 +208,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Maximum review length (characters)', 'advery-reviews' ) }
+						help={ __( 'Example: 1500. Very long submissions are usually spam.', 'advery-reviews' ) }
 						value={ as.max_chars }
 						onChange={ ( v ) => setAs( { max_chars: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
@@ -207,6 +216,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Maximum author name length (characters)', 'advery-reviews' ) }
+						help={ __( 'Example: 35. Longer “names” are typically spam or injected text.', 'advery-reviews' ) }
 						value={ as.max_name_chars }
 						onChange={ ( v ) => setAs( { max_name_chars: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
@@ -214,30 +224,35 @@ export default function SettingsPanel( { boot, notify } ) {
 
 					<TextControl
 						label={ __( 'Blocked words / phrases (one per line; prefix re: for regex)', 'advery-reviews' ) }
+						help={ __( 'One entry per line. Example: viagra. Advanced: start a line with re: for a regular expression, e.g. re:\\bcasino\\b', 'advery-reviews' ) }
 						value={ as.blocklist_words }
 						onChange={ ( v ) => setAs( { blocklist_words: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<TextControl
 						label={ __( 'Blocked emails / domains (one per line)', 'advery-reviews' ) }
+						help={ __( 'One per line. A full address (spammer@bad.com) or a whole domain (bad.ru).', 'advery-reviews' ) }
 						value={ as.blocklist_emails }
 						onChange={ ( v ) => setAs( { blocklist_emails: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<ToggleControl
 						label={ __( 'Block disposable email domains', 'advery-reviews' ) }
+						help={ __( 'Blocks throwaway inboxes (mailinator.com, 10minutemail.com, …) commonly used by spammers.', 'advery-reviews' ) }
 						checked={ !! as.block_disposable }
 						onChange={ ( v ) => setAs( { block_disposable: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<ToggleControl
 						label={ __( 'Reject duplicate content', 'advery-reviews' ) }
+						help={ __( 'Blocks the same review text being posted again on the same item.', 'advery-reviews' ) }
 						checked={ !! as.duplicate_check }
 						onChange={ ( v ) => setAs( { duplicate_check: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<ToggleControl
 						label={ __( 'Auto-approve trusted authors (logged-in with a prior approved review)', 'advery-reviews' ) }
+						help={ __( 'A logged-in visitor who already has one approved review skips moderation next time. Turn off for strict manual control.', 'advery-reviews' ) }
 						checked={ !! as.trusted_autoapprove }
 						onChange={ ( v ) => setAs( { trusted_autoapprove: v } ) }
 						__nextHasNoMarginBottom
@@ -246,6 +261,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<hr />
 					<ToggleControl
 						label={ __( 'Rate limiting', 'advery-reviews' ) }
+						help={ __( 'Caps how many reviews one person/IP can post in a short time — stops bulk spam bursts.', 'advery-reviews' ) }
 						checked={ !! as.rate_enabled }
 						onChange={ ( v ) => setAs( { rate_enabled: v } ) }
 						__nextHasNoMarginBottom
@@ -253,6 +269,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Window (seconds)', 'advery-reviews' ) }
+						help={ __( 'The rolling time window. Example: 600 = 10 minutes.', 'advery-reviews' ) }
 						value={ as.rate_window }
 						onChange={ ( v ) => setAs( { rate_window: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
@@ -260,6 +277,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Max submissions per window (per IP/email)', 'advery-reviews' ) }
+						help={ __( 'Example: 3 — at most 3 reviews per window from one IP or email.', 'advery-reviews' ) }
 						value={ as.rate_max }
 						onChange={ ( v ) => setAs( { rate_max: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
@@ -267,6 +285,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Max per day (0 = off)', 'advery-reviews' ) }
+						help={ __( 'A daily cap per IP/email. Example: 20. Set 0 to disable the daily cap.', 'advery-reviews' ) }
 						value={ as.rate_day_max }
 						onChange={ ( v ) => setAs( { rate_day_max: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
@@ -276,6 +295,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Hold threshold (score ≥ ⇒ hold)', 'advery-reviews' ) }
+						help={ __( 'A review whose spam score reaches this is held for moderation. Example: 2.', 'advery-reviews' ) }
 						value={ as.hold_threshold }
 						onChange={ ( v ) => setAs( { hold_threshold: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
@@ -283,6 +303,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Spam threshold (score ≥ ⇒ spam)', 'advery-reviews' ) }
+						help={ __( 'A review whose score reaches this is marked spam. Example: 5 (one strong signal like a blocked word).', 'advery-reviews' ) }
 						value={ as.spam_threshold }
 						onChange={ ( v ) => setAs( { spam_threshold: parseInt( v, 10 ) || 1 } ) }
 						__nextHasNoMarginBottom
@@ -291,6 +312,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<hr />
 					<SelectControl
 						label={ __( 'CAPTCHA provider', 'advery-reviews' ) }
+						help={ __( 'Optional extra check on the form. hCaptcha and Cloudflare Turnstile are free and privacy-friendly; reCAPTCHA is Google’s. Get the keys from the provider’s dashboard. Not required — the other layers already protect you.', 'advery-reviews' ) }
 						value={ as.captcha_provider }
 						options={ [
 							{ label: __( 'None', 'advery-reviews' ), value: 'none' },
@@ -306,12 +328,14 @@ export default function SettingsPanel( { boot, notify } ) {
 						<>
 							<TextControl
 								label={ __( 'Site key', 'advery-reviews' ) }
+								help={ __( 'The public key from your CAPTCHA dashboard (shown on the form).', 'advery-reviews' ) }
 								value={ as.captcha_site_key }
 								onChange={ ( v ) => setAs( { captcha_site_key: v } ) }
 								__nextHasNoMarginBottom
 							/>
 							<TextControl
 								label={ __( 'Secret key', 'advery-reviews' ) }
+								help={ __( 'The private/secret key from the same dashboard (used server-side; never shown to visitors).', 'advery-reviews' ) }
 								value={ as.captcha_secret_key }
 								onChange={ ( v ) => setAs( { captcha_secret_key: v } ) }
 								__nextHasNoMarginBottom
@@ -321,6 +345,7 @@ export default function SettingsPanel( { boot, notify } ) {
 									type="number"
 									step="0.1"
 									label={ __( 'reCAPTCHA v3 score threshold (0–1)', 'advery-reviews' ) }
+									help={ __( 'reCAPTCHA v3 scores each visitor 0 (bot) to 1 (human). Reject below this. Example: 0.5.', 'advery-reviews' ) }
 									value={ as.captcha_threshold }
 									onChange={ ( v ) => setAs( { captcha_threshold: parseFloat( v ) || 0 } ) }
 									__nextHasNoMarginBottom
@@ -330,6 +355,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					) }
 					<ToggleControl
 						label={ __( 'Use Akismet as an extra signal (if configured)', 'advery-reviews' ) }
+						help={ __( 'If the Akismet plugin is installed and has an API key, its verdict is used as one more spam signal.', 'advery-reviews' ) }
 						checked={ !! as.akismet_enabled }
 						onChange={ ( v ) => setAs( { akismet_enabled: v } ) }
 						__nextHasNoMarginBottom
@@ -339,7 +365,7 @@ export default function SettingsPanel( { boot, notify } ) {
 				<PanelBody title={ __( 'Display', 'advery-reviews' ) } initialOpen={ false }>
 					<ToggleControl
 						label={ __( 'Automatically append to content', 'advery-reviews' ) }
-						help={ __( 'Add the reviews widget after the content of enabled post types. Or use the [advery_reviews] shortcode.', 'advery-reviews' ) }
+						help={ __( 'On: the reviews widget is added after the content of enabled post types automatically. Off: place it yourself with the [advery_reviews] shortcode or the “Advery Reviews” block/Elementor widget.', 'advery-reviews' ) }
 						checked={ !! s.auto_append }
 						onChange={ ( v ) => set( { auto_append: v } ) }
 						__nextHasNoMarginBottom
@@ -347,13 +373,14 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Reviews shown per page', 'advery-reviews' ) }
+						help={ __( 'How many reviews load at once. Example: 10. With “Load more”/pagination below, the rest load on demand.', 'advery-reviews' ) }
 						value={ s.reviews_per_page }
 						onChange={ ( v ) => set( { reviews_per_page: parseInt( v, 10 ) || 10 } ) }
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
 						label={ __( 'Loading mode', 'advery-reviews' ) }
-						help={ __( 'The page URL never changes and the first page is server-rendered, so SEO is unaffected.', 'advery-reviews' ) }
+						help={ __( 'All = show everything at once. Load more = a button fetches the next batch. Pagination = numbered pages. In every mode the page URL never changes and the first page is server-rendered, so SEO is unaffected.', 'advery-reviews' ) }
 						value={ s.load_mode }
 						options={ [
 							{ label: __( 'All on one page', 'advery-reviews' ), value: 'all' },
@@ -365,7 +392,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					/>
 					<ToggleControl
 						label={ __( 'Replace the theme’s native comments with reviews', 'advery-reviews' ) }
-						help={ __( 'Takes over the comments area on enabled post types — no theme editing or page builder required.', 'advery-reviews' ) }
+						help={ __( 'Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over (they keep their own reviews tab).', 'advery-reviews' ) }
 						checked={ !! s.replace_comments }
 						onChange={ ( v ) => set( { replace_comments: v } ) }
 						__nextHasNoMarginBottom
@@ -373,9 +400,10 @@ export default function SettingsPanel( { boot, notify } ) {
 				</PanelBody>
 
 				<PanelBody title={ __( 'AI (replies, moderation, translate)', 'advery-reviews' ) } initialOpen={ false }>
-					<p className="advery-rv-hint">{ __( 'AI works on REAL reviews only — drafting owner replies, assisting moderation, translating and summarizing. It never generates fake reviews.', 'advery-reviews' ) }</p>
+					<p className="advery-rv-hint">{ __( 'AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews. Add a provider + key, then use the “Reply” and “AI check” buttons on the Reviews tab.', 'advery-reviews' ) }</p>
 					<SelectControl
 						label={ __( 'Provider', 'advery-reviews' ) }
+						help={ __( 'Your AI vendor. Anthropic, OpenAI and Gemini need an API key; OpenRouter is a multi-model gateway; Ollama runs locally with no key.', 'advery-reviews' ) }
 						value={ ai.provider }
 						options={ [
 							{ label: 'Anthropic (Claude)', value: 'anthropic' },
@@ -390,19 +418,21 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="password"
 						label={ __( 'API key', 'advery-reviews' ) }
-						help={ ai.provider === 'ollama' ? __( 'Not required for Ollama.', 'advery-reviews' ) : '' }
+						help={ ai.provider === 'ollama' ? __( 'Not required for Ollama.', 'advery-reviews' ) : __( 'Paste the secret key from your provider’s dashboard. Stored on your server only, never shown to visitors.', 'advery-reviews' ) }
 						value={ ai.api_key }
 						onChange={ ( v ) => setAi( { api_key: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<TextControl
 						label={ __( 'Model (blank = provider default)', 'advery-reviews' ) }
+						help={ __( 'Example: claude-sonnet-4-5, gpt-4o-mini, gemini-1.5-flash, llama3.1. Leave blank to use the provider’s default.', 'advery-reviews' ) }
 						value={ ai.model }
 						onChange={ ( v ) => setAi( { model: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<TextControl
 						label={ __( 'Base URL (optional override)', 'advery-reviews' ) }
+						help={ __( 'Only for self-hosted or proxy endpoints. Example (Ollama): http://localhost:11434/v1. Leave blank for the normal cloud APIs.', 'advery-reviews' ) }
 						value={ ai.base_url }
 						onChange={ ( v ) => setAi( { base_url: v } ) }
 						__nextHasNoMarginBottom
@@ -410,13 +440,14 @@ export default function SettingsPanel( { boot, notify } ) {
 					<TextControl
 						type="number"
 						label={ __( 'Daily call limit (0 = unlimited)', 'advery-reviews' ) }
+						help={ __( 'Caps AI cost. Example: 200 AI calls per day; 0 = no limit.', 'advery-reviews' ) }
 						value={ ai.daily_cap }
 						onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) }
 						__nextHasNoMarginBottom
 					/>
 					<TextareaControl
 						label={ __( 'About your business (context for replies)', 'advery-reviews' ) }
-						help={ __( 'Optional. A short description of who you are, used when drafting replies for your own products/services.', 'advery-reviews' ) }
+						help={ __( 'Optional. A short description of who you are and what you offer, so replies to your own products/services are accurate. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.”', 'advery-reviews' ) }
 						rows={ 3 }
 						value={ ai.business_context || '' }
 						onChange={ ( v ) => setAi( { business_context: v } ) }
@@ -424,7 +455,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					/>
 					<div style={ { borderTop: '1px solid #eee', paddingTop: 8, marginTop: 8 } }>
 						<strong>{ __( 'Reply voice per content type', 'advery-reviews' ) }</strong>
-						<p className="advery-rv-hint">{ __( 'For a directory of third-party businesses, mark the listing type below — replies will speak as the platform, never on the business’s behalf. Leave off for your own products/services.', 'advery-reviews' ) }</p>
+						<p className="advery-rv-hint">{ __( 'If a content type is a DIRECTORY of other businesses (you are not the business), tick it below — AI replies then speak as the platform and never on the business’s behalf. Leave it OFF for your own products/services, where AI replies as you.', 'advery-reviews' ) }</p>
 						{ ( boot.postTypes || [] ).map( ( pt ) => (
 							<CheckboxControl
 								key={ pt.slug }
@@ -435,6 +466,7 @@ export default function SettingsPanel( { boot, notify } ) {
 							/>
 						) ) }
 					</div>
+					<p className="advery-rv-hint" style={ { marginTop: 10 } }>{ __( 'Turn each task on/off and, if you like, replace its prompt. The greyed placeholder is the built-in default that’s used when you leave the box empty.', 'advery-reviews' ) }</p>
 					{ [
 						[ 'reply', __( 'Reply drafting', 'advery-reviews' ) ],
 						[ 'moderate', __( 'Moderation assist', 'advery-reviews' ) ],
@@ -462,6 +494,7 @@ export default function SettingsPanel( { boot, notify } ) {
 						<Button variant="secondary" isBusy={ aiTest && aiTest.busy } onClick={ runAiTest }>
 							{ __( 'Save, then test the connection', 'advery-reviews' ) }
 						</Button>
+						<p className="advery-rv-hint">{ __( 'Click Save settings first, then this button drafts a sample reply to confirm your key and model work.', 'advery-reviews' ) }</p>
 					</div>
 					{ aiTest && ! aiTest.busy && (
 						<Notice status={ aiTest.ok ? 'success' : 'error' } isDismissible onRemove={ () => setAiTest( null ) }>
@@ -473,7 +506,7 @@ export default function SettingsPanel( { boot, notify } ) {
 				<PanelBody title={ __( 'Custom CSS', 'advery-reviews' ) } initialOpen={ false }>
 					<TextareaControl
 						label={ __( 'Custom CSS', 'advery-reviews' ) }
-						help={ __( 'Printed wherever the reviews widget renders. Style any .advery-reviews__* class.', 'advery-reviews' ) }
+						help={ __( 'Optional styling, printed wherever the widget shows. Target any .advery-reviews__* class. Example: .advery-reviews__stars { color: #e11; }', 'advery-reviews' ) }
 						value={ s.custom_css }
 						rows={ 8 }
 						onChange={ ( v ) => set( { custom_css: v } ) }
@@ -482,7 +515,7 @@ export default function SettingsPanel( { boot, notify } ) {
 				</PanelBody>
 
 				<PanelBody title={ __( 'Maintenance', 'advery-reviews' ) } initialOpen={ false }>
-					<p className="advery-rv-hint">{ __( 'Remove reviews whose post/term was deleted, and optimize the tables.', 'advery-reviews' ) }</p>
+					<p className="advery-rv-hint">{ __( 'Reviews are removed automatically when their post/term is deleted. Use these if you migrated data or want to tidy up: “Purge” removes reviews whose target no longer exists; “Optimize” compacts the database tables.', 'advery-reviews' ) }</p>
 					<Button variant="secondary" isBusy={ busy === 'purge' } disabled={ !! busy } onClick={ () => maintenance( 'purge' ) }>
 						{ __( 'Purge orphaned reviews', 'advery-reviews' ) }
 					</Button>
@@ -496,6 +529,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					<p className="advery-rv-hint">{ __( 'Outputs star-rating structured data so Google can show rating stars in search results. Works with or without the Advery Schema Plus plugin — your choice below.', 'advery-reviews' ) }</p>
 					<ToggleControl
 						label={ __( 'Enable rating/review schema', 'advery-reviews' ) }
+						help={ __( 'Master switch for the JSON-LD output described below.', 'advery-reviews' ) }
 						checked={ !! s.schema_output }
 						onChange={ ( v ) => set( { schema_output: v } ) }
 						__nextHasNoMarginBottom
@@ -536,6 +570,7 @@ export default function SettingsPanel( { boot, notify } ) {
 					{ boot.wooActive && (
 						<ToggleControl
 							label={ __( 'Merge WooCommerce native ratings into the aggregate', 'advery-reviews' ) }
+							help={ __( 'Combines your collected product reviews with WooCommerce’s own ratings into one aggregateRating in Woo’s product schema (instead of a competing block).', 'advery-reviews' ) }
 							checked={ !! s.woo_merge_native }
 							onChange={ ( v ) => set( { woo_merge_native: v } ) }
 							__nextHasNoMarginBottom
@@ -546,18 +581,21 @@ export default function SettingsPanel( { boot, notify } ) {
 				<PanelBody title={ __( 'Email reports', 'advery-reviews' ) } initialOpen={ false }>
 					<ToggleControl
 						label={ __( 'Email me instantly on each new review', 'advery-reviews' ) }
+						help={ __( 'Sends a notification the moment a review is submitted (spam is not emailed).', 'advery-reviews' ) }
 						checked={ !! s.email_instant }
 						onChange={ ( v ) => set( { email_instant: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<TextControl
 						label={ __( 'Recipient email (blank = site admin)', 'advery-reviews' ) }
+						help={ __( 'Where notifications and digests go. Example: reviews@yoursite.com. Blank uses your WordPress admin email.', 'advery-reviews' ) }
 						value={ s.email_recipient }
 						onChange={ ( v ) => set( { email_recipient: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
 						label={ __( 'Digest email', 'advery-reviews' ) }
+						help={ __( 'An optional summary of new reviews and current counts, sent on a schedule (via WP-Cron).', 'advery-reviews' ) }
 						value={ s.digest_frequency }
 						options={ [
 							{ label: __( 'Off', 'advery-reviews' ), value: 'off' },
