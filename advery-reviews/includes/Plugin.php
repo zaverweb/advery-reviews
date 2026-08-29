@@ -13,6 +13,7 @@ use Advery\Reviews\Email\Notifier;
 use Advery\Reviews\Email\Digest;
 use Advery\Reviews\Admin\AdminPage;
 use Advery\Reviews\Admin\DashboardWidget;
+use Advery\Reviews\Admin\PostMetabox;
 use Advery\Reviews\Rest\RestController;
 use Advery\Reviews\Database\Installer;
 
@@ -71,6 +72,9 @@ class Plugin {
 
 			$widget = new DashboardWidget();
 			add_action( 'wp_dashboard_setup', [ $widget, 'register' ] );
+
+			// Reviews box on the post/product edit screen.
+			( new PostMetabox() )->register();
 		}
 	}
 }

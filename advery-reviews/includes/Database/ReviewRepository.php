@@ -208,6 +208,10 @@ class ReviewRepository {
 			$where[]  = 'object_type = %s';
 			$params[] = $args['object_type'];
 		}
+		if ( ! empty( $args['object_id'] ) ) {
+			$where[]  = 'object_id = %d';
+			$params[] = (int) $args['object_id'];
+		}
 		if ( ! empty( $args['rating'] ) ) {
 			$where[]  = 'rating = %d';
 			$params[] = (int) $args['rating'];

@@ -3,6 +3,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import {
 	Button,
 	SearchControl,
+	SelectControl,
 	Spinner,
 	CheckboxControl,
 	TextareaControl,
@@ -25,6 +26,7 @@ function stars( n ) {
 export default function ReviewsList( { counts, setCounts, notify } ) {
 	const [ status, setStatus ] = useState( '' );
 	const [ search, setSearch ] = useState( '' );
+	const [ objectType, setObjectType ] = useState( '' );
 	const [ page, setPage ] = useState( 1 );
 	const [ data, setData ] = useState( { items: [], total: 0 } );
 	const [ loading, setLoading ] = useState( false );
@@ -37,7 +39,7 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 	const load = useCallback( async () => {
 		setLoading( true );
 		try {
-			const res = await api.listReviews( { status, search, page, per_page: perPage } );
+			const res = await api.listReviews( { status, search, object_type: objectType, page, per_page: perPage } );
 			setData( res );
 			if ( res.counts ) {
 				setCounts( res.counts );
@@ -48,7 +50,7 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 		} finally {
 			setLoading( false );
 		}
-	}, [ status, search, page, setCounts, notify ] );
+	}, [ status, search, objectType, page, setCounts, notify ] );
 
 	useEffect( () => {
 		load();
@@ -144,7 +146,21 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 						</button>
 					) ) }
 				</div>
-				<div className="advery-rv-search">
+				<div className="advery-rv-filters">
+					<SelectControl
+						value={ objectType }
+						options={ [
+							{ label: __( 'All types', 'advery-reviews' ), value: '' },
+							{ label: __( 'Posts', 'advery-reviews' ), value: 'post' },
+							{ label: __( 'Products', 'advery-reviews' ), value: 'product' },
+							{ label: __( 'Terms', 'advery-reviews' ), value: 'term' },
+						] }
+						onChange={ ( v ) => {
+							setObjectType( v );
+							setPage( 1 );
+						} }
+						__nextHasNoMarginBottom
+					/>
 					<SearchControl
 						value={ search }
 						onChange={ ( v ) => {

@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.14.0 (Filter by type + per-post reviews metabox)
+- **Backlog item 3/7.** The admin review list gains a **type filter** (All / Posts / Products / Terms) next to search — so you can separate product reviews from blog/business reviews at a glance. The list query now also supports filtering by a specific object id.
+- **A “Advery Reviews” metabox on the post/product edit screen** shows that item’s reviews and lets you **add a review under any name**, and **approve / mark pending / spam / trash / delete** each one right there — no leaving the editor. It’s a lightweight vanilla-JS box (the heavy React admin bundle isn’t loaded on edit screens) talking to the REST API. New admin-only `POST /reviews` endpoint creates a review directly, bypassing the public spam checks (an authenticated manager is trusted) and never emailing.
+- **Verified live:** admin-create works, the list filters correctly by object, and the metabox registers on enabled post types.
+
 ### Version 0.13.1 (UI fixes)
 - **Header stat tiles are readable again.** They became clickable links in 0.13.0 and inherited the blue link colour on the blue header; forced back to white text.
 - **Settings inputs no longer stretch full width** — text/select fields are capped (~380px), numbers narrower (~130px), textareas (~560px), so the forms look tidy.

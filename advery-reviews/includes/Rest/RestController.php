@@ -64,9 +64,16 @@ class RestController {
 			$ns,
 			'/reviews',
 			[
-				'methods'             => 'GET',
-				'callback'            => [ $this, 'list_reviews' ],
-				'permission_callback' => [ $this, 'can_manage' ],
+				[
+					'methods'             => 'GET',
+					'callback'            => [ $this, 'list_reviews' ],
+					'permission_callback' => [ $this, 'can_manage' ],
+				],
+				[
+					'methods'             => 'POST',
+					'callback'            => [ $this, 'admin_create' ],
+					'permission_callback' => [ $this, 'can_manage' ],
+				],
 			]
 		);
 		register_rest_route(
@@ -390,6 +397,7 @@ class RestController {
 			[
 				'status'      => sanitize_key( (string) $req->get_param( 'status' ) ),
 				'object_type' => sanitize_key( (string) $req->get_param( 'object_type' ) ),
+				'object_id'   => (int) $req->get_param( 'object_id' ),
 				'rating'      => (int) $req->get_param( 'rating' ),
 				'search'      => sanitize_text_field( (string) $req->get_param( 'search' ) ),
 				'per_page'    => (int) ( $req->get_param( 'per_page' ) ?: 20 ),
@@ -403,6 +411,47 @@ class RestController {
 		$result['counts'] = ReviewRepository::status_counts();
 
 		return new WP_REST_Response( $result, 200 );
+	}
+
+	/**
+	 * Admin-added review (from the post metabox or the panel). Skips the public
+	 * spam checks — an authenticated manager is trusted — and never emails.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function admin_create( WP_REST_Request $req ) {
+		$object_type = sanitize_key( (string) $req->get_param( 'object_type' ) );
+		$object_id   = (int) $req->get_param( 'object_id' );
+		if ( ! in_array( $object_type, [ 'post', 'product', 'term' ], true ) || $object_id <= 0 ) {
+			return new WP_Error( 'advery_reviews_target', __( 'Invalid target.', 'advery-reviews' ), [ 'status' => 400 ] );
+		}
+
+		$content = \Advery\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'content' ), 20000 );
+		if ( '' === $content ) {
+			return new WP_Error( 'advery_reviews_content', __( 'Please write the review.', 'advery-reviews' ), [ 'status' => 400 ] );
+		}
+		$status = in_array( ( $req->get_param( 'status' ) ?? '' ), ReviewRepository::STATUSES, true ) ? $req->get_param( 'status' ) : 'approved';
+
+		$id = ReviewRepository::create(
+			[
+				'object_type'  => $object_type,
+				'object_id'    => $object_id,
+				'rating'       => max( 0, min( 5, (int) $req->get_param( 'rating' ) ) ),
+				'author_name'  => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 ),
+				'author_email' => \Advery\Reviews\Support\Sanitizer::email( (string) $req->get_param( 'author_email' ) ),
+				'title'        => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'title' ), 200 ),
+				'content'      => $content,
+				'status'       => $status,
+				'created_at'   => $req->get_param( 'created_at' ) ? gmdate( 'Y-m-d H:i:s', (int) strtotime( (string) $req->get_param( 'created_at' ) ) ) : '',
+				'meta'         => [ 'added_by' => 'admin' ],
+			]
+		);
+
+		if ( ! $id ) {
+			return new WP_Error( 'advery_reviews_failed', __( 'Could not save.', 'advery-reviews' ), [ 'status' => 500 ] );
+		}
+		return new WP_REST_Response( [ 'ok' => true, 'id' => $id, 'counts' => ReviewRepository::status_counts() ], 201 );
 	}
 
 	public function update_status( WP_REST_Request $req ) {

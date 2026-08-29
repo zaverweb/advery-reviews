@@ -127,6 +127,8 @@
 .advery-rv-tab__count { background: rgba( 0, 0, 0, 0.10 ); border-radius: 999px; padding: 0 7px; font-size: 11px; line-height: 18px; }
 .advery-rv-tab.is-active .advery-rv-tab__count { background: rgba( 255, 255, 255, 0.25 ); }
 .advery-rv-search { min-width: 230px; }
+.advery-rv-filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.advery-rv-filters .components-select-control__input { min-width: 130px; }
 
 .advery-rv-bulk {
 	display: flex;
