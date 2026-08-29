@@ -297,7 +297,14 @@ class RestController {
 		} elseif ( 'hold' === $guard['outcome'] ) {
 			$status = 'pending';
 		} else {
-			$status = 'auto' === Settings::get( 'moderation' ) ? 'approved' : 'pending';
+			$mode = Settings::get( 'moderation' );
+			if ( 'auto' === $mode ) {
+				$status = 'approved';
+			} elseif ( 'ai' === $mode ) {
+				$status = $this->ai_moderation_status( $object_type, $object_id, $rating, $author_name, $content );
+			} else {
+				$status = 'pending';
+			}
 		}
 
 		$id = ReviewRepository::create(
@@ -584,6 +591,36 @@ class RestController {
 		return new WP_REST_Response( $result, 200 );
 	}
 
+	/**
+	 * AI-assisted moderation decision at submit time (moderation = 'ai').
+	 * Falls back to 'pending' (hold) whenever AI is unavailable, so a review is
+	 * never silently auto-published on an AI error.
+	 *
+	 * @return string 'approved' | 'pending' | 'spam'
+	 */
+	private function ai_moderation_status( $object_type, $object_id, $rating, $author_name, $content ) {
+		$out = AIClient::run(
+			'moderate',
+			[
+				'business' => Targets::label( $object_type, $object_id ),
+				'rating'   => $rating,
+				'author'   => $author_name,
+				'content'  => $content,
+			]
+		);
+		if ( is_wp_error( $out ) ) {
+			return 'pending';
+		}
+		$verdict = AIClient::moderation_verdict( $out );
+		if ( 'approve' === $verdict ) {
+			return 'approved';
+		}
+		if ( 'spam' === $verdict ) {
+			return 'spam';
+		}
+		return 'pending';
+	}
+
 	/* ---------------- AI ---------------- */
 
 	/**
@@ -707,7 +744,7 @@ class RestController {
 			'enabled_taxonomies' => array_values( array_filter( $taxes ) ),
 			'woo_enabled'        => ! empty( $in['woo_enabled'] ),
 			'who_can_submit'     => in_array( ( $in['who_can_submit'] ?? '' ), [ 'anyone', 'logged_in' ], true ) ? $in['who_can_submit'] : $d['who_can_submit'],
-			'moderation'         => in_array( ( $in['moderation'] ?? '' ), [ 'manual', 'auto' ], true ) ? $in['moderation'] : $d['moderation'],
+			'moderation'         => in_array( ( $in['moderation'] ?? '' ), [ 'manual', 'auto', 'ai' ], true ) ? $in['moderation'] : $d['moderation'],
 			'one_per_user'       => ! empty( $in['one_per_user'] ),
 			'rating_required'    => ! empty( $in['rating_required'] ),
 			'min_content_length' => max( 0, (int) ( $in['min_content_length'] ?? 0 ) ),

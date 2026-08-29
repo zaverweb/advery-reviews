@@ -12,6 +12,10 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.15.0 (AI-assisted approval + DB indexes for pagination)
+- **Backlog item 4/7.** Moderation now has a third mode, **AI-assisted approval**, alongside manual (the default hold) and auto. In AI mode each new review is classified by the AI as approve / needs-review / spam and filed accordingly. It **fails safe**: on any AI error (unconfigured, over the daily cap, network) the review falls back to **Pending** — it is never auto-published by mistake. Verified live (unconfigured → Pending).
+- **Pagination/query indexes.** Added composite indexes `(status, created_at)` and `(object_type, object_id, status, created_at)` (DB → 1.4.0) so the admin’s status-filtered, newest-first pagination and the front-end’s per-item approved list are fully index-served (no filesort). Confirmed with `EXPLAIN` that the new indexes are used. (The listing was already efficient — prepared statements, `LIMIT/OFFSET`, and an O(1) aggregate cache so the front end never runs `COUNT`/`AVG` per page; this makes the admin side scale cleanly too.)
+
 ### Version 0.14.0 (Filter by type + per-post reviews metabox)
 - **Backlog item 3/7.** The admin review list gains a **type filter** (All / Posts / Products / Terms) next to search — so you can separate product reviews from blog/business reviews at a glance. The list query now also supports filtering by a specific object id.
 - **A “Advery Reviews” metabox on the post/product edit screen** shows that item’s reviews and lets you **add a review under any name**, and **approve / mark pending / spam / trash / delete** each one right there — no leaving the editor. It’s a lightweight vanilla-JS box (the heavy React admin bundle isn’t loaded on edit screens) talking to the REST API. New admin-only `POST /reviews` endpoint creates a review directly, bypassing the public spam checks (an authenticated manager is trusted) and never emailing.

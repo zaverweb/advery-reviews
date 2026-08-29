@@ -10,7 +10,7 @@ namespace Advery\Reviews\Database;
 class Installer {
 
 	const DB_VERSION_OPTION = 'advery_reviews_db_version';
-	const DB_VERSION        = '1.3.0';
+	const DB_VERSION        = '1.4.0';
 
 	public static function reviews_table() {
 		global $wpdb;
@@ -51,7 +51,9 @@ class Installer {
 			KEY status (status),
 			KEY created (created_at),
 			KEY author_user_id (author_user_id),
-			KEY external (external_source, external_id)
+			KEY external (external_source, external_id),
+			KEY status_created (status, created_at),
+			KEY obj_status_created (object_type, object_id, status, created_at)
 		) {$charset_collate};";
 
 		$sql_stats = "CREATE TABLE {$stats} (
