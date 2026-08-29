@@ -12,6 +12,9 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.12.0 (Polished, app-like admin design)
+- **A refined visual pass on the whole admin** so it feels like a smooth, purpose-built app rather than a bare settings screen: a soft page palette, generous padding, rounded **card surfaces** with gentle shadows, a gradient header, colour-coded review cards (approved/pending/spam left-accent), avatar initials, pill filters, and clearly-styled reply editors and buttons. Settings/Migration `PanelBody` sections are now soft cards that lift when opened. **Fully responsive** (stacks cleanly on mobile). Verified the design in a rendered preview.
+
 ### Version 0.11.0 (Inline help + examples on every setting)
 - **Backlog item 2/7.** Because the plugin has few installs and no online tutorials, **every option in Settings now carries a clear description and a concrete example** so an operator can configure it correctly without guessing: who-can-submit, moderation, one-per-user, rating-required; all anti-spam controls (timing, link limit + action, min/max characters, name cap, blocklists with a regex example, disposable-email, duplicate, trusted, rate-limit window/max/day, hold/spam thresholds, every CAPTCHA field, Akismet); display (auto-append, per-page, loading mode, comment replacement); AI (provider, key, model, base URL, daily cap, business context, per-type reply voice, per-task prompts, test); custom CSS; maintenance; schema; and email reports. No behaviour change — documentation only.
 
