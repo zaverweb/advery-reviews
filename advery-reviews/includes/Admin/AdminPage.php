@@ -5,13 +5,16 @@ use Advery\Reviews\Database\Installer;
 use Advery\Reviews\Database\ReviewRepository;
 
 /**
- * The top-level "Advery Reviews" admin menu (with a pending-count badge, like
- * core Comments) hosting the React moderation panel. PHP prints a root node and
- * enqueues the built bundle + a small config object; the app does the rest.
+ * The "Advery Reviews" admin menu with three focused sub-pages — Reviews,
+ * Settings and Migration — each its own screen so nothing is one giant scroll.
+ * PHP prints a root node tagged with which screen to show and enqueues the
+ * built React bundle; the app renders the rest.
  */
 class AdminPage {
 
-	const MENU_SLUG = 'advery-reviews';
+	const MENU_SLUG      = 'advery-reviews';
+	const SETTINGS_SLUG  = 'advery-reviews-settings';
+	const MIGRATION_SLUG = 'advery-reviews-migration';
 
 	public function register_menu() {
 		$pending = ReviewRepository::status_counts()['pending'] ?? 0;
@@ -30,9 +33,45 @@ class AdminPage {
 			$menu,
 			'manage_options',
 			self::MENU_SLUG,
-			[ $this, 'render_root' ],
+			function () {
+				$this->render_root( 'reviews' );
+			},
 			'dashicons-star-filled',
 			26
+		);
+
+		// Rename the auto-created first submenu item to "All Reviews".
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'All Reviews', 'advery-reviews' ),
+			__( 'All Reviews', 'advery-reviews' ),
+			'manage_options',
+			self::MENU_SLUG,
+			function () {
+				$this->render_root( 'reviews' );
+			}
+		);
+
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Settings', 'advery-reviews' ),
+			__( 'Settings', 'advery-reviews' ),
+			'manage_options',
+			self::SETTINGS_SLUG,
+			function () {
+				$this->render_root( 'settings' );
+			}
+		);
+
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Migration', 'advery-reviews' ),
+			__( 'Migration', 'advery-reviews' ),
+			'manage_options',
+			self::MIGRATION_SLUG,
+			function () {
+				$this->render_root( 'migration' );
+			}
 		);
 	}
 
@@ -41,7 +80,8 @@ class AdminPage {
 	}
 
 	public function enqueue( $hook ) {
-		if ( 'toplevel_page_' . self::MENU_SLUG !== $hook ) {
+		// Load on any of our three screens (top-level + the two submenus).
+		if ( false === strpos( (string) $hook, self::MENU_SLUG ) ) {
 			return;
 		}
 
@@ -66,15 +106,22 @@ class AdminPage {
 			'advery-reviews-admin',
 			'AdveryReviewsConfig',
 			[
-				'restUrl' => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'restUrl'   => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
+				'nonce'     => wp_create_nonce( 'wp_rest' ),
+				'menuSlug'  => self::MENU_SLUG,
+				'settingsUrl'  => esc_url_raw( admin_url( 'admin.php?page=' . self::SETTINGS_SLUG ) ),
+				'migrationUrl' => esc_url_raw( admin_url( 'admin.php?page=' . self::MIGRATION_SLUG ) ),
+				'reviewsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::MENU_SLUG ) ),
 			]
 		);
 
 		wp_set_script_translations( 'advery-reviews-admin', 'advery-reviews', ADVERY_REVIEWS_PATH . 'languages' );
 	}
 
-	public function render_root() {
-		echo '<div class="wrap"><div id="advery-reviews-root"></div></div>';
+	/**
+	 * @param string $screen 'reviews' | 'settings' | 'migration'
+	 */
+	public function render_root( $screen ) {
+		printf( '<div class="wrap"><div id="advery-reviews-root" data-screen="%s"></div></div>', esc_attr( $screen ) );
 	}
 }

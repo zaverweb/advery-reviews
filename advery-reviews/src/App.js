@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Spinner, Notice, TabPanel } from '@wordpress/components';
+import { Spinner, Notice } from '@wordpress/components';
 import { api } from './api';
 import ReviewsList from './views/ReviewsList';
 import SettingsPanel from './views/SettingsPanel';
 import MigrationPanel from './views/MigrationPanel';
 
-export default function App() {
+const cfg = window.AdveryReviewsConfig || {};
+
+export default function App( { screen = 'reviews' } ) {
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ boot, setBoot ] = useState( null );
@@ -60,6 +62,18 @@ export default function App() {
 		{ key: 'total', label: __( 'Total', 'advery-reviews' ), value: total, tone: 'blue' },
 	];
 
+	const nav = [
+		{ key: 'reviews', label: __( 'Reviews', 'advery-reviews' ), href: cfg.reviewsUrl },
+		{ key: 'settings', label: __( 'Settings', 'advery-reviews' ), href: cfg.settingsUrl },
+		{ key: 'migration', label: __( 'Migration', 'advery-reviews' ), href: cfg.migrationUrl },
+	];
+
+	const titles = {
+		reviews: __( 'Moderate and reply to reviews', 'advery-reviews' ),
+		settings: __( 'Configure how reviews work', 'advery-reviews' ),
+		migration: __( 'Import, export and migrate reviews', 'advery-reviews' ),
+	};
+
 	return (
 		<div className="advery-rv">
 			<header className="advery-rv__head">
@@ -67,18 +81,26 @@ export default function App() {
 					<span className="advery-rv__logo" aria-hidden="true">★</span>
 					<div>
 						<h1 className="advery-rv__title">{ __( 'Advery Reviews', 'advery-reviews' ) }</h1>
-						<p className="advery-rv__sub">{ __( 'Ratings, moderation, replies and migration', 'advery-reviews' ) }</p>
+						<p className="advery-rv__sub">{ titles[ screen ] || '' }</p>
 					</div>
 				</div>
 				<div className="advery-rv__tiles">
 					{ tiles.map( ( t ) => (
-						<div key={ t.key } className={ 'advery-rv__tile is-' + t.tone }>
+						<a key={ t.key } className={ 'advery-rv__tile is-' + t.tone } href={ cfg.reviewsUrl || '#' }>
 							<span className="advery-rv__tile-value">{ t.value }</span>
 							<span className="advery-rv__tile-label">{ t.label }</span>
-						</div>
+						</a>
 					) ) }
 				</div>
 			</header>
+
+			<nav className="advery-rv__nav">
+				{ nav.map( ( n ) => (
+					<a key={ n.key } href={ n.href || '#' } className={ 'advery-rv__navlink' + ( screen === n.key ? ' is-active' : '' ) }>
+						{ n.label }
+					</a>
+				) ) }
+			</nav>
 
 			{ flash && (
 				<Notice status={ flash.status } isDismissible onRemove={ () => setFlash( null ) }>
@@ -86,24 +108,11 @@ export default function App() {
 				</Notice>
 			) }
 
-			<TabPanel
-				className="advery-rv__tabs"
-				tabs={ [
-					{ name: 'reviews', title: __( 'Reviews', 'advery-reviews' ) },
-					{ name: 'settings', title: __( 'Settings', 'advery-reviews' ) },
-					{ name: 'migration', title: __( 'Migration', 'advery-reviews' ) },
-				] }
-			>
-				{ ( tab ) => {
-					if ( tab.name === 'reviews' ) {
-						return <ReviewsList counts={ counts } setCounts={ setCounts } notify={ notify } />;
-					}
-					if ( tab.name === 'migration' ) {
-						return <MigrationPanel boot={ boot } notify={ notify } />;
-					}
-					return <SettingsPanel boot={ boot } notify={ notify } />;
-				} }
-			</TabPanel>
+			{ screen === 'settings' && <SettingsPanel boot={ boot } notify={ notify } /> }
+			{ screen === 'migration' && <MigrationPanel boot={ boot } notify={ notify } /> }
+			{ screen === 'reviews' && (
+				<ReviewsList counts={ counts } setCounts={ setCounts } notify={ notify } />
+			) }
 		</div>
 	);
 }

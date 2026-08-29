@@ -5,6 +5,7 @@ import './style.scss';
 document.addEventListener( 'DOMContentLoaded', () => {
 	const root = document.getElementById( 'advery-reviews-root' );
 	if ( root ) {
-		createRoot( root ).render( <App /> );
+		const screen = root.getAttribute( 'data-screen' ) || 'reviews';
+		createRoot( root ).render( <App screen={ screen } /> );
 	}
 } );

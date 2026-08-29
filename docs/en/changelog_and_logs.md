@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.13.0 (Separate admin pages + sidebar settings — far less scrolling)
+- **Settings and Migration are now their own admin sub-pages** (submenus under “Reviews”), instead of tabs on one screen — cleaner navigation and no giant scroll. A slim in-app nav (Reviews / Settings / Migration) mirrors the WordPress submenu.
+- **Settings uses a sidebar + single-section layout:** a left list of sections (Collection, Submission rules, Anti-spam, Display, AI, Schema, Email, Custom CSS, Maintenance) shows **one focused section at a time** on the right — much less scrolling, better accessibility, far less clutter. Fully responsive (the sidebar wraps on top on mobile). Verified the layout in a rendered preview at both mobile and desktop widths.
+- No behaviour change to the settings themselves.
+
 ### Version 0.12.0 (Polished, app-like admin design)
 - **A refined visual pass on the whole admin** so it feels like a smooth, purpose-built app rather than a bare settings screen: a soft page palette, generous padding, rounded **card surfaces** with gentle shadows, a gradient header, colour-coded review cards (approved/pending/spam left-accent), avatar initials, pill filters, and clearly-styled reply editors and buttons. Settings/Migration `PanelBody` sections are now soft cards that lift when opened. **Fully responsive** (stacks cleanly on mobile). Verified the design in a rendered preview.
 
