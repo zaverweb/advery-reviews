@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.18.0\n"
+"Project-Id-Version: Advery Reviews 0.20.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T01:13:46+00:00\n"
+"POT-Creation-Date: 2026-08-30T14:20:44+00:00\n"
 "PO-Revision-Date: 2026-08-30 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -97,7 +97,7 @@ msgstr "مدیریتِ نظرات"
 
 #: includes/Admin/PostMetabox.php:56
 #: includes/Admin/TermMetabox.php:50
-#: includes/Frontend/Display.php:66
+#: includes/Frontend/Display.php:74
 msgid "Loading…"
 msgstr "در حالِ بارگذاری…"
 
@@ -284,25 +284,26 @@ msgstr "وضعیت: %s"
 msgid "Moderate: %s"
 msgstr "مدیریت: %s"
 
-#: includes/Frontend/Display.php:62
+#: includes/Frontend/Display.php:70
 msgid "Sending…"
 msgstr "در حالِ ارسال…"
 
-#: includes/Frontend/Display.php:63
-#: includes/Frontend/Display.php:263
+#: includes/Frontend/Display.php:71
+#: includes/Frontend/Display.php:271
+#: build/index.js:2
 msgid "Submit review"
 msgstr "ثبتِ نظر"
 
-#: includes/Frontend/Display.php:64
+#: includes/Frontend/Display.php:72
 msgid "Something went wrong. Please try again."
 msgstr "مشکلی پیش آمد. دوباره تلاش کنید."
 
-#: includes/Frontend/Display.php:65
-#: includes/Frontend/Display.php:227
+#: includes/Frontend/Display.php:73
+#: includes/Frontend/Display.php:235
 msgid "Load more reviews"
 msgstr "نمایشِ نظراتِ بیشتر"
 
-#: includes/Frontend/Display.php:67
+#: includes/Frontend/Display.php:75
 #: includes/Integrations/WooSchema.php:60
 #: includes/Schema/SchemaBridge.php:120
 #: includes/Schema/StandaloneSchema.php:94
@@ -310,46 +311,47 @@ msgid "Anonymous"
 msgstr "ناشناس"
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:195
+#: includes/Frontend/Display.php:203
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] "%d نظر"
 msgstr[1] "%d نظر"
 
-#: includes/Frontend/Display.php:217
+#: includes/Frontend/Display.php:225
 msgid "Response from the owner"
 msgstr "پاسخ از سویِ مالک"
 
-#: includes/Frontend/Display.php:230
+#: includes/Frontend/Display.php:238
 msgid "Reviews pages"
 msgstr "صفحه‌های نظرات"
 
-#: includes/Frontend/Display.php:239
+#: includes/Frontend/Display.php:247
 msgid "Write a review"
 msgstr "نوشتنِ نظر"
 
-#: includes/Frontend/Display.php:240
+#: includes/Frontend/Display.php:248
 msgid "Your rating"
 msgstr "امتیازِ شما"
 
-#: includes/Frontend/Display.php:247
+#: includes/Frontend/Display.php:255
+#: build/index.js:2
 msgid "Your name"
 msgstr "نامِ شما"
 
-#: includes/Frontend/Display.php:248
+#: includes/Frontend/Display.php:256
 msgid "Your email"
 msgstr "ایمیلِ شما"
 
-#: includes/Frontend/Display.php:250
+#: includes/Frontend/Display.php:258
 msgid "Title (optional)"
 msgstr "عنوان (اختیاری)"
 
-#: includes/Frontend/Display.php:251
+#: includes/Frontend/Display.php:259
 msgid "Your review"
 msgstr "نظرِ شما"
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:275
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr "برای ثبتِ نظر وارد شوید."
@@ -680,6 +682,10 @@ msgstr "ضدِ اسپم"
 #: build/index.js:2
 msgid "Display"
 msgstr "نمایش"
+
+#: build/index.js:2
+msgid "Appearance"
+msgstr "ظاهر"
 
 #: build/index.js:2
 msgid "AI"
@@ -1028,6 +1034,103 @@ msgstr "جایگزینیِ کامنت‌های بومیِ قالب با نظرا
 #: build/index.js:2
 msgid "Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over."
 msgstr "بخشِ کامنتِ پست‌تایپ‌های فعال را در دست می‌گیرد — بدونِ نیاز به ویرایشِ قالب یا صفحه‌ساز. محصولاتِ ووکامرس هرگز در دست گرفته نمی‌شوند."
+
+#: build/index.js:2
+msgid "Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color."
+msgstr "ویجتِ نظرِ فرانت را با قالبتان هماهنگ کنید. رنگ‌ها، گردیِ گوشه، فشردگی و اندازه همه به‌صورتِ زنده با CSS variables اعمال می‌شوند — بدونِ کدنویسی. یک رنگ را خالی بگذارید تا رنگِ خودِ قالب را به ارث ببرد."
+
+#: build/index.js:2
+msgid "Accent color (buttons, links)"
+msgstr "رنگِ تأکید (دکمه‌ها، لینک‌ها)"
+
+#: build/index.js:2
+msgid "Used for the submit button, “load more”, and the active page. Example: #2271b1."
+msgstr "برای دکمه‌ی ثبت، «نمایشِ بیشتر» و صفحه‌ی فعال. مثال: #2271b1."
+
+#: build/index.js:2
+msgid "Text on the accent"
+msgstr "متن روی رنگِ تأکید"
+
+#: build/index.js:2
+msgid "The text/icon color shown on top of the accent color. Usually white."
+msgstr "رنگِ متن/آیکون روی رنگِ تأکید. معمولاً سفید."
+
+#: build/index.js:2
+msgid "Star color"
+msgstr "رنگِ ستاره"
+
+#: build/index.js:2
+msgid "The rating stars. Example: #f5a623."
+msgstr "ستاره‌های امتیاز. مثال: #f5a623."
+
+#: build/index.js:2
+msgid "Text color (blank = theme)"
+msgstr "رنگِ متن (خالی = قالب)"
+
+#: build/index.js:2
+msgid "Body text of reviews. Leave blank to inherit your theme."
+msgstr "متنِ اصلیِ نظرها. خالی بگذارید تا از قالب ارث ببرد."
+
+#: build/index.js:2
+msgid "Form / card background (blank = subtle)"
+msgstr "پس‌زمینه‌ی فرم / کارت (خالی = ملایم)"
+
+#: build/index.js:2
+msgid "Background of the review form. Blank keeps a subtle default."
+msgstr "پس‌زمینه‌ی فرمِ نظر. خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
+
+#: build/index.js:2
+msgid "Border color (blank = subtle)"
+msgstr "رنگِ حاشیه (خالی = ملایم)"
+
+#: build/index.js:2
+msgid "Dividers and borders. Blank keeps a subtle default."
+msgstr "جداکننده‌ها و حاشیه‌ها. خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
+
+#: build/index.js:2
+msgid "Corner radius (px)"
+msgstr "گردیِ گوشه (پیکسل)"
+
+#: build/index.js:2
+msgid "Base font size (px)"
+msgstr "اندازه‌ی پایه‌ی فونت (پیکسل)"
+
+#: build/index.js:2
+msgid "Density"
+msgstr "فشردگی"
+
+#: build/index.js:2
+msgid "Comfortable = roomier spacing. Compact = tighter, for dense pages."
+msgstr "راحت = فاصله‌گذاریِ بازتر. فشرده = جمع‌وجورتر، برای صفحه‌های پرتراکم."
+
+#: build/index.js:2
+msgid "Comfortable"
+msgstr "راحت"
+
+#: build/index.js:2
+msgid "Compact"
+msgstr "فشرده"
+
+#: build/index.js:2
+msgid "Max width (px, 0 = full width)"
+msgstr "حداکثر عرض (پیکسل، ۰ = تمام‌عرض)"
+
+#: build/index.js:2
+msgid "Cap the widget’s width. Example: 640. Use 0 to fill the container."
+msgstr "عرضِ ویجت را محدود کنید. مثال: ۶۴۰. برای پر کردنِ کانتینر از ۰ استفاده کنید."
+
+#: build/index.js:2
+msgid "Live preview"
+msgstr "پیش‌نمایشِ زنده"
+
+#: build/index.js:2
+#, js-format
+msgid "%d reviews"
+msgstr "%d نظر"
+
+#: build/index.js:2
+msgid "Absolutely wonderful experience — the team was friendly and helpful."
+msgstr "تجربه‌ای واقعاً عالی — تیم دوستانه و کمک‌کننده بود."
 
 #: build/index.js:2
 msgid "AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews."

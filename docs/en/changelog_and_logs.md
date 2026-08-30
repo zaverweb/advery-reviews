@@ -12,6 +12,14 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.20.0 (Configurable, responsive front-end appearance — backlog item 7/7)
+- **Backlog item 7/7 — the last one.** A new **Appearance** settings section lets the owner restyle the front-end review widget to match their theme, with **no CSS**: accent color (buttons/links), text-on-accent, star color, body text, form/card background, border color, corner radius, base font size, density (comfortable/compact) and a max width. A **live preview** in the settings shows the result as you change it.
+- **Driven entirely by CSS custom properties.** `front.css` was refactored so every color, radius, spacing and size reads from an `--ar-*` variable with a sensible fallback; the settings emit a single `.advery-reviews{ … }` var block inline (before any owner custom CSS, so that still wins). Leaving a color blank inherits the theme's own color.
+- **Responsive.** The widget/form never exceed their container, the summary and review header wrap on narrow screens, and padding tightens under 600px. Density expands to concrete spacing so “compact” genuinely tightens the layout.
+- **Safe.** Colors are validated (hex / rgb(a) / keyword only) — a CSS-injection attempt like `red;}body{display:none` is rejected and falls back to the default, so the settings can never break the page.
+- **Fully translated:** the 25 new strings were added to the Persian pack (`.po`/`.mo`/JSON regenerated) — the whole Appearance UI, including the live preview, appears in Persian.
+- **Verified live** on the sample site: saving a custom theme (green accent `#0e7a54`, orange stars, 14px radius, 640px max width) restyled the widget end-to-end (computed `submitBg` = the accent, `borderRadius` = 14px, stars orange, form width 640px); the injection attempt was sanitized away; the admin section + live preview render correctly in RTL Persian. (Note: LiteSpeed page cache needed a purge + the version bump busts the asset `?ver`.)
+
 ### Version 0.19.0 (Fully standard bilingual — Persian language file)
 - **Complete i18n, the standard WordPress way.** Every user-facing string (PHP + the React admin + the vanilla-JS front end, whose strings are passed from PHP) is now translatable through the `advery-reviews` text domain, and a full **Persian (fa_IR)** translation ships with the plugin. On a Persian site the whole plugin — front-end review widget, moderation panel, reports, settings help text, emails — appears in Persian automatically; on any other locale it stays English.
 - **Language files** in `languages/`: a `.pot` template, the `fa_IR` `.po` source, the compiled `.mo` (PHP), and the `wp i18n make-json` JSON bundles that `wp_set_script_translations` loads for the React admin. **357 strings** translated.

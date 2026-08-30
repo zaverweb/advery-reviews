@@ -7,6 +7,7 @@ import {
 	SelectControl,
 	TextControl,
 	TextareaControl,
+	RangeControl,
 	Button,
 	Notice,
 } from '@wordpress/components';
@@ -24,6 +25,8 @@ export default function SettingsPanel( { boot, notify } ) {
 	const setAs = ( patch ) => set( { antispam: { ...as, ...patch } } );
 	const ai = s.ai || {};
 	const setAi = ( patch ) => set( { ai: { ...ai, ...patch } } );
+	const ap = s.appearance || {};
+	const setAp = ( patch ) => set( { appearance: { ...ap, ...patch } } );
 	const setAiTask = ( key, patch ) =>
 		set( { ai: { ...ai, tasks: { ...( ai.tasks || {} ), [ key ]: { ...( ( ai.tasks || {} )[ key ] || {} ), ...patch } } } } );
 	const aiPrompts = ( boot.ai && boot.ai.prompts ) || {};
@@ -79,6 +82,7 @@ export default function SettingsPanel( { boot, notify } ) {
 		{ key: 'submission', title: __( 'Submission rules', 'advery-reviews' ), icon: '📝' },
 		{ key: 'antispam', title: __( 'Anti-spam', 'advery-reviews' ), icon: '🛡️' },
 		{ key: 'display', title: __( 'Display', 'advery-reviews' ), icon: '🎨' },
+		{ key: 'appearance', title: __( 'Appearance', 'advery-reviews' ), icon: '🎨' },
 		{ key: 'ai', title: __( 'AI', 'advery-reviews' ), icon: '🤖' },
 		{ key: 'schema', title: __( 'Schema', 'advery-reviews' ), icon: '🔎' },
 		{ key: 'email', title: __( 'Email reports', 'advery-reviews' ), icon: '✉️' },
@@ -166,6 +170,81 @@ export default function SettingsPanel( { boot, notify } ) {
 						<ToggleControl label={ __( 'Replace the theme’s native comments with reviews', 'advery-reviews' ) } help={ __( 'Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over.', 'advery-reviews' ) } checked={ !! s.replace_comments } onChange={ ( v ) => set( { replace_comments: v } ) } __nextHasNoMarginBottom />
 					</>
 				);
+			case 'appearance': {
+				const colorRow = ( key, label, help, fallback ) => (
+					<div className="advery-rv-color">
+						<input
+							type="color"
+							className="advery-rv-color__swatch"
+							value={ /^#[0-9a-fA-F]{6}$/.test( ap[ key ] || '' ) ? ap[ key ] : fallback }
+							onChange={ ( e ) => setAp( { [ key ]: e.target.value } ) }
+							aria-label={ label }
+						/>
+						<TextControl
+							label={ label }
+							help={ help }
+							value={ ap[ key ] || '' }
+							onChange={ ( v ) => setAp( { [ key ]: v } ) }
+							__nextHasNoMarginBottom
+						/>
+					</div>
+				);
+				const density = ap.density || 'comfortable';
+				const pad = density === 'compact' ? '0.9em' : '1.2em';
+				return (
+					<>
+						<p className="advery-rv-hint">{ __( 'Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color.', 'advery-reviews' ) }</p>
+
+						{ colorRow( 'accent', __( 'Accent color (buttons, links)', 'advery-reviews' ), __( 'Used for the submit button, “load more”, and the active page. Example: #2271b1.', 'advery-reviews' ), '#2271b1' ) }
+						{ colorRow( 'accent_ink', __( 'Text on the accent', 'advery-reviews' ), __( 'The text/icon color shown on top of the accent color. Usually white.', 'advery-reviews' ), '#ffffff' ) }
+						{ colorRow( 'star', __( 'Star color', 'advery-reviews' ), __( 'The rating stars. Example: #f5a623.', 'advery-reviews' ), '#f5a623' ) }
+						{ colorRow( 'text', __( 'Text color (blank = theme)', 'advery-reviews' ), __( 'Body text of reviews. Leave blank to inherit your theme.', 'advery-reviews' ), '#1f2937' ) }
+						{ colorRow( 'surface', __( 'Form / card background (blank = subtle)', 'advery-reviews' ), __( 'Background of the review form. Blank keeps a subtle default.', 'advery-reviews' ), '#f7f8fa' ) }
+						{ colorRow( 'border', __( 'Border color (blank = subtle)', 'advery-reviews' ), __( 'Dividers and borders. Blank keeps a subtle default.', 'advery-reviews' ), '#e5e7eb' ) }
+
+						<hr />
+						<RangeControl label={ __( 'Corner radius (px)', 'advery-reviews' ) } value={ Number( ap.radius ?? 8 ) } min={ 0 } max={ 40 } onChange={ ( v ) => setAp( { radius: v } ) } __nextHasNoMarginBottom />
+						<RangeControl label={ __( 'Base font size (px)', 'advery-reviews' ) } value={ Number( ap.font_size ?? 15 ) } min={ 12 } max={ 20 } onChange={ ( v ) => setAp( { font_size: v } ) } __nextHasNoMarginBottom />
+						<RadioControl label={ __( 'Density', 'advery-reviews' ) } help={ __( 'Comfortable = roomier spacing. Compact = tighter, for dense pages.', 'advery-reviews' ) } selected={ density } options={ [ { label: __( 'Comfortable', 'advery-reviews' ), value: 'comfortable' }, { label: __( 'Compact', 'advery-reviews' ), value: 'compact' } ] } onChange={ ( v ) => setAp( { density: v } ) } />
+						<TextControl type="number" label={ __( 'Max width (px, 0 = full width)', 'advery-reviews' ) } help={ __( 'Cap the widget’s width. Example: 640. Use 0 to fill the container.', 'advery-reviews' ) } value={ ap.max_width ?? 0 } onChange={ ( v ) => setAp( { max_width: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
+
+						<hr />
+						<strong>{ __( 'Live preview', 'advery-reviews' ) }</strong>
+						<div
+							className="advery-rv-appearance-preview"
+							style={ {
+								marginTop: 10,
+								border: '1px solid ' + ( ap.border || '#e5e7eb' ),
+								background: ap.surface || '#ffffff',
+								borderRadius: ( ap.radius ?? 8 ) + 'px',
+								padding: pad,
+								color: ap.text || 'inherit',
+								fontSize: ( ap.font_size ?? 15 ) + 'px',
+								maxWidth: ap.max_width ? ap.max_width + 'px' : '100%',
+							} }
+						>
+							<div style={ { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } }>
+								<span style={ { color: ap.star || '#f5a623', letterSpacing: 1, fontSize: '1.3em' } }>★★★★★</span>
+								<strong>4.8</strong>
+								<span style={ { opacity: 0.7 } }>{ sprintf( __( '%d reviews', 'advery-reviews' ), 3 ) }</span>
+							</div>
+							<div style={ { marginBottom: 6 } }><strong>{ __( 'Your name', 'advery-reviews' ) }</strong> <span style={ { color: ap.star || '#f5a623' } }>★★★★★</span></div>
+							<p style={ { margin: '0 0 12px' } }>{ __( 'Absolutely wonderful experience — the team was friendly and helpful.', 'advery-reviews' ) }</p>
+							<button
+								type="button"
+								style={ {
+									background: ap.accent || '#2271b1',
+									color: ap.accent_ink || '#ffffff',
+									border: 'none',
+									borderRadius: ( ap.radius ?? 8 ) + 'px',
+									padding: '0.55em 1.3em',
+									cursor: 'default',
+								} }
+							>{ __( 'Submit review', 'advery-reviews' ) }</button>
+						</div>
+					</>
+				);
+			}
 			case 'ai':
 				return (
 					<>

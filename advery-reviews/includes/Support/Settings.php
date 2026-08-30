@@ -52,6 +52,9 @@ class Settings {
 			'email_recipient'    => '',        // empty → admin_email
 			'digest_frequency'   => 'off',     // 'off' | 'weekly' | 'monthly'
 
+			// Front-end widget appearance (colors / radius / density) → CSS vars.
+			'appearance'         => self::appearance_defaults(),
+
 			// Anti-spam (layered, score-based). See antispam_defaults().
 			'antispam'           => self::antispam_defaults(),
 
@@ -97,6 +100,104 @@ class Settings {
 			$ai['tasks'][ $k ] = wp_parse_args( $ai['tasks'][ $k ] ?? [], $def );
 		}
 		return $ai;
+	}
+
+	/**
+	 * Front-end widget appearance. These map 1:1 to CSS custom properties on the
+	 * `.advery-reviews` container, so the whole widget restyles from settings
+	 * without touching CSS. Empty color ⇒ the stylesheet default is kept.
+	 *
+	 * @return array
+	 */
+	public static function appearance_defaults() {
+		return [
+			'accent'       => '#2271b1', // buttons, links, active page, submit
+			'accent_ink'   => '#ffffff', // text on the accent
+			'star'         => '#f5a623', // star color
+			'text'         => '',        // body text ('' ⇒ inherit the theme)
+			'surface'      => '',        // form/card background ('' ⇒ subtle default)
+			'border'       => '',        // borders ('' ⇒ subtle default)
+			'radius'       => 8,         // corner radius, px (0–40)
+			'density'      => 'comfortable', // 'comfortable' | 'compact'
+			'font_size'    => 15,        // base font size, px (12–20)
+			'max_width'    => 0,         // widget max width, px (0 = full width)
+		];
+	}
+
+	/**
+	 * @return array Merged appearance config.
+	 */
+	public static function appearance() {
+		$stored = self::get( 'appearance', [] );
+		return wp_parse_args( is_array( $stored ) ? $stored : [], self::appearance_defaults() );
+	}
+
+	/**
+	 * Build the CSS custom-property block for the front-end widget from the
+	 * appearance settings. Density expands to concrete spacing/size vars so the
+	 * stylesheet stays purely var-driven. Only non-empty values are emitted, so
+	 * blanks fall back to the stylesheet defaults.
+	 *
+	 * @return string A `.advery-reviews{ … }` rule, or '' when all defaults.
+	 */
+	public static function appearance_css() {
+		$a    = self::appearance();
+		$vars = [];
+
+		$color = static function ( $v ) {
+			$v = trim( (string) $v );
+			// Allow #hex, rgb()/rgba(), and simple CSS color keywords only.
+			return preg_match( '/^(#[0-9a-fA-F]{3,8}|rgba?\([0-9.,\s%]+\)|[a-zA-Z]{3,20})$/', $v ) ? $v : '';
+		};
+
+		if ( $c = $color( $a['accent'] ) ) {
+			$vars['--ar-accent'] = $c;
+		}
+		if ( $c = $color( $a['accent_ink'] ) ) {
+			$vars['--ar-accent-ink'] = $c;
+		}
+		if ( $c = $color( $a['star'] ) ) {
+			$vars['--ar-star'] = $c;
+		}
+		if ( $c = $color( $a['text'] ) ) {
+			$vars['--ar-text'] = $c;
+		}
+		if ( $c = $color( $a['surface'] ) ) {
+			$vars['--ar-surface'] = $c;
+		}
+		if ( $c = $color( $a['border'] ) ) {
+			$vars['--ar-border'] = $c;
+		}
+
+		$radius = max( 0, min( 40, (int) $a['radius'] ) );
+		$vars['--ar-radius'] = $radius . 'px';
+
+		$font = max( 12, min( 20, (int) $a['font_size'] ) );
+		$vars['--ar-font-size'] = $font . 'px';
+
+		// Density → spacing vars.
+		if ( 'compact' === $a['density'] ) {
+			$vars['--ar-gap']      = '0.5em';
+			$vars['--ar-form-pad'] = '0.9em';
+		} else {
+			$vars['--ar-gap']      = '0.9em';
+			$vars['--ar-form-pad'] = '1.2em';
+		}
+
+		$mw = max( 0, min( 2000, (int) $a['max_width'] ) );
+		if ( $mw > 0 ) {
+			$vars['--ar-max-width'] = $mw . 'px';
+		}
+
+		if ( empty( $vars ) ) {
+			return '';
+		}
+
+		$decls = '';
+		foreach ( $vars as $k => $v ) {
+			$decls .= $k . ':' . $v . ';';
+		}
+		return '.advery-reviews{' . $decls . '}';
 	}
 
 	/**

@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.18.0\n"
+"Project-Id-Version: Advery Reviews 0.20.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T01:13:46+00:00\n"
+"POT-Creation-Date: 2026-08-30T14:20:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -95,7 +95,7 @@ msgstr ""
 
 #: includes/Admin/PostMetabox.php:56
 #: includes/Admin/TermMetabox.php:50
-#: includes/Frontend/Display.php:66
+#: includes/Frontend/Display.php:74
 msgid "Loading…"
 msgstr ""
 
@@ -282,25 +282,26 @@ msgstr ""
 msgid "Moderate: %s"
 msgstr ""
 
-#: includes/Frontend/Display.php:62
+#: includes/Frontend/Display.php:70
 msgid "Sending…"
 msgstr ""
 
-#: includes/Frontend/Display.php:63
-#: includes/Frontend/Display.php:263
+#: includes/Frontend/Display.php:71
+#: includes/Frontend/Display.php:271
+#: build/index.js:2
 msgid "Submit review"
 msgstr ""
 
-#: includes/Frontend/Display.php:64
+#: includes/Frontend/Display.php:72
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: includes/Frontend/Display.php:65
-#: includes/Frontend/Display.php:227
+#: includes/Frontend/Display.php:73
+#: includes/Frontend/Display.php:235
 msgid "Load more reviews"
 msgstr ""
 
-#: includes/Frontend/Display.php:67
+#: includes/Frontend/Display.php:75
 #: includes/Integrations/WooSchema.php:60
 #: includes/Schema/SchemaBridge.php:120
 #: includes/Schema/StandaloneSchema.php:94
@@ -308,46 +309,47 @@ msgid "Anonymous"
 msgstr ""
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:195
+#: includes/Frontend/Display.php:203
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Frontend/Display.php:217
+#: includes/Frontend/Display.php:225
 msgid "Response from the owner"
 msgstr ""
 
-#: includes/Frontend/Display.php:230
+#: includes/Frontend/Display.php:238
 msgid "Reviews pages"
 msgstr ""
 
-#: includes/Frontend/Display.php:239
+#: includes/Frontend/Display.php:247
 msgid "Write a review"
 msgstr ""
 
-#: includes/Frontend/Display.php:240
+#: includes/Frontend/Display.php:248
 msgid "Your rating"
 msgstr ""
 
-#: includes/Frontend/Display.php:247
+#: includes/Frontend/Display.php:255
+#: build/index.js:2
 msgid "Your name"
 msgstr ""
 
-#: includes/Frontend/Display.php:248
+#: includes/Frontend/Display.php:256
 msgid "Your email"
 msgstr ""
 
-#: includes/Frontend/Display.php:250
+#: includes/Frontend/Display.php:258
 msgid "Title (optional)"
 msgstr ""
 
-#: includes/Frontend/Display.php:251
+#: includes/Frontend/Display.php:259
 msgid "Your review"
 msgstr ""
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:275
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr ""
@@ -677,6 +679,10 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Display"
+msgstr ""
+
+#: build/index.js:2
+msgid "Appearance"
 msgstr ""
 
 #: build/index.js:2
@@ -1025,6 +1031,103 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over."
+msgstr ""
+
+#: build/index.js:2
+msgid "Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color."
+msgstr ""
+
+#: build/index.js:2
+msgid "Accent color (buttons, links)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Used for the submit button, “load more”, and the active page. Example: #2271b1."
+msgstr ""
+
+#: build/index.js:2
+msgid "Text on the accent"
+msgstr ""
+
+#: build/index.js:2
+msgid "The text/icon color shown on top of the accent color. Usually white."
+msgstr ""
+
+#: build/index.js:2
+msgid "Star color"
+msgstr ""
+
+#: build/index.js:2
+msgid "The rating stars. Example: #f5a623."
+msgstr ""
+
+#: build/index.js:2
+msgid "Text color (blank = theme)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Body text of reviews. Leave blank to inherit your theme."
+msgstr ""
+
+#: build/index.js:2
+msgid "Form / card background (blank = subtle)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Background of the review form. Blank keeps a subtle default."
+msgstr ""
+
+#: build/index.js:2
+msgid "Border color (blank = subtle)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Dividers and borders. Blank keeps a subtle default."
+msgstr ""
+
+#: build/index.js:2
+msgid "Corner radius (px)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Base font size (px)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Density"
+msgstr ""
+
+#: build/index.js:2
+msgid "Comfortable = roomier spacing. Compact = tighter, for dense pages."
+msgstr ""
+
+#: build/index.js:2
+msgid "Comfortable"
+msgstr ""
+
+#: build/index.js:2
+msgid "Compact"
+msgstr ""
+
+#: build/index.js:2
+msgid "Max width (px, 0 = full width)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Cap the widget’s width. Example: 640. Use 0 to fill the container."
+msgstr ""
+
+#: build/index.js:2
+msgid "Live preview"
+msgstr ""
+
+#: build/index.js:2
+#, js-format
+msgid "%d reviews"
+msgstr ""
+
+#: build/index.js:2
+msgid "Absolutely wonderful experience — the team was friendly and helpful."
 msgstr ""
 
 #: build/index.js:2

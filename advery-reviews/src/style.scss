@@ -360,6 +360,27 @@
 .advery-rv-mig-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 .advery-rv-mig-progress { color: var(--rv-muted); font-size: 13px; }
 
+/* Appearance settings — color rows + live preview */
+.advery-rv-color {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin-bottom: 12px;
+}
+.advery-rv-color__swatch {
+	flex: 0 0 auto;
+	width: 38px;
+	height: 34px;
+	margin-top: 22px; /* align with the input, below its label */
+	padding: 0;
+	border: 1px solid var(--rv-border);
+	border-radius: 8px;
+	background: none;
+	cursor: pointer;
+}
+.advery-rv-color .components-base-control { flex: 1; margin-bottom: 0; }
+.advery-rv-appearance-preview p { line-height: 1.55; }
+
 /* Shared item-type filter (grouped native select) + object autocomplete */
 .advery-rv-itemfilter {
 	display: flex;

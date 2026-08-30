@@ -44,6 +44,14 @@ class Display {
 		$provider = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
 		$this->enqueue_captcha( $provider, $as['captcha_site_key'] );
 
+		// Appearance settings → CSS custom properties on the widget (colors,
+		// radius, density, size). Printed first so the owner's own custom CSS
+		// below can still override anything.
+		$appearance = Settings::appearance_css();
+		if ( '' !== $appearance ) {
+			wp_add_inline_style( 'advery-reviews-front', $appearance );
+		}
+
 		// Owner custom CSS, printed inline against our stylesheet handle.
 		$css = (string) Settings::get( 'custom_css', '' );
 		if ( '' !== trim( $css ) ) {

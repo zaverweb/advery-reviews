@@ -909,8 +909,42 @@ class RestController {
 			'email_instant'      => ! empty( $in['email_instant'] ),
 			'email_recipient'    => sanitize_email( (string) ( $in['email_recipient'] ?? '' ) ),
 			'digest_frequency'   => in_array( ( $in['digest_frequency'] ?? '' ), [ 'off', 'weekly', 'monthly' ], true ) ? $in['digest_frequency'] : $d['digest_frequency'],
+			'appearance'         => $this->sanitize_appearance( is_array( $in['appearance'] ?? null ) ? $in['appearance'] : [] ),
 			'antispam'           => $this->sanitize_antispam( is_array( $in['antispam'] ?? null ) ? $in['antispam'] : [] ),
 			'ai'                 => $this->sanitize_ai( is_array( $in['ai'] ?? null ) ? $in['ai'] : [] ),
+		];
+	}
+
+	/**
+	 * Whitelist + coerce the front-end appearance config. Colors are validated
+	 * against a small pattern (hex / rgb(a) / keyword); anything else becomes ''
+	 * so it falls back to the stylesheet default.
+	 *
+	 * @param array $in
+	 * @return array
+	 */
+	private function sanitize_appearance( array $in ) {
+		$d = Settings::appearance_defaults();
+
+		$color = static function ( $v ) {
+			$v = trim( (string) $v );
+			if ( '' === $v ) {
+				return '';
+			}
+			return preg_match( '/^(#[0-9a-fA-F]{3,8}|rgba?\([0-9.,\s%]+\)|[a-zA-Z]{3,20})$/', $v ) ? $v : '';
+		};
+
+		return [
+			'accent'     => $color( $in['accent'] ?? $d['accent'] ) ?: $d['accent'],
+			'accent_ink' => $color( $in['accent_ink'] ?? $d['accent_ink'] ) ?: $d['accent_ink'],
+			'star'       => $color( $in['star'] ?? $d['star'] ) ?: $d['star'],
+			'text'       => $color( $in['text'] ?? '' ),
+			'surface'    => $color( $in['surface'] ?? '' ),
+			'border'     => $color( $in['border'] ?? '' ),
+			'radius'     => max( 0, min( 40, (int) ( $in['radius'] ?? $d['radius'] ) ) ),
+			'density'    => in_array( ( $in['density'] ?? '' ), [ 'comfortable', 'compact' ], true ) ? $in['density'] : $d['density'],
+			'font_size'  => max( 12, min( 20, (int) ( $in['font_size'] ?? $d['font_size'] ) ) ),
+			'max_width'  => max( 0, min( 2000, (int) ( $in['max_width'] ?? $d['max_width'] ) ) ),
 		];
 	}
 
