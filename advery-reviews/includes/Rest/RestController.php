@@ -214,8 +214,10 @@ class RestController {
 			return new WP_Error( 'advery_reviews_nonce', __( 'Your session expired. Please refresh and try again.', 'advery-reviews' ), [ 'status' => 403 ] );
 		}
 
-		// Honeypot: bots fill hidden fields.
-		if ( '' !== trim( (string) $req->get_param( 'website_hp' ) ) ) {
+		// Honeypot: bots fill hidden fields. Neutral field name (advery_hp) so a
+		// real visitor's browser never autofills it (an older `website_hp` was
+		// autofilled with saved URLs, rejecting genuine reviewers).
+		if ( '' !== trim( (string) $req->get_param( 'advery_hp' ) ) ) {
 			return new WP_Error( 'advery_reviews_spam', __( 'Rejected.', 'advery-reviews' ), [ 'status' => 400 ] );
 		}
 
@@ -288,7 +290,7 @@ class RestController {
 				'author_ip'      => $ip,
 				'ts'             => (int) $req->get_param( 'advery_ts' ),
 				'tk'             => (string) $req->get_param( 'advery_tk' ),
-				'website_hp'     => (string) $req->get_param( 'website_hp' ),
+				'advery_hp'      => (string) $req->get_param( 'advery_hp' ),
 				'captcha_token'  => (string) $req->get_param( 'captcha_token' ),
 			]
 		);
@@ -449,18 +451,32 @@ class RestController {
 		}
 		$status = in_array( ( $req->get_param( 'status' ) ?? '' ), ReviewRepository::STATUSES, true ) ? $req->get_param( 'status' ) : 'approved';
 
+		// "Add as me": take the author identity from the logged-in manager rather
+		// than the typed fields, and link the review to their user id.
+		if ( $req->get_param( 'as_current_user' ) ) {
+			$user         = wp_get_current_user();
+			$user_id      = (int) $user->ID;
+			$author_name  = \Advery\Reviews\Support\Sanitizer::text( (string) $user->display_name, 150 );
+			$author_email = \Advery\Reviews\Support\Sanitizer::email( (string) $user->user_email );
+		} else {
+			$user_id      = 0;
+			$author_name  = \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 );
+			$author_email = \Advery\Reviews\Support\Sanitizer::email( (string) $req->get_param( 'author_email' ) );
+		}
+
 		$id = ReviewRepository::create(
 			[
-				'object_type'  => $object_type,
-				'object_id'    => $object_id,
-				'rating'       => max( 0, min( 5, (int) $req->get_param( 'rating' ) ) ),
-				'author_name'  => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 ),
-				'author_email' => \Advery\Reviews\Support\Sanitizer::email( (string) $req->get_param( 'author_email' ) ),
-				'title'        => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'title' ), 200 ),
-				'content'      => $content,
-				'status'       => $status,
-				'created_at'   => $req->get_param( 'created_at' ) ? gmdate( 'Y-m-d H:i:s', (int) strtotime( (string) $req->get_param( 'created_at' ) ) ) : '',
-				'meta'         => [ 'added_by' => 'admin' ],
+				'object_type'    => $object_type,
+				'object_id'      => $object_id,
+				'rating'         => max( 0, min( 5, (int) $req->get_param( 'rating' ) ) ),
+				'author_name'    => $author_name,
+				'author_email'   => $author_email,
+				'author_user_id' => $user_id,
+				'title'          => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'title' ), 200 ),
+				'content'        => $content,
+				'status'         => $status,
+				'created_at'     => $req->get_param( 'created_at' ) ? gmdate( 'Y-m-d H:i:s', (int) strtotime( (string) $req->get_param( 'created_at' ) ) ) : '',
+				'meta'           => [ 'added_by' => 'admin' ],
 			]
 		);
 

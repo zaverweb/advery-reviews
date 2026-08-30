@@ -122,7 +122,7 @@ class SpamGuard {
 		// --- Scored signals ---
 
 		// Honeypot already handled at the REST layer, but double-check here.
-		if ( '' !== trim( (string) ( $sub['website_hp'] ?? '' ) ) ) {
+		if ( '' !== trim( (string) ( $sub['advery_hp'] ?? '' ) ) ) {
 			$score += 10;
 			$reasons[] = 'honeypot';
 		}

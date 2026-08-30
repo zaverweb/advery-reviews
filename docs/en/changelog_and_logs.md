@@ -12,6 +12,14 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.17.0 (Honeypot fix + taxonomy review management + "add as me")
+- **Backlog item 6/7 — honeypot fixed.** The hidden anti-bot field was named `website_hp`; because the name contains "website", browsers **autofilled it** with the visitor's saved URL, so genuine reviewers were rejected on *every* submission. Renamed to a neutral, autofill-proof name (`advery_hp`). The old field is no longer read, so any browser that had saved a value can no longer trip it.
+- **Honeypot no longer causes a horizontal scrollbar.** It was hidden with `left: -9999px`; in an **RTL** page (Persian) a far-left absolute element widens the document and forces a big horizontal scroll. Switched to the accessible clip pattern (1×1px, `clip: rect(0 0 0 0)`), plus an inline-style fallback so a cached/overridden stylesheet can't reintroduce the scroll. Verified live on the RTL demo page: `scrollWidth == innerWidth` (no overflow), field hidden, new name in place.
+- **Reviews on custom & built-in taxonomies are now manageable from the admin.** The code already supported term targets, but there was no admin UI on term screens. New **reviews section on the Edit Term screen** (for every enabled taxonomy — e.g. a custom `تخصص`/specialty on a doctor CPT, or the built-in `category`): list that term's reviews, add one, and approve / pending / spam / trash / delete inline — same as the post/product box. Injected via `{taxonomy}_edit_form`, reusing the existing lightweight metabox bundle.
+- **"Add as me" on the add-review form.** The post/product/term box could add a review under any name; now a manager can also **add it as themselves** (a checkbox fills and locks name/email from the logged-in user, and the server takes the identity authoritatively and links the review to their user id). Unchecking it restores the free-form name/email fields, so both "as the logged-in user" and "with arbitrary details" are supported.
+- **REST:** `POST /reviews` (admin create) gained an `as_current_user` flag. No DB change.
+- **Verified live:** term targets enable correctly; test reviews added on a `تخصص` term (avg 4.5, 2 reviews) and a post `category` term (avg 5, 1 review) aggregate correctly and return from the public list; "add as me" stored the manager's identity + user id; the metabox UI (list, status actions, add form, the new toggle) verified in a rendered preview of the real script.
+
 ### Version 0.16.0 (Reports — which pages and businesses get the most reviews)
 - **Backlog item 5/7.** A new **Reports** admin screen (its own submenu under “Reviews”) answers the question the client cares about: *which page, product or category is pulling in the most reviews.*
 - **What it shows:**

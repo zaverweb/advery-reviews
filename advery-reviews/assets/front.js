@@ -165,7 +165,7 @@
 				content: valueOf( form, 'content' ),
 				author_name: valueOf( form, 'author_name' ),
 				author_email: valueOf( form, 'author_email' ),
-				website_hp: valueOf( form, 'website_hp' ),
+				advery_hp: valueOf( form, 'advery_hp' ),
 				advery_ts: valueOf( form, 'advery_ts' ),
 				advery_tk: valueOf( form, 'advery_tk' ),
 				captcha_token: captchaToken

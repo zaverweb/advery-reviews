@@ -14,6 +14,7 @@ use Advery\Reviews\Email\Digest;
 use Advery\Reviews\Admin\AdminPage;
 use Advery\Reviews\Admin\DashboardWidget;
 use Advery\Reviews\Admin\PostMetabox;
+use Advery\Reviews\Admin\TermMetabox;
 use Advery\Reviews\Rest\RestController;
 use Advery\Reviews\Database\Installer;
 
@@ -75,6 +76,9 @@ class Plugin {
 
 			// Reviews box on the post/product edit screen.
 			( new PostMetabox() )->register();
+
+			// Reviews section on the taxonomy term edit screen (enabled taxonomies).
+			( new TermMetabox() )->register();
 		}
 	}
 }

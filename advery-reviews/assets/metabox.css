@@ -28,10 +28,17 @@
 	margin-top: 12px; padding: 12px; background: #f6f7f7; border: 1px solid #e5e7eb; border-radius: 8px;
 }
 #advery-reviews-metabox .advery-mb__form h4 { margin: 0 0 8px; }
+#advery-reviews-metabox .advery-mb__asme {
+	display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px;
+	font-size: 13px; color: #1f2937; cursor: pointer;
+}
+#advery-reviews-metabox .advery-mb__asme input { width: auto; margin: 0; }
 #advery-reviews-metabox .advery-mb__form input,
 #advery-reviews-metabox .advery-mb__form select,
 #advery-reviews-metabox .advery-mb__form textarea {
 	display: block; width: 100%; max-width: 420px; margin-bottom: 8px; padding: 6px 8px;
 	border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;
 }
+/* Term edit screen sits in a wide table cell — cap the width so it reads well. */
+.advery-mb-term { max-width: 720px; }
 #advery-reviews-metabox .advery-mb__msg { margin-inline-start: 8px; color: #b32d2e; }

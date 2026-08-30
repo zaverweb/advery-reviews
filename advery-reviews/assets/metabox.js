@@ -83,8 +83,33 @@
 	function addForm() {
 		var f = el( 'div', 'advery-mb__form' );
 		f.appendChild( el( 'h4', null, i18n.add || 'Add a review' ) );
+
 		var name = input( 'text', i18n.name );
 		var email = input( 'email', i18n.email );
+
+		// "Add as me": use the logged-in manager's own identity instead of typing
+		// custom details. Toggling it fills + locks the name/email fields; the
+		// operator can still uncheck it to enter arbitrary details.
+		var me = cfg.currentUser || {};
+		var asMeWrap = el( 'label', 'advery-mb__asme' );
+		var asMe = document.createElement( 'input' );
+		asMe.type = 'checkbox';
+		asMeWrap.appendChild( asMe );
+		asMeWrap.appendChild( document.createTextNode( ' ' + ( i18n.asMe || 'Add as me' ) + ( me.name ? ' (' + me.name + ')' : '' ) ) );
+		if ( ! me.name ) { asMeWrap.style.display = 'none'; }
+
+		asMe.addEventListener( 'change', function () {
+			if ( asMe.checked ) {
+				name.value = me.name || '';
+				email.value = me.email || '';
+				name.disabled = true;
+				email.disabled = true;
+			} else {
+				name.disabled = false;
+				email.disabled = false;
+			}
+		} );
+
 		var rating = document.createElement( 'select' );
 		[ 5, 4, 3, 2, 1, 0 ].forEach( function ( n ) {
 			var o = document.createElement( 'option' );
@@ -105,6 +130,9 @@
 				body: JSON.stringify( {
 					object_type: TYPE, object_id: ID,
 					rating: parseInt( rating.value, 10 ) || 0,
+					// When "add as me" is on, let the server fill identity from the
+					// current user (authoritative), ignoring the disabled fields.
+					as_current_user: asMe.checked ? 1 : 0,
 					author_name: name.value, author_email: email.value,
 					content: content.value, status: 'approved'
 				} )
@@ -115,6 +143,7 @@
 			} ).catch( function () { save.disabled = false; msg.textContent = i18n.error; } );
 		} );
 
+		f.appendChild( asMeWrap );
 		f.appendChild( name );
 		f.appendChild( email );
 		f.appendChild( rating );

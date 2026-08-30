@@ -137,12 +137,19 @@
 .advery-reviews__star-btn.is-on {
 	color: #f5a623;
 }
+/* Honeypot: hidden with the accessible clip pattern — never a negative offset
+   like left:-9999px, which in an RTL page widens the document and causes a
+   horizontal scrollbar. */
 .advery-reviews__hp {
 	position: absolute !important;
-	left: -9999px !important;
-	height: 0;
-	width: 0;
-	overflow: hidden;
+	width: 1px !important;
+	height: 1px !important;
+	padding: 0 !important;
+	margin: -1px !important;
+	border: 0 !important;
+	overflow: hidden !important;
+	clip: rect(0 0 0 0) !important;
+	white-space: nowrap !important;
 }
 .advery-reviews__submit {
 	background: #2271b1;

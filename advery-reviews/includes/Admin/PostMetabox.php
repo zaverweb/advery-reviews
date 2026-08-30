@@ -66,17 +66,33 @@ class PostMetabox {
 			return;
 		}
 
+		self::enqueue_assets();
+	}
+
+	/**
+	 * Enqueue and configure the shared metabox script/style. Used by both the
+	 * post/product edit screen and the taxonomy term edit screen. Idempotent.
+	 */
+	public static function enqueue_assets() {
 		wp_enqueue_style( 'advery-reviews-metabox', ADVERY_REVIEWS_URL . 'assets/metabox.css', [], ADVERY_REVIEWS_VERSION );
 		wp_enqueue_script( 'advery-reviews-metabox', ADVERY_REVIEWS_URL . 'assets/metabox.js', [], ADVERY_REVIEWS_VERSION, true );
+
+		$user = wp_get_current_user();
+
 		wp_localize_script(
 			'advery-reviews-metabox',
 			'AdveryReviewsMeta',
 			[
-				'rest'  => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
-				'nonce' => wp_create_nonce( 'wp_rest' ),
-				'i18n'  => [
+				'rest'        => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
+				'nonce'       => wp_create_nonce( 'wp_rest' ),
+				'currentUser' => [
+					'name'  => $user ? $user->display_name : '',
+					'email' => $user ? $user->user_email : '',
+				],
+				'i18n'        => [
 					'none'    => __( 'No reviews yet.', 'advery-reviews' ),
 					'add'     => __( 'Add a review', 'advery-reviews' ),
+					'asMe'    => __( 'Add as me', 'advery-reviews' ),
 					'name'    => __( 'Name', 'advery-reviews' ),
 					'email'   => __( 'Email (optional)', 'advery-reviews' ),
 					'content' => __( 'Review', 'advery-reviews' ),

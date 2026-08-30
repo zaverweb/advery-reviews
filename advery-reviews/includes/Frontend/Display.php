@@ -249,7 +249,8 @@ class Display {
 					<?php endif; ?>
 					<input type="text" name="title" placeholder="<?php esc_attr_e( 'Title (optional)', 'advery-reviews' ); ?>" />
 					<textarea name="content" rows="4" placeholder="<?php esc_attr_e( 'Your review', 'advery-reviews' ); ?>" required></textarea>
-					<input type="text" name="website_hp" class="advery-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+					<?php // Honeypot. Neutral name (no "website"/"url"/"email") so browsers never autofill it for a real visitor; hidden with an RTL-safe clip (never a negative offset that widens the page). Inline style is a belt-and-suspenders in case the stylesheet is cached/overridden. ?>
+					<input type="text" name="advery_hp" class="advery-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;" />
 					<input type="hidden" name="advery_ts" value="<?php echo esc_attr( $token['ts'] ); ?>" />
 					<input type="hidden" name="advery_tk" value="<?php echo esc_attr( $token['tk'] ); ?>" />
 					<?php if ( 'recaptcha_v2' === $captcha ) : ?>
