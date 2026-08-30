@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.20.0\n"
+"Project-Id-Version: Advery Reviews 0.22.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T14:20:44+00:00\n"
+"POT-Creation-Date: 2026-08-30T14:58:54+00:00\n"
 "PO-Revision-Date: 2026-08-30 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -213,7 +213,7 @@ msgstr "تأییدِ CAPTCHA ناموفق بود. دوباره تلاش کنید
 msgid "You are submitting too quickly. Please try again later."
 msgstr "خیلی سریع ثبت می‌کنید. کمی بعد دوباره تلاش کنید."
 
-#: includes/AntiSpam/SpamGuard.php:150
+#: includes/AntiSpam/SpamGuard.php:126
 msgid "Links are not allowed in reviews."
 msgstr "درجِ لینک در نظرات مجاز نیست."
 
@@ -437,11 +437,11 @@ msgstr "لطفاً نظر را بنویسید."
 msgid "Could not save."
 msgstr "ذخیره ممکن نشد."
 
-#: includes/Rest/RestController.php:799
+#: includes/Rest/RestController.php:804
 msgid "No reviews to summarize."
 msgstr "نظری برای خلاصه‌سازی نیست."
 
-#: includes/Rest/RestController.php:808
+#: includes/Rest/RestController.php:813
 msgid "Review not found."
 msgstr "نظر یافت نشد."
 
@@ -804,20 +804,20 @@ msgid "Example: 3. Faster than this is treated as a likely bot."
 msgstr "مثال: ۳. سریع‌تر از این احتمالاً ربات تلقی می‌شود."
 
 #: build/index.js:2
+msgid "Links"
+msgstr "لینک‌ها"
+
+#: build/index.js:2
 msgid "Max links allowed in a review (0 = none)"
 msgstr "حداکثر لینکِ مجاز در یک نظر (۰ = هیچ)"
 
 #: build/index.js:2
-msgid "Recommended: 0. Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”, “example[.]com”) across review, title and name."
-msgstr "توصیه: ۰. لینک‌های ساده، markup‌شده و مبهم‌شده (example.com، 1.2.3.4، [url]، «example dot com»، «example[.]com») را در نظر، عنوان و نام تشخیص می‌دهد."
+msgid "Recommended: 0."
+msgstr "توصیه: ۰."
 
 #: build/index.js:2
 msgid "When over the link limit"
 msgstr "وقتی از حدِ لینک عبور شد"
-
-#: build/index.js:2
-msgid "Recommended: “Reject with a message”. “Spam”/“Hold” keep it hidden for you to review."
-msgstr "توصیه: «رد با پیام». «اسپم»/«نگه‌داشتن» آن را برای بررسیِ شما پنهان نگه می‌دارد."
 
 #: build/index.js:2
 msgid "Ignore"
@@ -836,12 +836,20 @@ msgid "Reject with a message"
 msgstr "رد با پیام"
 
 #: build/index.js:2
+msgid "Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
+msgstr "لینک‌های ساده، markup‌شده و مبهم‌شده (example.com، 1.2.3.4، [url]، «example dot com») را در نظر، عنوان و نام تشخیص می‌دهد. «رد» آن‌ها را برای همه می‌بندد؛ «اسپم»/«نگه‌داشتن» آن‌ها را برای بررسیِ تو پنهان نگه می‌دارد."
+
+#: build/index.js:2
+msgid "Length limits"
+msgstr "محدودیت‌های طول"
+
+#: build/index.js:2
 msgid "Minimum review length (characters)"
 msgstr "حداقل طولِ نظر (کاراکتر)"
 
 #: build/index.js:2
-msgid "Example: 10 — blocks one-word “ok”/“good”."
-msgstr "مثال: ۱۰ — «ok»/«good»ِ تک‌کلمه‌ای را می‌بندد."
+msgid "Example: 10."
+msgstr "مثال: ۱۰."
 
 #: build/index.js:2
 msgid "Maximum review length (characters)"
@@ -858,6 +866,10 @@ msgstr "حداکثر طولِ نامِ نویسنده (کاراکتر)"
 #: build/index.js:2
 msgid "Example: 35."
 msgstr "مثال: ۳۵."
+
+#: build/index.js:2
+msgid "Blocklists"
+msgstr "فهرست‌های مسدود"
 
 #: build/index.js:2
 msgid "Blocked words / phrases (one per line; prefix re: for regex)"
@@ -896,8 +908,8 @@ msgid "Auto-approve trusted authors"
 msgstr "تأییدِ خودکارِ نویسندگانِ معتمد"
 
 #: build/index.js:2
-msgid "A logged-in visitor who already has one approved review skips moderation next time."
-msgstr "بازدیدکننده‌ی واردشده‌ای که یک نظرِ تأییدشده دارد، دفعه‌ی بعد از بررسی رد می‌شود."
+msgid "A logged-in visitor who already has one approved review skips moderation next time (but a blocked link still rejects it)."
+msgstr "بازدیدکننده‌ی واردشده‌ای که یک نظرِ تأییدشده دارد دفعه‌ی بعد از بررسی رد می‌شود (اما لینکِ مسدود همچنان باعثِ ردش می‌شود)."
 
 #: build/index.js:2
 msgid "Rate limiting"
@@ -930,6 +942,10 @@ msgstr "حداکثر در روز (۰ = خاموش)"
 #: build/index.js:2
 msgid "Example: 20."
 msgstr "مثال: ۲۰."
+
+#: build/index.js:2
+msgid "Score thresholds"
+msgstr "آستانه‌های امتیاز"
 
 #: build/index.js:2
 msgid "Hold threshold (score ≥ ⇒ hold)"
@@ -1012,8 +1028,8 @@ msgid "Loading mode"
 msgstr "حالتِ بارگذاری"
 
 #: build/index.js:2
-msgid "All = everything at once. Load more = a button. Pagination = numbered pages. In every mode the URL never changes and the first page is server-rendered, so SEO is unaffected."
-msgstr "همه = همه‌چیز یکجا. نمایشِ بیشتر = یک دکمه. صفحه‌بندی = صفحه‌های شماره‌دار. در همه‌ی حالت‌ها URL هرگز عوض نمی‌شود و صفحه‌ی اول سمتِ سرور رندر می‌شود، پس سئو تحتِ تأثیر قرار نمی‌گیرد."
+msgid "All = at once. Load more = a button. Pagination = numbered pages. The URL never changes and the first page is server-rendered, so SEO is unaffected."
+msgstr "همه = یکجا. نمایشِ بیشتر = یک دکمه. صفحه‌بندی = صفحه‌های شماره‌دار. URL هرگز عوض نمی‌شود و صفحه‌ی اول سمتِ سرور رندر می‌شود، پس سئو تحتِ تأثیر قرار نمی‌گیرد."
 
 #: build/index.js:2
 msgid "All on one page"

@@ -113,8 +113,24 @@ class SpamGuard {
 			}
 		}
 
+		// Links in ANY field (content, title, name) — plain, marked-up or
+		// obfuscated. Checked on the RAW input (before HTML was stripped). This is
+		// a *content policy*, not a bot heuristic, so it is evaluated up here and
+		// applies to trusted authors too: "Reject" is a hard reject for everyone,
+		// and a link hit also disqualifies the trusted fast-track below.
+		$raw_blob = ( $sub['raw_content'] ?? $content ) . " \n " . ( $sub['raw_title'] ?? $title ) . " \n " . ( $sub['raw_name'] ?? $name );
+		$links    = self::count_links( $raw_blob );
+		$link_hit = ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] );
+
+		if ( $link_hit && 'reject' === $as['link_action'] ) {
+			return self::reject( __( 'Links are not allowed in reviews.', 'advery-reviews' ) );
+		}
+
 		// --- Trusted fast-track ---
-		if ( $as['trusted_autoapprove'] && $user_id > 0
+		// A logged-in author with a prior approved review skips the bot heuristics
+		// below — but never when their content trips a link-policy hit, so an
+		// explicit no-links rule can't be bypassed by a trusted account.
+		if ( $as['trusted_autoapprove'] && $user_id > 0 && ! $link_hit
 			&& ReviewRepository::has_approved_by_user( $user_id ) ) {
 			return [ 'outcome' => 'approve', 'score' => -100, 'reasons' => [ 'trusted-author' ] ];
 		}
@@ -140,16 +156,11 @@ class SpamGuard {
 			}
 		}
 
-		// Links in ANY field (content, title, name) — plain, marked-up or
-		// obfuscated. Checked on the RAW input (before HTML was stripped) so a
-		// href inside a stray anchor is still caught. Default max_links = 0.
-		$raw_blob = ( $sub['raw_content'] ?? $content ) . " \n " . ( $sub['raw_title'] ?? $title ) . " \n " . ( $sub['raw_name'] ?? $name );
-		$links    = self::count_links( $raw_blob );
-		if ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] ) {
-			if ( 'reject' === $as['link_action'] ) {
-				return self::reject( __( 'Links are not allowed in reviews.', 'advery-reviews' ) );
-			}
-			$score += ( 'spam' === $as['link_action'] ) ? 6 : 3;
+		// Links (computed above). 'reject' was already handled as a hard reject;
+		// here 'hold'/'spam' add to the score. Trusted authors never reach this
+		// point with a link hit (the fast-track excluded them).
+		if ( $link_hit ) {
+			$score    += ( 'spam' === $as['link_action'] ) ? 6 : 3;
 			$reasons[] = 'links(' . $links . ')';
 		}
 

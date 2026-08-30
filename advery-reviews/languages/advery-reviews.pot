@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.20.0\n"
+"Project-Id-Version: Advery Reviews 0.22.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T14:20:44+00:00\n"
+"POT-Creation-Date: 2026-08-30T14:58:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -211,7 +211,7 @@ msgstr ""
 msgid "You are submitting too quickly. Please try again later."
 msgstr ""
 
-#: includes/AntiSpam/SpamGuard.php:150
+#: includes/AntiSpam/SpamGuard.php:126
 msgid "Links are not allowed in reviews."
 msgstr ""
 
@@ -435,11 +435,11 @@ msgstr ""
 msgid "Could not save."
 msgstr ""
 
-#: includes/Rest/RestController.php:799
+#: includes/Rest/RestController.php:804
 msgid "No reviews to summarize."
 msgstr ""
 
-#: includes/Rest/RestController.php:808
+#: includes/Rest/RestController.php:813
 msgid "Review not found."
 msgstr ""
 
@@ -802,19 +802,19 @@ msgid "Example: 3. Faster than this is treated as a likely bot."
 msgstr ""
 
 #: build/index.js:2
+msgid "Links"
+msgstr ""
+
+#: build/index.js:2
 msgid "Max links allowed in a review (0 = none)"
 msgstr ""
 
 #: build/index.js:2
-msgid "Recommended: 0. Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”, “example[.]com”) across review, title and name."
+msgid "Recommended: 0."
 msgstr ""
 
 #: build/index.js:2
 msgid "When over the link limit"
-msgstr ""
-
-#: build/index.js:2
-msgid "Recommended: “Reject with a message”. “Spam”/“Hold” keep it hidden for you to review."
 msgstr ""
 
 #: build/index.js:2
@@ -834,11 +834,19 @@ msgid "Reject with a message"
 msgstr ""
 
 #: build/index.js:2
+msgid "Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
+msgstr ""
+
+#: build/index.js:2
+msgid "Length limits"
+msgstr ""
+
+#: build/index.js:2
 msgid "Minimum review length (characters)"
 msgstr ""
 
 #: build/index.js:2
-msgid "Example: 10 — blocks one-word “ok”/“good”."
+msgid "Example: 10."
 msgstr ""
 
 #: build/index.js:2
@@ -855,6 +863,10 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Example: 35."
+msgstr ""
+
+#: build/index.js:2
+msgid "Blocklists"
 msgstr ""
 
 #: build/index.js:2
@@ -894,7 +906,7 @@ msgid "Auto-approve trusted authors"
 msgstr ""
 
 #: build/index.js:2
-msgid "A logged-in visitor who already has one approved review skips moderation next time."
+msgid "A logged-in visitor who already has one approved review skips moderation next time (but a blocked link still rejects it)."
 msgstr ""
 
 #: build/index.js:2
@@ -927,6 +939,10 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Example: 20."
+msgstr ""
+
+#: build/index.js:2
+msgid "Score thresholds"
 msgstr ""
 
 #: build/index.js:2
@@ -1010,7 +1026,7 @@ msgid "Loading mode"
 msgstr ""
 
 #: build/index.js:2
-msgid "All = everything at once. Load more = a button. Pagination = numbered pages. In every mode the URL never changes and the first page is server-rendered, so SEO is unaffected."
+msgid "All = at once. Load more = a button. Pagination = numbered pages. The URL never changes and the first page is server-rendered, so SEO is unaffected."
 msgstr ""
 
 #: build/index.js:2

@@ -317,6 +317,23 @@
 .advery-rv-settings__pane .components-base-control { margin-bottom: 14px; }
 .advery-rv-settings__pane hr { border: 0; border-top: 1px solid #eef0f3; margin: 16px 0; }
 
+/* Group short/narrow fields into responsive rows so the form uses its width
+   instead of a long vertical stack of half-empty inputs. */
+.advery-rv-fields {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 20px;
+	align-items: flex-start;
+}
+.advery-rv-fields > .components-base-control { flex: 1 1 150px; min-width: 140px; }
+.advery-rv-fields--wide > .components-base-control { flex: 1 1 240px; min-width: 220px; }
+/* Number fields inside a row can take the row's share (override the 130px cap) */
+.advery-rv-settings__pane .advery-rv-fields input[type="number"],
+.advery-rv-settings__pane .advery-rv-fields .components-text-control__input,
+.advery-rv-settings__pane .advery-rv-fields .components-select-control__input,
+.advery-rv-settings__pane .advery-rv-fields select { max-width: 100%; }
+.advery-rv-fieldgroup-title { font-size: 12px; font-weight: 600; color: var(--rv-muted); text-transform: uppercase; letter-spacing: 0.02em; margin: 6px 0 2px; }
+
 /* Inputs shouldn't stretch the full pane width — keep them a comfortable size */
 .advery-rv-settings__pane .components-text-control__input,
 .advery-rv-settings__pane .components-select-control__input,

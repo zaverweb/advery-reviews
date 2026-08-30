@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.22.0 (Anti-spam fix: trusted authors can't bypass the link rule + settings layout)
+- **Security fix — a trusted author could post links.** The “Auto-approve trusted authors” fast-track (a logged-in visitor with a prior approved review) ran **before** the link check and returned *approve*, so such a user — including the admin — could submit a review containing a link even with “links = reject”. Links are a **content policy**, not a bot heuristic, so the link check now runs **before** the trusted fast-track: `Reject` is a hard block for everyone, and any link hit also disqualifies the fast-track (so `Hold`/`Spam` link actions apply to trusted authors too). Verified live: a trusted admin submitting a link is now rejected, while a clean trusted submission still auto-approves.
+- **Settings layout — cleaner, less scrolling.** The two blocklist fields (**blocked words**, **blocked emails**) are now proper **multi-line textareas** (they’re “one per line”), side by side. Short/numeric fields are grouped into responsive rows under small headings — **Links** (max links + action), **Length limits** (min/max review + name), **Score thresholds** (hold + spam), rate-limit (window/max/day), plus Display (per-page + loading mode) and Email (recipient + digest) — instead of a long vertical stack of half-width inputs. On mobile the rows stack. Verified in an RTL preview with the compiled CSS.
+- The new/adjusted strings were added to the Persian pack (`.po`/`.mo`/JSON regenerated).
+
 ### Version 0.21.0 (Filters/reports list only review-enabled types)
 - **Cleaner filters and reports.** The “Item type” filter (on both Reviews and Reports) and the item-search autocomplete previously listed *every* public post type and taxonomy — including builder/utility ones that never collect reviews (Elementor templates & floating buttons, JetEngine components, post formats, etc.). Now they list **only the post types and taxonomies enabled for reviews in Settings** (plus WooCommerce products when Woo reviews are on). Turn a type off in Settings and it disappears from the filters and reports.
 - Empty groups are hidden, so if no taxonomy is enabled the “Taxonomies” group doesn’t show at all.
