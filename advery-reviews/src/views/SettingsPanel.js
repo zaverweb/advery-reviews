@@ -18,6 +18,7 @@ export default function SettingsPanel( { boot, notify } ) {
 	const [ saving, setSaving ] = useState( false );
 	const [ busy, setBusy ] = useState( '' );
 	const [ active, setActive ] = useState( 'collection' );
+	const [ aiTab, setAiTab ] = useState( 'settings' );
 	const [ aiTest, setAiTest ] = useState( null );
 
 	const set = ( patch ) => setS( { ...s, ...patch } );
@@ -264,40 +265,87 @@ export default function SettingsPanel( { boot, notify } ) {
 					</>
 				);
 			}
-			case 'ai':
+			case 'ai': {
+				const guides = {
+					anthropic: { keyUrl: 'https://console.anthropic.com/settings/keys', docs: 'https://docs.anthropic.com/en/docs/about-claude/models', models: 'claude-sonnet-4-5, claude-3-5-haiku-latest' },
+					openai: { keyUrl: 'https://platform.openai.com/api-keys', docs: 'https://platform.openai.com/docs/models', models: 'gpt-4o-mini, gpt-4o' },
+					openrouter: { keyUrl: 'https://openrouter.ai/keys', docs: 'https://openrouter.ai/models', models: 'anthropic/claude-3.5-sonnet, openai/gpt-4o-mini' },
+					gemini: { keyUrl: 'https://aistudio.google.com/app/apikey', docs: 'https://ai.google.dev/gemini-api/docs/models/gemini', models: 'gemini-1.5-flash, gemini-1.5-pro' },
+					ollama: { local: true, docs: 'https://ollama.com/library', models: 'llama3.1, mistral, qwen2.5' },
+				};
+				const g = guides[ ai.provider ] || guides.anthropic;
+				const variables = ( boot.ai && boot.ai.variables ) || {};
 				return (
 					<>
 						<p className="advery-rv-hint">{ __( 'AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews.', 'advery-reviews' ) }</p>
-						<SelectControl label={ __( 'Provider', 'advery-reviews' ) } help={ __( 'Anthropic, OpenAI and Gemini need an API key; OpenRouter is a multi-model gateway; Ollama runs locally with no key.', 'advery-reviews' ) } value={ ai.provider } options={ [ { label: 'Anthropic (Claude)', value: 'anthropic' }, { label: 'OpenAI', value: 'openai' }, { label: 'OpenRouter', value: 'openrouter' }, { label: 'Ollama (self-hosted)', value: 'ollama' }, { label: 'Google Gemini', value: 'gemini' } ] } onChange={ ( v ) => setAi( { provider: v } ) } __nextHasNoMarginBottom />
-						<TextControl type="password" label={ __( 'API key', 'advery-reviews' ) } help={ ai.provider === 'ollama' ? __( 'Not required for Ollama.', 'advery-reviews' ) : __( 'Paste the secret key from your provider’s dashboard. Stored on your server only.', 'advery-reviews' ) } value={ ai.api_key } onChange={ ( v ) => setAi( { api_key: v } ) } __nextHasNoMarginBottom />
-						<TextControl label={ __( 'Model (blank = provider default)', 'advery-reviews' ) } help={ __( 'Example: claude-sonnet-4-5, gpt-4o-mini, gemini-1.5-flash, llama3.1.', 'advery-reviews' ) } value={ ai.model } onChange={ ( v ) => setAi( { model: v } ) } __nextHasNoMarginBottom />
-						<TextControl label={ __( 'Base URL (optional override)', 'advery-reviews' ) } help={ __( 'Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:11434/v1.', 'advery-reviews' ) } value={ ai.base_url } onChange={ ( v ) => setAi( { base_url: v } ) } __nextHasNoMarginBottom />
-						<TextControl type="number" label={ __( 'Daily call limit (0 = unlimited)', 'advery-reviews' ) } help={ __( 'Caps AI cost. Example: 200 calls/day.', 'advery-reviews' ) } value={ ai.daily_cap } onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
-						<TextareaControl label={ __( 'About your business (context for replies)', 'advery-reviews' ) } help={ __( 'Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.”', 'advery-reviews' ) } rows={ 3 } value={ ai.business_context || '' } onChange={ ( v ) => setAi( { business_context: v } ) } __nextHasNoMarginBottom />
-						<hr />
-						<strong>{ __( 'Reply voice per content type', 'advery-reviews' ) }</strong>
-						<p className="advery-rv-hint">{ __( 'If a content type is a DIRECTORY of other businesses (you are not the business), tick it — AI replies then speak as the platform, never on the business’s behalf. Leave OFF for your own products/services.', 'advery-reviews' ) }</p>
-						{ ( boot.postTypes || [] ).map( ( pt ) => (
-							<CheckboxControl key={ pt.slug } label={ sprintf( __( '“%1$s” is a third-party directory listing', 'advery-reviews' ), pt.label ) } checked={ roles[ pt.slug ] === 'listing' } onChange={ ( on ) => setRole( pt.slug, on ) } __nextHasNoMarginBottom />
-						) ) }
-						<p className="advery-rv-hint" style={ { marginTop: 10 } }>{ __( 'Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default).', 'advery-reviews' ) }</p>
-						{ [ [ 'reply', __( 'Reply drafting', 'advery-reviews' ) ], [ 'moderate', __( 'Moderation assist', 'advery-reviews' ) ], [ 'translate', __( 'Translate', 'advery-reviews' ) ], [ 'summarize', __( 'Summarize', 'advery-reviews' ) ] ].map( ( [ key, label ] ) => (
-							<div key={ key } style={ { borderTop: '1px solid #eef0f3', paddingTop: 8, marginTop: 8 } }>
-								<ToggleControl label={ label } checked={ !! ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].enabled ) } onChange={ ( v ) => setAiTask( key, { enabled: v } ) } __nextHasNoMarginBottom />
-								<TextareaControl label={ __( 'Prompt (blank = built-in default)', 'advery-reviews' ) } placeholder={ aiPrompts[ key ] || '' } rows={ 3 } value={ ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].prompt ) || '' } onChange={ ( v ) => setAiTask( key, { prompt: v } ) } __nextHasNoMarginBottom />
-							</div>
-						) ) }
-						<div style={ { marginTop: 12 } }>
-							<Button variant="secondary" isBusy={ aiTest && aiTest.busy } onClick={ runAiTest }>{ __( 'Save, then test the connection', 'advery-reviews' ) }</Button>
-							<p className="advery-rv-hint">{ __( 'Click Save first, then this drafts a sample reply to confirm your key/model work.', 'advery-reviews' ) }</p>
+						<div className="advery-rv-subtabs">
+							<button type="button" className={ 'advery-rv-subtab' + ( aiTab === 'settings' ? ' is-active' : '' ) } onClick={ () => setAiTab( 'settings' ) }>{ __( 'Settings', 'advery-reviews' ) }</button>
+							<button type="button" className={ 'advery-rv-subtab' + ( aiTab === 'prompts' ? ' is-active' : '' ) } onClick={ () => setAiTab( 'prompts' ) }>{ __( 'Tone & prompts', 'advery-reviews' ) }</button>
 						</div>
-						{ aiTest && ! aiTest.busy && (
-							<Notice status={ aiTest.ok ? 'success' : 'error' } isDismissible onRemove={ () => setAiTest( null ) }>
-								{ aiTest.ok ? __( 'Working. Sample reply: ', 'advery-reviews' ) + aiTest.sample : aiTest.message }
-							</Notice>
+
+						{ aiTab === 'settings' && (
+							<>
+								<SelectControl label={ __( 'Provider', 'advery-reviews' ) } value={ ai.provider } options={ [ { label: 'Anthropic (Claude)', value: 'anthropic' }, { label: 'OpenAI', value: 'openai' }, { label: 'OpenRouter', value: 'openrouter' }, { label: 'Ollama (self-hosted)', value: 'ollama' }, { label: 'Google Gemini', value: 'gemini' } ] } onChange={ ( v ) => setAi( { provider: v } ) } __nextHasNoMarginBottom />
+								<div className="advery-rv-guide">
+									{ g.local ? (
+										<p>{ __( 'Ollama runs locally — no API key needed. Install a model, then put its name in the Model field.', 'advery-reviews' ) }</p>
+									) : (
+										<p>🔑 { __( 'Get your API key:', 'advery-reviews' ) } <a href={ g.keyUrl } target="_blank" rel="noreferrer">{ g.keyUrl }</a></p>
+									) }
+									<p>💡 { __( 'Example models:', 'advery-reviews' ) } <code>{ g.models }</code></p>
+									<p>📚 { __( 'Full model list & docs:', 'advery-reviews' ) } <a href={ g.docs } target="_blank" rel="noreferrer">{ g.docs }</a></p>
+								</div>
+								{ ai.provider !== 'ollama' && (
+									<TextControl type="password" label={ __( 'API key', 'advery-reviews' ) } help={ __( 'Paste the secret key from your provider’s dashboard (link above). Stored on your server only.', 'advery-reviews' ) } value={ ai.api_key } onChange={ ( v ) => setAi( { api_key: v } ) } __nextHasNoMarginBottom />
+								) }
+								<div className="advery-rv-fields advery-rv-fields--wide">
+									<TextControl label={ __( 'Model (blank = provider default)', 'advery-reviews' ) } help={ sprintf( __( 'e.g. %s', 'advery-reviews' ), g.models.split( ',' )[ 0 ] ) } value={ ai.model } onChange={ ( v ) => setAi( { model: v } ) } __nextHasNoMarginBottom />
+									<TextControl type="number" label={ __( 'Daily call limit (0 = unlimited)', 'advery-reviews' ) } help={ __( 'Caps AI cost. Example: 200/day.', 'advery-reviews' ) } value={ ai.daily_cap } onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
+								</div>
+								<TextControl label={ __( 'Base URL (optional override)', 'advery-reviews' ) } help={ __( 'Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:11434/v1.', 'advery-reviews' ) } value={ ai.base_url } onChange={ ( v ) => setAi( { base_url: v } ) } __nextHasNoMarginBottom />
+								<div style={ { marginTop: 12 } }>
+									<Button variant="secondary" isBusy={ aiTest && aiTest.busy } onClick={ runAiTest }>{ __( 'Save, then test the connection', 'advery-reviews' ) }</Button>
+									<p className="advery-rv-hint">{ __( 'Click Save first, then this drafts a sample reply to confirm your key/model work.', 'advery-reviews' ) }</p>
+								</div>
+								{ aiTest && ! aiTest.busy && (
+									<Notice status={ aiTest.ok ? 'success' : 'error' } isDismissible onRemove={ () => setAiTest( null ) }>
+										{ aiTest.ok ? __( 'Working. Sample reply: ', 'advery-reviews' ) + aiTest.sample : aiTest.message }
+									</Notice>
+								) }
+							</>
+						) }
+
+						{ aiTab === 'prompts' && (
+							<>
+								<TextareaControl label={ __( 'About your business (context for replies)', 'advery-reviews' ) } help={ __( 'Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.” Available in prompts as {business_context}.', 'advery-reviews' ) } rows={ 3 } value={ ai.business_context || '' } onChange={ ( v ) => setAi( { business_context: v } ) } __nextHasNoMarginBottom />
+								<div className="advery-rv-vars">
+									<strong>{ __( 'Variables you can use in any prompt', 'advery-reviews' ) }</strong>
+									<p className="advery-rv-hint" style={ { marginTop: 2 } }>{ __( 'Type these tokens into a prompt and they’re replaced for each review before it’s sent to the AI.', 'advery-reviews' ) }</p>
+									<ul>
+										{ Object.keys( variables ).map( ( tok ) => (
+											<li key={ tok }><code>{ tok }</code> <span>— { variables[ tok ] }</span></li>
+										) ) }
+									</ul>
+								</div>
+								<hr />
+								<strong>{ __( 'Reply voice per content type', 'advery-reviews' ) }</strong>
+								<p className="advery-rv-hint">{ __( 'If a content type is a DIRECTORY of other businesses (you are not the business), tick it — AI replies then speak as the platform, never on the business’s behalf. Leave OFF for your own products/services.', 'advery-reviews' ) }</p>
+								{ ( boot.postTypes || [] ).map( ( pt ) => (
+									<CheckboxControl key={ pt.slug } label={ sprintf( __( '“%1$s” is a third-party directory listing', 'advery-reviews' ), pt.label ) } checked={ roles[ pt.slug ] === 'listing' } onChange={ ( on ) => setRole( pt.slug, on ) } __nextHasNoMarginBottom />
+								) ) }
+								<hr />
+								<p className="advery-rv-hint">{ __( 'Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default). Use the variables above.', 'advery-reviews' ) }</p>
+								{ [ [ 'reply', __( 'Reply drafting', 'advery-reviews' ) ], [ 'moderate', __( 'Moderation assist', 'advery-reviews' ) ], [ 'translate', __( 'Translate', 'advery-reviews' ) ], [ 'summarize', __( 'Summarize', 'advery-reviews' ) ] ].map( ( [ key, label ] ) => (
+									<div key={ key } style={ { borderTop: '1px solid #eef0f3', paddingTop: 8, marginTop: 8 } }>
+										<ToggleControl label={ label } checked={ !! ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].enabled ) } onChange={ ( v ) => setAiTask( key, { enabled: v } ) } __nextHasNoMarginBottom />
+										<TextareaControl label={ __( 'Prompt (blank = built-in default)', 'advery-reviews' ) } placeholder={ aiPrompts[ key ] || '' } rows={ 3 } value={ ( ai.tasks && ai.tasks[ key ] && ai.tasks[ key ].prompt ) || '' } onChange={ ( v ) => setAiTask( key, { prompt: v } ) } __nextHasNoMarginBottom />
+									</div>
+								) ) }
+							</>
 						) }
 					</>
 				);
+			}
 			case 'schema':
 				return (
 					<>
@@ -329,10 +377,43 @@ export default function SettingsPanel( { boot, notify } ) {
 						</div>
 					</>
 				);
-			case 'css':
+			case 'css': {
+				const cssClasses = [
+					[ '.advery-reviews', __( 'The whole widget container', 'advery-reviews' ) ],
+					[ '.advery-reviews__summary', __( 'The rating summary bar (average + stars + count)', 'advery-reviews' ) ],
+					[ '.advery-reviews__avg', __( 'The big average-rating number', 'advery-reviews' ) ],
+					[ '.advery-reviews__stars', __( 'A row of stars (in the summary and each review)', 'advery-reviews' ) ],
+					[ '.advery-reviews__count', __( 'The “N reviews” text', 'advery-reviews' ) ],
+					[ '.advery-reviews__list', __( 'The list that holds all reviews', 'advery-reviews' ) ],
+					[ '.advery-reviews__item', __( 'A single review', 'advery-reviews' ) ],
+					[ '.advery-reviews__author', __( 'A reviewer’s name', 'advery-reviews' ) ],
+					[ '.advery-reviews__title', __( 'A review’s title', 'advery-reviews' ) ],
+					[ '.advery-reviews__content', __( 'A review’s body text', 'advery-reviews' ) ],
+					[ '.advery-reviews__reply', __( 'The owner’s reply block under a review', 'advery-reviews' ) ],
+					[ '.advery-reviews__form', __( 'The “write a review” form', 'advery-reviews' ) ],
+					[ '.advery-reviews__star-btn', __( 'The clickable rating stars in the form', 'advery-reviews' ) ],
+					[ '.advery-reviews__submit', __( 'The submit button', 'advery-reviews' ) ],
+					[ '.advery-reviews__loadmore', __( 'The “load more” button', 'advery-reviews' ) ],
+					[ '.advery-reviews__pager', __( 'The numbered pagination bar', 'advery-reviews' ) ],
+				];
 				return (
-					<TextareaControl label={ __( 'Custom CSS', 'advery-reviews' ) } help={ __( 'Optional styling, printed wherever the widget shows. Example: .advery-reviews__stars { color: #e11; }', 'advery-reviews' ) } value={ s.custom_css } rows={ 10 } onChange={ ( v ) => set( { custom_css: v } ) } __nextHasNoMarginBottom />
+					<>
+						<TextareaControl label={ __( 'Custom CSS', 'advery-reviews' ) } help={ __( 'Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }', 'advery-reviews' ) } value={ s.custom_css } rows={ 8 } onChange={ ( v ) => set( { custom_css: v } ) } __nextHasNoMarginBottom />
+						<div className="advery-rv-cssref">
+							<strong>{ __( 'Widget CSS classes', 'advery-reviews' ) }</strong>
+							<p className="advery-rv-hint" style={ { marginTop: 2 } }>{ __( 'Target these classes in your CSS above. Each maps to a part of the front-end widget.', 'advery-reviews' ) }</p>
+							<dl>
+								{ cssClasses.map( ( [ cls, desc ] ) => (
+									<div key={ cls } className="advery-rv-cssref__row">
+										<dt><code>{ cls }</code></dt>
+										<dd>{ desc }</dd>
+									</div>
+								) ) }
+							</dl>
+						</div>
+					</>
 				);
+			}
 			case 'maint':
 				return (
 					<>

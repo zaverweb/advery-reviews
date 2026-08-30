@@ -104,19 +104,79 @@ class Tasks {
 	}
 
 	/**
-	 * Fill placeholders like {business} / {target} in a system prompt.
+	 * Placeholders an owner can use in a custom prompt, with a short description.
+	 * Used by the admin "Prompts" tab as a reference; substituted by fill().
+	 *
+	 * @return array<string,string> token => description
+	 */
+	public static function variables() {
+		return [
+			'{business}'         => __( 'Name of the item being reviewed (post / product / term title)', 'advery-reviews' ),
+			'{reviewer_name}'    => __( 'Name the reviewer submitted', 'advery-reviews' ),
+			'{rating}'           => __( 'The review’s star rating, 1–5 (0 when none)', 'advery-reviews' ),
+			'{review}'           => __( 'The review text', 'advery-reviews' ),
+			'{site_name}'        => __( 'Your site name', 'advery-reviews' ),
+			'{site_description}' => __( 'Your site tagline / description', 'advery-reviews' ),
+			'{business_context}' => __( 'The “About your business” text from AI settings', 'advery-reviews' ),
+			'{target}'           => __( 'Target language (translate task only)', 'advery-reviews' ),
+			'{field:KEY}'        => __( 'Any custom field of the reviewed post/term — replace KEY with the meta key (e.g. {field:phone})', 'advery-reviews' ),
+		];
+	}
+
+	/**
+	 * Fill placeholders in a system prompt from the review context. Supports the
+	 * fixed tokens in variables() plus {field:meta_key}, which pulls a custom
+	 * field off the reviewed post (or term). Unknown/empty tokens become ''.
 	 *
 	 * @param string $prompt
 	 * @param array  $ctx
 	 * @return string
 	 */
 	public static function fill( $prompt, array $ctx ) {
+		// {field:meta_key} → the reviewed object's custom field.
+		$prompt = preg_replace_callback(
+			'/\{field:([a-zA-Z0-9_\-]{1,64})\}/',
+			static function ( $m ) use ( $ctx ) {
+				return self::field_value( $ctx, $m[1] );
+			},
+			$prompt
+		);
+
+		$rating = isset( $ctx['rating'] ) ? (int) $ctx['rating'] : 0;
+
 		return strtr(
 			$prompt,
 			[
-				'{business}' => (string) ( $ctx['business'] ?? get_bloginfo( 'name' ) ),
-				'{target}'   => (string) ( $ctx['target'] ?? 'English' ),
+				'{business}'         => (string) ( $ctx['business'] ?? get_bloginfo( 'name' ) ),
+				'{reviewer_name}'    => (string) ( $ctx['author'] ?? '' ),
+				'{rating}'           => $rating > 0 ? (string) $rating : '',
+				'{review}'           => (string) ( $ctx['content'] ?? '' ),
+				'{site_name}'        => (string) ( $ctx['site_name'] ?? get_bloginfo( 'name' ) ),
+				'{site_description}' => (string) ( $ctx['site_description'] ?? get_bloginfo( 'description' ) ),
+				'{business_context}' => (string) ( $ctx['business_context'] ?? '' ),
+				'{target}'           => (string) ( $ctx['target'] ?? 'English' ),
 			]
 		);
+	}
+
+	/**
+	 * Resolve a {field:KEY} token to the reviewed object's meta value.
+	 *
+	 * @param array  $ctx
+	 * @param string $key
+	 * @return string
+	 */
+	private static function field_value( array $ctx, $key ) {
+		$id = (int) ( $ctx['object_id'] ?? 0 );
+		if ( $id <= 0 ) {
+			return '';
+		}
+		$value = ( 'term' === ( $ctx['object_type'] ?? 'post' ) )
+			? get_term_meta( $id, $key, true )
+			: get_post_meta( $id, $key, true );
+		if ( is_array( $value ) ) {
+			$value = reset( $value );
+		}
+		return is_scalar( $value ) ? (string) $value : '';
 	}
 }

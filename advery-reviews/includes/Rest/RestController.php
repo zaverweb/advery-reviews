@@ -413,6 +413,7 @@ class RestController {
 						'translate' => AITasks::default_prompt( 'translate' ),
 						'summarize' => AITasks::default_prompt( 'summarize' ),
 					],
+					'variables'  => AITasks::variables(),
 				],
 			],
 			200
@@ -813,20 +814,24 @@ class RestController {
 			return new WP_Error( 'advery_ai_review', __( 'Review not found.', 'advery-reviews' ), [ 'status' => 404 ] );
 		}
 		$ctx = [
-			'business' => Targets::label( $review['object_type'], $review['object_id'] ),
-			'rating'   => $review['rating'],
-			'author'   => $review['author_name'],
-			'content'  => $review['content'],
-			'target'   => sanitize_text_field( (string) $req->get_param( 'target' ) ) ?: 'English',
+			'business'         => Targets::label( $review['object_type'], $review['object_id'] ),
+			'rating'           => $review['rating'],
+			'author'           => $review['author_name'],
+			'content'          => $review['content'],
+			'target'           => sanitize_text_field( (string) $req->get_param( 'target' ) ) ?: 'English',
+			// Available to every task so prompt variables ({site_name},
+			// {business_context}, {field:…}) resolve regardless of the task.
+			'object_type'      => $review['object_type'],
+			'object_id'        => $review['object_id'],
+			'site_name'        => get_bloginfo( 'name' ),
+			'site_description' => get_bloginfo( 'description' ),
+			'business_context' => (string) ( Settings::ai()['business_context'] ?? '' ),
 		];
 
-		// Reply needs to know our relationship to the item and the page context.
+		// Reply also needs to know our relationship to the item and the page.
 		if ( 'reply' === $task ) {
-			$ctx['role']             = Settings::role_for( get_post_type( $review['object_id'] ) );
-			$ctx['site_name']        = get_bloginfo( 'name' );
-			$ctx['site_description'] = get_bloginfo( 'description' );
-			$ctx['business_context'] = (string) ( Settings::ai()['business_context'] ?? '' );
-			$ctx['page_excerpt']     = $this->page_excerpt( $review['object_type'], $review['object_id'] );
+			$ctx['role']         = Settings::role_for( get_post_type( $review['object_id'] ) );
+			$ctx['page_excerpt'] = $this->page_excerpt( $review['object_type'], $review['object_id'] );
 		}
 
 		$out = AIClient::run( $task, $ctx );

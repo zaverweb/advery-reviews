@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.22.0\n"
+"Project-Id-Version: Advery Reviews 0.23.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T14:58:54+00:00\n"
+"POT-Creation-Date: 2026-08-30T21:30:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -189,6 +189,42 @@ msgstr ""
 #: includes/AI/Providers/Gemini.php:51
 #: includes/AI/Providers/OpenAI.php:61
 msgid "Unexpected AI response."
+msgstr ""
+
+#: includes/AI/Tasks.php:114
+msgid "Name of the item being reviewed (post / product / term title)"
+msgstr ""
+
+#: includes/AI/Tasks.php:115
+msgid "Name the reviewer submitted"
+msgstr ""
+
+#: includes/AI/Tasks.php:116
+msgid "The review’s star rating, 1–5 (0 when none)"
+msgstr ""
+
+#: includes/AI/Tasks.php:117
+msgid "The review text"
+msgstr ""
+
+#: includes/AI/Tasks.php:118
+msgid "Your site name"
+msgstr ""
+
+#: includes/AI/Tasks.php:119
+msgid "Your site tagline / description"
+msgstr ""
+
+#: includes/AI/Tasks.php:120
+msgid "The “About your business” text from AI settings"
+msgstr ""
+
+#: includes/AI/Tasks.php:121
+msgid "Target language (translate task only)"
+msgstr ""
+
+#: includes/AI/Tasks.php:122
+msgid "Any custom field of the reviewed post/term — replace KEY with the meta key (e.g. {field:phone})"
 msgstr ""
 
 #. translators: %d: minimum characters
@@ -423,23 +459,23 @@ msgstr ""
 msgid "Thanks! Your review is awaiting moderation."
 msgstr ""
 
-#: includes/Rest/RestController.php:456
+#: includes/Rest/RestController.php:457
 msgid "Invalid target."
 msgstr ""
 
-#: includes/Rest/RestController.php:461
+#: includes/Rest/RestController.php:462
 msgid "Please write the review."
 msgstr ""
 
-#: includes/Rest/RestController.php:495
+#: includes/Rest/RestController.php:496
 msgid "Could not save."
 msgstr ""
 
-#: includes/Rest/RestController.php:804
+#: includes/Rest/RestController.php:805
 msgid "No reviews to summarize."
 msgstr ""
 
-#: includes/Rest/RestController.php:813
+#: includes/Rest/RestController.php:814
 msgid "Review not found."
 msgstr ""
 
@@ -1151,11 +1187,27 @@ msgid "AI works on REAL reviews only — drafting your replies, assisting modera
 msgstr ""
 
 #: build/index.js:2
+msgid "Tone & prompts"
+msgstr ""
+
+#: build/index.js:2
 msgid "Provider"
 msgstr ""
 
 #: build/index.js:2
-msgid "Anthropic, OpenAI and Gemini need an API key; OpenRouter is a multi-model gateway; Ollama runs locally with no key."
+msgid "Ollama runs locally — no API key needed. Install a model, then put its name in the Model field."
+msgstr ""
+
+#: build/index.js:2
+msgid "Get your API key:"
+msgstr ""
+
+#: build/index.js:2
+msgid "Example models:"
+msgstr ""
+
+#: build/index.js:2
+msgid "Full model list & docs:"
 msgstr ""
 
 #: build/index.js:2
@@ -1163,11 +1215,7 @@ msgid "API key"
 msgstr ""
 
 #: build/index.js:2
-msgid "Not required for Ollama."
-msgstr ""
-
-#: build/index.js:2
-msgid "Paste the secret key from your provider’s dashboard. Stored on your server only."
+msgid "Paste the secret key from your provider’s dashboard (link above). Stored on your server only."
 msgstr ""
 
 #: build/index.js:2
@@ -1175,7 +1223,16 @@ msgid "Model (blank = provider default)"
 msgstr ""
 
 #: build/index.js:2
-msgid "Example: claude-sonnet-4-5, gpt-4o-mini, gemini-1.5-flash, llama3.1."
+#, js-format
+msgid "e.g. %s"
+msgstr ""
+
+#: build/index.js:2
+msgid "Daily call limit (0 = unlimited)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Caps AI cost. Example: 200/day."
 msgstr ""
 
 #: build/index.js:2
@@ -1187,11 +1244,15 @@ msgid "Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:
 msgstr ""
 
 #: build/index.js:2
-msgid "Daily call limit (0 = unlimited)"
+msgid "Save, then test the connection"
 msgstr ""
 
 #: build/index.js:2
-msgid "Caps AI cost. Example: 200 calls/day."
+msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
+msgstr ""
+
+#: build/index.js:2
+msgid "Working. Sample reply: "
 msgstr ""
 
 #: build/index.js:2
@@ -1199,7 +1260,15 @@ msgid "About your business (context for replies)"
 msgstr ""
 
 #: build/index.js:2
-msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.”"
+msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.” Available in prompts as {business_context}."
+msgstr ""
+
+#: build/index.js:2
+msgid "Variables you can use in any prompt"
+msgstr ""
+
+#: build/index.js:2
+msgid "Type these tokens into a prompt and they’re replaced for each review before it’s sent to the AI."
 msgstr ""
 
 #: build/index.js:2
@@ -1216,7 +1285,7 @@ msgid "“%1$s” is a third-party directory listing"
 msgstr ""
 
 #: build/index.js:2
-msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default)."
+msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default). Use the variables above."
 msgstr ""
 
 #: build/index.js:2
@@ -1237,18 +1306,6 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Prompt (blank = built-in default)"
-msgstr ""
-
-#: build/index.js:2
-msgid "Save, then test the connection"
-msgstr ""
-
-#: build/index.js:2
-msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
-msgstr ""
-
-#: build/index.js:2
-msgid "Working. Sample reply: "
 msgstr ""
 
 #: build/index.js:2
@@ -1344,7 +1401,79 @@ msgid "Monthly"
 msgstr ""
 
 #: build/index.js:2
-msgid "Optional styling, printed wherever the widget shows. Example: .advery-reviews__stars { color: #e11; }"
+msgid "The whole widget container"
+msgstr ""
+
+#: build/index.js:2
+msgid "The rating summary bar (average + stars + count)"
+msgstr ""
+
+#: build/index.js:2
+msgid "The big average-rating number"
+msgstr ""
+
+#: build/index.js:2
+msgid "A row of stars (in the summary and each review)"
+msgstr ""
+
+#: build/index.js:2
+msgid "The “N reviews” text"
+msgstr ""
+
+#: build/index.js:2
+msgid "The list that holds all reviews"
+msgstr ""
+
+#: build/index.js:2
+msgid "A single review"
+msgstr ""
+
+#: build/index.js:2
+msgid "A reviewer’s name"
+msgstr ""
+
+#: build/index.js:2
+msgid "A review’s title"
+msgstr ""
+
+#: build/index.js:2
+msgid "A review’s body text"
+msgstr ""
+
+#: build/index.js:2
+msgid "The owner’s reply block under a review"
+msgstr ""
+
+#: build/index.js:2
+msgid "The “write a review” form"
+msgstr ""
+
+#: build/index.js:2
+msgid "The clickable rating stars in the form"
+msgstr ""
+
+#: build/index.js:2
+msgid "The submit button"
+msgstr ""
+
+#: build/index.js:2
+msgid "The “load more” button"
+msgstr ""
+
+#: build/index.js:2
+msgid "The numbered pagination bar"
+msgstr ""
+
+#: build/index.js:2
+msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
+msgstr ""
+
+#: build/index.js:2
+msgid "Widget CSS classes"
+msgstr ""
+
+#: build/index.js:2
+msgid "Target these classes in your CSS above. Each maps to a part of the front-end widget."
 msgstr ""
 
 #: build/index.js:2

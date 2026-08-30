@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.22.0\n"
+"Project-Id-Version: Advery Reviews 0.23.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T14:58:54+00:00\n"
+"POT-Creation-Date: 2026-08-30T21:30:46+00:00\n"
 "PO-Revision-Date: 2026-08-30 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -192,6 +192,42 @@ msgstr "هیچ کلید APIی تنظیم نشده است."
 #: includes/AI/Providers/OpenAI.php:61
 msgid "Unexpected AI response."
 msgstr "پاسخِ غیرمنتظره از AI."
+
+#: includes/AI/Tasks.php:114
+msgid "Name of the item being reviewed (post / product / term title)"
+msgstr "نامِ آیتمی که نظر گرفته (عنوانِ پست / محصول / ترم)"
+
+#: includes/AI/Tasks.php:115
+msgid "Name the reviewer submitted"
+msgstr "نامی که نظردهنده وارد کرده"
+
+#: includes/AI/Tasks.php:116
+msgid "The review’s star rating, 1–5 (0 when none)"
+msgstr "امتیازِ ستاره‌ایِ نظر، ۱–۵ (۰ اگر نباشد)"
+
+#: includes/AI/Tasks.php:117
+msgid "The review text"
+msgstr "متنِ نظر"
+
+#: includes/AI/Tasks.php:118
+msgid "Your site name"
+msgstr "نامِ سایتِ شما"
+
+#: includes/AI/Tasks.php:119
+msgid "Your site tagline / description"
+msgstr "شعار / توضیحِ سایتِ شما"
+
+#: includes/AI/Tasks.php:120
+msgid "The “About your business” text from AI settings"
+msgstr "متنِ «درباره‌ی کسب‌وکارِ شما» از تنظیماتِ AI"
+
+#: includes/AI/Tasks.php:121
+msgid "Target language (translate task only)"
+msgstr "زبانِ مقصد (فقط وظیفه‌ی ترجمه)"
+
+#: includes/AI/Tasks.php:122
+msgid "Any custom field of the reviewed post/term — replace KEY with the meta key (e.g. {field:phone})"
+msgstr "هر فیلدِ سفارشیِ پست/ترمِ نظرگرفته — KEY را با کلیدِ متا جایگزین کنید (مثلاً {field:phone})"
 
 #. translators: %d: minimum characters
 #: includes/AntiSpam/SpamGuard.php:83
@@ -425,23 +461,23 @@ msgstr "ممنون! نظرِ شما منتشر شد."
 msgid "Thanks! Your review is awaiting moderation."
 msgstr "ممنون! نظرِ شما در انتظارِ بررسی است."
 
-#: includes/Rest/RestController.php:456
+#: includes/Rest/RestController.php:457
 msgid "Invalid target."
 msgstr "هدفِ نامعتبر."
 
-#: includes/Rest/RestController.php:461
+#: includes/Rest/RestController.php:462
 msgid "Please write the review."
 msgstr "لطفاً نظر را بنویسید."
 
-#: includes/Rest/RestController.php:495
+#: includes/Rest/RestController.php:496
 msgid "Could not save."
 msgstr "ذخیره ممکن نشد."
 
-#: includes/Rest/RestController.php:804
+#: includes/Rest/RestController.php:805
 msgid "No reviews to summarize."
 msgstr "نظری برای خلاصه‌سازی نیست."
 
-#: includes/Rest/RestController.php:813
+#: includes/Rest/RestController.php:814
 msgid "Review not found."
 msgstr "نظر یافت نشد."
 
@@ -1153,32 +1189,53 @@ msgid "AI works on REAL reviews only — drafting your replies, assisting modera
 msgstr "AI فقط روی نظراتِ واقعی کار می‌کند — پیش‌نویسِ پاسخ‌های شما، کمک به بررسی، ترجمه و خلاصه‌سازی. هرگز نظرِ جعلی نمی‌سازد."
 
 #: build/index.js:2
+msgid "Tone & prompts"
+msgstr "لحن و پرامت‌ها"
+
+#: build/index.js:2
 msgid "Provider"
 msgstr "ارائه‌دهنده"
 
 #: build/index.js:2
-msgid "Anthropic, OpenAI and Gemini need an API key; OpenRouter is a multi-model gateway; Ollama runs locally with no key."
-msgstr "Anthropic، OpenAI و Gemini به کلید API نیاز دارند؛ OpenRouter یک درگاهِ چندمدلی است؛ Ollama به‌صورتِ محلی و بدونِ کلید اجرا می‌شود."
+msgid "Ollama runs locally — no API key needed. Install a model, then put its name in the Model field."
+msgstr "Ollama به‌صورتِ محلی اجرا می‌شود — به کلید API نیاز نیست. یک مدل نصب کنید، سپس نامش را در فیلدِ مدل بگذارید."
+
+#: build/index.js:2
+msgid "Get your API key:"
+msgstr "کلید API را بگیرید:"
+
+#: build/index.js:2
+msgid "Example models:"
+msgstr "مدل‌های نمونه:"
+
+#: build/index.js:2
+msgid "Full model list & docs:"
+msgstr "فهرستِ کاملِ مدل‌ها و مستندات:"
 
 #: build/index.js:2
 msgid "API key"
 msgstr "کلیدِ API"
 
 #: build/index.js:2
-msgid "Not required for Ollama."
-msgstr "برای Ollama لازم نیست."
-
-#: build/index.js:2
-msgid "Paste the secret key from your provider’s dashboard. Stored on your server only."
-msgstr "کلیدِ مخفی را از داشبوردِ ارائه‌دهنده‌تان بچسبانید. فقط روی سرورِ شما ذخیره می‌شود."
+msgid "Paste the secret key from your provider’s dashboard (link above). Stored on your server only."
+msgstr "کلیدِ مخفی را از داشبوردِ ارائه‌دهنده‌تان (لینکِ بالا) بچسبانید. فقط روی سرورِ شما ذخیره می‌شود."
 
 #: build/index.js:2
 msgid "Model (blank = provider default)"
 msgstr "مدل (خالی = پیش‌فرضِ ارائه‌دهنده)"
 
 #: build/index.js:2
-msgid "Example: claude-sonnet-4-5, gpt-4o-mini, gemini-1.5-flash, llama3.1."
-msgstr "مثال: claude-sonnet-4-5، gpt-4o-mini، gemini-1.5-flash، llama3.1."
+#, js-format
+msgid "e.g. %s"
+msgstr "مثلاً %s"
+
+#: build/index.js:2
+msgid "Daily call limit (0 = unlimited)"
+msgstr "سقفِ فراخوانیِ روزانه (۰ = نامحدود)"
+
+#: build/index.js:2
+msgid "Caps AI cost. Example: 200/day."
+msgstr "هزینه‌ی AI را محدود می‌کند. مثال: ۲۰۰ در روز."
 
 #: build/index.js:2
 msgid "Base URL (optional override)"
@@ -1189,20 +1246,32 @@ msgid "Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:
 msgstr "فقط برای اندپوینت‌های self-hosted/proxy. مثال (Ollama): http://localhost:11434/v1."
 
 #: build/index.js:2
-msgid "Daily call limit (0 = unlimited)"
-msgstr "سقفِ فراخوانیِ روزانه (۰ = نامحدود)"
+msgid "Save, then test the connection"
+msgstr "ذخیره کنید، سپس اتصال را تست کنید"
 
 #: build/index.js:2
-msgid "Caps AI cost. Example: 200 calls/day."
-msgstr "هزینه‌ی AI را محدود می‌کند. مثال: ۲۰۰ فراخوانی در روز."
+msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
+msgstr "اول ذخیره را بزنید، سپس این یک پاسخِ نمونه پیش‌نویس می‌کند تا درست‌کارکردنِ کلید/مدلتان تأیید شود."
+
+#: build/index.js:2
+msgid "Working. Sample reply: "
+msgstr "کار می‌کند. پاسخِ نمونه: "
 
 #: build/index.js:2
 msgid "About your business (context for replies)"
 msgstr "درباره‌ی کسب‌وکارِ شما (زمینه برای پاسخ‌ها)"
 
 #: build/index.js:2
-msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.”"
-msgstr "اختیاری. مثال: «نانواییِ خانوادگی در تورنتو، فعال از ۲۰۱۵، معروف به نانِ خمیرترش.»"
+msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.” Available in prompts as {business_context}."
+msgstr "اختیاری. مثال: «نانواییِ خانوادگی در تورنتو، فعال از ۲۰۱۵، معروف به نانِ خمیرترش.» در پرامت‌ها با {business_context} در دسترس است."
+
+#: build/index.js:2
+msgid "Variables you can use in any prompt"
+msgstr "متغیرهایی که در هر پرامت می‌توانید استفاده کنید"
+
+#: build/index.js:2
+msgid "Type these tokens into a prompt and they’re replaced for each review before it’s sent to the AI."
+msgstr "این توکن‌ها را در پرامت تایپ کنید تا برای هر نظر، پیش از ارسال به AI، جایگزین شوند."
 
 #: build/index.js:2
 msgid "Reply voice per content type"
@@ -1218,8 +1287,8 @@ msgid "“%1$s” is a third-party directory listing"
 msgstr "«%1$s» یک آیتمِ دایرکتوریِ شخصِ ثالث است"
 
 #: build/index.js:2
-msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default)."
-msgstr "هر وظیفه را روشن/خاموش کنید و در صورتِ تمایل پرامتِ آن را جایگزین کنید (متنِ خاکستری پیش‌فرضِ داخلی است)."
+msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default). Use the variables above."
+msgstr "هر وظیفه را روشن/خاموش کنید و در صورتِ تمایل پرامتش را جایگزین کنید (متنِ خاکستری پیش‌فرضِ داخلی است). از متغیرهای بالا استفاده کنید."
 
 #: build/index.js:2
 msgid "Reply drafting"
@@ -1240,18 +1309,6 @@ msgstr "خلاصه‌سازی"
 #: build/index.js:2
 msgid "Prompt (blank = built-in default)"
 msgstr "پرامت (خالی = پیش‌فرضِ داخلی)"
-
-#: build/index.js:2
-msgid "Save, then test the connection"
-msgstr "ذخیره کنید، سپس اتصال را تست کنید"
-
-#: build/index.js:2
-msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
-msgstr "اول ذخیره را بزنید، سپس این یک پاسخِ نمونه پیش‌نویس می‌کند تا درست‌کارکردنِ کلید/مدلتان تأیید شود."
-
-#: build/index.js:2
-msgid "Working. Sample reply: "
-msgstr "کار می‌کند. پاسخِ نمونه: "
 
 #: build/index.js:2
 msgid "Outputs star-rating structured data so Google can show rating stars in search results. Works with or without the Advery Schema Plus plugin."
@@ -1346,8 +1403,80 @@ msgid "Monthly"
 msgstr "ماهانه"
 
 #: build/index.js:2
-msgid "Optional styling, printed wherever the widget shows. Example: .advery-reviews__stars { color: #e11; }"
-msgstr "استایلِ اختیاری، هرجا ویجت نمایش داده شود چاپ می‌شود. مثال: .advery-reviews__stars { color: #e11; }"
+msgid "The whole widget container"
+msgstr "کلِ کانتینرِ ویجت"
+
+#: build/index.js:2
+msgid "The rating summary bar (average + stars + count)"
+msgstr "نوارِ خلاصه‌ی امتیاز (میانگین + ستاره + شمارش)"
+
+#: build/index.js:2
+msgid "The big average-rating number"
+msgstr "عددِ بزرگِ میانگینِ امتیاز"
+
+#: build/index.js:2
+msgid "A row of stars (in the summary and each review)"
+msgstr "یک ردیف ستاره (در خلاصه و هر نظر)"
+
+#: build/index.js:2
+msgid "The “N reviews” text"
+msgstr "متنِ «N نظر»"
+
+#: build/index.js:2
+msgid "The list that holds all reviews"
+msgstr "فهرستی که همه‌ی نظرها را نگه می‌دارد"
+
+#: build/index.js:2
+msgid "A single review"
+msgstr "یک نظرِ تکی"
+
+#: build/index.js:2
+msgid "A reviewer’s name"
+msgstr "نامِ یک نظردهنده"
+
+#: build/index.js:2
+msgid "A review’s title"
+msgstr "عنوانِ یک نظر"
+
+#: build/index.js:2
+msgid "A review’s body text"
+msgstr "متنِ اصلیِ یک نظر"
+
+#: build/index.js:2
+msgid "The owner’s reply block under a review"
+msgstr "بلاکِ پاسخِ مالک زیرِ یک نظر"
+
+#: build/index.js:2
+msgid "The “write a review” form"
+msgstr "فرمِ «نوشتنِ نظر»"
+
+#: build/index.js:2
+msgid "The clickable rating stars in the form"
+msgstr "ستاره‌های امتیازِ قابلِ کلیک در فرم"
+
+#: build/index.js:2
+msgid "The submit button"
+msgstr "دکمه‌ی ثبت"
+
+#: build/index.js:2
+msgid "The “load more” button"
+msgstr "دکمه‌ی «نمایشِ بیشتر»"
+
+#: build/index.js:2
+msgid "The numbered pagination bar"
+msgstr "نوارِ صفحه‌بندیِ شماره‌دار"
+
+#: build/index.js:2
+msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
+msgstr "بازنویسی‌های پیشرفته، هرجا ویجت نمایش داده شود چاپ می‌شود. برای رنگ، گردی و فاصله بهتر است تبِ ظاهر را استفاده کنید (بدونِ کد). مثال: .advery-reviews__stars { color: #e11; }"
+
+#: build/index.js:2
+msgid "Widget CSS classes"
+msgstr "کلاس‌های CSSِ ویجت"
+
+#: build/index.js:2
+msgid "Target these classes in your CSS above. Each maps to a part of the front-end widget."
+msgstr "این کلاس‌ها را در CSSِ بالا هدف بگیرید. هرکدام به بخشی از ویجتِ فرانت‌اند نگاشت می‌شود."
 
 #: build/index.js:2
 msgid "Reviews are removed automatically when their post/term is deleted. “Purge” removes reviews whose target no longer exists; “Optimize” compacts the database tables."
