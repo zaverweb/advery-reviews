@@ -29,8 +29,20 @@ export function parseContentType( value ) {
  * three coarse buckets). Values are "pt:<slug>" and "tax:<slug>".
  */
 export function ContentTypeSelect( { boot, value, onChange } ) {
-	const postTypes = ( boot && boot.postTypes ) || [];
-	const taxonomies = ( boot && boot.taxonomies ) || [];
+	// Only offer types that actually accept reviews (enabled in Settings), so
+	// utility/builder post types and taxonomies that never collect reviews
+	// (e.g. Elementor templates, floating buttons, JetEngine components,
+	// post formats) don't clutter the filter or reports.
+	const settings = ( boot && boot.settings ) || {};
+	const enabledPT = new Set( settings.enabled_post_types || [] );
+	if ( settings.woo_enabled && boot && boot.wooActive ) {
+		enabledPT.add( 'product' );
+	}
+	const enabledTax = new Set( settings.enabled_taxonomies || [] );
+
+	const postTypes = ( ( boot && boot.postTypes ) || [] ).filter( ( pt ) => enabledPT.has( pt.slug ) );
+	const taxonomies = ( ( boot && boot.taxonomies ) || [] ).filter( ( tx ) => enabledTax.has( tx.slug ) );
+
 	return (
 		<label className="advery-rv-itemfilter">
 			<span className="advery-rv-itemfilter__label">{ __( 'Item type', 'advery-reviews' ) }</span>
@@ -40,20 +52,24 @@ export function ContentTypeSelect( { boot, value, onChange } ) {
 				onChange={ ( e ) => onChange( e.target.value ) }
 			>
 				<option value="">{ __( 'All item types', 'advery-reviews' ) }</option>
-				<optgroup label={ __( 'Post types', 'advery-reviews' ) }>
-					{ postTypes.map( ( pt ) => (
-						<option key={ 'pt:' + pt.slug } value={ 'pt:' + pt.slug }>
-							{ pt.label }
-						</option>
-					) ) }
-				</optgroup>
-				<optgroup label={ __( 'Taxonomies', 'advery-reviews' ) }>
-					{ taxonomies.map( ( tx ) => (
-						<option key={ 'tax:' + tx.slug } value={ 'tax:' + tx.slug }>
-							{ tx.label }
-						</option>
-					) ) }
-				</optgroup>
+				{ postTypes.length > 0 && (
+					<optgroup label={ __( 'Post types', 'advery-reviews' ) }>
+						{ postTypes.map( ( pt ) => (
+							<option key={ 'pt:' + pt.slug } value={ 'pt:' + pt.slug }>
+								{ pt.label }
+							</option>
+						) ) }
+					</optgroup>
+				) }
+				{ taxonomies.length > 0 && (
+					<optgroup label={ __( 'Taxonomies', 'advery-reviews' ) }>
+						{ taxonomies.map( ( tx ) => (
+							<option key={ 'tax:' + tx.slug } value={ 'tax:' + tx.slug }>
+								{ tx.label }
+							</option>
+						) ) }
+					</optgroup>
+				) }
 			</select>
 		</label>
 	);

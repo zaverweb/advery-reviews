@@ -624,8 +624,13 @@ class RestController {
 
 		$items = [];
 
-		// Posts / products of any public type (skip attachments).
-		$post_types = array_values( array_diff( get_post_types( [ 'public' => true ] ), [ 'attachment' ] ) );
+		// Only search types that actually accept reviews (enabled in Settings),
+		// so builder/utility post types and taxonomies stay out of the results.
+		$post_types = array_values( array_filter( (array) Settings::get( 'enabled_post_types', [] ) ) );
+		if ( Settings::get( 'woo_enabled' ) && Targets::woo_active() ) {
+			$post_types[] = 'product';
+		}
+		$post_types = array_values( array_unique( $post_types ) );
 		if ( $post_types ) {
 			$posts = get_posts(
 				[
@@ -647,8 +652,8 @@ class RestController {
 			}
 		}
 
-		// Terms of any public taxonomy.
-		$taxes = array_values( get_taxonomies( [ 'public' => true ] ) );
+		// Terms of the enabled taxonomies only.
+		$taxes = array_values( array_filter( (array) Settings::get( 'enabled_taxonomies', [] ) ) );
 		if ( $taxes ) {
 			$terms = get_terms(
 				[

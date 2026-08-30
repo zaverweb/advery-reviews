@@ -12,6 +12,12 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.21.0 (Filters/reports list only review-enabled types)
+- **Cleaner filters and reports.** The “Item type” filter (on both Reviews and Reports) and the item-search autocomplete previously listed *every* public post type and taxonomy — including builder/utility ones that never collect reviews (Elementor templates & floating buttons, JetEngine components, post formats, etc.). Now they list **only the post types and taxonomies enabled for reviews in Settings** (plus WooCommerce products when Woo reviews are on). Turn a type off in Settings and it disappears from the filters and reports.
+- Empty groups are hidden, so if no taxonomy is enabled the “Taxonomies” group doesn’t show at all.
+- The `GET /objects` search endpoint is restricted to the same enabled types server-side, so results stay clean too. **Verified live:** an `elementor_library` post (“Archive theme”) no longer appears in item search, while enabled Post/Category items still do.
+- No DB or string changes.
+
 ### Version 0.20.0 (Configurable, responsive front-end appearance — backlog item 7/7)
 - **Backlog item 7/7 — the last one.** A new **Appearance** settings section lets the owner restyle the front-end review widget to match their theme, with **no CSS**: accent color (buttons/links), text-on-accent, star color, body text, form/card background, border color, corner radius, base font size, density (comfortable/compact) and a max width. A **live preview** in the settings shows the result as you change it.
 - **Driven entirely by CSS custom properties.** `front.css` was refactored so every color, radius, spacing and size reads from an `--ar-*` variable with a sensible fallback; the settings emit a single `.advery-reviews{ … }` var block inline (before any owner custom CSS, so that still wins). Leaving a color blank inherits the theme's own color.
