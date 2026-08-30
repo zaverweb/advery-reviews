@@ -3,12 +3,12 @@ import { __, sprintf } from '@wordpress/i18n';
 import {
 	Button,
 	SearchControl,
-	SelectControl,
 	Spinner,
 	CheckboxControl,
 	TextareaControl,
 } from '@wordpress/components';
 import { api } from '../api';
+import { ContentTypeSelect, ObjectSearch, parseContentType } from './ItemFilters';
 
 const STATUS_TABS = [
 	{ key: '', label: __( 'All', 'advery-reviews' ) },
@@ -23,10 +23,11 @@ function stars( n ) {
 	return '★'.repeat( n ) + '☆'.repeat( 5 - n );
 }
 
-export default function ReviewsList( { counts, setCounts, notify } ) {
+export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 	const [ status, setStatus ] = useState( '' );
 	const [ search, setSearch ] = useState( '' );
-	const [ objectType, setObjectType ] = useState( '' );
+	const [ contentType, setContentType ] = useState( '' );
+	const [ objectSel, setObjectSel ] = useState( null );
 	const [ page, setPage ] = useState( 1 );
 	const [ data, setData ] = useState( { items: [], total: 0 } );
 	const [ loading, setLoading ] = useState( false );
@@ -39,7 +40,17 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 	const load = useCallback( async () => {
 		setLoading( true );
 		try {
-			const res = await api.listReviews( { status, search, object_type: objectType, page, per_page: perPage } );
+			const { post_type: postType, taxonomy } = parseContentType( contentType );
+			const res = await api.listReviews( {
+				status,
+				search,
+				post_type: postType,
+				taxonomy,
+				object_type: objectSel ? objectSel.object_type : '',
+				object_id: objectSel ? objectSel.object_id : 0,
+				page,
+				per_page: perPage,
+			} );
 			setData( res );
 			if ( res.counts ) {
 				setCounts( res.counts );
@@ -50,7 +61,7 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 		} finally {
 			setLoading( false );
 		}
-	}, [ status, search, objectType, page, setCounts, notify ] );
+	}, [ status, search, contentType, objectSel, page, setCounts, notify ] );
 
 	useEffect( () => {
 		load();
@@ -147,19 +158,19 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 					) ) }
 				</div>
 				<div className="advery-rv-filters">
-					<SelectControl
-						value={ objectType }
-						options={ [
-							{ label: __( 'All types', 'advery-reviews' ), value: '' },
-							{ label: __( 'Posts', 'advery-reviews' ), value: 'post' },
-							{ label: __( 'Products', 'advery-reviews' ), value: 'product' },
-							{ label: __( 'Terms', 'advery-reviews' ), value: 'term' },
-						] }
+					<ContentTypeSelect
+						boot={ boot }
+						value={ contentType }
 						onChange={ ( v ) => {
-							setObjectType( v );
+							setContentType( v );
 							setPage( 1 );
 						} }
-						__nextHasNoMarginBottom
+					/>
+					<ObjectSearch
+						onSelect={ ( it ) => {
+							setObjectSel( it );
+							setPage( 1 );
+						} }
 					/>
 					<SearchControl
 						value={ search }
@@ -167,7 +178,7 @@ export default function ReviewsList( { counts, setCounts, notify } ) {
 							setSearch( v );
 							setPage( 1 );
 						} }
-						placeholder={ __( 'Search reviews…', 'advery-reviews' ) }
+						placeholder={ __( 'Search review text…', 'advery-reviews' ) }
 						__nextHasNoMarginBottom
 					/>
 				</div>

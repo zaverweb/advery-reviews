@@ -111,11 +111,11 @@ export default function App( { screen = 'reviews' } ) {
 				</Notice>
 			) }
 
-			{ screen === 'reports' && <ReportsPanel notify={ notify } /> }
+			{ screen === 'reports' && <ReportsPanel boot={ boot } notify={ notify } /> }
 			{ screen === 'settings' && <SettingsPanel boot={ boot } notify={ notify } /> }
 			{ screen === 'migration' && <MigrationPanel boot={ boot } notify={ notify } /> }
 			{ screen === 'reviews' && (
-				<ReviewsList counts={ counts } setCounts={ setCounts } notify={ notify } />
+				<ReviewsList boot={ boot } counts={ counts } setCounts={ setCounts } notify={ notify } />
 			) }
 		</div>
 	);

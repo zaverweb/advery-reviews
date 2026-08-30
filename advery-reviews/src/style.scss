@@ -360,6 +360,33 @@
 .advery-rv-mig-actions { display: flex; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
 .advery-rv-mig-progress { color: var(--rv-muted); font-size: 13px; }
 
+/* Shared item-type filter (grouped native select) + object autocomplete */
+.advery-rv-itemfilter {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+.advery-rv-itemfilter__label {
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+	color: #1e1e1e;
+}
+.advery-rv-itemfilter__select {
+	min-width: 180px;
+	max-width: 220px;
+	height: 40px;
+	padding: 0 8px;
+	border: 1px solid #949494;
+	border-radius: 2px;
+	background: #fff;
+	font-size: 13px;
+	color: var(--rv-ink);
+}
+.advery-rv-objsearch { min-width: 240px; }
+.advery-rv-objsearch .components-base-control__label { text-transform: uppercase; font-size: 11px; }
+
 /* Reports */
 .advery-rv-rep-toolbar {
 	display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 16px;

@@ -34,6 +34,8 @@ export const api = {
 		).toString();
 		return apiFetch( { path: `${ base }/reports${ q ? '?' + q : '' }` } );
 	},
+	searchObjects: ( q ) =>
+		apiFetch( { path: `${ base }/objects?q=${ encodeURIComponent( q ) }` } ),
 	migrationPreview: () => apiFetch( { path: `${ base }/migration/preview` } ),
 	migrationImport: ( data ) =>
 		apiFetch( { path: `${ base }/migration/import`, method: 'POST', data } ),

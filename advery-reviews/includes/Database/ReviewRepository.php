@@ -8,7 +8,56 @@ namespace Advery\Reviews\Database;
  */
 class ReviewRepository {
 
-	const STATUSES = [ 'pending', 'approved', 'spam', 'trash' ];
+	const STATUSES     = [ 'pending', 'approved', 'spam', 'trash' ];
+	const OBJECT_TYPES = [ 'post', 'product', 'term' ];
+
+	/**
+	 * Shared WHERE/JOIN builder for the *reviewed-item* dimensions used by both
+	 * the admin listing and the reports: a time window and — crucially — the
+	 * real post type / taxonomy of the reviewed object.
+	 *
+	 * Reviews only store a coarse `object_type` (post / product / term), so
+	 * filtering by an actual post type (e.g. a custom `doctor` CPT) or a
+	 * taxonomy (e.g. a custom `تخصص`) resolves the object against wp_posts /
+	 * wp_term_taxonomy with a join. The reviews table alias is always `r`.
+	 *
+	 * @param array $args { since, object_type, object_id, post_type, taxonomy }
+	 * @return array{join:string,where:string[],params:array}
+	 */
+	private static function scope( array $args ) {
+		global $wpdb;
+		$join   = '';
+		$where  = [];
+		$params = [];
+
+		if ( ! empty( $args['since'] ) ) {
+			$where[]  = 'r.created_at >= %s';
+			$params[] = $args['since'];
+		}
+		if ( ! empty( $args['object_type'] ) && in_array( $args['object_type'], self::OBJECT_TYPES, true ) ) {
+			$where[]  = 'r.object_type = %s';
+			$params[] = $args['object_type'];
+		}
+		if ( ! empty( $args['object_id'] ) ) {
+			$where[]  = 'r.object_id = %d';
+			$params[] = (int) $args['object_id'];
+		}
+		if ( ! empty( $args['post_type'] ) ) {
+			// Products are posts too, so a post-type filter spans post + product.
+			$join    .= " JOIN {$wpdb->posts} arp ON arp.ID = r.object_id ";
+			$where[]  = "r.object_type IN ('post','product')";
+			$where[]  = 'arp.post_type = %s';
+			$params[] = sanitize_key( $args['post_type'] );
+		}
+		if ( ! empty( $args['taxonomy'] ) ) {
+			$join    .= " JOIN {$wpdb->term_taxonomy} artt ON artt.term_id = r.object_id ";
+			$where[]  = "r.object_type = 'term'";
+			$where[]  = 'artt.taxonomy = %s';
+			$params[] = sanitize_key( $args['taxonomy'] );
+		}
+
+		return [ 'join' => $join, 'where' => $where, 'params' => $params ];
+	}
 
 	/**
 	 * Insert a review. Returns the new id (0 on failure).
@@ -197,28 +246,21 @@ class ReviewRepository {
 		global $wpdb;
 		$table = Installer::reviews_table();
 
-		$where  = [ '1=1' ];
-		$params = [];
+		$scope  = self::scope( $args );
+		$where  = array_merge( [ '1=1' ], $scope['where'] );
+		$params = $scope['params'];
 
 		if ( ! empty( $args['status'] ) && in_array( $args['status'], self::STATUSES, true ) ) {
-			$where[]  = 'status = %s';
+			$where[]  = 'r.status = %s';
 			$params[] = $args['status'];
 		}
-		if ( ! empty( $args['object_type'] ) ) {
-			$where[]  = 'object_type = %s';
-			$params[] = $args['object_type'];
-		}
-		if ( ! empty( $args['object_id'] ) ) {
-			$where[]  = 'object_id = %d';
-			$params[] = (int) $args['object_id'];
-		}
 		if ( ! empty( $args['rating'] ) ) {
-			$where[]  = 'rating = %d';
+			$where[]  = 'r.rating = %d';
 			$params[] = (int) $args['rating'];
 		}
 		if ( ! empty( $args['search'] ) ) {
 			$like     = '%' . $wpdb->esc_like( $args['search'] ) . '%';
-			$where[]  = '(author_name LIKE %s OR author_email LIKE %s OR title LIKE %s OR content LIKE %s)';
+			$where[]  = '(r.author_name LIKE %s OR r.author_email LIKE %s OR r.title LIKE %s OR r.content LIKE %s)';
 			$params[] = $like;
 			$params[] = $like;
 			$params[] = $like;
@@ -234,12 +276,12 @@ class ReviewRepository {
 		$page     = max( 1, (int) ( $args['page'] ?? 1 ) );
 		$offset   = ( $page - 1 ) * $per_page;
 
-		$total_sql = "SELECT COUNT(*) FROM {$table} WHERE {$where_sql}";
+		$total_sql = "SELECT COUNT(*) FROM {$table} r {$scope['join']} WHERE {$where_sql}";
 		$total     = (int) ( $params ? $wpdb->get_var( $wpdb->prepare( $total_sql, $params ) ) : $wpdb->get_var( $total_sql ) );
 
-		$list_params   = array_merge( $params, [ $per_page, $offset ] );
-		$list_sql      = "SELECT * FROM {$table} WHERE {$where_sql} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d";
-		$rows          = $wpdb->get_results( $wpdb->prepare( $list_sql, $list_params ), ARRAY_A );
+		$list_params = array_merge( $params, [ $per_page, $offset ] );
+		$list_sql    = "SELECT r.* FROM {$table} r {$scope['join']} WHERE {$where_sql} ORDER BY r.{$orderby} {$order} LIMIT %d OFFSET %d";
+		$rows        = $wpdb->get_results( $wpdb->prepare( $list_sql, $list_params ), ARRAY_A );
 
 		return [
 			'items' => array_map( [ self::class, 'hydrate' ], $rows ?: [] ),
@@ -457,23 +499,20 @@ class ReviewRepository {
 		global $wpdb;
 		$table = Installer::reviews_table();
 
-		$where  = [ '1=1' ];
-		$params = [];
-		if ( ! empty( $args['since'] ) ) {
-			$where[]  = 'created_at >= %s';
-			$params[] = $args['since'];
-		}
+		$scope     = self::scope( $args );
+		$where     = array_merge( [ '1=1' ], $scope['where'] );
+		$params    = $scope['params'];
 		$where_sql = implode( ' AND ', $where );
 
 		$sql = "SELECT
 				COUNT(*) AS total,
-				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
-				SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
-				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) AS spam,
-				SUM(CASE WHEN status = 'trash' THEN 1 ELSE 0 END) AS trash,
-				COUNT(DISTINCT CASE WHEN status <> 'trash' THEN CONCAT(object_type, ':', object_id) END) AS objects,
-				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
-			FROM {$table}
+				SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+				SUM(CASE WHEN r.status = 'spam' THEN 1 ELSE 0 END) AS spam,
+				SUM(CASE WHEN r.status = 'trash' THEN 1 ELSE 0 END) AS trash,
+				COUNT(DISTINCT CASE WHEN r.status <> 'trash' THEN CONCAT(r.object_type, ':', r.object_id) END) AS objects,
+				COALESCE( AVG( CASE WHEN r.status = 'approved' AND r.rating > 0 THEN r.rating END ), 0 ) AS avg_rating
+			FROM {$table} r {$scope['join']}
 			WHERE {$where_sql}";
 
 		$row = $params
@@ -505,27 +544,20 @@ class ReviewRepository {
 		$table = Installer::reviews_table();
 		$limit = max( 1, min( 100, (int) ( $args['limit'] ?? 20 ) ) );
 
-		$where  = [ "status <> 'trash'" ];
-		$params = [];
-		if ( ! empty( $args['since'] ) ) {
-			$where[]  = 'created_at >= %s';
-			$params[] = $args['since'];
-		}
-		if ( ! empty( $args['object_type'] ) && in_array( $args['object_type'], [ 'post', 'product', 'term' ], true ) ) {
-			$where[]  = 'object_type = %s';
-			$params[] = $args['object_type'];
-		}
+		$scope     = self::scope( $args );
+		$where     = array_merge( [ "r.status <> 'trash'" ], $scope['where'] );
+		$params    = $scope['params'];
 		$where_sql = implode( ' AND ', $where );
 
-		$sql = "SELECT object_type, object_id,
+		$sql = "SELECT r.object_type, r.object_id,
 				COUNT(*) AS total,
-				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
-				SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
-				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) AS spam,
-				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
-			FROM {$table}
+				SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				SUM(CASE WHEN r.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+				SUM(CASE WHEN r.status = 'spam' THEN 1 ELSE 0 END) AS spam,
+				COALESCE( AVG( CASE WHEN r.status = 'approved' AND r.rating > 0 THEN r.rating END ), 0 ) AS avg_rating
+			FROM {$table} r {$scope['join']}
 			WHERE {$where_sql}
-			GROUP BY object_type, object_id
+			GROUP BY r.object_type, r.object_id
 			ORDER BY total DESC, approved DESC
 			LIMIT %d";
 
@@ -558,21 +590,18 @@ class ReviewRepository {
 		global $wpdb;
 		$table = Installer::reviews_table();
 
-		$where  = [ "status <> 'trash'" ];
-		$params = [];
-		if ( ! empty( $args['since'] ) ) {
-			$where[]  = 'created_at >= %s';
-			$params[] = $args['since'];
-		}
+		$scope     = self::scope( $args );
+		$where     = array_merge( [ "r.status <> 'trash'" ], $scope['where'] );
+		$params    = $scope['params'];
 		$where_sql = implode( ' AND ', $where );
 
-		$sql = "SELECT object_type,
+		$sql = "SELECT r.object_type,
 				COUNT(*) AS total,
-				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
-				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
-			FROM {$table}
+				SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				COALESCE( AVG( CASE WHEN r.status = 'approved' AND r.rating > 0 THEN r.rating END ), 0 ) AS avg_rating
+			FROM {$table} r {$scope['join']}
 			WHERE {$where_sql}
-			GROUP BY object_type
+			GROUP BY r.object_type
 			ORDER BY total DESC";
 
 		$rows = $params
@@ -603,15 +632,12 @@ class ReviewRepository {
 		global $wpdb;
 		$table = Installer::reviews_table();
 
-		$where  = [ "status = 'approved'", 'rating > 0' ];
-		$params = [];
-		if ( ! empty( $args['since'] ) ) {
-			$where[]  = 'created_at >= %s';
-			$params[] = $args['since'];
-		}
+		$scope     = self::scope( $args );
+		$where     = array_merge( [ "r.status = 'approved'", 'r.rating > 0' ], $scope['where'] );
+		$params    = $scope['params'];
 		$where_sql = implode( ' AND ', $where );
 
-		$sql = "SELECT rating, COUNT(*) AS n FROM {$table} WHERE {$where_sql} GROUP BY rating";
+		$sql = "SELECT r.rating AS rating, COUNT(*) AS n FROM {$table} r {$scope['join']} WHERE {$where_sql} GROUP BY r.rating";
 		$rows = $params
 			? $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A )
 			: $wpdb->get_results( $sql, ARRAY_A );
@@ -630,24 +656,34 @@ class ReviewRepository {
 	 * Reviews per calendar month over the trailing window (for the trend chart).
 	 * Grouped in site-local time to match how created_at is stored.
 	 *
-	 * @param int $months
+	 * @param int   $months
+	 * @param array $args { post_type, taxonomy, object_type, object_id } — the
+	 *                     item-type filter (its own trailing-month window is used,
+	 *                     so `since` in $args is ignored).
 	 * @return array[] { ym: 'YYYY-MM', total: int, approved: int }
 	 */
-	public static function monthly_counts( $months = 12 ) {
+	public static function monthly_counts( $months = 12, array $args = [] ) {
 		global $wpdb;
 		$table  = Installer::reviews_table();
 		$months = max( 1, min( 36, (int) $months ) );
 		$since  = gmdate( 'Y-m-01 00:00:00', current_time( 'timestamp' ) - ( $months - 1 ) * MONTH_IN_SECONDS );
 
-		$sql = "SELECT DATE_FORMAT(created_at, '%%Y-%%m') AS ym,
+		// Type/object filters share the scope builder; the window is our own.
+		unset( $args['since'] );
+		$scope     = self::scope( $args );
+		$where     = array_merge( [ "r.status <> 'trash'", 'r.created_at >= %s' ], $scope['where'] );
+		$params    = array_merge( [ $since ], $scope['params'] );
+		$where_sql = implode( ' AND ', $where );
+
+		$sql = "SELECT DATE_FORMAT(r.created_at, '%%Y-%%m') AS ym,
 				COUNT(*) AS total,
-				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved
-			FROM {$table}
-			WHERE status <> 'trash' AND created_at >= %s
+				SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) AS approved
+			FROM {$table} r {$scope['join']}
+			WHERE {$where_sql}
 			GROUP BY ym
 			ORDER BY ym ASC";
 
-		$rows = $wpdb->get_results( $wpdb->prepare( $sql, $since ), ARRAY_A );
+		$rows = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
 
 		return array_map(
 			static function ( $r ) {

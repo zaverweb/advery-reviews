@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { SelectControl, Spinner, Button } from '@wordpress/components';
 import { api } from '../api';
+import { ContentTypeSelect, parseContentType } from './ItemFilters';
 
 const RANGES = [
 	{ label: __( 'Last 30 days', 'advery-reviews' ), value: '30' },
@@ -35,23 +36,24 @@ function monthLabel( ym ) {
 	return ( names[ mi ] || m ) + " '" + ( y || '' ).slice( 2 );
 }
 
-export default function ReportsPanel( { notify } ) {
+export default function ReportsPanel( { boot, notify } ) {
 	const [ range, setRange ] = useState( '0' );
-	const [ objectType, setObjectType ] = useState( '' );
+	const [ contentType, setContentType ] = useState( '' );
 	const [ data, setData ] = useState( null );
 	const [ loading, setLoading ] = useState( true );
 
 	const load = useCallback( async () => {
 		setLoading( true );
 		try {
-			const res = await api.reports( { days: range, object_type: objectType, limit: 10 } );
+			const { post_type: postType, taxonomy } = parseContentType( contentType );
+			const res = await api.reports( { days: range, post_type: postType, taxonomy, limit: 10 } );
 			setData( res );
 		} catch ( e ) {
 			notify( 'error', e.message );
 		} finally {
 			setLoading( false );
 		}
-	}, [ range, objectType, notify ] );
+	}, [ range, contentType, notify ] );
 
 	useEffect( () => {
 		load();
@@ -93,18 +95,7 @@ export default function ReportsPanel( { notify } ) {
 					onChange={ setRange }
 					__nextHasNoMarginBottom
 				/>
-				<SelectControl
-					label={ __( 'Item type', 'advery-reviews' ) }
-					value={ objectType }
-					options={ [
-						{ label: __( 'All types', 'advery-reviews' ), value: '' },
-						{ label: __( 'Posts', 'advery-reviews' ), value: 'post' },
-						{ label: __( 'Products', 'advery-reviews' ), value: 'product' },
-						{ label: __( 'Categories / terms', 'advery-reviews' ), value: 'term' },
-					] }
-					onChange={ setObjectType }
-					__nextHasNoMarginBottom
-				/>
+				<ContentTypeSelect boot={ boot } value={ contentType } onChange={ setContentType } />
 				<div className="advery-rv-rep-toolbar__spacer" />
 				<Button variant="secondary" onClick={ load } disabled={ loading }>
 					{ __( 'Refresh', 'advery-reviews' ) }

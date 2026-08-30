@@ -123,6 +123,15 @@ class RestController {
 		);
 		register_rest_route(
 			$ns,
+			'/objects',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'objects_search' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
 			'/maintenance',
 			[
 				'methods'             => 'POST',
@@ -416,6 +425,8 @@ class RestController {
 				'status'      => sanitize_key( (string) $req->get_param( 'status' ) ),
 				'object_type' => sanitize_key( (string) $req->get_param( 'object_type' ) ),
 				'object_id'   => (int) $req->get_param( 'object_id' ),
+				'post_type'   => sanitize_key( (string) $req->get_param( 'post_type' ) ),
+				'taxonomy'    => sanitize_key( (string) $req->get_param( 'taxonomy' ) ),
 				'rating'      => (int) $req->get_param( 'rating' ),
 				'search'      => sanitize_text_field( (string) $req->get_param( 'search' ) ),
 				'per_page'    => (int) ( $req->get_param( 'per_page' ) ?: 20 ),
@@ -563,12 +574,15 @@ class RestController {
 	 * @return WP_REST_Response
 	 */
 	public function reports( WP_REST_Request $req ) {
-		$days  = max( 0, min( 3650, (int) $req->get_param( 'days' ) ) );
-		$limit = max( 1, min( 50, (int) ( $req->get_param( 'limit' ) ?: 10 ) ) );
-		$type  = sanitize_key( (string) $req->get_param( 'object_type' ) );
-		$since = $days > 0 ? gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $days * DAY_IN_SECONDS ) : '';
+		$days     = max( 0, min( 3650, (int) $req->get_param( 'days' ) ) );
+		$limit    = max( 1, min( 50, (int) ( $req->get_param( 'limit' ) ?: 10 ) ) );
+		$post_type = sanitize_key( (string) $req->get_param( 'post_type' ) );
+		$taxonomy  = sanitize_key( (string) $req->get_param( 'taxonomy' ) );
+		$since    = $days > 0 ? gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $days * DAY_IN_SECONDS ) : '';
 
-		$args = [ 'since' => $since ];
+		// Item-type filter (a real post type or taxonomy) scopes every section.
+		$filter = [ 'post_type' => $post_type, 'taxonomy' => $taxonomy ];
+		$args   = array_merge( [ 'since' => $since ], $filter );
 
 		$top = array_map(
 			function ( $r ) {
@@ -576,7 +590,7 @@ class RestController {
 				$r['link']  = Targets::link( $r['object_type'], $r['object_id'] );
 				return $r;
 			},
-			ReviewRepository::top_objects( [ 'since' => $since, 'limit' => $limit, 'object_type' => $type ] )
+			ReviewRepository::top_objects( array_merge( $args, [ 'limit' => $limit ] ) )
 		);
 
 		return new WP_REST_Response(
@@ -585,12 +599,79 @@ class RestController {
 				'top'          => $top,
 				'byType'       => ReviewRepository::counts_by_type( $args ),
 				'ratings'      => ReviewRepository::rating_distribution( $args ),
-				'monthly'      => ReviewRepository::monthly_counts( 12 ),
+				'monthly'      => ReviewRepository::monthly_counts( 12, $filter ),
 				'days'         => $days,
 				'generated_at' => current_time( 'mysql' ),
 			],
 			200
 		);
+	}
+
+	/**
+	 * Autocomplete search over reviewable objects (posts of any public type +
+	 * taxonomy terms), so the admin can filter the list/report down to one
+	 * specific post, product or term. Returns each match's object_type + id so
+	 * the caller can filter unambiguously.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function objects_search( WP_REST_Request $req ) {
+		$q = trim( sanitize_text_field( (string) $req->get_param( 'q' ) ) );
+		if ( mb_strlen( $q ) < 2 ) {
+			return new WP_REST_Response( [ 'items' => [] ], 200 );
+		}
+
+		$items = [];
+
+		// Posts / products of any public type (skip attachments).
+		$post_types = array_values( array_diff( get_post_types( [ 'public' => true ] ), [ 'attachment' ] ) );
+		if ( $post_types ) {
+			$posts = get_posts(
+				[
+					'post_type'        => $post_types,
+					's'                => $q,
+					'posts_per_page'   => 10,
+					'post_status'      => [ 'publish', 'private', 'draft', 'pending' ],
+					'suppress_filters' => false,
+				]
+			);
+			foreach ( $posts as $p ) {
+				$pt_obj = get_post_type_object( $p->post_type );
+				$items[] = [
+					'object_type' => ( 'product' === $p->post_type ) ? 'product' : 'post',
+					'object_id'   => (int) $p->ID,
+					'label'       => $p->post_title ? $p->post_title : sprintf( '#%d', $p->ID ),
+					'sub'         => $pt_obj ? ( $pt_obj->labels->singular_name ?? $pt_obj->label ) : $p->post_type,
+				];
+			}
+		}
+
+		// Terms of any public taxonomy.
+		$taxes = array_values( get_taxonomies( [ 'public' => true ] ) );
+		if ( $taxes ) {
+			$terms = get_terms(
+				[
+					'taxonomy'   => $taxes,
+					'search'     => $q,
+					'number'     => 10,
+					'hide_empty' => false,
+				]
+			);
+			if ( ! is_wp_error( $terms ) ) {
+				foreach ( $terms as $t ) {
+					$tx_obj = get_taxonomy( $t->taxonomy );
+					$items[] = [
+						'object_type' => 'term',
+						'object_id'   => (int) $t->term_id,
+						'label'       => $t->name,
+						'sub'         => $tx_obj ? ( $tx_obj->labels->singular_name ?? $tx_obj->label ) : $t->taxonomy,
+					];
+				}
+			}
+		}
+
+		return new WP_REST_Response( [ 'items' => $items ], 200 );
 	}
 
 	/* ---------------- Migration ---------------- */
