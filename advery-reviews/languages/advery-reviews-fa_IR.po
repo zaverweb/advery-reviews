@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.23.0\n"
+"Project-Id-Version: Advery Reviews 0.24.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-30T21:30:46+00:00\n"
+"POT-Creation-Date: 2026-08-30T23:15:26+00:00\n"
 "PO-Revision-Date: 2026-08-30 00:00+0000\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -161,35 +161,35 @@ msgstr "حذف"
 msgid "Something went wrong."
 msgstr "مشکلی پیش آمد."
 
-#: includes/AI/Client.php:64
+#: includes/AI/Client.php:73
 msgid "Unknown AI task."
 msgstr "وظیفه‌ی AI ناشناخته است."
 
-#: includes/AI/Client.php:71
+#: includes/AI/Client.php:80
 msgid "This AI task is turned off."
 msgstr "این وظیفه‌ی AI خاموش است."
 
-#: includes/AI/Client.php:74
+#: includes/AI/Client.php:83
 msgid "AI is not configured (add a provider and API key in Settings → AI)."
 msgstr "AI پیکربندی نشده است (در تنظیمات → AI یک ارائه‌دهنده و کلید API اضافه کنید)."
 
-#: includes/AI/Client.php:77
+#: includes/AI/Client.php:86
 msgid "The daily AI limit has been reached."
 msgstr "به سقفِ روزانه‌ی AI رسیده‌اید."
 
-#: includes/AI/Client.php:82
+#: includes/AI/Client.php:91
 msgid "Unknown AI provider."
 msgstr "ارائه‌دهنده‌ی AI ناشناخته است."
 
-#: includes/AI/Providers/Anthropic.php:18
+#: includes/AI/Providers/Anthropic.php:28
 #: includes/AI/Providers/Gemini.php:18
-#: includes/AI/Providers/OpenAI.php:24
+#: includes/AI/Providers/OpenAI.php:34
 msgid "No API key configured."
 msgstr "هیچ کلید APIی تنظیم نشده است."
 
-#: includes/AI/Providers/Anthropic.php:53
+#: includes/AI/Providers/Anthropic.php:69
 #: includes/AI/Providers/Gemini.php:51
-#: includes/AI/Providers/OpenAI.php:61
+#: includes/AI/Providers/OpenAI.php:78
 msgid "Unexpected AI response."
 msgstr "پاسخِ غیرمنتظره از AI."
 
@@ -325,7 +325,7 @@ msgid "Sending…"
 msgstr "در حالِ ارسال…"
 
 #: includes/Frontend/Display.php:71
-#: includes/Frontend/Display.php:271
+#: includes/Frontend/Display.php:272
 #: build/index.js:2
 msgid "Submit review"
 msgstr "ثبتِ نظر"
@@ -335,7 +335,7 @@ msgid "Something went wrong. Please try again."
 msgstr "مشکلی پیش آمد. دوباره تلاش کنید."
 
 #: includes/Frontend/Display.php:73
-#: includes/Frontend/Display.php:235
+#: includes/Frontend/Display.php:236
 msgid "Load more reviews"
 msgstr "نمایشِ نظراتِ بیشتر"
 
@@ -354,40 +354,40 @@ msgid_plural "%d reviews"
 msgstr[0] "%d نظر"
 msgstr[1] "%d نظر"
 
-#: includes/Frontend/Display.php:225
+#: includes/Frontend/Display.php:226
 msgid "Response from the owner"
 msgstr "پاسخ از سویِ مالک"
 
-#: includes/Frontend/Display.php:238
+#: includes/Frontend/Display.php:239
 msgid "Reviews pages"
 msgstr "صفحه‌های نظرات"
 
-#: includes/Frontend/Display.php:247
+#: includes/Frontend/Display.php:248
 msgid "Write a review"
 msgstr "نوشتنِ نظر"
 
-#: includes/Frontend/Display.php:248
+#: includes/Frontend/Display.php:249
 msgid "Your rating"
 msgstr "امتیازِ شما"
 
-#: includes/Frontend/Display.php:255
+#: includes/Frontend/Display.php:256
 #: build/index.js:2
 msgid "Your name"
 msgstr "نامِ شما"
 
-#: includes/Frontend/Display.php:256
+#: includes/Frontend/Display.php:257
 msgid "Your email"
 msgstr "ایمیلِ شما"
 
-#: includes/Frontend/Display.php:258
+#: includes/Frontend/Display.php:259
 msgid "Title (optional)"
 msgstr "عنوان (اختیاری)"
 
-#: includes/Frontend/Display.php:259
+#: includes/Frontend/Display.php:260
 msgid "Your review"
 msgstr "نظرِ شما"
 
-#: includes/Frontend/Display.php:275
+#: includes/Frontend/Display.php:276
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr "برای ثبتِ نظر وارد شوید."
@@ -461,23 +461,23 @@ msgstr "ممنون! نظرِ شما منتشر شد."
 msgid "Thanks! Your review is awaiting moderation."
 msgstr "ممنون! نظرِ شما در انتظارِ بررسی است."
 
-#: includes/Rest/RestController.php:457
+#: includes/Rest/RestController.php:458
 msgid "Invalid target."
 msgstr "هدفِ نامعتبر."
 
-#: includes/Rest/RestController.php:462
+#: includes/Rest/RestController.php:463
 msgid "Please write the review."
 msgstr "لطفاً نظر را بنویسید."
 
-#: includes/Rest/RestController.php:496
+#: includes/Rest/RestController.php:497
 msgid "Could not save."
 msgstr "ذخیره ممکن نشد."
 
-#: includes/Rest/RestController.php:805
+#: includes/Rest/RestController.php:806
 msgid "No reviews to summarize."
 msgstr "نظری برای خلاصه‌سازی نیست."
 
-#: includes/Rest/RestController.php:814
+#: includes/Rest/RestController.php:815
 msgid "Review not found."
 msgstr "نظر یافت نشد."
 
@@ -1172,6 +1172,46 @@ msgid "Cap the widget’s width. Example: 640. Use 0 to fill the container."
 msgstr "عرضِ ویجت را محدود کنید. مثال: ۶۴۰. برای پر کردنِ کانتینر از ۰ استفاده کنید."
 
 #: build/index.js:2
+msgid "Reviewer avatar"
+msgstr "آواتارِ نظردهنده"
+
+#: build/index.js:2
+msgid "Avatar style"
+msgstr "سبکِ آواتار"
+
+#: build/index.js:2
+msgid "How each reviewer’s picture shows. “Gravatar” is the only option that contacts an external service — with the others the front end makes no avatar request at all."
+msgstr "عکسِ هر نظردهنده چطور نمایش داده شود. «گراواتار» تنها گزینه‌ای است که با سرویسِ خارجی تماس می‌گیرد — با بقیه‌ی گزینه‌ها فرانت هیچ درخواستِ آواتاری نمی‌فرستد."
+
+#: build/index.js:2
+msgid "Initials (local, no request)"
+msgstr "حروفِ اول (محلی، بدونِ درخواست)"
+
+#: build/index.js:2
+msgid "One default image"
+msgstr "یک عکسِ پیش‌فرض"
+
+#: build/index.js:2
+msgid "Gravatar (external request)"
+msgstr "گراواتار (درخواستِ خارجی)"
+
+#: build/index.js:2
+msgid "No avatar"
+msgstr "بدونِ آواتار"
+
+#: build/index.js:2
+msgid "Default avatar image URL"
+msgstr "آدرسِ عکسِ آواتارِ پیش‌فرض"
+
+#: build/index.js:2
+msgid "Shown for every reviewer. Example: https://your-site.com/wp-content/uploads/avatar.png"
+msgstr "برای همه‌ی نظردهنده‌ها نشان داده می‌شود. مثال: https://your-site.com/wp-content/uploads/avatar.png"
+
+#: build/index.js:2
+msgid "Note: Gravatar loads reviewer images from gravatar.com by email — an external request on every review. Account photos in WordPress are served through Gravatar too."
+msgstr "نکته: گراواتار عکسِ نظردهنده‌ها را با ایمیل از gravatar.com می‌گیرد — یک درخواستِ خارجی برای هر نظر. عکسِ حسابِ کاربری در وردپرس هم از راهِ گراواتار سرو می‌شود."
+
+#: build/index.js:2
 msgid "Live preview"
 msgstr "پیش‌نمایشِ زنده"
 
@@ -1213,8 +1253,16 @@ msgid "Full model list & docs:"
 msgstr "فهرستِ کاملِ مدل‌ها و مستندات:"
 
 #: build/index.js:2
+msgid "OpenAI-compatible gateway. If the endpoint differs from the default, set it in Base URL below."
+msgstr "درگاهِ سازگار با OpenAI. اگر اندپوینت با پیش‌فرض فرق دارد، آن را در Base URLِ پایین بگذارید."
+
+#: build/index.js:2
 msgid "API key"
 msgstr "کلیدِ API"
+
+#: build/index.js:2
+msgid "Not needed for Ollama (local). Leave blank."
+msgstr "برای Ollama (محلی) لازم نیست. خالی بگذارید."
 
 #: build/index.js:2
 msgid "Paste the secret key from your provider’s dashboard (link above). Stored on your server only."
@@ -1226,8 +1274,8 @@ msgstr "مدل (خالی = پیش‌فرضِ ارائه‌دهنده)"
 
 #: build/index.js:2
 #, js-format
-msgid "e.g. %s"
-msgstr "مثلاً %s"
+msgid "e.g. %s — any model name your provider supports."
+msgstr "مثلاً %s — هر نامِ مدلی که ارائه‌دهنده‌تان پشتیبانی می‌کند."
 
 #: build/index.js:2
 msgid "Daily call limit (0 = unlimited)"
@@ -1242,8 +1290,8 @@ msgid "Base URL (optional override)"
 msgstr "Base URL (بازنویسیِ اختیاری)"
 
 #: build/index.js:2
-msgid "Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:11434/v1."
-msgstr "فقط برای اندپوینت‌های self-hosted/proxy. مثال (Ollama): http://localhost:11434/v1."
+msgid "Only for self-hosted / proxy / OpenAI-compatible endpoints. Example (Ollama): http://localhost:11434/v1."
+msgstr "فقط برای اندپوینت‌های self-hosted / proxy / سازگار با OpenAI. مثال (Ollama): http://localhost:11434/v1."
 
 #: build/index.js:2
 msgid "Save, then test the connection"
@@ -1256,6 +1304,30 @@ msgstr "اول ذخیره را بزنید، سپس این یک پاسخِ نمو
 #: build/index.js:2
 msgid "Working. Sample reply: "
 msgstr "کار می‌کند. پاسخِ نمونه: "
+
+#: build/index.js:2
+msgid "Usage"
+msgstr "مصرف"
+
+#: build/index.js:2
+msgid "AI tasks run"
+msgstr "کارهای AI انجام‌شده"
+
+#: build/index.js:2
+msgid "today"
+msgstr "امروز"
+
+#: build/index.js:2
+msgid "tokens (in+out)"
+msgstr "توکن (ورودی+خروجی)"
+
+#: build/index.js:2
+msgid "estimated cost"
+msgstr "هزینه‌ی تخمینی"
+
+#: build/index.js:2
+msgid "Tokens come from the provider’s response; cost is an estimate from public list prices (0 for local models). Not a billing source of truth."
+msgstr "توکن‌ها از پاسخِ ارائه‌دهنده می‌آیند؛ هزینه تخمینی از قیمت‌های عمومی است (۰ برای مدل‌های محلی). مرجعِ صورتحساب نیست."
 
 #: build/index.js:2
 msgid "About your business (context for replies)"

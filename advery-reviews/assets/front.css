@@ -58,6 +58,25 @@
 	gap: 8px;
 	flex-wrap: wrap;
 }
+.advery-reviews__avatar,
+.advery-reviews__avatar-img {
+	flex: 0 0 auto;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+.advery-reviews__avatar {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--ar-surface);
+	border: 1px solid var(--ar-border);
+	color: var(--ar-accent);
+	font-weight: 700;
+	font-size: 1.05em;
+	line-height: 1;
+}
 .advery-reviews__title {
 	font-weight: 600;
 	margin-top: 0.2em;

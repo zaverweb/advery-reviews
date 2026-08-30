@@ -7,6 +7,9 @@ use Advery\Reviews\AI\Providers\OpenAI;
 use Advery\Reviews\AI\Providers\OpenRouter;
 use Advery\Reviews\AI\Providers\Ollama;
 use Advery\Reviews\AI\Providers\Gemini;
+use Advery\Reviews\AI\Providers\Deepseek;
+use Advery\Reviews\AI\Providers\Gapgpt;
+use Advery\Reviews\AI\Providers\Avalai;
 
 /**
  * The single entry point for AI work: picks the configured provider, enforces
@@ -48,6 +51,12 @@ class Client {
 				return new Ollama();
 			case 'gemini':
 				return new Gemini();
+			case 'deepseek':
+				return new Deepseek();
+			case 'gapgpt':
+				return new Gapgpt();
+			case 'avalai':
+				return new Avalai();
 		}
 		return null;
 	}
@@ -102,7 +111,8 @@ class Client {
 			]
 		);
 
-		AuditLog::record( $task, $ai['provider'], ! is_wp_error( $result ) );
+		$usage = method_exists( $provider, 'last_usage' ) ? $provider->last_usage() : [];
+		AuditLog::record( $task, $ai['provider'], ! is_wp_error( $result ), $usage, $ai['model'] );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;

@@ -12,8 +12,18 @@ class OpenAI implements ProviderInterface {
 
 	protected $base = 'https://api.openai.com/v1';
 
+	/** Token usage from the last call: [ 'input' => int, 'output' => int ]. */
+	protected $usage = [ 'input' => 0, 'output' => 0 ];
+
 	public function default_model() {
 		return 'gpt-4o-mini';
+	}
+
+	/**
+	 * @return array{input:int,output:int} Tokens used by the last chat() call.
+	 */
+	public function last_usage() {
+		return $this->usage;
 	}
 
 	public function chat( $system, $user, array $opts ) {
@@ -54,6 +64,13 @@ class OpenAI implements ProviderInterface {
 		$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 		if ( isset( $data['error'] ) ) {
 			return new \WP_Error( 'advery_ai_api', is_array( $data['error'] ) ? ( $data['error']['message'] ?? 'API error' ) : (string) $data['error'] );
+		}
+		if ( isset( $data['usage'] ) ) {
+			// OpenAI-style usage; Ollama returns prompt_eval_count/eval_count.
+			$this->usage = [
+				'input'  => (int) ( $data['usage']['prompt_tokens'] ?? $data['usage']['prompt_eval_count'] ?? 0 ),
+				'output' => (int) ( $data['usage']['completion_tokens'] ?? $data['usage']['eval_count'] ?? 0 ),
+			];
 		}
 		if ( isset( $data['choices'][0]['message']['content'] ) ) {
 			return (string) $data['choices'][0]['message']['content'];

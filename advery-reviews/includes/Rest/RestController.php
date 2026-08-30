@@ -407,6 +407,7 @@ class RestController {
 				'ai'         => [
 					'configured' => AIClient::configured(),
 					'today'      => AuditLog::today(),
+					'usage'      => AuditLog::stats(),
 					'prompts'    => [
 						'reply'     => AITasks::default_prompt( 'reply' ),
 						'moderate'  => AITasks::default_prompt( 'moderate' ),
@@ -911,6 +912,8 @@ class RestController {
 			'replace_comments'   => ! empty( $in['replace_comments'] ),
 			// CSS never needs '<'; removing it prevents a </style> breakout.
 			'custom_css'         => str_replace( '<', '', (string) ( $in['custom_css'] ?? '' ) ),
+			'avatar_mode'        => in_array( ( $in['avatar_mode'] ?? '' ), [ 'none', 'initials', 'default', 'gravatar' ], true ) ? $in['avatar_mode'] : 'initials',
+			'avatar_default'     => esc_url_raw( (string) ( $in['avatar_default'] ?? '' ) ),
 			'roles'              => $this->sanitize_roles( is_array( $in['roles'] ?? null ) ? $in['roles'] : [] ),
 			'schema_output'      => ! empty( $in['schema_output'] ),
 			'schema_mode'        => in_array( ( $in['schema_mode'] ?? '' ), [ 'auto', 'core', 'standalone', 'off' ], true ) ? $in['schema_mode'] : 'auto',
@@ -992,7 +995,7 @@ class RestController {
 		}
 
 		return [
-			'provider'            => in_array( ( $in['provider'] ?? '' ), [ 'anthropic', 'openai', 'openrouter', 'ollama', 'gemini' ], true ) ? $in['provider'] : $d['provider'],
+			'provider'            => in_array( ( $in['provider'] ?? '' ), [ 'anthropic', 'openai', 'openrouter', 'ollama', 'gemini', 'deepseek', 'gapgpt', 'avalai' ], true ) ? $in['provider'] : $d['provider'],
 			'api_key'             => trim( sanitize_text_field( (string) ( $in['api_key'] ?? '' ) ) ),
 			'base_url'            => esc_url_raw( (string) ( $in['base_url'] ?? '' ) ),
 			'model'               => sanitize_text_field( (string) ( $in['model'] ?? '' ) ),

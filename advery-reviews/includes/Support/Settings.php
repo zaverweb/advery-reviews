@@ -52,6 +52,11 @@ class Settings {
 			'email_recipient'    => '',        // empty → admin_email
 			'digest_frequency'   => 'off',     // 'off' | 'weekly' | 'monthly'
 
+			// Reviewer avatar on the front end. 'gravatar' is the ONLY mode that
+			// makes an external request; the others are fully local.
+			'avatar_mode'        => 'initials', // 'none' | 'initials' | 'default' | 'gravatar'
+			'avatar_default'     => '',         // image URL used by the 'default' mode
+
 			// Front-end widget appearance (colors / radius / density) → CSS vars.
 			'appearance'         => self::appearance_defaults(),
 

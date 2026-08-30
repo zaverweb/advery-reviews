@@ -12,6 +12,13 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.24.0 (Ollama fix, more AI providers, usage stats, reviewer avatars)
+- **Bug fix — selecting Ollama blanked the AI settings.** Switching the provider to Ollama crashed the panel (`removeChild … not a child`) because the guide line mixed several adjacent text nodes (emoji + translated text) that the browser merges, and React then failed to reconcile them. Each guide line is now a single text expression with distinct keys — Ollama (and every provider) selects cleanly.
+- **More AI providers.** Added **DeepSeek**, **GapGPT** and **AvalAI** (the last two are popular OpenAI-compatible gateways in Iran) alongside Anthropic/OpenAI/OpenRouter/Gemini/Ollama. They use the OpenAI request format; each has a guide card with the API-key link, example models and docs, and a note that you can point Base URL at a different endpoint. The Model field is free text, so any custom model name works.
+- **Usage stats.** The AI Settings tab now shows **AI tasks run** (all-time + today), **tokens** (in+out, read from each provider’s response) and an **estimated cost** from public list prices (0 for local models; clearly labelled “not a billing source of truth”).
+- **Reviewer avatars — with a privacy guarantee.** A new *Reviewer avatar* setting (under Appearance): **Initials** (local, default), **One default image**, **Gravatar**, or **None**. Only Gravatar contacts an external service — in every other mode the front end makes **no avatar request at all** (verified live: initials mode issues zero Gravatar requests from the widget; Gravatar mode issues them). Avatars render as a neat circle beside each reviewer.
+- **Verified live** in wp-admin: Ollama + all new providers select without crashing; provider adapters instantiate; token/cost accounting is correct; the avatar modes behave as specified. 20 new strings translated to Persian (451 total).
+
 ### Version 0.23.0 (CSS class reference, AI split into two tabs, prompt variables)
 - **Custom CSS section now has a guide.** Below the CSS box is a reference of the widget’s CSS classes — `.advery-reviews`, `.advery-reviews__summary`, `__stars`, `__item`, `__content`, `__reply`, `__form`, `__submit`, `__loadmore`, `__pager`, etc. — each with a plain-language description of the front-end part it targets, plus a pointer to the Appearance tab for no-code styling.
 - **AI section split into two tabs.**

@@ -229,6 +229,15 @@ export default function SettingsPanel( { boot, notify } ) {
 						<TextControl type="number" label={ __( 'Max width (px, 0 = full width)', 'advery-reviews' ) } help={ __( 'Cap the widget’s width. Example: 640. Use 0 to fill the container.', 'advery-reviews' ) } value={ ap.max_width ?? 0 } onChange={ ( v ) => setAp( { max_width: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
 
 						<hr />
+						<div className="advery-rv-fieldgroup-title">{ __( 'Reviewer avatar', 'advery-reviews' ) }</div>
+						<SelectControl label={ __( 'Avatar style', 'advery-reviews' ) } help={ __( 'How each reviewer’s picture shows. “Gravatar” is the only option that contacts an external service — with the others the front end makes no avatar request at all.', 'advery-reviews' ) } value={ s.avatar_mode || 'initials' } options={ [ { label: __( 'Initials (local, no request)', 'advery-reviews' ), value: 'initials' }, { label: __( 'One default image', 'advery-reviews' ), value: 'default' }, { label: __( 'Gravatar (external request)', 'advery-reviews' ), value: 'gravatar' }, { label: __( 'No avatar', 'advery-reviews' ), value: 'none' } ] } onChange={ ( v ) => set( { avatar_mode: v } ) } __nextHasNoMarginBottom />
+						{ s.avatar_mode === 'default' && (
+							<TextControl label={ __( 'Default avatar image URL', 'advery-reviews' ) } help={ __( 'Shown for every reviewer. Example: https://your-site.com/wp-content/uploads/avatar.png', 'advery-reviews' ) } value={ s.avatar_default || '' } onChange={ ( v ) => set( { avatar_default: v } ) } __nextHasNoMarginBottom />
+						) }
+						{ s.avatar_mode === 'gravatar' && (
+							<p className="advery-rv-hint">{ __( 'Note: Gravatar loads reviewer images from gravatar.com by email — an external request on every review. Account photos in WordPress are served through Gravatar too.', 'advery-reviews' ) }</p>
+						) }
+						<hr />
 						<strong>{ __( 'Live preview', 'advery-reviews' ) }</strong>
 						<div
 							className="advery-rv-appearance-preview"
@@ -271,10 +280,14 @@ export default function SettingsPanel( { boot, notify } ) {
 					openai: { keyUrl: 'https://platform.openai.com/api-keys', docs: 'https://platform.openai.com/docs/models', models: 'gpt-4o-mini, gpt-4o' },
 					openrouter: { keyUrl: 'https://openrouter.ai/keys', docs: 'https://openrouter.ai/models', models: 'anthropic/claude-3.5-sonnet, openai/gpt-4o-mini' },
 					gemini: { keyUrl: 'https://aistudio.google.com/app/apikey', docs: 'https://ai.google.dev/gemini-api/docs/models/gemini', models: 'gemini-1.5-flash, gemini-1.5-pro' },
+					deepseek: { keyUrl: 'https://platform.deepseek.com/api_keys', docs: 'https://api-docs.deepseek.com/quick_start/pricing', models: 'deepseek-chat, deepseek-reasoner' },
+					gapgpt: { keyUrl: 'https://gapgpt.app', docs: 'https://docs.gapgpt.app', models: 'gpt-4o-mini, gpt-4o, claude-3-5-sonnet', note: true },
+					avalai: { keyUrl: 'https://avalai.ir', docs: 'https://docs.avalai.ir', models: 'gpt-4o-mini, gpt-4o, gemini-1.5-flash', note: true },
 					ollama: { local: true, docs: 'https://ollama.com/library', models: 'llama3.1, mistral, qwen2.5' },
 				};
 				const g = guides[ ai.provider ] || guides.anthropic;
 				const variables = ( boot.ai && boot.ai.variables ) || {};
+				const usage = ( boot.ai && boot.ai.usage ) || {};
 				return (
 					<>
 						<p className="advery-rv-hint">{ __( 'AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews.', 'advery-reviews' ) }</p>
@@ -285,24 +298,23 @@ export default function SettingsPanel( { boot, notify } ) {
 
 						{ aiTab === 'settings' && (
 							<>
-								<SelectControl label={ __( 'Provider', 'advery-reviews' ) } value={ ai.provider } options={ [ { label: 'Anthropic (Claude)', value: 'anthropic' }, { label: 'OpenAI', value: 'openai' }, { label: 'OpenRouter', value: 'openrouter' }, { label: 'Ollama (self-hosted)', value: 'ollama' }, { label: 'Google Gemini', value: 'gemini' } ] } onChange={ ( v ) => setAi( { provider: v } ) } __nextHasNoMarginBottom />
+								<SelectControl label={ __( 'Provider', 'advery-reviews' ) } value={ ai.provider } options={ [ { label: 'Anthropic (Claude)', value: 'anthropic' }, { label: 'OpenAI', value: 'openai' }, { label: 'OpenRouter', value: 'openrouter' }, { label: 'Google Gemini', value: 'gemini' }, { label: 'DeepSeek', value: 'deepseek' }, { label: 'GapGPT', value: 'gapgpt' }, { label: 'AvalAI', value: 'avalai' }, { label: 'Ollama (self-hosted)', value: 'ollama' } ] } onChange={ ( v ) => setAi( { provider: v } ) } __nextHasNoMarginBottom />
 								<div className="advery-rv-guide">
 									{ g.local ? (
-										<p>{ __( 'Ollama runs locally — no API key needed. Install a model, then put its name in the Model field.', 'advery-reviews' ) }</p>
+										<p key="local">{ '🖥️ ' + __( 'Ollama runs locally — no API key needed. Install a model, then put its name in the Model field.', 'advery-reviews' ) }</p>
 									) : (
-										<p>🔑 { __( 'Get your API key:', 'advery-reviews' ) } <a href={ g.keyUrl } target="_blank" rel="noreferrer">{ g.keyUrl }</a></p>
+										<p key="keyline">{ '🔑 ' + __( 'Get your API key:', 'advery-reviews' ) + ' ' }<a href={ g.keyUrl } target="_blank" rel="noreferrer">{ g.keyUrl }</a></p>
 									) }
-									<p>💡 { __( 'Example models:', 'advery-reviews' ) } <code>{ g.models }</code></p>
-									<p>📚 { __( 'Full model list & docs:', 'advery-reviews' ) } <a href={ g.docs } target="_blank" rel="noreferrer">{ g.docs }</a></p>
+									<p key="models">{ '💡 ' + __( 'Example models:', 'advery-reviews' ) + ' ' }<code>{ g.models }</code></p>
+									<p key="docs">{ '📚 ' + __( 'Full model list & docs:', 'advery-reviews' ) + ' ' }<a href={ g.docs } target="_blank" rel="noreferrer">{ g.docs }</a></p>
+									{ g.note && <p key="note" className="advery-rv-hint" style={ { margin: '4px 0 0' } }>{ __( 'OpenAI-compatible gateway. If the endpoint differs from the default, set it in Base URL below.', 'advery-reviews' ) }</p> }
 								</div>
-								{ ai.provider !== 'ollama' && (
-									<TextControl type="password" label={ __( 'API key', 'advery-reviews' ) } help={ __( 'Paste the secret key from your provider’s dashboard (link above). Stored on your server only.', 'advery-reviews' ) } value={ ai.api_key } onChange={ ( v ) => setAi( { api_key: v } ) } __nextHasNoMarginBottom />
-								) }
+								<TextControl type="password" label={ __( 'API key', 'advery-reviews' ) } help={ ai.provider === 'ollama' ? __( 'Not needed for Ollama (local). Leave blank.', 'advery-reviews' ) : __( 'Paste the secret key from your provider’s dashboard (link above). Stored on your server only.', 'advery-reviews' ) } value={ ai.api_key } onChange={ ( v ) => setAi( { api_key: v } ) } __nextHasNoMarginBottom />
 								<div className="advery-rv-fields advery-rv-fields--wide">
-									<TextControl label={ __( 'Model (blank = provider default)', 'advery-reviews' ) } help={ sprintf( __( 'e.g. %s', 'advery-reviews' ), g.models.split( ',' )[ 0 ] ) } value={ ai.model } onChange={ ( v ) => setAi( { model: v } ) } __nextHasNoMarginBottom />
+									<TextControl label={ __( 'Model (blank = provider default)', 'advery-reviews' ) } help={ sprintf( __( 'e.g. %s — any model name your provider supports.', 'advery-reviews' ), g.models.split( ',' )[ 0 ] ) } value={ ai.model } onChange={ ( v ) => setAi( { model: v } ) } __nextHasNoMarginBottom />
 									<TextControl type="number" label={ __( 'Daily call limit (0 = unlimited)', 'advery-reviews' ) } help={ __( 'Caps AI cost. Example: 200/day.', 'advery-reviews' ) } value={ ai.daily_cap } onChange={ ( v ) => setAi( { daily_cap: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
 								</div>
-								<TextControl label={ __( 'Base URL (optional override)', 'advery-reviews' ) } help={ __( 'Only for self-hosted/proxy endpoints. Example (Ollama): http://localhost:11434/v1.', 'advery-reviews' ) } value={ ai.base_url } onChange={ ( v ) => setAi( { base_url: v } ) } __nextHasNoMarginBottom />
+								<TextControl label={ __( 'Base URL (optional override)', 'advery-reviews' ) } help={ __( 'Only for self-hosted / proxy / OpenAI-compatible endpoints. Example (Ollama): http://localhost:11434/v1.', 'advery-reviews' ) } value={ ai.base_url } onChange={ ( v ) => setAi( { base_url: v } ) } __nextHasNoMarginBottom />
 								<div style={ { marginTop: 12 } }>
 									<Button variant="secondary" isBusy={ aiTest && aiTest.busy } onClick={ runAiTest }>{ __( 'Save, then test the connection', 'advery-reviews' ) }</Button>
 									<p className="advery-rv-hint">{ __( 'Click Save first, then this drafts a sample reply to confirm your key/model work.', 'advery-reviews' ) }</p>
@@ -312,6 +324,16 @@ export default function SettingsPanel( { boot, notify } ) {
 										{ aiTest.ok ? __( 'Working. Sample reply: ', 'advery-reviews' ) + aiTest.sample : aiTest.message }
 									</Notice>
 								) }
+								<div className="advery-rv-usage">
+									<strong>{ __( 'Usage', 'advery-reviews' ) }</strong>
+									<div className="advery-rv-usage__grid">
+										<div><span>{ usage.calls_total || 0 }</span><label>{ __( 'AI tasks run', 'advery-reviews' ) }</label></div>
+										<div><span>{ usage.today || 0 }</span><label>{ __( 'today', 'advery-reviews' ) }</label></div>
+										<div><span>{ ( ( usage.tokens_in || 0 ) + ( usage.tokens_out || 0 ) ).toLocaleString() }</span><label>{ __( 'tokens (in+out)', 'advery-reviews' ) }</label></div>
+										<div><span>≈ ${ ( usage.cost_total || 0 ).toFixed( 3 ) }</span><label>{ __( 'estimated cost', 'advery-reviews' ) }</label></div>
+									</div>
+									<p className="advery-rv-hint" style={ { marginTop: 6 } }>{ __( 'Tokens come from the provider’s response; cost is an estimate from public list prices (0 for local models). Not a billing source of truth.', 'advery-reviews' ) }</p>
+								</div>
 							</>
 						) }
 

@@ -211,6 +211,7 @@ class Display {
 				<?php foreach ( $reviews as $r ) : ?>
 					<li class="advery-reviews__item">
 						<div class="advery-reviews__item-head">
+							<?php echo $this->avatar( $r ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
 							<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
 							<?php if ( $r['rating'] > 0 ) : ?>
 								<span class="advery-reviews__stars" aria-label="<?php echo esc_attr( sprintf( '%d / 5', $r['rating'] ) ); ?>"><?php echo esc_html( $this->stars( $r['rating'] ) ); ?></span>
@@ -277,6 +278,55 @@ class Display {
 		</div>
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Reviewer avatar HTML for the configured mode. Only the 'gravatar' mode
+	 * ever contacts an external service — 'initials' and 'default' are fully
+	 * local, so with Gravatar off the front end makes no avatar request at all.
+	 *
+	 * @param array $r review row
+	 * @return string
+	 */
+	private function avatar( array $r ) {
+		$mode = Settings::get( 'avatar_mode', 'initials' );
+		if ( 'none' === $mode ) {
+			return '';
+		}
+
+		if ( 'gravatar' === $mode ) {
+			$id = $r['author_user_id'] ?? 0;
+			$src = $id ? (int) $id : (string) ( $r['author_email'] ?? '' );
+			// WordPress's own avatar (Gravatar-backed). This is the ONLY branch
+			// that issues an external request.
+			$html = get_avatar( $src, 40, '', $r['author_name'] ?? '', [ 'class' => 'advery-reviews__avatar-img', 'loading' => 'lazy' ] );
+			return $html ? $html : $this->avatar_initials( $r );
+		}
+
+		if ( 'default' === $mode ) {
+			$url = (string) Settings::get( 'avatar_default', '' );
+			if ( '' !== $url ) {
+				return sprintf(
+					'<img class="advery-reviews__avatar-img" src="%s" alt="" width="40" height="40" loading="lazy" />',
+					esc_url( $url )
+				);
+			}
+			// No default image set → fall back to initials (still no request).
+		}
+
+		return $this->avatar_initials( $r );
+	}
+
+	/**
+	 * A local, request-free initials avatar.
+	 *
+	 * @param array $r
+	 * @return string
+	 */
+	private function avatar_initials( array $r ) {
+		$name    = trim( (string) ( $r['author_name'] ?? '' ) );
+		$initial = '' !== $name ? mb_substr( $name, 0, 1 ) : '?';
+		return '<span class="advery-reviews__avatar" aria-hidden="true">' . esc_html( mb_strtoupper( $initial ) ) . '</span>';
 	}
 
 	/**

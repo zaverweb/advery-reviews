@@ -8,8 +8,18 @@ use Advery\Reviews\AI\ProviderInterface;
  */
 class Anthropic implements ProviderInterface {
 
+	/** Token usage from the last call: [ 'input' => int, 'output' => int ]. */
+	protected $usage = [ 'input' => 0, 'output' => 0 ];
+
 	public function default_model() {
 		return 'claude-sonnet-4-5';
+	}
+
+	/**
+	 * @return array{input:int,output:int} Tokens used by the last chat() call.
+	 */
+	public function last_usage() {
+		return $this->usage;
 	}
 
 	public function chat( $system, $user, array $opts ) {
@@ -46,6 +56,12 @@ class Anthropic implements ProviderInterface {
 		$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 		if ( isset( $data['error'] ) ) {
 			return new \WP_Error( 'advery_ai_api', $data['error']['message'] ?? 'API error' );
+		}
+		if ( isset( $data['usage'] ) ) {
+			$this->usage = [
+				'input'  => (int) ( $data['usage']['input_tokens'] ?? 0 ),
+				'output' => (int) ( $data['usage']['output_tokens'] ?? 0 ),
+			];
 		}
 		if ( isset( $data['content'][0]['text'] ) ) {
 			return (string) $data['content'][0]['text'];
