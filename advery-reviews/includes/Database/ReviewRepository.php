@@ -444,6 +444,223 @@ class ReviewRepository {
 		return self::update( $id, [ 'meta' => $meta ] );
 	}
 
+	/* ---------------- Reporting ---------------- */
+
+	/**
+	 * Headline totals for the reports screen. Trash is counted separately and
+	 * excluded from `objects`/`avg_rating`, which describe live review activity.
+	 *
+	 * @param array $args { since?: string MySQL datetime (empty = all time) }
+	 * @return array
+	 */
+	public static function report_summary( array $args = [] ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+
+		$where  = [ '1=1' ];
+		$params = [];
+		if ( ! empty( $args['since'] ) ) {
+			$where[]  = 'created_at >= %s';
+			$params[] = $args['since'];
+		}
+		$where_sql = implode( ' AND ', $where );
+
+		$sql = "SELECT
+				COUNT(*) AS total,
+				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) AS spam,
+				SUM(CASE WHEN status = 'trash' THEN 1 ELSE 0 END) AS trash,
+				COUNT(DISTINCT CASE WHEN status <> 'trash' THEN CONCAT(object_type, ':', object_id) END) AS objects,
+				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
+			FROM {$table}
+			WHERE {$where_sql}";
+
+		$row = $params
+			? $wpdb->get_row( $wpdb->prepare( $sql, $params ), ARRAY_A )
+			: $wpdb->get_row( $sql, ARRAY_A );
+
+		return [
+			'total'      => (int) ( $row['total'] ?? 0 ),
+			'approved'   => (int) ( $row['approved'] ?? 0 ),
+			'pending'    => (int) ( $row['pending'] ?? 0 ),
+			'spam'       => (int) ( $row['spam'] ?? 0 ),
+			'trash'      => (int) ( $row['trash'] ?? 0 ),
+			'objects'    => (int) ( $row['objects'] ?? 0 ),
+			'avg_rating' => round( (float) ( $row['avg_rating'] ?? 0 ), 2 ),
+		];
+	}
+
+	/**
+	 * The reviewed objects with the most reviews — the core of the report
+	 * ("which page/business/category got the most reviews"). Ordered by total
+	 * reviews (trash excluded); each row carries a per-status breakdown and the
+	 * average of its approved ratings.
+	 *
+	 * @param array $args { since?: string, limit?: int, object_type?: string }
+	 * @return array[]
+	 */
+	public static function top_objects( array $args = [] ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+		$limit = max( 1, min( 100, (int) ( $args['limit'] ?? 20 ) ) );
+
+		$where  = [ "status <> 'trash'" ];
+		$params = [];
+		if ( ! empty( $args['since'] ) ) {
+			$where[]  = 'created_at >= %s';
+			$params[] = $args['since'];
+		}
+		if ( ! empty( $args['object_type'] ) && in_array( $args['object_type'], [ 'post', 'product', 'term' ], true ) ) {
+			$where[]  = 'object_type = %s';
+			$params[] = $args['object_type'];
+		}
+		$where_sql = implode( ' AND ', $where );
+
+		$sql = "SELECT object_type, object_id,
+				COUNT(*) AS total,
+				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+				SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) AS spam,
+				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
+			FROM {$table}
+			WHERE {$where_sql}
+			GROUP BY object_type, object_id
+			ORDER BY total DESC, approved DESC
+			LIMIT %d";
+
+		$params[] = $limit;
+		$rows      = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
+
+		return array_map(
+			static function ( $r ) {
+				return [
+					'object_type' => $r['object_type'],
+					'object_id'   => (int) $r['object_id'],
+					'total'       => (int) $r['total'],
+					'approved'    => (int) $r['approved'],
+					'pending'     => (int) $r['pending'],
+					'spam'        => (int) $r['spam'],
+					'avg_rating'  => round( (float) $r['avg_rating'], 2 ),
+				];
+			},
+			$rows ?: []
+		);
+	}
+
+	/**
+	 * Review totals grouped by object type (post/product/term).
+	 *
+	 * @param array $args { since?: string }
+	 * @return array[]
+	 */
+	public static function counts_by_type( array $args = [] ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+
+		$where  = [ "status <> 'trash'" ];
+		$params = [];
+		if ( ! empty( $args['since'] ) ) {
+			$where[]  = 'created_at >= %s';
+			$params[] = $args['since'];
+		}
+		$where_sql = implode( ' AND ', $where );
+
+		$sql = "SELECT object_type,
+				COUNT(*) AS total,
+				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+				COALESCE( AVG( CASE WHEN status = 'approved' AND rating > 0 THEN rating END ), 0 ) AS avg_rating
+			FROM {$table}
+			WHERE {$where_sql}
+			GROUP BY object_type
+			ORDER BY total DESC";
+
+		$rows = $params
+			? $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A )
+			: $wpdb->get_results( $sql, ARRAY_A );
+
+		return array_map(
+			static function ( $r ) {
+				return [
+					'object_type' => $r['object_type'],
+					'total'       => (int) $r['total'],
+					'approved'    => (int) $r['approved'],
+					'avg_rating'  => round( (float) $r['avg_rating'], 2 ),
+				];
+			},
+			$rows ?: []
+		);
+	}
+
+	/**
+	 * How many approved reviews sit at each star rating (5..1). Always returns
+	 * all five buckets so the chart has a stable shape.
+	 *
+	 * @param array $args { since?: string }
+	 * @return array<int,int> rating => count
+	 */
+	public static function rating_distribution( array $args = [] ) {
+		global $wpdb;
+		$table = Installer::reviews_table();
+
+		$where  = [ "status = 'approved'", 'rating > 0' ];
+		$params = [];
+		if ( ! empty( $args['since'] ) ) {
+			$where[]  = 'created_at >= %s';
+			$params[] = $args['since'];
+		}
+		$where_sql = implode( ' AND ', $where );
+
+		$sql = "SELECT rating, COUNT(*) AS n FROM {$table} WHERE {$where_sql} GROUP BY rating";
+		$rows = $params
+			? $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A )
+			: $wpdb->get_results( $sql, ARRAY_A );
+
+		$out = [ 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0 ];
+		foreach ( $rows ?: [] as $r ) {
+			$rating = (int) $r['rating'];
+			if ( isset( $out[ $rating ] ) ) {
+				$out[ $rating ] = (int) $r['n'];
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Reviews per calendar month over the trailing window (for the trend chart).
+	 * Grouped in site-local time to match how created_at is stored.
+	 *
+	 * @param int $months
+	 * @return array[] { ym: 'YYYY-MM', total: int, approved: int }
+	 */
+	public static function monthly_counts( $months = 12 ) {
+		global $wpdb;
+		$table  = Installer::reviews_table();
+		$months = max( 1, min( 36, (int) $months ) );
+		$since  = gmdate( 'Y-m-01 00:00:00', current_time( 'timestamp' ) - ( $months - 1 ) * MONTH_IN_SECONDS );
+
+		$sql = "SELECT DATE_FORMAT(created_at, '%%Y-%%m') AS ym,
+				COUNT(*) AS total,
+				SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved
+			FROM {$table}
+			WHERE status <> 'trash' AND created_at >= %s
+			GROUP BY ym
+			ORDER BY ym ASC";
+
+		$rows = $wpdb->get_results( $wpdb->prepare( $sql, $since ), ARRAY_A );
+
+		return array_map(
+			static function ( $r ) {
+				return [
+					'ym'       => (string) $r['ym'],
+					'total'    => (int) $r['total'],
+					'approved' => (int) $r['approved'],
+				];
+			},
+			$rows ?: []
+		);
+	}
+
 	/**
 	 * @param array $row
 	 * @return array

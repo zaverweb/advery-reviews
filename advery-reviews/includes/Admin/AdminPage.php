@@ -13,6 +13,7 @@ use Advery\Reviews\Database\ReviewRepository;
 class AdminPage {
 
 	const MENU_SLUG      = 'advery-reviews';
+	const REPORTS_SLUG   = 'advery-reviews-reports';
 	const SETTINGS_SLUG  = 'advery-reviews-settings';
 	const MIGRATION_SLUG = 'advery-reviews-migration';
 
@@ -49,6 +50,17 @@ class AdminPage {
 			self::MENU_SLUG,
 			function () {
 				$this->render_root( 'reviews' );
+			}
+		);
+
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Reports', 'advery-reviews' ),
+			__( 'Reports', 'advery-reviews' ),
+			'manage_options',
+			self::REPORTS_SLUG,
+			function () {
+				$this->render_root( 'reports' );
 			}
 		);
 
@@ -109,6 +121,7 @@ class AdminPage {
 				'restUrl'   => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'menuSlug'  => self::MENU_SLUG,
+				'reportsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::REPORTS_SLUG ) ),
 				'settingsUrl'  => esc_url_raw( admin_url( 'admin.php?page=' . self::SETTINGS_SLUG ) ),
 				'migrationUrl' => esc_url_raw( admin_url( 'admin.php?page=' . self::MIGRATION_SLUG ) ),
 				'reviewsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::MENU_SLUG ) ),

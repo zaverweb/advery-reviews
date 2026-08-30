@@ -3,6 +3,7 @@ import { __ } from '@wordpress/i18n';
 import { Spinner, Notice } from '@wordpress/components';
 import { api } from './api';
 import ReviewsList from './views/ReviewsList';
+import ReportsPanel from './views/ReportsPanel';
 import SettingsPanel from './views/SettingsPanel';
 import MigrationPanel from './views/MigrationPanel';
 
@@ -64,12 +65,14 @@ export default function App( { screen = 'reviews' } ) {
 
 	const nav = [
 		{ key: 'reviews', label: __( 'Reviews', 'advery-reviews' ), href: cfg.reviewsUrl },
+		{ key: 'reports', label: __( 'Reports', 'advery-reviews' ), href: cfg.reportsUrl },
 		{ key: 'settings', label: __( 'Settings', 'advery-reviews' ), href: cfg.settingsUrl },
 		{ key: 'migration', label: __( 'Migration', 'advery-reviews' ), href: cfg.migrationUrl },
 	];
 
 	const titles = {
 		reviews: __( 'Moderate and reply to reviews', 'advery-reviews' ),
+		reports: __( 'See which pages and businesses get the most reviews', 'advery-reviews' ),
 		settings: __( 'Configure how reviews work', 'advery-reviews' ),
 		migration: __( 'Import, export and migrate reviews', 'advery-reviews' ),
 	};
@@ -108,6 +111,7 @@ export default function App( { screen = 'reviews' } ) {
 				</Notice>
 			) }
 
+			{ screen === 'reports' && <ReportsPanel notify={ notify } /> }
 			{ screen === 'settings' && <SettingsPanel boot={ boot } notify={ notify } /> }
 			{ screen === 'migration' && <MigrationPanel boot={ boot } notify={ notify } /> }
 			{ screen === 'reviews' && (

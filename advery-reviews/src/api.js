@@ -28,6 +28,12 @@ export const api = {
 		apiFetch( { path: `${ base }/settings`, method: 'POST', data: { settings } } ),
 	maintenance: ( action ) =>
 		apiFetch( { path: `${ base }/maintenance`, method: 'POST', data: { action } } ),
+	reports: ( params ) => {
+		const q = new URLSearchParams(
+			Object.entries( params || {} ).filter( ( [ , v ] ) => v !== '' && v != null )
+		).toString();
+		return apiFetch( { path: `${ base }/reports${ q ? '?' + q : '' }` } );
+	},
 	migrationPreview: () => apiFetch( { path: `${ base }/migration/preview` } ),
 	migrationImport: ( data ) =>
 		apiFetch( { path: `${ base }/migration/import`, method: 'POST', data } ),

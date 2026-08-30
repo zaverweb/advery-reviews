@@ -114,6 +114,15 @@ class RestController {
 		);
 		register_rest_route(
 			$ns,
+			'/reports',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'reports' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
 			'/maintenance',
 			[
 				'methods'             => 'POST',
@@ -522,6 +531,47 @@ class RestController {
 				'ok'      => true,
 				'removed' => $removed,
 				'counts'  => ReviewRepository::status_counts(),
+			],
+			200
+		);
+	}
+
+	/* ---------------- Reporting ---------------- */
+
+	/**
+	 * Reporting dashboard data: headline totals, the most-reviewed objects
+	 * (labelled + linked), a by-type breakdown, the star-rating distribution and
+	 * a 12-month trend. `days` scopes everything but the trend (0 = all time).
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function reports( WP_REST_Request $req ) {
+		$days  = max( 0, min( 3650, (int) $req->get_param( 'days' ) ) );
+		$limit = max( 1, min( 50, (int) ( $req->get_param( 'limit' ) ?: 10 ) ) );
+		$type  = sanitize_key( (string) $req->get_param( 'object_type' ) );
+		$since = $days > 0 ? gmdate( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $days * DAY_IN_SECONDS ) : '';
+
+		$args = [ 'since' => $since ];
+
+		$top = array_map(
+			function ( $r ) {
+				$r['label'] = Targets::label( $r['object_type'], $r['object_id'] );
+				$r['link']  = Targets::link( $r['object_type'], $r['object_id'] );
+				return $r;
+			},
+			ReviewRepository::top_objects( [ 'since' => $since, 'limit' => $limit, 'object_type' => $type ] )
+		);
+
+		return new WP_REST_Response(
+			[
+				'summary'      => ReviewRepository::report_summary( $args ),
+				'top'          => $top,
+				'byType'       => ReviewRepository::counts_by_type( $args ),
+				'ratings'      => ReviewRepository::rating_distribution( $args ),
+				'monthly'      => ReviewRepository::monthly_counts( 12 ),
+				'days'         => $days,
+				'generated_at' => current_time( 'mysql' ),
 			],
 			200
 		);

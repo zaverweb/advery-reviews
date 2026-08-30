@@ -12,6 +12,19 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.16.0 (Reports — which pages and businesses get the most reviews)
+- **Backlog item 5/7.** A new **Reports** admin screen (its own submenu under “Reviews”) answers the question the client cares about: *which page, product or category is pulling in the most reviews.*
+- **What it shows:**
+  - **Headline tiles** — total reviews, approved, pending, spam, distinct items reviewed, and the overall average rating (with stars).
+  - **Most-reviewed items** — a ranked list of the top objects by review count, each with a split bar (green = approved, amber = the rest), a type chip (Post / Product / Category), the total, approved count, and that item’s average rating. Labels link straight to the front-end page.
+  - **Rating breakdown** — approved reviews per star (5→1) with counts and percentages.
+  - **By item type** — how reviews split across posts, products and terms.
+  - **Reviews over time** — a 12-month trend column chart.
+- **Filters:** a time range (Last 30 days / 90 days / 12 months / All time) scopes the whole report, and an item-type filter narrows the ranked list.
+- **Efficient by design.** All figures are single grouped/aggregate SQL queries (no per-row PHP loops), reusing the existing indexes; nothing is computed on the front end. The charts are pure CSS/HTML — **no external chart library**, so nothing extra is loaded and there’s no third-party request.
+- **No new tables or DB version bump** — reporting reads the existing reviews table. New REST route `GET /reports` (manage_options only).
+- **Verified live** on the sample site: the route registers, and the endpoint returns correct labelled totals, the top-objects ranking, rating distribution, by-type split and the monthly trend. The screen’s design was verified in a rendered preview at desktop and mobile widths (stacks cleanly).
+
 ### Version 0.15.0 (AI-assisted approval + DB indexes for pagination)
 - **Backlog item 4/7.** Moderation now has a third mode, **AI-assisted approval**, alongside manual (the default hold) and auto. In AI mode each new review is classified by the AI as approve / needs-review / spam and filed accordingly. It **fails safe**: on any AI error (unconfigured, over the daily cap, network) the review falls back to **Pending** — it is never auto-published by mistake. Verified live (unconfigured → Pending).
 - **Pagination/query indexes.** Added composite indexes `(status, created_at)` and `(object_type, object_id, status, created_at)` (DB → 1.4.0) so the admin’s status-filtered, newest-first pagination and the front-end’s per-item approved list are fully index-served (no filesort). Confirmed with `EXPLAIN` that the new indexes are used. (The listing was already efficient — prepared statements, `LIMIT/OFFSET`, and an O(1) aggregate cache so the front end never runs `COUNT`/`AVG` per page; this makes the admin side scale cleanly too.)
