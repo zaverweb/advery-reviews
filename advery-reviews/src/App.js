@@ -9,12 +9,84 @@ import MigrationPanel from './views/MigrationPanel';
 
 const cfg = window.AdveryReviewsConfig || {};
 
-export default function App( { screen = 'reviews' } ) {
+/**
+ * Which screen a WordPress admin URL points at (from its `page` query var), so
+ * back/forward and direct loads resolve to the right view.
+ */
+function screenFromLocation() {
+	let page = '';
+	try {
+		page = new URLSearchParams( window.location.search ).get( 'page' ) || '';
+	} catch ( e ) {
+		page = '';
+	}
+	if ( page.endsWith( '-reports' ) ) {
+		return 'reports';
+	}
+	if ( page.endsWith( '-settings' ) ) {
+		return 'settings';
+	}
+	if ( page.endsWith( '-migration' ) ) {
+		return 'migration';
+	}
+	return 'reviews';
+}
+
+export default function App( { screen: initialScreen = 'reviews' } ) {
 	const [ loading, setLoading ] = useState( true );
 	const [ error, setError ] = useState( null );
 	const [ boot, setBoot ] = useState( null );
 	const [ counts, setCounts ] = useState( {} );
 	const [ flash, setFlash ] = useState( null );
+	// The active screen is state now, so switching between Reviews / Reports /
+	// Settings / Migration is instant (no full page reload) while the URL still
+	// updates via the History API. The four WP sub-pages all load this one app.
+	const [ screen, setScreen ] = useState( initialScreen );
+
+	// Client-side navigation: change the URL + the screen without reloading.
+	const navTo = useCallback( ( key, href, e ) => {
+		if ( e ) {
+			// Let modified clicks (new tab, etc.) behave natively.
+			if ( e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button ) {
+				return;
+			}
+			e.preventDefault();
+		}
+		if ( href && window.history && window.history.pushState ) {
+			window.history.pushState( { adveryScreen: key }, '', href );
+			setScreen( key );
+			window.scrollTo( 0, 0 );
+		} else if ( href ) {
+			window.location.href = href;
+		}
+	}, [] );
+
+	// Back / forward buttons.
+	useEffect( () => {
+		const onPop = () => setScreen( screenFromLocation() );
+		window.addEventListener( 'popstate', onPop );
+		return () => window.removeEventListener( 'popstate', onPop );
+	}, [] );
+
+	// Keep the WordPress admin sub-menu highlight in sync with the active screen
+	// (pushState doesn't reload, so WP wouldn't otherwise move the "current" mark).
+	useEffect( () => {
+		const menuSlug = cfg.menuSlug || 'advery-reviews';
+		const want = 'reviews' === screen ? menuSlug : menuSlug + '-' + screen;
+		try {
+			document.querySelectorAll( '#adminmenu a[href*="page=' + menuSlug + '"]' ).forEach( ( a ) => {
+				const page = new URLSearchParams( a.search ).get( 'page' );
+				const li = a.closest( 'li' );
+				const on = page === want;
+				a.classList.toggle( 'current', on );
+				if ( li ) {
+					li.classList.toggle( 'current', on );
+				}
+			} );
+		} catch ( e ) {
+			// Non-fatal: the in-app nav still shows the active screen.
+		}
+	}, [ screen ] );
 
 	const load = useCallback( async () => {
 		setLoading( true );
@@ -89,7 +161,7 @@ export default function App( { screen = 'reviews' } ) {
 				</div>
 				<div className="advery-rv__tiles">
 					{ tiles.map( ( t ) => (
-						<a key={ t.key } className={ 'advery-rv__tile is-' + t.tone } href={ cfg.reviewsUrl || '#' }>
+						<a key={ t.key } className={ 'advery-rv__tile is-' + t.tone } href={ cfg.reviewsUrl || '#' } onClick={ ( e ) => navTo( 'reviews', cfg.reviewsUrl, e ) }>
 							<span className="advery-rv__tile-value">{ t.value }</span>
 							<span className="advery-rv__tile-label">{ t.label }</span>
 						</a>
@@ -99,7 +171,7 @@ export default function App( { screen = 'reviews' } ) {
 
 			<nav className="advery-rv__nav">
 				{ nav.map( ( n ) => (
-					<a key={ n.key } href={ n.href || '#' } className={ 'advery-rv__navlink' + ( screen === n.key ? ' is-active' : '' ) }>
+					<a key={ n.key } href={ n.href || '#' } className={ 'advery-rv__navlink' + ( screen === n.key ? ' is-active' : '' ) } onClick={ ( e ) => navTo( n.key, n.href, e ) }>
 						{ n.label }
 					</a>
 				) ) }

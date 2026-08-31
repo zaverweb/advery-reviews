@@ -12,6 +12,12 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.25.0 (Instant settings navigation — queue item 1/5)
+- **Switching between the admin screens is now instant.** Reviews / Reports / Settings / Migration are still four addressable WP sub-pages (the URL changes, so links and the browser back/forward button keep working), but moving between them no longer does a full page reload. The app now uses History-API client-side routing: the in-app nav (and the header stat tiles) intercept the click, `pushState` the same admin URL, and swap the screen instantly — bootstrap data is fetched once instead of on every switch.
+- **Back / forward** buttons restore the right screen (`popstate`), a **direct load / deep link** to any of the four URLs still opens the correct screen, and modified clicks (⌘/Ctrl/middle-click) still open a new tab normally.
+- The **WordPress left-sidebar submenu highlight** is kept in sync with the active screen (since `pushState` doesn’t reload, WP wouldn’t otherwise move the “current” mark).
+- **Verified live** in wp-admin: switching Reviews↔Settings↔Reports↔Migration does not reload the page (a window marker survives), the URL updates each time, and back/forward + the sidebar highlight track correctly. No new strings.
+
 ### Version 0.24.0 (Ollama fix, more AI providers, usage stats, reviewer avatars)
 - **Bug fix — selecting Ollama blanked the AI settings.** Switching the provider to Ollama crashed the panel (`removeChild … not a child`) because the guide line mixed several adjacent text nodes (emoji + translated text) that the browser merges, and React then failed to reconcile them. Each guide line is now a single text expression with distinct keys — Ollama (and every provider) selects cleanly.
 - **More AI providers.** Added **DeepSeek**, **GapGPT** and **AvalAI** (the last two are popular OpenAI-compatible gateways in Iran) alongside Anthropic/OpenAI/OpenRouter/Gemini/Ollama. They use the OpenAI request format; each has a guide card with the API-key link, example models and docs, and a note that you can point Base URL at a different endpoint. The Model field is free text, so any custom model name works.

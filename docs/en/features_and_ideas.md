@@ -1,5 +1,15 @@
 # Advery Reviews — Features & Roadmap
 
+## ▶ Active work queue (approved 2026-08-30, do one at a time; bump version + confirm before the next)
+Order fixed by the user; **G is last**. Each item ships as its own version.
+1. **Faster settings navigation (SPA)** — the 4 admin screens (Reviews / Reports / Settings / Migration) are separate WP sub-pages, so switching does a full reload. Add History-API client-side routing: intercept the in-app nav links, `pushState` to the same admin URLs (URL still changes), swap the screen instantly, handle back/forward (`popstate`), and keep direct-load/deep-link working. — **DONE v0.25.0.**
+2. **Modern card-style front-end appearance** — a new, contemporary review-card look (avatar + name + stars + date + body, tidy spacing), inspired by the shared references (daneshjooyar gold-front, wpdavinci khabarina, nias befka-store) — treated as design *inspiration only*, driven by the existing CSS variables so it stays themeable. Likely a “style/skin” choice (classic vs card) in Appearance.
+3. **WooCommerce review takeover + our stars** — option to take over the Woo product-review area so reviews collected here show with *our* stars/skin instead of Woo’s/theme’s. Must avoid a duplicate `aggregateRating` (one source only — coordinate with the existing WooSchema merge).
+4. **Elementor widget (improve/verify)** — a widget already exists (`Elementor\ReviewsWidget`, v0.5.0); revisit it to expose the new appearance/skin + avatar options and confirm it’s current.
+5. **(LAST) Elementor Loop-Grid design with review fields** — expose each review’s fields (name, rating, text, date, avatar) to Elementor as a query/loop source + Dynamic Tags so a user can visually design the review card like a Loop Grid. Big item: either a custom Elementor query/dynamic-tag layer over our tables, or mirror reviews into a hidden CPT for design. Plan separately before building.
+
+---
+
 Status: **phased build in progress.** Done: **anti-spam (v0.2.0)**; **input-security hardening, SEO-safe loading modes, native-comment replacement, custom CSS, and table hygiene / orphan cleanup / optimize (v0.3.0)**. **Immediate next: comment migration** (WP comments + WooCommerce reviews ⇄ the plugin, with field mapping so comments aren't lost, and re-run de-dup — see §5.1). Items below carry the requested behaviour, expert notes, and (where relevant) a compliance flag.
 
 ## 5.1 Comment migration (immediate next)
