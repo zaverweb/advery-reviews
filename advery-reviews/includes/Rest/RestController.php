@@ -948,6 +948,7 @@ class RestController {
 		};
 
 		return [
+			'skin'       => in_array( ( $in['skin'] ?? '' ), [ 'classic', 'card' ], true ) ? $in['skin'] : $d['skin'],
 			'accent'     => $color( $in['accent'] ?? $d['accent'] ) ?: $d['accent'],
 			'accent_ink' => $color( $in['accent_ink'] ?? $d['accent_ink'] ) ?: $d['accent_ink'],
 			'star'       => $color( $in['star'] ?? $d['star'] ) ?: $d['star'],
@@ -1051,6 +1052,7 @@ class RestController {
 	}
 
 	private function public_shape( array $r ) {
+		$ts = strtotime( (string) ( $r['created_at'] ?? '' ) );
 		return [
 			'id'          => $r['id'],
 			'rating'      => $r['rating'],
@@ -1058,6 +1060,8 @@ class RestController {
 			'title'       => $r['title'],
 			'content'     => wp_kses_post( $r['content'] ),
 			'created_at'  => $r['created_at'],
+			'date'        => $ts ? date_i18n( get_option( 'date_format' ), $ts ) : '',
+			'avatar'      => \Advery\Reviews\Support\Avatar::html( $r ),
 		];
 	}
 

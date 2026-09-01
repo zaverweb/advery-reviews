@@ -12,6 +12,12 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.26.0 (Modern card front-end skin — queue item 2/5)
+- **A modern “card” look for the review widget.** A new **Layout style** choice (Appearance): **Cards** (default) puts each review in its own bordered, rounded, softly-shadowed card with the avatar, the reviewer’s name over the **review date**, and the stars on the trailing edge; **Classic** keeps the previous simple divided list. Inspired by the shared references, but built entirely from the existing `--ar-*` CSS variables, so it follows the site’s Appearance colors/radius and stays theme-friendly and responsive.
+- **Review date** is now shown (localised via `date_i18n`), and the avatar + name + date share a tidy header row.
+- **Consistent everywhere.** The avatar renderer moved to a shared `Support\Avatar` helper used by both the server-rendered list and the AJAX “load more”/pagination items; the public REST shape now returns the avatar HTML + formatted date, so lazily-loaded reviews look identical to the first page. (Only Gravatar mode still makes an external request.)
+- **Verified live** on the RTL sample site: the widget renders as `advery-reviews--card`, each review is a card (border, 8px radius, shadow), the Persian date shows (“آگوست 28, 2026”), and the avatar/meta column/stars lay out correctly. 4 new strings translated to Persian.
+
 ### Version 0.25.0 (Instant settings navigation — queue item 1/5)
 - **Switching between the admin screens is now instant.** Reviews / Reports / Settings / Migration are still four addressable WP sub-pages (the URL changes, so links and the browser back/forward button keep working), but moving between them no longer does a full page reload. The app now uses History-API client-side routing: the in-app nav (and the header stat tiles) intercept the click, `pushState` the same admin URL, and swap the screen instantly — bootstrap data is fetched once instead of on every switch.
 - **Back / forward** buttons restore the right screen (`popstate`), a **direct load / deep link** to any of the four URLs still opens the correct screen, and modified clicks (⌘/Ctrl/middle-click) still open a new tab normally.

@@ -215,6 +215,8 @@ export default function SettingsPanel( { boot, notify } ) {
 					<>
 						<p className="advery-rv-hint">{ __( 'Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color.', 'advery-reviews' ) }</p>
 
+						<SelectControl label={ __( 'Layout style', 'advery-reviews' ) } help={ __( 'Cards = each review in its own bordered card with avatar and date (modern). Classic = a simple divided list.', 'advery-reviews' ) } value={ ap.skin || 'card' } options={ [ { label: __( 'Cards (modern)', 'advery-reviews' ), value: 'card' }, { label: __( 'Classic list', 'advery-reviews' ), value: 'classic' } ] } onChange={ ( v ) => setAp( { skin: v } ) } __nextHasNoMarginBottom />
+
 						{ colorRow( 'accent', __( 'Accent color (buttons, links)', 'advery-reviews' ), __( 'Used for the submit button, “load more”, and the active page. Example: #2271b1.', 'advery-reviews' ), '#2271b1' ) }
 						{ colorRow( 'accent_ink', __( 'Text on the accent', 'advery-reviews' ), __( 'The text/icon color shown on top of the accent color. Usually white.', 'advery-reviews' ), '#ffffff' ) }
 						{ colorRow( 'star', __( 'Star color', 'advery-reviews' ), __( 'The rating stars. Example: #f5a623.', 'advery-reviews' ), '#f5a623' ) }
@@ -252,13 +254,22 @@ export default function SettingsPanel( { boot, notify } ) {
 								maxWidth: ap.max_width ? ap.max_width + 'px' : '100%',
 							} }
 						>
-							<div style={ { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } }>
+							<div style={ { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid ' + ( ap.border || '#e5e7eb' ) } }>
 								<span style={ { color: ap.star || '#f5a623', letterSpacing: 1, fontSize: '1.3em' } }>★★★★★</span>
 								<strong>4.8</strong>
 								<span style={ { opacity: 0.7 } }>{ sprintf( __( '%d reviews', 'advery-reviews' ), 3 ) }</span>
 							</div>
-							<div style={ { marginBottom: 6 } }><strong>{ __( 'Your name', 'advery-reviews' ) }</strong> <span style={ { color: ap.star || '#f5a623' } }>★★★★★</span></div>
-							<p style={ { margin: '0 0 12px' } }>{ __( 'Absolutely wonderful experience — the team was friendly and helpful.', 'advery-reviews' ) }</p>
+							<div style={ ( ap.skin || 'card' ) === 'card' ? { border: '1px solid ' + ( ap.border || '#e5e7eb' ), borderRadius: ( ap.radius ?? 8 ) + 'px', padding: '0.9em 1em', marginBottom: 12, boxShadow: '0 1px 3px rgba(0,0,0,0.05)' } : { marginBottom: 12 } }>
+								<div style={ { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 } }>
+									<span style={ { flex: '0 0 auto', width: 34, height: 34, borderRadius: '50%', background: ap.surface || '#f7f8fa', border: '1px solid ' + ( ap.border || '#e5e7eb' ), color: ap.accent || '#2271b1', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700 } }>N</span>
+									<span style={ { display: 'flex', flexDirection: 'column', lineHeight: 1.2 } }>
+										<strong>{ __( 'Your name', 'advery-reviews' ) }</strong>
+										<span style={ { fontSize: '0.8em', opacity: 0.7 } }>Aug 30, 2026</span>
+									</span>
+									<span style={ { marginInlineStart: 'auto', color: ap.star || '#f5a623' } }>★★★★★</span>
+								</div>
+								<p style={ { margin: 0 } }>{ __( 'Absolutely wonderful experience — the team was friendly and helpful.', 'advery-reviews' ) }</p>
+							</div>
 							<button
 								type="button"
 								style={ {

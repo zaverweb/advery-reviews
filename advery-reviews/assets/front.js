@@ -26,7 +26,19 @@
 	function renderItem( r ) {
 		var li = el( 'li', 'advery-reviews__item' );
 		var head = el( 'div', 'advery-reviews__item-head' );
-		head.appendChild( el( 'strong', 'advery-reviews__author', r.author_name || ( cfg.i18n && cfg.i18n.anonymous ) || '' ) );
+		if ( r.avatar ) {
+			var av = document.createElement( 'span' );
+			av.innerHTML = r.avatar; // server-built, escaped
+			if ( av.firstChild ) {
+				head.appendChild( av.firstChild );
+			}
+		}
+		var metaCol = el( 'div', 'advery-reviews__meta-col' );
+		metaCol.appendChild( el( 'strong', 'advery-reviews__author', r.author_name || ( cfg.i18n && cfg.i18n.anonymous ) || '' ) );
+		if ( r.date ) {
+			metaCol.appendChild( el( 'span', 'advery-reviews__date', r.date ) );
+		}
+		head.appendChild( metaCol );
 		if ( r.rating > 0 ) {
 			head.appendChild( el( 'span', 'advery-reviews__stars', stars( r.rating ) ) );
 		}

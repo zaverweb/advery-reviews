@@ -4,6 +4,7 @@ namespace Advery\Reviews\Frontend;
 use Advery\Reviews\Support\Settings;
 use Advery\Reviews\Support\Targets;
 use Advery\Reviews\Support\Aggregate;
+use Advery\Reviews\Support\Avatar;
 use Advery\Reviews\AntiSpam\SpamGuard;
 use Advery\Reviews\Database\ReviewRepository;
 
@@ -189,10 +190,11 @@ class Display {
 		$as      = Settings::antispam();
 		$captcha = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
 		$pages   = ( $per > 0 ) ? (int) ceil( $total / $per ) : 1;
+		$skin    = Settings::appearance()['skin'] ?? 'card';
 
 		ob_start();
 		?>
-		<div class="advery-reviews" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>" data-load-mode="<?php echo esc_attr( $mode ); ?>" data-per-page="<?php echo esc_attr( $per ); ?>" data-total="<?php echo esc_attr( $total ); ?>" data-page="1">
+		<div class="advery-reviews advery-reviews--<?php echo esc_attr( $skin ); ?>" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>" data-load-mode="<?php echo esc_attr( $mode ); ?>" data-per-page="<?php echo esc_attr( $per ); ?>" data-total="<?php echo esc_attr( $total ); ?>" data-page="1">
 			<div class="advery-reviews__summary">
 				<span class="advery-reviews__avg"><?php echo esc_html( number_format_i18n( $agg['avg'], 1 ) ); ?></span>
 				<span class="advery-reviews__stars" aria-hidden="true"><?php echo esc_html( $this->stars( $agg['avg'] ) ); ?></span>
@@ -211,8 +213,13 @@ class Display {
 				<?php foreach ( $reviews as $r ) : ?>
 					<li class="advery-reviews__item">
 						<div class="advery-reviews__item-head">
-							<?php echo $this->avatar( $r ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
-							<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
+							<?php echo Avatar::html( $r ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
+							<div class="advery-reviews__meta-col">
+								<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
+								<?php if ( ! empty( $r['created_at'] ) ) : ?>
+									<span class="advery-reviews__date"><?php echo esc_html( $this->review_date( $r['created_at'] ) ); ?></span>
+								<?php endif; ?>
+							</div>
 							<?php if ( $r['rating'] > 0 ) : ?>
 								<span class="advery-reviews__stars" aria-label="<?php echo esc_attr( sprintf( '%d / 5', $r['rating'] ) ); ?>"><?php echo esc_html( $this->stars( $r['rating'] ) ); ?></span>
 							<?php endif; ?>
@@ -281,52 +288,14 @@ class Display {
 	}
 
 	/**
-	 * Reviewer avatar HTML for the configured mode. Only the 'gravatar' mode
-	 * ever contacts an external service — 'initials' and 'default' are fully
-	 * local, so with Gravatar off the front end makes no avatar request at all.
+	 * Localised review date (site date format).
 	 *
-	 * @param array $r review row
+	 * @param string $mysql created_at
 	 * @return string
 	 */
-	private function avatar( array $r ) {
-		$mode = Settings::get( 'avatar_mode', 'initials' );
-		if ( 'none' === $mode ) {
-			return '';
-		}
-
-		if ( 'gravatar' === $mode ) {
-			$id = $r['author_user_id'] ?? 0;
-			$src = $id ? (int) $id : (string) ( $r['author_email'] ?? '' );
-			// WordPress's own avatar (Gravatar-backed). This is the ONLY branch
-			// that issues an external request.
-			$html = get_avatar( $src, 40, '', $r['author_name'] ?? '', [ 'class' => 'advery-reviews__avatar-img', 'loading' => 'lazy' ] );
-			return $html ? $html : $this->avatar_initials( $r );
-		}
-
-		if ( 'default' === $mode ) {
-			$url = (string) Settings::get( 'avatar_default', '' );
-			if ( '' !== $url ) {
-				return sprintf(
-					'<img class="advery-reviews__avatar-img" src="%s" alt="" width="40" height="40" loading="lazy" />',
-					esc_url( $url )
-				);
-			}
-			// No default image set → fall back to initials (still no request).
-		}
-
-		return $this->avatar_initials( $r );
-	}
-
-	/**
-	 * A local, request-free initials avatar.
-	 *
-	 * @param array $r
-	 * @return string
-	 */
-	private function avatar_initials( array $r ) {
-		$name    = trim( (string) ( $r['author_name'] ?? '' ) );
-		$initial = '' !== $name ? mb_substr( $name, 0, 1 ) : '?';
-		return '<span class="advery-reviews__avatar" aria-hidden="true">' . esc_html( mb_strtoupper( $initial ) ) . '</span>';
+	private function review_date( $mysql ) {
+		$ts = strtotime( (string) $mysql );
+		return $ts ? date_i18n( get_option( 'date_format' ), $ts ) : '';
 	}
 
 	/**

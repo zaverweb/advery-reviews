@@ -77,9 +77,51 @@
 	font-size: 1.05em;
 	line-height: 1;
 }
+.advery-reviews__meta-col {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.25;
+	min-width: 0;
+}
+.advery-reviews__date {
+	font-size: 0.8em;
+	color: var(--ar-muted);
+}
+/* Push the stars to the trailing edge of the header. */
+.advery-reviews__item-head .advery-reviews__stars {
+	margin-inline-start: auto;
+}
 .advery-reviews__title {
 	font-weight: 600;
 	margin-top: 0.2em;
+}
+
+/* Card skin — each review in its own surface with border, radius and a soft
+   shadow (all from the --ar-* variables, so it follows the Appearance colors). */
+.advery-reviews--card .advery-reviews__list {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+.advery-reviews--card .advery-reviews__item {
+	background: var(--ar-surface);
+	border: 1px solid var(--ar-border);
+	border-radius: var(--ar-radius);
+	padding: 1em 1.15em;
+	box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.05 );
+	transition: box-shadow 0.15s ease;
+}
+.advery-reviews--card .advery-reviews__item:hover {
+	box-shadow: 0 4px 14px rgba( 0, 0, 0, 0.08 );
+}
+.advery-reviews--card .advery-reviews__item-head {
+	margin-bottom: 0.55em;
+}
+.advery-reviews--card .advery-reviews__content {
+	margin: 0;
+}
+.advery-reviews--card .advery-reviews__reply {
+	margin: 0.7em 0 0;
 }
 .advery-reviews__content {
 	color: var(--ar-text);
