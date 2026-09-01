@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.29.1 (Fix: false “links are not allowed” rejections)
+- **Bug fix.** The link detector flagged any `word.tld` with a literal dot, so ordinary reviews were wrongly rejected when they happened to contain an **email domain** (`name@gmail.com`), a **tech term** (`asp.net`, `node.js`), or a **version** (`15.pro`) — the TLD list includes many everyday words (net, io, app, pro, …).
+- Link detection is now limited to **unambiguous** signals: real URLs (`http(s)://`, `www.`, an `<a>` tag, `[url]` BBCode, IPv4) **and deliberately obfuscated** domains that spell the dot out or bracket it (`example dot com`, `example [dot] com`, `example[.]com`). A plain `word.tld` is no longer treated as a link — genuine link spam almost always uses http/www, and moderation + the word blocklist cover the rest.
+- **Verified live:** the false-positive samples (`user@gmail.com`, `asp.net`, `15.pro`, `node.js`, `vue.js`, `shop.online`, `report.pdf`, `25.5`) now score **0**, while real and obfuscated links (`https://…`, `www.…`, `example dot com`, `example[.]com`, `spam [dot] shop`, `<a>`, `[url]`, `1.2.3.4`) are still caught.
+
 ### Version 0.29.0 (Appearance & UX polish: star size, no double-output, matching widths, richer Elementor)
 - **Star size is now its own setting** (Appearance → Sizes), independent of the base font size, and the stars in submitted reviews are **bigger by default** (18px). Drives a new `--ar-star-size` variable.
 - **No more double output.** On an Elementor theme-builder single-post template that both prints the post content (auto-append) and includes our widget, reviews showed **twice**. Rendering a given target now happens at most **once per request** (the de-dup applies whichever runs first), so auto-append and an explicit placement can’t both print.

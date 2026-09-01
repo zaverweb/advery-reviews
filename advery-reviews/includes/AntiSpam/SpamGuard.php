@@ -234,10 +234,19 @@ class SpamGuard {
 	const TLDS = 'com|net|org|io|co|info|biz|xyz|online|site|shop|store|app|dev|me|tv|cc|ly|gg|ai|link|click|top|live|life|world|fun|pro|tech|space|website|blog|uk|us|ca|de|fr|ru|ir|in|au|nl|it|es|se|no|fi|pl|br|jp|cn|kr|tr|ua|cz|gr|ro|hu|be|ch|at|dk|pt|ie|nz|mx|ar|cl|za|sg|hk|ae|sa|il|id|my|th|vn|ph|eu';
 
 	/**
-	 * Count link-like signals in text, catching plain, obfuscated and marked-up
-	 * links. Obfuscation ("example dot com", "example[.]com", "example (dot)
-	 * com") is normalised to a dot first, then bare domains are matched only
-	 * against a known-TLD list so ordinary phrases like "dot matrix" don't count.
+	 * Count link-like signals in text. Only *unambiguous* signals are counted, so
+	 * ordinary reviews never trip it:
+	 *   - real URLs: http(s)://, www.something, an <a> tag, a [url] BBCode, IPv4;
+	 *   - deliberately obfuscated domains that spell the dot out or bracket it
+	 *     ("example dot com", "example [dot] com", "example[.]com") — a trick no
+	 *     genuine reviewer uses.
+	 *
+	 * A plain "word.tld" with a literal dot is intentionally NOT treated as a
+	 * link: too many legitimate strings look like that (email domains such as
+	 * name@gmail.com, tech terms like asp.net or node.js, versions like 15.pro),
+	 * and flagging them produced false "links are not allowed" rejections. Real
+	 * link spam almost always uses http/www anyway, and moderation + the word
+	 * blocklist cover the rest.
 	 *
 	 * @param string $text
 	 * @return int
@@ -246,20 +255,20 @@ class SpamGuard {
 		$t = strtolower( (string) $text );
 
 		$count = 0;
-		// Definite signals.
+		// Definite, unambiguous link signals.
 		$count += preg_match_all( '#https?://#i', $t );                 // http(s)://
 		$count += preg_match_all( '#\bwww\.[a-z0-9-]#i', $t );          // www.something
 		$count += preg_match_all( '#<a\b#i', $t );                      // <a ...>
 		$count += preg_match_all( '#\[url[=\]]#i', $t );                // [url]...[/url]
 		$count += preg_match_all( '#\b(?:\d{1,3}\.){3}\d{1,3}\b#', $t ); // IPv4
 
-		// De-obfuscate: " dot ", "(dot)", "[dot]", "{dot}", "[.]", "(.)" → "."
-		$deob = preg_replace( '#\s*[\(\[\{]?\s*(?:dot|d0t)\s*[\)\]\}]?\s*#i', '.', $t );
-		$deob = preg_replace( '#[\(\[\{]\s*\.\s*[\)\]\}]#', '.', $deob );   // [.] (.) {.}
-		$deob = preg_replace( '#\s+\.\s+#', '.', $deob );                    // "example . com"
-
-		// Bare domain with a known TLD (word.tld or word.tld.tld).
-		$count += preg_match_all( '#\b[a-z0-9][a-z0-9-]{1,}\.(?:' . self::TLDS . ')(?:\.[a-z]{2,})?\b#i', $deob );
+		// Deliberately obfuscated domain: word + a SPELLED-OUT or BRACKETED dot
+		// (never a plain ".") + a known TLD. Catches "example dot com",
+		// "example (dot) com", "example[.]com"; ignores "asp.net"/"gmail.com".
+		$count += preg_match_all(
+			'#[a-z0-9][a-z0-9-]{1,}\s*(?:\(\s*d[o0]t\s*\)|\[\s*d[o0]t\s*\]|\{\s*d[o0]t\s*\}|\bd[o0]t\b|\[\s*\.\s*\]|\(\s*\.\s*\)|\{\s*\.\s*\})\s*(?:' . self::TLDS . ')\b#i',
+			$t
+		);
 
 		return $count;
 	}
