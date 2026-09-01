@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.26.0\n"
+"Project-Id-Version: Advery Reviews 0.27.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T20:43:51+00:00\n"
+"POT-Creation-Date: 2026-09-01T20:56:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -325,7 +325,7 @@ msgid "Sending…"
 msgstr "در حالِ ارسال…"
 
 #: includes/Frontend/Display.php:72
-#: includes/Frontend/Display.php:279
+#: includes/Frontend/Display.php:291
 #: build/index.js:2
 msgid "Submit review"
 msgstr "ثبتِ نظر"
@@ -335,7 +335,7 @@ msgid "Something went wrong. Please try again."
 msgstr "مشکلی پیش آمد. دوباره تلاش کنید."
 
 #: includes/Frontend/Display.php:74
-#: includes/Frontend/Display.php:243
+#: includes/Frontend/Display.php:255
 msgid "Load more reviews"
 msgstr "نمایشِ نظراتِ بیشتر"
 
@@ -347,47 +347,47 @@ msgid "Anonymous"
 msgstr "ناشناس"
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:205
+#: includes/Frontend/Display.php:217
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] "%d نظر"
 msgstr[1] "%d نظر"
 
-#: includes/Frontend/Display.php:233
+#: includes/Frontend/Display.php:245
 msgid "Response from the owner"
 msgstr "پاسخ از سویِ مالک"
 
-#: includes/Frontend/Display.php:246
+#: includes/Frontend/Display.php:258
 msgid "Reviews pages"
 msgstr "صفحه‌های نظرات"
 
-#: includes/Frontend/Display.php:255
+#: includes/Frontend/Display.php:267
 msgid "Write a review"
 msgstr "نوشتنِ نظر"
 
-#: includes/Frontend/Display.php:256
+#: includes/Frontend/Display.php:268
 msgid "Your rating"
 msgstr "امتیازِ شما"
 
-#: includes/Frontend/Display.php:263
+#: includes/Frontend/Display.php:275
 #: build/index.js:2
 msgid "Your name"
 msgstr "نامِ شما"
 
-#: includes/Frontend/Display.php:264
+#: includes/Frontend/Display.php:276
 msgid "Your email"
 msgstr "ایمیلِ شما"
 
-#: includes/Frontend/Display.php:266
+#: includes/Frontend/Display.php:278
 msgid "Title (optional)"
 msgstr "عنوان (اختیاری)"
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:279
 msgid "Your review"
 msgstr "نظرِ شما"
 
-#: includes/Frontend/Display.php:283
+#: includes/Frontend/Display.php:295
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr "برای ثبتِ نظر وارد شوید."
@@ -416,6 +416,12 @@ msgstr "Advery Reviews اینجا روی صفحه‌ای که هدفِ نظرِ 
 #: includes/Integrations/GutenbergBlock.php:69
 msgid "Reviews are not enabled for this content type. Enable it in Advery Reviews → Settings."
 msgstr "نظرات برای این نوعِ محتوا فعال نیست. آن را در Advery Reviews → تنظیمات فعال کنید."
+
+#. translators: %d: number of reviews
+#: includes/Integrations/WooTakeover.php:50
+#, php-format
+msgid "Reviews (%d)"
+msgstr "نظرات (%d)"
 
 #: includes/Rest/RestController.php:223
 msgid "Your session expired. Please refresh and try again."
@@ -764,6 +770,14 @@ msgid "Collect reviews on your products and read WooCommerce’s own star rating
 msgstr "روی محصولاتتان نظر جمع کنید و امتیازهای ستاره‌ایِ خودِ ووکامرس را بخوانید. خاموش کنید تا محصولات کاملاً به ووکامرس واگذار شوند."
 
 #: build/index.js:2
+msgid "Take over the product “Reviews” tab"
+msgstr "در دست گرفتنِ تبِ «نظرات»ِ محصول"
+
+#: build/index.js:2
+msgid "Show this plugin’s reviews (with our stars and card skin) in the WooCommerce product Reviews tab instead of Woo’s own list. Schema is unaffected — WooCommerce still owns the product’s structured data, so there’s never a duplicate rating. For the rating to reflect these reviews in search results, also enable “Merge WooCommerce native ratings” under Schema."
+msgstr "نظراتِ این افزونه (با ستاره‌ها و اسکینِ کارتیِ ما) را در تبِ نظراتِ محصولِ ووکامرس نمایش بده، به‌جای لیستِ خودِ Woo. اسکیما دست‌نخورده می‌ماند — دیتای ساختاریافته‌ی محصول همچنان مالِ ووکامرس است، پس هرگز امتیازِ دوتایی نمی‌شود. برای اینکه امتیاز در نتایجِ جستجو این نظرها را بازتاب دهد، «ادغامِ امتیازهای بومیِ ووکامرس» را هم در بخشِ اسکیما فعال کن."
+
+#: build/index.js:2
 msgid "Who can submit"
 msgstr "چه کسی می‌تواند ثبت کند"
 
@@ -913,7 +927,7 @@ msgstr "کلمات/عباراتِ مسدود (هر خط یکی؛ پیشوندِ 
 
 #: build/index.js:2
 msgid "One per line. Example: viagra. Advanced: re:\\bcasino\\b for a regular expression."
-msgstr "هر خط یکی. مثال: viagra. پیشرفته: re:\\\\\\\\bcasino\\\\\\\\b برای یک عبارتِ باقاعده."
+msgstr "هر خط یکی. مثال: viagra. پیشرفته: re:\\\\\\\\\\\\\\\\bcasino\\\\\\\\\\\\\\\\b برای یک عبارتِ باقاعده."
 
 #: build/index.js:2
 msgid "Blocked emails / domains (one per line)"

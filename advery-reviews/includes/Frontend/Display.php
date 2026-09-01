@@ -161,6 +161,18 @@ class Display {
 	}
 
 	/**
+	 * Render the widget for a target without needing an existing instance
+	 * (used by integrations such as the WooCommerce reviews-tab takeover).
+	 *
+	 * @param string $object_type
+	 * @param int    $object_id
+	 * @return string
+	 */
+	public static function widget( $object_type, $object_id ) {
+		return ( new self() )->render( $object_type, $object_id );
+	}
+
+	/**
 	 * Render the whole widget for a target.
 	 *
 	 * @param string $object_type

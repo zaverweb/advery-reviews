@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.26.0\n"
+"Project-Id-Version: Advery Reviews 0.27.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T20:43:51+00:00\n"
+"POT-Creation-Date: 2026-09-01T20:56:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -323,7 +323,7 @@ msgid "Sending…"
 msgstr ""
 
 #: includes/Frontend/Display.php:72
-#: includes/Frontend/Display.php:279
+#: includes/Frontend/Display.php:291
 #: build/index.js:2
 msgid "Submit review"
 msgstr ""
@@ -333,7 +333,7 @@ msgid "Something went wrong. Please try again."
 msgstr ""
 
 #: includes/Frontend/Display.php:74
-#: includes/Frontend/Display.php:243
+#: includes/Frontend/Display.php:255
 msgid "Load more reviews"
 msgstr ""
 
@@ -345,47 +345,47 @@ msgid "Anonymous"
 msgstr ""
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:205
+#: includes/Frontend/Display.php:217
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Frontend/Display.php:233
+#: includes/Frontend/Display.php:245
 msgid "Response from the owner"
 msgstr ""
 
-#: includes/Frontend/Display.php:246
+#: includes/Frontend/Display.php:258
 msgid "Reviews pages"
 msgstr ""
 
-#: includes/Frontend/Display.php:255
+#: includes/Frontend/Display.php:267
 msgid "Write a review"
 msgstr ""
 
-#: includes/Frontend/Display.php:256
+#: includes/Frontend/Display.php:268
 msgid "Your rating"
 msgstr ""
 
-#: includes/Frontend/Display.php:263
+#: includes/Frontend/Display.php:275
 #: build/index.js:2
 msgid "Your name"
 msgstr ""
 
-#: includes/Frontend/Display.php:264
+#: includes/Frontend/Display.php:276
 msgid "Your email"
 msgstr ""
 
-#: includes/Frontend/Display.php:266
+#: includes/Frontend/Display.php:278
 msgid "Title (optional)"
 msgstr ""
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:279
 msgid "Your review"
 msgstr ""
 
-#: includes/Frontend/Display.php:283
+#: includes/Frontend/Display.php:295
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr ""
@@ -413,6 +413,12 @@ msgstr ""
 
 #: includes/Integrations/GutenbergBlock.php:69
 msgid "Reviews are not enabled for this content type. Enable it in Advery Reviews → Settings."
+msgstr ""
+
+#. translators: %d: number of reviews
+#: includes/Integrations/WooTakeover.php:50
+#, php-format
+msgid "Reviews (%d)"
 msgstr ""
 
 #: includes/Rest/RestController.php:223
@@ -759,6 +765,14 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Collect reviews on your products and read WooCommerce’s own star ratings. Turn off to leave products entirely to WooCommerce."
+msgstr ""
+
+#: build/index.js:2
+msgid "Take over the product “Reviews” tab"
+msgstr ""
+
+#: build/index.js:2
+msgid "Show this plugin’s reviews (with our stars and card skin) in the WooCommerce product Reviews tab instead of Woo’s own list. Schema is unaffected — WooCommerce still owns the product’s structured data, so there’s never a duplicate rating. For the rating to reflect these reviews in search results, also enable “Merge WooCommerce native ratings” under Schema."
 msgstr ""
 
 #: build/index.js:2

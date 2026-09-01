@@ -110,6 +110,9 @@ export default function SettingsPanel( { boot, notify } ) {
 							<>
 								<hr />
 								<ToggleControl label={ __( 'WooCommerce products', 'advery-reviews' ) } help={ __( 'Collect reviews on your products and read WooCommerce’s own star ratings. Turn off to leave products entirely to WooCommerce.', 'advery-reviews' ) } checked={ !! s.woo_enabled } onChange={ ( v ) => set( { woo_enabled: v } ) } __nextHasNoMarginBottom />
+								{ s.woo_enabled && (
+									<ToggleControl label={ __( 'Take over the product “Reviews” tab', 'advery-reviews' ) } help={ __( 'Show this plugin’s reviews (with our stars and card skin) in the WooCommerce product Reviews tab instead of Woo’s own list. Schema is unaffected — WooCommerce still owns the product’s structured data, so there’s never a duplicate rating. For the rating to reflect these reviews in search results, also enable “Merge WooCommerce native ratings” under Schema.', 'advery-reviews' ) } checked={ !! s.woo_takeover } onChange={ ( v ) => set( { woo_takeover: v } ) } __nextHasNoMarginBottom />
+								) }
 							</>
 						) }
 					</>

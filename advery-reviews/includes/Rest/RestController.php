@@ -901,6 +901,7 @@ class RestController {
 			'enabled_post_types' => array_values( array_filter( $post_types ) ),
 			'enabled_taxonomies' => array_values( array_filter( $taxes ) ),
 			'woo_enabled'        => ! empty( $in['woo_enabled'] ),
+			'woo_takeover'       => ! empty( $in['woo_takeover'] ),
 			'who_can_submit'     => in_array( ( $in['who_can_submit'] ?? '' ), [ 'anyone', 'logged_in' ], true ) ? $in['who_can_submit'] : $d['who_can_submit'],
 			'moderation'         => in_array( ( $in['moderation'] ?? '' ), [ 'manual', 'auto', 'ai' ], true ) ? $in['moderation'] : $d['moderation'],
 			'one_per_user'       => ! empty( $in['one_per_user'] ),

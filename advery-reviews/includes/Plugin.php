@@ -7,6 +7,7 @@ use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Schema\SchemaBridge;
 use Advery\Reviews\Schema\StandaloneSchema;
 use Advery\Reviews\Integrations\WooSchema;
+use Advery\Reviews\Integrations\WooTakeover;
 use Advery\Reviews\Integrations\ElementorBridge;
 use Advery\Reviews\Integrations\GutenbergBlock;
 use Advery\Reviews\Email\Notifier;
@@ -46,6 +47,9 @@ class Plugin {
 
 		// Merge our collected product reviews into WooCommerce's own schema.
 		( new WooSchema() )->register();
+
+		// Optionally show our reviews in the Woo product reviews tab (our stars).
+		( new WooTakeover() )->register();
 
 		// Gutenberg block (dynamic, server-rendered).
 		( new GutenbergBlock() )->register();

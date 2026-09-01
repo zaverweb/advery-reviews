@@ -20,6 +20,7 @@ class Settings {
 			'enabled_post_types' => [ 'post' ],
 			'enabled_taxonomies' => [],
 			'woo_enabled'        => true,   // collect on products + read native ratings
+			'woo_takeover'       => false,  // show OUR reviews in the Woo product reviews tab
 
 			// Submission rules (all configurable per the user's request).
 			'who_can_submit'     => 'anyone',  // 'anyone' | 'logged_in'

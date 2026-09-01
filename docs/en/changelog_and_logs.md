@@ -12,6 +12,11 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.27.0 (WooCommerce product-reviews takeover — queue item 3/5)
+- **Optionally show our reviews on WooCommerce products.** A new toggle (Collection → “Take over the product ‘Reviews’ tab”, shown when Woo is active) replaces the content of the Woo product **Reviews** tab with this plugin’s widget — so product reviews render with **our stars and card skin** instead of Woo’s own list — and sets the tab count to our approved review count. Implemented cleanly via the `woocommerce_product_tabs` filter (a new `Integrations\WooTakeover`), feature-detected so it’s completely inert without WooCommerce.
+- **No duplicate `aggregateRating` — by design.** The takeover is display-only. Our own schema always leaves products to WooCommerce (both StandaloneSchema and SchemaBridge skip products), so a product page still has exactly one product schema — WooCommerce’s — into which our reviews are folded by `WooSchema` when “Merge WooCommerce native ratings” is on. The setting help points this out so ratings show correctly in search results.
+- **Verified** (WooCommerce isn’t installed on the sample site, so via a faithful simulation on the live server): with Woo absent the integration registers with **no fatal**; with Woo simulated, the `reviews` tab is replaced with our callback, the title becomes “Reviews (N)” with our count, and the tab renders our widget HTML. 3 new strings translated to Persian.
+
 ### Version 0.26.0 (Modern card front-end skin — queue item 2/5)
 - **A modern “card” look for the review widget.** A new **Layout style** choice (Appearance): **Cards** (default) puts each review in its own bordered, rounded, softly-shadowed card with the avatar, the reviewer’s name over the **review date**, and the stars on the trailing edge; **Classic** keeps the previous simple divided list. Inspired by the shared references, but built entirely from the existing `--ar-*` CSS variables, so it follows the site’s Appearance colors/radius and stays theme-friendly and responsive.
 - **Review date** is now shown (localised via `date_i18n`), and the avatar + name + date share a tidy header row.
