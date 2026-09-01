@@ -127,6 +127,63 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'heading_colors',
+			[
+				'label'     => __( 'Colors (override global)', 'advery-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+
+		// Each control writes a CSS custom property scoped to this widget, so an
+		// empty value simply falls back to the global Appearance settings.
+		$vars = [
+			'accent'     => [ '--ar-accent', __( 'Accent color', 'advery-reviews' ) ],
+			'accent_ink' => [ '--ar-accent-ink', __( 'Text on accent', 'advery-reviews' ) ],
+			'star'       => [ '--ar-star', __( 'Star color', 'advery-reviews' ) ],
+			'text'       => [ '--ar-text', __( 'Text color', 'advery-reviews' ) ],
+			'surface'    => [ '--ar-surface', __( 'Card / form background', 'advery-reviews' ) ],
+			'border'     => [ '--ar-border', __( 'Borders & dividers', 'advery-reviews' ) ],
+		];
+		foreach ( $vars as $key => $meta ) {
+			$this->add_control(
+				'color_' . $key,
+				[
+					'label'     => $meta[1],
+					'type'      => \Elementor\Controls_Manager::COLOR,
+					'selectors' => [ '{{WRAPPER}} .advery-reviews' => $meta[0] . ': {{VALUE}};' ],
+				]
+			);
+		}
+
+		$this->add_control(
+			'heading_sizes',
+			[
+				'label'     => __( 'Sizes (override global)', 'advery-reviews' ),
+				'type'      => \Elementor\Controls_Manager::HEADING,
+				'separator' => 'before',
+			]
+		);
+		$sliders = [
+			'star_size' => [ '--ar-star-size', __( 'Star size', 'advery-reviews' ), 12, 40 ],
+			'font_size' => [ '--ar-font-size', __( 'Base font size', 'advery-reviews' ), 12, 24 ],
+			'radius'    => [ '--ar-radius', __( 'Corner radius', 'advery-reviews' ), 0, 40 ],
+			'max_width' => [ '--ar-max-width', __( 'Max width', 'advery-reviews' ), 240, 1200 ],
+		];
+		foreach ( $sliders as $key => $meta ) {
+			$this->add_control(
+				'size_' . $key,
+				[
+					'label'     => $meta[1],
+					'type'      => \Elementor\Controls_Manager::SLIDER,
+					'size_units' => [ 'px' ],
+					'range'     => [ 'px' => [ 'min' => $meta[2], 'max' => $meta[3] ] ],
+					'selectors' => [ '{{WRAPPER}} .advery-reviews' => $meta[0] . ': {{SIZE}}{{UNIT}};' ],
+				]
+			);
+		}
+
 		$this->end_controls_section();
 	}
 

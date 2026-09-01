@@ -200,14 +200,20 @@ class Display {
 			return '';
 		}
 
+		// De-dup: only ever render a given target once per request. This makes
+		// auto-append and an explicit placement (shortcode / block / Elementor
+		// widget) mutually exclusive regardless of which runs first — e.g. an
+		// Elementor single-post template that both prints the post content
+		// (auto-append) and includes our widget no longer shows it twice.
+		if ( self::already_printed( $object_type, $object_id ) ) {
+			return '';
+		}
+		self::$printed[ $object_type . ':' . (int) $object_id ] = true;
+
 		// Ensure the stylesheet + script load even when this page isn't itself a
 		// review target (e.g. a shortcode/Elementor widget pointing at a specific
 		// item on a landing page).
 		$this->ensure_assets();
-
-		// Mark this target as printed so auto-append doesn't duplicate it when a
-		// shortcode / block / Elementor widget already placed it.
-		self::$printed[ $object_type . ':' . (int) $object_id ] = true;
 
 		$agg     = Aggregate::for( $object_type, $object_id );
 		$total   = (int) $agg['review_count'];

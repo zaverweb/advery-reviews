@@ -216,22 +216,31 @@ export default function SettingsPanel( { boot, notify } ) {
 				const pad = density === 'compact' ? '0.9em' : '1.2em';
 				return (
 					<>
-						<p className="advery-rv-hint">{ __( 'Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color.', 'advery-reviews' ) }</p>
+						<p className="advery-rv-hint">{ __( 'Style the front-end review widget to match your theme — all live via CSS variables, no coding. Leave a color blank to inherit the theme’s own color.', 'advery-reviews' ) }</p>
 
-						<SelectControl label={ __( 'Layout style', 'advery-reviews' ) } help={ __( 'Cards = each review in its own bordered card with avatar and date (modern). Classic = a simple divided list.', 'advery-reviews' ) } value={ ap.skin || 'card' } options={ [ { label: __( 'Cards (modern)', 'advery-reviews' ), value: 'card' }, { label: __( 'Classic list', 'advery-reviews' ), value: 'classic' } ] } onChange={ ( v ) => setAp( { skin: v } ) } __nextHasNoMarginBottom />
+						<div className="advery-rv-fieldgroup-title">{ __( 'Layout', 'advery-reviews' ) }</div>
+						<div className="advery-rv-fields advery-rv-fields--wide">
+							<SelectControl label={ __( 'Layout style', 'advery-reviews' ) } help={ __( 'Cards = each review in its own bordered card (modern). Classic = a simple divided list.', 'advery-reviews' ) } value={ ap.skin || 'card' } options={ [ { label: __( 'Cards (modern)', 'advery-reviews' ), value: 'card' }, { label: __( 'Classic list', 'advery-reviews' ), value: 'classic' } ] } onChange={ ( v ) => setAp( { skin: v } ) } __nextHasNoMarginBottom />
+							<SelectControl label={ __( 'Density', 'advery-reviews' ) } help={ __( 'Comfortable = roomier. Compact = tighter.', 'advery-reviews' ) } value={ density } options={ [ { label: __( 'Comfortable', 'advery-reviews' ), value: 'comfortable' }, { label: __( 'Compact', 'advery-reviews' ), value: 'compact' } ] } onChange={ ( v ) => setAp( { density: v } ) } __nextHasNoMarginBottom />
+						</div>
 
-						{ colorRow( 'accent', __( 'Accent color (buttons, links)', 'advery-reviews' ), __( 'Used for the submit button, “load more”, and the active page. Example: #2271b1.', 'advery-reviews' ), '#2271b1' ) }
-						{ colorRow( 'accent_ink', __( 'Text on the accent', 'advery-reviews' ), __( 'The text/icon color shown on top of the accent color. Usually white.', 'advery-reviews' ), '#ffffff' ) }
-						{ colorRow( 'star', __( 'Star color', 'advery-reviews' ), __( 'The rating stars. Example: #f5a623.', 'advery-reviews' ), '#f5a623' ) }
-						{ colorRow( 'text', __( 'Text color (blank = theme)', 'advery-reviews' ), __( 'Body text of reviews. Leave blank to inherit your theme.', 'advery-reviews' ), '#1f2937' ) }
-						{ colorRow( 'surface', __( 'Form / card background (blank = subtle)', 'advery-reviews' ), __( 'Background of the review form. Blank keeps a subtle default.', 'advery-reviews' ), '#f7f8fa' ) }
-						{ colorRow( 'border', __( 'Border color (blank = subtle)', 'advery-reviews' ), __( 'Dividers and borders. Blank keeps a subtle default.', 'advery-reviews' ), '#e5e7eb' ) }
+						<div className="advery-rv-fieldgroup-title">{ __( 'Colors', 'advery-reviews' ) }</div>
+						<div className="advery-rv-color-grid">
+							{ colorRow( 'accent', __( 'Accent (buttons, links)', 'advery-reviews' ), __( 'Submit button, “load more”, active page. e.g. #2271b1.', 'advery-reviews' ), '#2271b1' ) }
+							{ colorRow( 'accent_ink', __( 'Text on the accent', 'advery-reviews' ), __( 'Text/icon on top of the accent. Usually white.', 'advery-reviews' ), '#ffffff' ) }
+							{ colorRow( 'star', __( 'Star color', 'advery-reviews' ), __( 'The rating stars. e.g. #f5a623.', 'advery-reviews' ), '#f5a623' ) }
+							{ colorRow( 'text', __( 'Text (blank = theme)', 'advery-reviews' ), __( 'Body text of reviews. Blank inherits the theme.', 'advery-reviews' ), '#1f2937' ) }
+							{ colorRow( 'surface', __( 'Card / form background', 'advery-reviews' ), __( 'Blank keeps a subtle default.', 'advery-reviews' ), '#f7f8fa' ) }
+							{ colorRow( 'border', __( 'Borders & dividers', 'advery-reviews' ), __( 'Blank keeps a subtle default.', 'advery-reviews' ), '#e5e7eb' ) }
+						</div>
 
-						<hr />
-						<RangeControl label={ __( 'Corner radius (px)', 'advery-reviews' ) } value={ Number( ap.radius ?? 8 ) } min={ 0 } max={ 40 } onChange={ ( v ) => setAp( { radius: v } ) } __nextHasNoMarginBottom />
-						<RangeControl label={ __( 'Base font size (px)', 'advery-reviews' ) } value={ Number( ap.font_size ?? 15 ) } min={ 12 } max={ 20 } onChange={ ( v ) => setAp( { font_size: v } ) } __nextHasNoMarginBottom />
-						<RadioControl label={ __( 'Density', 'advery-reviews' ) } help={ __( 'Comfortable = roomier spacing. Compact = tighter, for dense pages.', 'advery-reviews' ) } selected={ density } options={ [ { label: __( 'Comfortable', 'advery-reviews' ), value: 'comfortable' }, { label: __( 'Compact', 'advery-reviews' ), value: 'compact' } ] } onChange={ ( v ) => setAp( { density: v } ) } />
-						<TextControl type="number" label={ __( 'Max width (px, 0 = full width)', 'advery-reviews' ) } help={ __( 'Cap the widget’s width. Example: 640. Use 0 to fill the container.', 'advery-reviews' ) } value={ ap.max_width ?? 0 } onChange={ ( v ) => setAp( { max_width: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
+						<div className="advery-rv-fieldgroup-title">{ __( 'Sizes', 'advery-reviews' ) }</div>
+						<div className="advery-rv-fields">
+							<RangeControl label={ __( 'Star size (px)', 'advery-reviews' ) } value={ Number( ap.star_size ?? 18 ) } min={ 12 } max={ 40 } onChange={ ( v ) => setAp( { star_size: v } ) } __nextHasNoMarginBottom __next40pxDefaultSize />
+							<RangeControl label={ __( 'Base font size (px)', 'advery-reviews' ) } value={ Number( ap.font_size ?? 15 ) } min={ 12 } max={ 20 } onChange={ ( v ) => setAp( { font_size: v } ) } __nextHasNoMarginBottom __next40pxDefaultSize />
+							<RangeControl label={ __( 'Corner radius (px)', 'advery-reviews' ) } value={ Number( ap.radius ?? 8 ) } min={ 0 } max={ 40 } onChange={ ( v ) => setAp( { radius: v } ) } __nextHasNoMarginBottom __next40pxDefaultSize />
+						</div>
+						<TextControl type="number" label={ __( 'Max width (px, 0 = full width)', 'advery-reviews' ) } help={ __( 'Caps the whole widget so the reviews and the form share one width. 0 = fill the container.', 'advery-reviews' ) } value={ ap.max_width ?? 0 } onChange={ ( v ) => setAp( { max_width: parseInt( v, 10 ) || 0 } ) } __nextHasNoMarginBottom />
 
 						<hr />
 						<div className="advery-rv-fieldgroup-title">{ __( 'Reviewer avatar', 'advery-reviews' ) }</div>
@@ -258,7 +267,7 @@ export default function SettingsPanel( { boot, notify } ) {
 							} }
 						>
 							<div style={ { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid ' + ( ap.border || '#e5e7eb' ) } }>
-								<span style={ { color: ap.star || '#f5a623', letterSpacing: 1, fontSize: '1.3em' } }>★★★★★</span>
+								<span style={ { color: ap.star || '#f5a623', letterSpacing: 1, fontSize: ( ap.star_size ?? 18 ) + 'px', lineHeight: 1 } }>★★★★★</span>
 								<strong>4.8</strong>
 								<span style={ { opacity: 0.7 } }>{ sprintf( __( '%d reviews', 'advery-reviews' ), 3 ) }</span>
 							</div>
@@ -269,7 +278,7 @@ export default function SettingsPanel( { boot, notify } ) {
 										<strong>{ __( 'Your name', 'advery-reviews' ) }</strong>
 										<span style={ { fontSize: '0.8em', opacity: 0.7 } }>Aug 30, 2026</span>
 									</span>
-									<span style={ { marginInlineStart: 'auto', color: ap.star || '#f5a623' } }>★★★★★</span>
+									<span style={ { marginInlineStart: 'auto', color: ap.star || '#f5a623', fontSize: ( ap.star_size ?? 18 ) + 'px', lineHeight: 1 } }>★★★★★</span>
 								</div>
 								<p style={ { margin: 0 } }>{ __( 'Absolutely wonderful experience — the team was friendly and helpful.', 'advery-reviews' ) }</p>
 							</div>

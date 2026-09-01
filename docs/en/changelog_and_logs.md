@@ -12,6 +12,15 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.29.0 (Appearance & UX polish: star size, no double-output, matching widths, richer Elementor)
+- **Star size is now its own setting** (Appearance → Sizes), independent of the base font size, and the stars in submitted reviews are **bigger by default** (18px). Drives a new `--ar-star-size` variable.
+- **No more double output.** On an Elementor theme-builder single-post template that both prints the post content (auto-append) and includes our widget, reviews showed **twice**. Rendering a given target now happens at most **once per request** (the de-dup applies whichever runs first), so auto-append and an explicit placement can’t both print.
+- **The submission form now matches the reviews’ width.** The max-width cap moved from the form to the whole widget, so the review list and the “write a review” form always share one width (and `Max width = 0` = full width for both). Fixes the form looking narrower than the reviews.
+- **Tidier Appearance settings.** Reorganised into clear groups — **Layout** (style + density), **Colors** (a two-column grid of swatches), **Sizes** (star / font / radius sliders) and **Avatar** — with the live preview reflecting the star size.
+- **Richer Elementor widget.** The widget’s **Appearance** panel now also exposes per-widget **color** overrides (accent, text-on-accent, star, text, background, borders) and **size** sliders (star, font, radius, max width) via scoped CSS variables — empty = inherit the global Appearance. (These are standard Elementor selector controls, so they appear in the editor.)
+- **Widget/shortcode/block assets load anywhere** (carried over): rendering ensures the CSS+JS are enqueued on demand.
+- **Verified live:** star size applies (18px) and the form width equals the review width (both 900px at a 1000px viewport); the de-dup renders the target once (second render returns empty; a single container in the page HTML); the Appearance groups render in Persian; Elementor selector controls behave exactly like Elementor’s own (confirmed against the core Heading widget). 26 new strings translated to Persian.
+
 ### Version 0.28.0 (Elementor widget modernised — queue item 4/5)
 - **The Elementor “Advery Reviews” widget is brought up to date.** New controls: an optional **Heading**, a **target** that can now be the current page or a specific **Post / Product / Taxonomy term** by ID (previously post only), and — in a new **Appearance** control group — per-widget **Layout style** (Use global / Cards / Classic) and **Avatar style** (Use global / Initials / Default image / Gravatar / None) overrides. So a designer can drop reviews anywhere and style that instance without touching the global settings.
 - **Widget/shortcode/block now work on any page.** The front-end assets used to load only when the page was itself a review target; rendering now **ensures the stylesheet + script are enqueued on demand** (idempotent, prints in the footer when late), so a widget pointing at a specific product on a custom landing page is styled and interactive.

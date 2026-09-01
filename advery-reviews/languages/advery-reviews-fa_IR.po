@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.28.0\n"
+"Project-Id-Version: Advery Reviews 0.29.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T21:50:37+00:00\n"
+"POT-Creation-Date: 2026-09-01T22:22:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -325,7 +325,7 @@ msgid "Sending…"
 msgstr "در حالِ ارسال…"
 
 #: includes/Frontend/Display.php:86
-#: includes/Frontend/Display.php:313
+#: includes/Frontend/Display.php:319
 #: build/index.js:2
 msgid "Submit review"
 msgstr "ثبتِ نظر"
@@ -335,7 +335,7 @@ msgid "Something went wrong. Please try again."
 msgstr "مشکلی پیش آمد. دوباره تلاش کنید."
 
 #: includes/Frontend/Display.php:88
-#: includes/Frontend/Display.php:277
+#: includes/Frontend/Display.php:283
 msgid "Load more reviews"
 msgstr "نمایشِ نظراتِ بیشتر"
 
@@ -347,47 +347,47 @@ msgid "Anonymous"
 msgstr "ناشناس"
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:239
+#: includes/Frontend/Display.php:245
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] "%d نظر"
 msgstr[1] "%d نظر"
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:273
 msgid "Response from the owner"
 msgstr "پاسخ از سویِ مالک"
 
-#: includes/Frontend/Display.php:280
+#: includes/Frontend/Display.php:286
 msgid "Reviews pages"
 msgstr "صفحه‌های نظرات"
 
-#: includes/Frontend/Display.php:289
+#: includes/Frontend/Display.php:295
 msgid "Write a review"
 msgstr "نوشتنِ نظر"
 
-#: includes/Frontend/Display.php:290
+#: includes/Frontend/Display.php:296
 msgid "Your rating"
 msgstr "امتیازِ شما"
 
-#: includes/Frontend/Display.php:297
+#: includes/Frontend/Display.php:303
 #: build/index.js:2
 msgid "Your name"
 msgstr "نامِ شما"
 
-#: includes/Frontend/Display.php:298
+#: includes/Frontend/Display.php:304
 msgid "Your email"
 msgstr "ایمیلِ شما"
 
-#: includes/Frontend/Display.php:300
+#: includes/Frontend/Display.php:306
 msgid "Title (optional)"
 msgstr "عنوان (اختیاری)"
 
-#: includes/Frontend/Display.php:301
+#: includes/Frontend/Display.php:307
 msgid "Your review"
 msgstr "نظرِ شما"
 
-#: includes/Frontend/Display.php:317
+#: includes/Frontend/Display.php:323
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr "برای ثبتِ نظر وارد شوید."
@@ -485,7 +485,58 @@ msgstr "گراواتار (درخواستِ خارجی)"
 msgid "No avatar"
 msgstr "بدونِ آواتار"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:161
+#: includes/Integrations/Elementor/ReviewsWidget.php:133
+msgid "Colors (override global)"
+msgstr "رنگ‌ها (بازنویسیِ سراسری)"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:142
+msgid "Accent color"
+msgstr "رنگِ تأکید"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:143
+msgid "Text on accent"
+msgstr "متن روی تأکید"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:144
+#: build/index.js:2
+msgid "Star color"
+msgstr "رنگِ ستاره"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:145
+msgid "Text color"
+msgstr "رنگِ متن"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:146
+#: build/index.js:2
+msgid "Card / form background"
+msgstr "پس‌زمینه‌ی کارت / فرم"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:147
+#: build/index.js:2
+msgid "Borders & dividers"
+msgstr "حاشیه‌ها و جداکننده‌ها"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:163
+msgid "Sizes (override global)"
+msgstr "اندازه‌ها (بازنویسیِ سراسری)"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:169
+msgid "Star size"
+msgstr "اندازه‌ی ستاره"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:170
+msgid "Base font size"
+msgstr "اندازه‌ی پایه‌ی فونت"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:171
+msgid "Corner radius"
+msgstr "گردیِ گوشه"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:172
+msgid "Max width"
+msgstr "حداکثر عرض"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:218
 msgid "Advery Reviews will appear here on a page that is an enabled review target."
 msgstr "Advery Reviews اینجا روی صفحه‌ای که هدفِ نظرِ فعال باشد نمایش داده می‌شود."
 
@@ -987,7 +1038,7 @@ msgstr "کلمات/عباراتِ مسدود (هر خط یکی؛ پیشوندِ 
 
 #: build/index.js:2
 msgid "One per line. Example: viagra. Advanced: re:\\bcasino\\b for a regular expression."
-msgstr "هر خط یکی. مثال: viagra. پیشرفته: re:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\bcasino\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\b برای یک عبارتِ باقاعده."
+msgstr "هر خط یکی. مثال: viagra. پیشرفته: re:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\bcasino\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\b برای یک عبارتِ باقاعده."
 
 #: build/index.js:2
 msgid "Blocked emails / domains (one per line)"
@@ -1162,76 +1213,24 @@ msgid "Takes over the comments area on enabled post types — no theme editing o
 msgstr "بخشِ کامنتِ پست‌تایپ‌های فعال را در دست می‌گیرد — بدونِ نیاز به ویرایشِ قالب یا صفحه‌ساز. محصولاتِ ووکامرس هرگز در دست گرفته نمی‌شوند."
 
 #: build/index.js:2
-msgid "Style the front-end review widget to match your theme. Colors, corner radius, density and size all apply live via CSS variables — no coding. Leave a color blank to inherit the theme’s own color."
-msgstr "ویجتِ نظرِ فرانت را با قالبتان هماهنگ کنید. رنگ‌ها، گردیِ گوشه، فشردگی و اندازه همه به‌صورتِ زنده با CSS variables اعمال می‌شوند — بدونِ کدنویسی. یک رنگ را خالی بگذارید تا رنگِ خودِ قالب را به ارث ببرد."
+msgid "Style the front-end review widget to match your theme — all live via CSS variables, no coding. Leave a color blank to inherit the theme’s own color."
+msgstr "ویجتِ نظرِ فرانت را با قالبت هماهنگ کن — همه به‌صورتِ زنده با CSS variables، بدونِ کدنویسی. یک رنگ را خالی بگذار تا رنگِ خودِ قالب را به ارث ببرد."
 
 #: build/index.js:2
-msgid "Cards = each review in its own bordered card with avatar and date (modern). Classic = a simple divided list."
-msgstr "کارتی = هر نظر در کارتِ حاشیه‌دارِ خودش با آواتار و تاریخ (مدرن). کلاسیک = یک فهرستِ ساده‌ی خط‌کشی‌شده."
+msgid "Layout"
+msgstr "چیدمان"
 
 #: build/index.js:2
-msgid "Accent color (buttons, links)"
-msgstr "رنگِ تأکید (دکمه‌ها، لینک‌ها)"
-
-#: build/index.js:2
-msgid "Used for the submit button, “load more”, and the active page. Example: #2271b1."
-msgstr "برای دکمه‌ی ثبت، «نمایشِ بیشتر» و صفحه‌ی فعال. مثال: #2271b1."
-
-#: build/index.js:2
-msgid "Text on the accent"
-msgstr "متن روی رنگِ تأکید"
-
-#: build/index.js:2
-msgid "The text/icon color shown on top of the accent color. Usually white."
-msgstr "رنگِ متن/آیکون روی رنگِ تأکید. معمولاً سفید."
-
-#: build/index.js:2
-msgid "Star color"
-msgstr "رنگِ ستاره"
-
-#: build/index.js:2
-msgid "The rating stars. Example: #f5a623."
-msgstr "ستاره‌های امتیاز. مثال: #f5a623."
-
-#: build/index.js:2
-msgid "Text color (blank = theme)"
-msgstr "رنگِ متن (خالی = قالب)"
-
-#: build/index.js:2
-msgid "Body text of reviews. Leave blank to inherit your theme."
-msgstr "متنِ اصلیِ نظرها. خالی بگذارید تا از قالب ارث ببرد."
-
-#: build/index.js:2
-msgid "Form / card background (blank = subtle)"
-msgstr "پس‌زمینه‌ی فرم / کارت (خالی = ملایم)"
-
-#: build/index.js:2
-msgid "Background of the review form. Blank keeps a subtle default."
-msgstr "پس‌زمینه‌ی فرمِ نظر. خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
-
-#: build/index.js:2
-msgid "Border color (blank = subtle)"
-msgstr "رنگِ حاشیه (خالی = ملایم)"
-
-#: build/index.js:2
-msgid "Dividers and borders. Blank keeps a subtle default."
-msgstr "جداکننده‌ها و حاشیه‌ها. خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
-
-#: build/index.js:2
-msgid "Corner radius (px)"
-msgstr "گردیِ گوشه (پیکسل)"
-
-#: build/index.js:2
-msgid "Base font size (px)"
-msgstr "اندازه‌ی پایه‌ی فونت (پیکسل)"
+msgid "Cards = each review in its own bordered card (modern). Classic = a simple divided list."
+msgstr "کارتی = هر نظر در کارتِ حاشیه‌دارِ خودش (مدرن). کلاسیک = فهرستِ ساده‌ی خط‌کشی‌شده."
 
 #: build/index.js:2
 msgid "Density"
 msgstr "فشردگی"
 
 #: build/index.js:2
-msgid "Comfortable = roomier spacing. Compact = tighter, for dense pages."
-msgstr "راحت = فاصله‌گذاریِ بازتر. فشرده = جمع‌وجورتر، برای صفحه‌های پرتراکم."
+msgid "Comfortable = roomier. Compact = tighter."
+msgstr "راحت = بازتر. فشرده = جمع‌وجورتر."
 
 #: build/index.js:2
 msgid "Comfortable"
@@ -1242,12 +1241,64 @@ msgid "Compact"
 msgstr "فشرده"
 
 #: build/index.js:2
+msgid "Colors"
+msgstr "رنگ‌ها"
+
+#: build/index.js:2
+msgid "Accent (buttons, links)"
+msgstr "تأکید (دکمه‌ها، لینک‌ها)"
+
+#: build/index.js:2
+msgid "Submit button, “load more”, active page. e.g. #2271b1."
+msgstr "دکمه‌ی ثبت، «نمایشِ بیشتر»، صفحه‌ی فعال. مثلاً #2271b1."
+
+#: build/index.js:2
+msgid "Text on the accent"
+msgstr "متن روی تأکید"
+
+#: build/index.js:2
+msgid "Text/icon on top of the accent. Usually white."
+msgstr "متن/آیکون روی رنگِ تأکید. معمولاً سفید."
+
+#: build/index.js:2
+msgid "The rating stars. e.g. #f5a623."
+msgstr "ستاره‌های امتیاز. مثلاً #f5a623."
+
+#: build/index.js:2
+msgid "Text (blank = theme)"
+msgstr "متن (خالی = قالب)"
+
+#: build/index.js:2
+msgid "Body text of reviews. Blank inherits the theme."
+msgstr "متنِ اصلیِ نظرها. خالی از قالب ارث می‌برد."
+
+#: build/index.js:2
+msgid "Blank keeps a subtle default."
+msgstr "خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
+
+#: build/index.js:2
+msgid "Sizes"
+msgstr "اندازه‌ها"
+
+#: build/index.js:2
+msgid "Star size (px)"
+msgstr "اندازه‌ی ستاره (پیکسل)"
+
+#: build/index.js:2
+msgid "Base font size (px)"
+msgstr "اندازه‌ی پایه‌ی فونت (پیکسل)"
+
+#: build/index.js:2
+msgid "Corner radius (px)"
+msgstr "گردیِ گوشه (پیکسل)"
+
+#: build/index.js:2
 msgid "Max width (px, 0 = full width)"
 msgstr "حداکثر عرض (پیکسل، ۰ = تمام‌عرض)"
 
 #: build/index.js:2
-msgid "Cap the widget’s width. Example: 640. Use 0 to fill the container."
-msgstr "عرضِ ویجت را محدود کنید. مثال: ۶۴۰. برای پر کردنِ کانتینر از ۰ استفاده کنید."
+msgid "Caps the whole widget so the reviews and the form share one width. 0 = fill the container."
+msgstr "کلِ ویجت را محدود می‌کند تا نظرها و فرم یک عرض داشته باشند. ۰ = پر کردنِ کانتینر."
 
 #: build/index.js:2
 msgid "Reviewer avatar"

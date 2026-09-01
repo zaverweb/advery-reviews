@@ -127,6 +127,7 @@ class Settings {
 			'radius'       => 8,         // corner radius, px (0–40)
 			'density'      => 'comfortable', // 'comfortable' | 'compact'
 			'font_size'    => 15,        // base font size, px (12–20)
+			'star_size'    => 18,        // star size, px (12–40) — independent of font size
 			'max_width'    => 0,         // widget max width, px (0 = full width)
 		];
 	}
@@ -181,6 +182,9 @@ class Settings {
 
 		$font = max( 12, min( 20, (int) $a['font_size'] ) );
 		$vars['--ar-font-size'] = $font . 'px';
+
+		$star = max( 12, min( 40, (int) $a['star_size'] ) );
+		$vars['--ar-star-size'] = $star . 'px';
 
 		// Density → spacing vars.
 		if ( 'compact' === $a['density'] ) {

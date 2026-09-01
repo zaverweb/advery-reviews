@@ -959,6 +959,7 @@ class RestController {
 			'radius'     => max( 0, min( 40, (int) ( $in['radius'] ?? $d['radius'] ) ) ),
 			'density'    => in_array( ( $in['density'] ?? '' ), [ 'comfortable', 'compact' ], true ) ? $in['density'] : $d['density'],
 			'font_size'  => max( 12, min( 20, (int) ( $in['font_size'] ?? $d['font_size'] ) ) ),
+			'star_size'  => max( 12, min( 40, (int) ( $in['star_size'] ?? $d['star_size'] ) ) ),
 			'max_width'  => max( 0, min( 2000, (int) ( $in['max_width'] ?? $d['max_width'] ) ) ),
 		];
 	}
