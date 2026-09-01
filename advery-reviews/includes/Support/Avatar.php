@@ -10,11 +10,14 @@ namespace Advery\Reviews\Support;
 class Avatar {
 
 	/**
-	 * @param array $r review row (needs author_name; author_email/author_user_id for gravatar)
+	 * @param array       $r    review row (needs author_name; author_email/author_user_id for gravatar)
+	 * @param string|null $mode Override the avatar mode (null = the global setting).
 	 * @return string HTML (already escaped)
 	 */
-	public static function html( array $r ) {
-		$mode = Settings::get( 'avatar_mode', 'initials' );
+	public static function html( array $r, $mode = null ) {
+		if ( null === $mode || '' === $mode ) {
+			$mode = Settings::get( 'avatar_mode', 'initials' );
+		}
 		if ( 'none' === $mode ) {
 			return '';
 		}

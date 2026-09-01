@@ -1,6 +1,6 @@
 {
   "name": "advery-reviews",
-  "version": "0.27.0",
+  "version": "0.28.0",
   "description": "Fast, self-contained ratings & reviews for any post type, taxonomy, or WooCommerce product, with Advery Schema Plus JSON-LD integration.",
   "private": true,
   "scripts": {

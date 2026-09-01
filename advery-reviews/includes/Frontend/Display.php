@@ -38,6 +38,20 @@ class Display {
 		if ( ! Targets::current() ) {
 			return;
 		}
+		$this->ensure_assets();
+	}
+
+	/**
+	 * Enqueue the front-end stylesheet + script (and inline appearance/custom
+	 * CSS + config). Safe to call during render() as well as on the
+	 * wp_enqueue_scripts hook, so the widget/shortcode/block are styled and
+	 * interactive even on a page that is not itself an enabled review target
+	 * (late-enqueued assets print in the footer). Idempotent.
+	 */
+	public function ensure_assets() {
+		if ( wp_style_is( 'advery-reviews-front', 'enqueued' ) ) {
+			return;
+		}
 		wp_enqueue_style( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.css', [], ADVERY_REVIEWS_VERSION );
 		wp_enqueue_script( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.js', [], ADVERY_REVIEWS_VERSION, true );
 
@@ -168,8 +182,8 @@ class Display {
 	 * @param int    $object_id
 	 * @return string
 	 */
-	public static function widget( $object_type, $object_id ) {
-		return ( new self() )->render( $object_type, $object_id );
+	public static function widget( $object_type, $object_id, array $opts = [] ) {
+		return ( new self() )->render( $object_type, $object_id, $opts );
 	}
 
 	/**
@@ -177,12 +191,19 @@ class Display {
 	 *
 	 * @param string $object_type
 	 * @param int    $object_id
+	 * @param array  $opts { skin?: string, avatar?: string } per-render overrides
+	 *                     (e.g. from the Elementor widget); empty ⇒ global settings.
 	 * @return string
 	 */
-	public function render( $object_type, $object_id ) {
+	public function render( $object_type, $object_id, array $opts = [] ) {
 		if ( ! Targets::is_enabled( $object_type, $object_id ) ) {
 			return '';
 		}
+
+		// Ensure the stylesheet + script load even when this page isn't itself a
+		// review target (e.g. a shortcode/Elementor widget pointing at a specific
+		// item on a landing page).
+		$this->ensure_assets();
 
 		// Mark this target as printed so auto-append doesn't duplicate it when a
 		// shortcode / block / Elementor widget already placed it.
@@ -202,7 +223,8 @@ class Display {
 		$as      = Settings::antispam();
 		$captcha = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
 		$pages   = ( $per > 0 ) ? (int) ceil( $total / $per ) : 1;
-		$skin    = Settings::appearance()['skin'] ?? 'card';
+		$skin    = ! empty( $opts['skin'] ) ? $opts['skin'] : ( Settings::appearance()['skin'] ?? 'card' );
+		$avatar_override = $opts['avatar'] ?? null;
 
 		ob_start();
 		?>
@@ -225,7 +247,7 @@ class Display {
 				<?php foreach ( $reviews as $r ) : ?>
 					<li class="advery-reviews__item">
 						<div class="advery-reviews__item-head">
-							<?php echo Avatar::html( $r ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
+							<?php echo Avatar::html( $r, $avatar_override ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
 							<div class="advery-reviews__meta-col">
 								<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
 								<?php if ( ! empty( $r['created_at'] ) ) : ?>

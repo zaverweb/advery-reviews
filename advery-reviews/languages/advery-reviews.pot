@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.27.0\n"
+"Project-Id-Version: Advery Reviews 0.28.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-01T20:56:20+00:00\n"
+"POT-Creation-Date: 2026-09-01T21:50:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -95,7 +95,7 @@ msgstr ""
 
 #: includes/Admin/PostMetabox.php:56
 #: includes/Admin/TermMetabox.php:50
-#: includes/Frontend/Display.php:75
+#: includes/Frontend/Display.php:89
 msgid "Loading…"
 msgstr ""
 
@@ -318,26 +318,26 @@ msgstr ""
 msgid "Moderate: %s"
 msgstr ""
 
-#: includes/Frontend/Display.php:71
+#: includes/Frontend/Display.php:85
 msgid "Sending…"
 msgstr ""
 
-#: includes/Frontend/Display.php:72
-#: includes/Frontend/Display.php:291
+#: includes/Frontend/Display.php:86
+#: includes/Frontend/Display.php:313
 #: build/index.js:2
 msgid "Submit review"
 msgstr ""
 
-#: includes/Frontend/Display.php:73
+#: includes/Frontend/Display.php:87
 msgid "Something went wrong. Please try again."
 msgstr ""
 
-#: includes/Frontend/Display.php:74
-#: includes/Frontend/Display.php:255
+#: includes/Frontend/Display.php:88
+#: includes/Frontend/Display.php:277
 msgid "Load more reviews"
 msgstr ""
 
-#: includes/Frontend/Display.php:76
+#: includes/Frontend/Display.php:90
 #: includes/Integrations/WooSchema.php:60
 #: includes/Schema/SchemaBridge.php:120
 #: includes/Schema/StandaloneSchema.php:94
@@ -345,69 +345,145 @@ msgid "Anonymous"
 msgstr ""
 
 #. translators: %d: review count
-#: includes/Frontend/Display.php:217
+#: includes/Frontend/Display.php:239
 #, php-format
 msgid "%d review"
 msgid_plural "%d reviews"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/Frontend/Display.php:245
+#: includes/Frontend/Display.php:267
 msgid "Response from the owner"
 msgstr ""
 
-#: includes/Frontend/Display.php:258
+#: includes/Frontend/Display.php:280
 msgid "Reviews pages"
 msgstr ""
 
-#: includes/Frontend/Display.php:267
+#: includes/Frontend/Display.php:289
 msgid "Write a review"
 msgstr ""
 
-#: includes/Frontend/Display.php:268
+#: includes/Frontend/Display.php:290
 msgid "Your rating"
 msgstr ""
 
-#: includes/Frontend/Display.php:275
+#: includes/Frontend/Display.php:297
 #: build/index.js:2
 msgid "Your name"
 msgstr ""
 
-#: includes/Frontend/Display.php:276
+#: includes/Frontend/Display.php:298
 msgid "Your email"
 msgstr ""
 
-#: includes/Frontend/Display.php:278
+#: includes/Frontend/Display.php:300
 msgid "Title (optional)"
 msgstr ""
 
-#: includes/Frontend/Display.php:279
+#: includes/Frontend/Display.php:301
 msgid "Your review"
 msgstr ""
 
-#: includes/Frontend/Display.php:295
+#: includes/Frontend/Display.php:317
 #: includes/Rest/RestController.php:242
 msgid "Please log in to leave a review."
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:50
+msgid "Heading (optional)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:52
+msgid "e.g. Customer reviews"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:59
 msgid "Show reviews for"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:54
+#: includes/Integrations/Elementor/ReviewsWidget.php:63
 msgid "The current page"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:55
-msgid "A specific post ID"
+#: includes/Integrations/Elementor/ReviewsWidget.php:64
+msgid "A specific item"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:63
+#: includes/Integrations/Elementor/ReviewsWidget.php:72
+#: build/index.js:1
+msgid "Item type"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:76
+#: build/index.js:1
+msgid "Post"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:77
+#: build/index.js:1
+msgid "Product"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:78
+msgid "Taxonomy term"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:87
+msgid "Post / product / term ID"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:97
 #: build/index.js:2
-msgid "Post ID"
+msgid "Appearance"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:88
+#: includes/Integrations/Elementor/ReviewsWidget.php:103
+#: build/index.js:2
+msgid "Layout style"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:107
+#: includes/Integrations/Elementor/ReviewsWidget.php:121
+msgid "Use global setting"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:108
+#: build/index.js:2
+msgid "Cards (modern)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:109
+#: build/index.js:2
+msgid "Classic list"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:117
+#: build/index.js:2
+msgid "Avatar style"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:122
+#: build/index.js:2
+msgid "Initials (local, no request)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:123
+#: build/index.js:2
+msgid "One default image"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:124
+#: build/index.js:2
+msgid "Gravatar (external request)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:125
+#: build/index.js:2
+msgid "No avatar"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:161
 msgid "Advery Reviews will appear here on a page that is an enabled review target."
 msgstr ""
 
@@ -495,10 +571,6 @@ msgstr ""
 
 #: assets/block.js:17
 msgid "ratings"
-msgstr ""
-
-#: build/index.js:1
-msgid "Item type"
 msgstr ""
 
 #: build/index.js:1
@@ -614,14 +686,6 @@ msgid "All time"
 msgstr ""
 
 #: build/index.js:1
-msgid "Post"
-msgstr ""
-
-#: build/index.js:1
-msgid "Product"
-msgstr ""
-
-#: build/index.js:1
 msgid "Category"
 msgstr ""
 
@@ -721,10 +785,6 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Display"
-msgstr ""
-
-#: build/index.js:2
-msgid "Appearance"
 msgstr ""
 
 #: build/index.js:2
@@ -1104,19 +1164,7 @@ msgid "Style the front-end review widget to match your theme. Colors, corner rad
 msgstr ""
 
 #: build/index.js:2
-msgid "Layout style"
-msgstr ""
-
-#: build/index.js:2
 msgid "Cards = each review in its own bordered card with avatar and date (modern). Classic = a simple divided list."
-msgstr ""
-
-#: build/index.js:2
-msgid "Cards (modern)"
-msgstr ""
-
-#: build/index.js:2
-msgid "Classic list"
 msgstr ""
 
 #: build/index.js:2
@@ -1204,27 +1252,7 @@ msgid "Reviewer avatar"
 msgstr ""
 
 #: build/index.js:2
-msgid "Avatar style"
-msgstr ""
-
-#: build/index.js:2
 msgid "How each reviewer’s picture shows. “Gravatar” is the only option that contacts an external service — with the others the front end makes no avatar request at all."
-msgstr ""
-
-#: build/index.js:2
-msgid "Initials (local, no request)"
-msgstr ""
-
-#: build/index.js:2
-msgid "One default image"
-msgstr ""
-
-#: build/index.js:2
-msgid "Gravatar (external request)"
-msgstr ""
-
-#: build/index.js:2
-msgid "No avatar"
 msgstr ""
 
 #: build/index.js:2
@@ -1630,6 +1658,10 @@ msgstr ""
 
 #: build/index.js:2
 msgid "Identify the target by"
+msgstr ""
+
+#: build/index.js:2
+msgid "Post ID"
 msgstr ""
 
 #: build/index.js:2

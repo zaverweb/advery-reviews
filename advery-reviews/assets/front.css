@@ -22,6 +22,11 @@
 	font-size: var(--ar-font-size);
 	color: var(--ar-text);
 }
+.advery-reviews__heading {
+	margin: 0 0 0.6em;
+	font-size: 1.3em;
+	font-weight: 700;
+}
 .advery-reviews__summary {
 	display: flex;
 	align-items: center;
