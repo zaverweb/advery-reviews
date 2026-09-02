@@ -12,6 +12,26 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.30.0 (Guard native WordPress comments against direct-POST spam — queue item D)
+- **The problem.** Our review form is well protected, but spam bots don’t use it — they POST straight to WordPress’s own `wp-comments-post.php`, landing spam in `wp_comments`. Taking over the comments *display* (v0.3.0) never changed what WordPress *accepts*, and “comments closed” is a **per-post** setting, so any post left open still takes them.
+- **New setting: “Guard the built-in WordPress comment form”** (Anti-spam → Native WordPress comments), site-wide, with three modes:
+  - **Off** (default) — WordPress behaves exactly as before.
+  - **Filter** — the same content-policy checks already configured for reviews (link rule, blocked words/phrases, blocked & disposable email domains) are applied to native comments via the `preprocess_comment` hook, which fires for **every** comment including a direct POST. A blocked comment is **rejected** (403); a link hit becomes **spam** or is **held** for moderation per your link action; a blocked/disposable email is stored as **spam**.
+  - **Disable** — every native comment is refused and the comment form is hidden site-wide (`comments_open` forced false).
+- **Safe by design.** Pingbacks/trackbacks are left to WordPress, and any logged-in user who can moderate comments is never blocked (so admins/editors can always reply). Reuses the existing anti-spam settings, so you configure the rules once.
+- **Verified live** (sample site, post “Advery Reviews Demo”) with direct `curl` POSTs to `wp-comments-post.php`: **before** — a comment containing a link was accepted (302, stored); **after (Filter)** — the same link comment is blocked (`403 “Links are not allowed in comments.”`), a blocked word is blocked (`403`), and a clean comment is still accepted (302); **Disable** — even a clean comment is refused (403) and `comments_open()` returns false. Test comments cleaned up afterwards.
+- **Manual test (owner):** with the guard on, from a terminal:
+  ```
+  curl -i -A "Mozilla/5.0" \
+    --data-urlencode "author=Test" \
+    --data-urlencode "email=test@gmail.com" \
+    --data-urlencode "comment=hello http://spam.example buy now" \
+    --data-urlencode "comment_post_ID=<A_POST_ID_WITH_COMMENTS_OPEN>" \
+    "https://YOUR-SITE/wp-comments-post.php"
+  ```
+  A link/blocked comment returns **HTTP 403**; a clean one returns **HTTP 302** (accepted, then handled by your normal moderation).
+- 12 new strings translated to Persian.
+
 ### Version 0.29.1 (Fix: false “links are not allowed” rejections)
 - **Bug fix.** The link detector flagged any `word.tld` with a literal dot, so ordinary reviews were wrongly rejected when they happened to contain an **email domain** (`name@gmail.com`), a **tech term** (`asp.net`, `node.js`), or a **version** (`15.pro`) — the TLD list includes many everyday words (net, io, app, pro, …).
 - Link detection is now limited to **unambiguous** signals: real URLs (`http(s)://`, `www.`, an `<a>` tag, `[url]` BBCode, IPv4) **and deliberately obfuscated** domains that spell the dot out or bracket it (`example dot com`, `example [dot] com`, `example[.]com`). A plain `word.tld` is no longer treated as a link — genuine link spam almost always uses http/www, and moderation + the word blocklist cover the rest.

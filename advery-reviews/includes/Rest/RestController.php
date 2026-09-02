@@ -1023,6 +1023,7 @@ class RestController {
 		return [
 			'timing_enabled'      => ! empty( $in['timing_enabled'] ),
 			'timing_min'          => max( 0, (int) ( $in['timing_min'] ?? $d['timing_min'] ) ),
+			'native_comment_guard' => in_array( ( $in['native_comment_guard'] ?? '' ), [ 'off', 'filter', 'disable' ], true ) ? $in['native_comment_guard'] : $d['native_comment_guard'],
 			'max_links'           => max( 0, (int) ( $in['max_links'] ?? $d['max_links'] ) ),
 			'link_action'         => in_array( ( $in['link_action'] ?? '' ), [ 'off', 'hold', 'spam', 'reject' ], true ) ? $in['link_action'] : $d['link_action'],
 			'blocklist_words'     => sanitize_textarea_field( (string) ( $in['blocklist_words'] ?? '' ) ),

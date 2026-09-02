@@ -222,6 +222,12 @@ class Settings {
 		return [
 			'timing_enabled'      => true,
 			'timing_min'          => 3,       // seconds; faster ⇒ likely bot
+			// Guard WordPress's OWN native comment form (wp-comments-post.php).
+			// Spam bots POST straight to that endpoint, bypassing our review form
+			// entirely, so this applies the content-policy checks (links, blocked
+			// words, blocked/disposable emails) to native comments too — or turns
+			// native commenting off site-wide. 'off' leaves WordPress untouched.
+			'native_comment_guard' => 'off',  // 'off' | 'filter' | 'disable'
 			'max_links'           => 0,       // 0 = no links allowed at all (default)
 			'link_action'         => 'reject', // 'off' | 'hold' | 'spam' | 'reject'
 			'blocklist_words'     => "viagra\ncialis\ncasino\nporn\nloan\nseo service\ncrypto\nbinary option",

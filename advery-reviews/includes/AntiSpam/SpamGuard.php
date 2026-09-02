@@ -212,6 +212,75 @@ class SpamGuard {
 	}
 
 	/**
+	 * Content-policy evaluation for a NATIVE WordPress comment (not one of our
+	 * reviews). Bots POST straight to wp-comments-post.php, so the bot heuristics
+	 * that depend on our form (timing token, honeypot) and the review-table rate
+	 * limit don't apply here — only the content policy does: links, blocklisted
+	 * words/phrases, and blocklisted/disposable email domains. Reuses the same
+	 * settings and helpers as the review checks so the owner configures once.
+	 *
+	 * @param array $sub { content, author_name, author_email, author_url }
+	 * @return array{outcome:string,reasons:string[],message?:string}
+	 */
+	public static function evaluate_comment( array $sub ) {
+		$as      = self::config();
+		$reasons = [];
+
+		$content = (string) ( $sub['content'] ?? '' );
+		$name    = (string) ( $sub['author_name'] ?? '' );
+		$email   = (string) ( $sub['author_email'] ?? '' );
+		$url     = (string) ( $sub['author_url'] ?? '' );
+
+		// Links across content, name and the author-URL field (comments carry a
+		// dedicated website field bots love to stuff).
+		$links    = self::count_links( $content . " \n " . $name . " \n " . $url );
+		$link_hit = ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] );
+
+		if ( $link_hit && 'reject' === $as['link_action'] ) {
+			return [
+				'outcome' => 'reject',
+				'reasons' => [ 'links(' . $links . ')' ],
+				'message' => __( 'Links are not allowed in comments.', 'advery-reviews' ),
+			];
+		}
+		if ( $link_hit ) {
+			$reasons[] = 'links(' . $links . ')';
+		}
+
+		// Blocklisted words / phrases → always a hard reject for native comments
+		// (there is no "hold as pending review" path outside our own moderation).
+		if ( self::matches_blocklist( $content . ' ' . $name, $as['blocklist_words'] ) ) {
+			return [
+				'outcome' => 'reject',
+				'reasons' => [ 'blocklisted-word' ],
+				'message' => __( 'Your comment was blocked by the site’s content policy.', 'advery-reviews' ),
+			];
+		}
+
+		// Blocklisted / disposable email domains.
+		$domain = self::email_domain( $email );
+		if ( '' !== $domain ) {
+			if ( self::in_list( $domain, $as['blocklist_emails'] ) || self::in_list( $email, $as['blocklist_emails'] ) ) {
+				$reasons[] = 'blocklisted-email';
+			}
+			if ( $as['block_disposable'] && DisposableDomains::is_disposable( $domain ) ) {
+				$reasons[] = 'disposable-email';
+			}
+		}
+
+		// A blocked email/domain, or a link hit under the spam action, gets marked
+		// as spam; a link hit under the hold action is held for moderation.
+		if ( in_array( 'blocklisted-email', $reasons, true ) || in_array( 'disposable-email', $reasons, true ) ) {
+			return [ 'outcome' => 'spam', 'reasons' => $reasons ];
+		}
+		if ( $link_hit ) {
+			return [ 'outcome' => ( 'spam' === $as['link_action'] ? 'spam' : 'hold' ), 'reasons' => $reasons ];
+		}
+
+		return [ 'outcome' => 'approve', 'reasons' => $reasons ];
+	}
+
+	/**
 	 * Anti-spam config with defaults (merged over any stored values).
 	 *
 	 * @return array

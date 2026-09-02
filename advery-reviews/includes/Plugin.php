@@ -3,6 +3,7 @@ namespace Advery\Reviews;
 
 use Advery\Reviews\Frontend\Display;
 use Advery\Reviews\Frontend\CommentsTakeover;
+use Advery\Reviews\Frontend\CommentGuard;
 use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Schema\SchemaBridge;
 use Advery\Reviews\Schema\StandaloneSchema;
@@ -35,6 +36,9 @@ class Plugin {
 
 		// Optional takeover of the native comments area (no page builder needed).
 		( new CommentsTakeover() )->register();
+
+		// Guard the native WP comment form against direct-POST spam (or disable it).
+		( new CommentGuard() )->register();
 
 		// Table hygiene: remove reviews when their post/term is deleted.
 		( new Maintenance() )->register();

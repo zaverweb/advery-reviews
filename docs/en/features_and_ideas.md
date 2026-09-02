@@ -1,5 +1,11 @@
 # Advery Reviews — Features & Roadmap
 
+## ▶ New queue (added 2026-09-02 — priority order D → A → B+C, then G; awaiting user’s go)
+- **D — Block native-comment spam (CRITICAL, first). — DONE v0.30.0.** Spam still lands in `wp_comments` via direct POSTs to `wp-comments-post.php` (bots skip the page/form; "comments closed" is per-post so many posts stay open; our CommentsTakeover only changes display). Fix shipped: a "Guard the built-in WordPress comment form" option (Anti-spam → Native WordPress comments) with Off / Filter / Disable, using `preprocess_comment` + `pre_comment_approved` to run the content policy (links, blocked words, blocked/disposable emails) on native comments — reject / spam / hold — or refuse them entirely and force `comments_open` false. Pingbacks and moderators are exempt. Verified live via `curl` POST to `wp-comments-post.php` (link → 403, clean → 302, disable → 403). Manual `curl` test documented in the changelog.
+- **A — Configurable link TLD/pattern list.** Opt-in strict blocking (removed in v0.29.1): a Settings field listing endings/patterns (e.g. `.com`, `.ru`) that count as links; default empty (safe); with clear syntax docs.
+- **B+C — Spam log + efficient queries.** A temporary table logging blocked submissions: IP, text, time, target (post/page), and reason (e.g. "example.com in content"/"in title"). Settings: on/off + retention days + WP-Cron auto-purge; an admin log view. C: all panel reports query efficiently (indexed, paginated) + admin-configurable per-page (reviews list hardcoded 20 → configurable). One release.
+- **G (LAST) — Elementor Loop-Grid** (see below).
+
 ## ▶ Active work queue (approved 2026-08-30, do one at a time; bump version + confirm before the next)
 Order fixed by the user; **G is last**. Each item ships as its own version.
 1. **Faster settings navigation (SPA)** — the 4 admin screens (Reviews / Reports / Settings / Migration) are separate WP sub-pages, so switching does a full reload. Add History-API client-side routing: intercept the in-app nav links, `pushState` to the same admin URLs (URL still changes), swap the screen instantly, handle back/forward (`popstate`), and keep direct-load/deep-link working. — **DONE v0.25.0.**

@@ -1,5 +1,3 @@
-# Copyright (C) 2026 Advery
-# This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
 "Project-Id-Version: Advery Reviews 0.29.0\n"
@@ -11,9 +9,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-09-01T22:22:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: fa_IR\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
-"Language: fa_IR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. Plugin Name of the plugin
@@ -1964,3 +1962,51 @@ msgstr "پیکربندیِ نحوه‌ی کارِ نظرات"
 #: build/index.js:2
 msgid "Import, export and migrate reviews"
 msgstr "درون‌ریزی، برون‌بری و مهاجرتِ نظرات"
+
+#: includes/AntiSpam/SpamGuard.php:243
+msgid "Links are not allowed in comments."
+msgstr "درجِ لینک در دیدگاه‌ها مجاز نیست."
+
+#: includes/AntiSpam/SpamGuard.php:256
+msgid "Your comment was blocked by the site’s content policy."
+msgstr "دیدگاهِ شما بر اساسِ سیاستِ محتوایی سایت مسدود شد."
+
+#: includes/Frontend/CommentGuard.php:72
+msgid "Comments are closed."
+msgstr "امکانِ ثبتِ دیدگاه بسته است."
+
+#: includes/Frontend/CommentGuard.php:73
+msgid "Comments closed"
+msgstr "دیدگاه‌ها بسته است"
+
+#: includes/Frontend/CommentGuard.php:88
+msgid "Your comment could not be accepted."
+msgstr "دیدگاهِ شما پذیرفته نشد."
+
+#: includes/Frontend/CommentGuard.php:91
+msgid "Comment blocked"
+msgstr "دیدگاه مسدود شد"
+
+#: build/index.js:2
+msgid "Native WordPress comments"
+msgstr "دیدگاه‌های بومیِ وردپرس"
+
+#: build/index.js:2
+msgid "Guard the built-in WordPress comment form"
+msgstr "محافظت از فرمِ دیدگاهِ داخلیِ وردپرس"
+
+#: build/index.js:2
+msgid "Off — don’t touch native comments"
+msgstr "خاموش — به دیدگاه‌های بومی دست نزن"
+
+#: build/index.js:2
+msgid "Filter — apply the anti-spam rules to native comments"
+msgstr "فیلتر — قوانینِ ضدِاسپم را روی دیدگاه‌های بومی هم اعمال کن"
+
+#: build/index.js:2
+msgid "Disable — refuse all native comments"
+msgstr "غیرفعال — همه‌ی دیدگاه‌های بومی را رد کن"
+
+#: build/index.js:2
+msgid "Spam bots POST straight to wp-comments-post.php, bypassing your review form — and “comments closed” is per-post, so any open post still accepts them. “Filter” runs the link, blocked-word and blocked/disposable-email rules above on native comments too (blocked → rejected, links/throwaway emails → spam or held). “Disable” refuses every native comment and hides the comment form site-wide. Logged-in users who can moderate comments are never blocked."
+msgstr "ربات‌های اسپم مستقیماً به wp-comments-post.php درخواستِ POST می‌فرستند و فرمِ نظرِ شما را دور می‌زنند — و «بستنِ دیدگاه» برای هر نوشته جداگانه است، پس هر نوشته‌ی باز همچنان دیدگاه می‌پذیرد. «فیلتر» قوانینِ لینک، واژه‌های ممنوع و ایمیل‌های ممنوع/موقتیِ بالا را روی دیدگاه‌های بومی هم اجرا می‌کند (ممنوع → رد، لینک/ایمیلِ یک‌بارمصرف → اسپم یا در انتظار). «غیرفعال» هر دیدگاهِ بومی را رد کرده و فرمِ دیدگاه را در کلِّ سایت پنهان می‌کند. کاربرانِ واردشده‌ای که اجازه‌ی مدیریتِ دیدگاه‌ها را دارند هرگز مسدود نمی‌شوند."
