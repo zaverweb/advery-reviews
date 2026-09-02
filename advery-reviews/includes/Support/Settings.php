@@ -230,6 +230,13 @@ class Settings {
 			'native_comment_guard' => 'off',  // 'off' | 'filter' | 'disable'
 			'max_links'           => 0,       // 0 = no links allowed at all (default)
 			'link_action'         => 'reject', // 'off' | 'hold' | 'spam' | 'reject'
+			// Opt-in strict link detection (empty = off, safe default). Each line
+			// is either a domain ending (".com", "com", ".co.uk") that makes a bare
+			// "word.ending" count as a link, or a raw regex prefixed with "re:".
+			// This is deliberately owner-controlled: plain "word.tld" is otherwise
+			// NOT treated as a link (v0.29.1) to avoid false positives on emails/
+			// tech terms, so only endings the owner lists here get the strict rule.
+			'link_tlds'           => '',
 			'blocklist_words'     => "viagra\ncialis\ncasino\nporn\nloan\nseo service\ncrypto\nbinary option",
 			'blocklist_emails'    => '',
 			'block_disposable'    => true,

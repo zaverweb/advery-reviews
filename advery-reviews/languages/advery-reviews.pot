@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.29.1\n"
+"Project-Id-Version: Advery Reviews 0.30.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-02T22:39:18+00:00\n"
+"POT-Creation-Date: 2026-09-02T22:56:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -1043,7 +1043,15 @@ msgid "Reject with a message"
 msgstr ""
 
 #: build/index.js:2
-msgid "Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
+msgid "Detects real, marked-up and obfuscated links (http://…, www., <a>, [url], 1.2.3.4, “example dot com”, “example[.]com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
+msgstr ""
+
+#: build/index.js:2
+msgid "Strict link endings / patterns (optional)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Leave empty for the safe default. One per line. A domain ending — .com, ru, .co.uk — makes a plain “word.ending” (e.g. shop.com) count as a link too. Advanced: a line starting with re: is a regular expression, e.g. re:\\bt\\.me/. Use this only if bots are posting bare domains like “myshop.ru” without http:// — it can also flag look-alikes (a sentence with “file.com” in it)."
 msgstr ""
 
 #: build/index.js:2

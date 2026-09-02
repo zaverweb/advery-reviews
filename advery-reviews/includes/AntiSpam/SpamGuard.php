@@ -119,7 +119,7 @@ class SpamGuard {
 		// applies to trusted authors too: "Reject" is a hard reject for everyone,
 		// and a link hit also disqualifies the trusted fast-track below.
 		$raw_blob = ( $sub['raw_content'] ?? $content ) . " \n " . ( $sub['raw_title'] ?? $title ) . " \n " . ( $sub['raw_name'] ?? $name );
-		$links    = self::count_links( $raw_blob );
+		$links    = self::count_links( $raw_blob, (string) ( $as['link_tlds'] ?? '' ) );
 		$link_hit = ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] );
 
 		if ( $link_hit && 'reject' === $as['link_action'] ) {
@@ -233,7 +233,7 @@ class SpamGuard {
 
 		// Links across content, name and the author-URL field (comments carry a
 		// dedicated website field bots love to stuff).
-		$links    = self::count_links( $content . " \n " . $name . " \n " . $url );
+		$links    = self::count_links( $content . " \n " . $name . " \n " . $url, (string) ( $as['link_tlds'] ?? '' ) );
 		$link_hit = ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] );
 
 		if ( $link_hit && 'reject' === $as['link_action'] ) {
@@ -318,9 +318,14 @@ class SpamGuard {
 	 * blocklist cover the rest.
 	 *
 	 * @param string $text
+	 * @param string $extra Owner-defined opt-in endings/patterns (setting
+	 *                      `link_tlds`): one per line, either a domain ending
+	 *                      (".com", "com", ".co.uk") that makes a bare
+	 *                      "word.ending" count as a link, or a raw regex prefixed
+	 *                      with "re:". Empty ⇒ nothing extra is matched.
 	 * @return int
 	 */
-	private static function count_links( $text ) {
+	private static function count_links( $text, $extra = '' ) {
 		$t = strtolower( (string) $text );
 
 		$count = 0;
@@ -338,6 +343,28 @@ class SpamGuard {
 			'#[a-z0-9][a-z0-9-]{1,}\s*(?:\(\s*d[o0]t\s*\)|\[\s*d[o0]t\s*\]|\{\s*d[o0]t\s*\}|\bd[o0]t\b|\[\s*\.\s*\]|\(\s*\.\s*\)|\{\s*\.\s*\})\s*(?:' . self::TLDS . ')\b#i',
 			$t
 		);
+
+		// Owner-defined opt-in endings/patterns. A listed ending makes a plain
+		// "word.ending" count as a link (the strict rule the owner explicitly
+		// asked for); a "re:" line runs as a raw regex.
+		$endings = [];
+		foreach ( self::lines( $extra ) as $entry ) {
+			if ( 0 === stripos( $entry, 're:' ) ) {
+				$pattern = '#' . str_replace( '#', '\#', substr( $entry, 3 ) ) . '#i';
+				$n = @preg_match_all( $pattern, $t ); // phpcs:ignore WordPress.PHP.NoSilencedErrors
+				if ( $n ) {
+					$count += $n;
+				}
+			} else {
+				$e = strtolower( ltrim( trim( $entry ), '.' ) );
+				if ( '' !== $e ) {
+					$endings[] = preg_quote( $e, '#' );
+				}
+			}
+		}
+		if ( $endings ) {
+			$count += preg_match_all( '#\b[a-z0-9][a-z0-9-]*\.(?:' . implode( '|', $endings ) . ')\b#i', $t );
+		}
 
 		return $count;
 	}

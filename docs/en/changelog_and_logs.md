@@ -12,6 +12,16 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.31.0 (Configurable strict link endings / patterns — queue item A)
+- **Re-adds opt-in strict link blocking** that was removed in v0.29.1, but **owner-controlled** so it can’t cause silent false positives. A new **Anti-spam → Links → “Strict link endings / patterns (optional)”** field lets the owner list, one per line:
+  - a **domain ending** — `.com`, `ru`, `.co.uk` — which makes a plain `word.ending` (e.g. `shop.com`, `myshop.ru`) count as a link even without `http://`/`www.`;
+  - or an **advanced regex** on a line starting with `re:` (e.g. `re:\bt\.me/` to catch Telegram links), matching the existing blocklist-words convention.
+- **Empty by default = safe** — with the field blank, link detection is unchanged from v0.29.1 (only unambiguous signals: `http(s)://`, `www.`, `<a>`, `[url]`, IPv4, and spelled-out/bracketed obfuscated dots). A plain `word.tld` is still ignored unless the owner opts in here.
+- **Clearly documented tradeoff.** The field’s help explains this is for when bots post bare domains like `myshop.ru` without `http://`, and warns it can also flag look-alikes (a normal sentence containing `file.com`). The matched action still follows the existing **“When over the link limit”** setting (Reject / Spam / Hold / Ignore).
+- **Applies to both** submitted reviews and, when the native-comment guard (v0.30.0) is in Filter mode, native comments — one list governs both.
+- **Verified live** (sample site, `SpamGuard::evaluate`): with the list **empty**, a review containing `myshop.ru` and `ali@gmail.com` is **not** flagged as a link; with the list `ru`/`com`, `myshop.ru` is **rejected** (and `gmail.com` too — the documented tradeoff); a `re:\bt\.me/` line rejects `t.me/spamchannel`. Setting restored to empty after testing.
+- 2 new strings + 1 updated help translated to Persian.
+
 ### Version 0.30.0 (Guard native WordPress comments against direct-POST spam — queue item D)
 - **The problem.** Our review form is well protected, but spam bots don’t use it — they POST straight to WordPress’s own `wp-comments-post.php`, landing spam in `wp_comments`. Taking over the comments *display* (v0.3.0) never changed what WordPress *accepts*, and “comments closed” is a **per-post** setting, so any post left open still takes them.
 - **New setting: “Guard the built-in WordPress comment form”** (Anti-spam → Native WordPress comments), site-wide, with three modes:

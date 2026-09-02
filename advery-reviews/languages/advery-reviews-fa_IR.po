@@ -995,10 +995,6 @@ msgid "Reject with a message"
 msgstr "رد با پیام"
 
 #: build/index.js:2
-msgid "Detects plain, marked-up and obfuscated links (example.com, 1.2.3.4, [url], “example dot com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
-msgstr "لینک‌های ساده، markup‌شده و مبهم‌شده (example.com، 1.2.3.4، [url]، «example dot com») را در نظر، عنوان و نام تشخیص می‌دهد. «رد» آن‌ها را برای همه می‌بندد؛ «اسپم»/«نگه‌داشتن» آن‌ها را برای بررسیِ تو پنهان نگه می‌دارد."
-
-#: build/index.js:2
 msgid "Length limits"
 msgstr "محدودیت‌های طول"
 
@@ -2010,3 +2006,15 @@ msgstr "غیرفعال — همه‌ی دیدگاه‌های بومی را رد 
 #: build/index.js:2
 msgid "Spam bots POST straight to wp-comments-post.php, bypassing your review form — and “comments closed” is per-post, so any open post still accepts them. “Filter” runs the link, blocked-word and blocked/disposable-email rules above on native comments too (blocked → rejected, links/throwaway emails → spam or held). “Disable” refuses every native comment and hides the comment form site-wide. Logged-in users who can moderate comments are never blocked."
 msgstr "ربات‌های اسپم مستقیماً به wp-comments-post.php درخواستِ POST می‌فرستند و فرمِ نظرِ شما را دور می‌زنند — و «بستنِ دیدگاه» برای هر نوشته جداگانه است، پس هر نوشته‌ی باز همچنان دیدگاه می‌پذیرد. «فیلتر» قوانینِ لینک، واژه‌های ممنوع و ایمیل‌های ممنوع/موقتیِ بالا را روی دیدگاه‌های بومی هم اجرا می‌کند (ممنوع → رد، لینک/ایمیلِ یک‌بارمصرف → اسپم یا در انتظار). «غیرفعال» هر دیدگاهِ بومی را رد کرده و فرمِ دیدگاه را در کلِّ سایت پنهان می‌کند. کاربرانِ واردشده‌ای که اجازه‌ی مدیریتِ دیدگاه‌ها را دارند هرگز مسدود نمی‌شوند."
+
+#: build/index.js:2
+msgid "Detects real, marked-up and obfuscated links (http://…, www., <a>, [url], 1.2.3.4, “example dot com”, “example[.]com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
+msgstr "لینک‌های واقعی، تگ‌دار و مبهم‌شده را در متنِ نظر، عنوان و نام تشخیص می‌دهد (http://…، www.، <a>، [url]، 1.2.3.4، «example dot com»، «example[.]com»). «رد» آن‌ها را برای همه مسدود می‌کند؛ «اسپم»/«در انتظار» آن‌ها را پنهان نگه می‌دارد تا خودت بررسی کنی."
+
+#: build/index.js:2
+msgid "Strict link endings / patterns (optional)"
+msgstr "پسوندها/الگوهای سخت‌گیرانه‌ی لینک (اختیاری)"
+
+#: build/index.js:2
+msgid "Leave empty for the safe default. One per line. A domain ending — .com, ru, .co.uk — makes a plain “word.ending” (e.g. shop.com) count as a link too. Advanced: a line starting with re: is a regular expression, e.g. re:\\bt\\.me/. Use this only if bots are posting bare domains like “myshop.ru” without http:// — it can also flag look-alikes (a sentence with “file.com” in it)."
+msgstr "برای پیش‌فرضِ امن خالی بگذار. هر خط یک مورد. یک پسوندِ دامنه — ‎.com‎، ru‎، ‎.co.uk‎ — باعث می‌شود «کلمه.پسوند»ِ ساده (مثلِ shop.com) هم لینک شمرده شود. پیشرفته: خطی که با ‎re:‎ شروع شود یک عبارتِ باقاعده (regex) است، مثلِ ‎re:\\bt\\.me/‎. این را فقط وقتی به کار ببر که ربات‌ها دامنه‌های خام مثلِ «myshop.ru» را بدونِ http:// می‌فرستند — ممکن است شبیه‌ها را هم علامت بزند (جمله‌ای که «file.com» داشته باشد)."
