@@ -10,6 +10,16 @@ Fast, self-contained **ratings & reviews** for WordPress — for any post type, 
 - **Schema integration.** When Advery Schema Plus (≥ 2.21.0) is active, `aggregateRating` and `review` are attached to the reviewed item's node in the JSON-LD `@graph` via the core's `advery_schema_render_node` filter. Without the core, the plugin is still fully functional — the schema bridge is simply idle.
 - **Owner tooling.** A smooth React moderation panel, a pending-count menu badge (like core Comments), a dashboard "Recent reviews" widget, and email reports — instant on each new review, plus an optional weekly/monthly digest.
 
+## Installation
+
+This is a normal WordPress plugin — install it from the WordPress dashboard, **not** from a terminal:
+
+1. Download `advery-reviews.zip` from the [latest release](https://github.com/zaverweb/advery-reviews/releases/latest).
+2. In wp-admin go to **Plugins → Add New → Upload Plugin**, choose the zip, and click **Install Now**.
+3. Click **Activate**. Configure under **Reviews → Settings**.
+
+(Alternatively, unzip it into `wp-content/plugins/` and activate.) Updating is the same: upload the newer zip over the old one, or replace the folder. The `npm` commands below are only for **developers building from source** — end users never need them. Any `curl` command shown in the release notes is an optional **test** of a feature (e.g. the native-comment spam guard), not an installation step.
+
 ## Structure
 
 - `advery-reviews/` — the plugin (ships with a committed `build/`, so it runs without a build step).
