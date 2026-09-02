@@ -11,6 +11,7 @@ use Advery\Reviews\Support\Sanitizer;
 use Advery\Reviews\Database\ReviewRepository;
 use Advery\Reviews\Database\StatsRepository;
 use Advery\Reviews\AntiSpam\SpamGuard;
+use Advery\Reviews\AntiSpam\SpamLog;
 use Advery\Reviews\Support\Maintenance;
 use Advery\Reviews\Migration\CommentImporter;
 use Advery\Reviews\Migration\CommentExporter;
@@ -118,6 +119,24 @@ class RestController {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'reports' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/spam-log',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'spam_log' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			]
+		);
+		register_rest_route(
+			$ns,
+			'/spam-log/clear',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'spam_log_clear' ],
 				'permission_callback' => [ $this, 'can_manage' ],
 			]
 		);
@@ -304,6 +323,23 @@ class RestController {
 			]
 		);
 
+		// Diagnostic log of anything the anti-spam layer stopped or held (opt-in).
+		if ( in_array( $guard['outcome'], [ 'reject', 'spam', 'hold' ], true ) ) {
+			SpamLog::record(
+				[
+					'source'       => 'review',
+					'outcome'      => $guard['outcome'],
+					'object_type'  => $object_type,
+					'object_id'    => $object_id,
+					'author_name'  => $author_name,
+					'author_email' => $author_email,
+					'author_ip'    => $ip,
+					'reason'       => implode( ', ', (array) $guard['reasons'] ),
+					'content'      => $content,
+				]
+			);
+		}
+
 		if ( 'reject' === $guard['outcome'] ) {
 			return new WP_Error(
 				'advery_reviews_rejected',
@@ -431,7 +467,7 @@ class RestController {
 				'taxonomy'    => sanitize_key( (string) $req->get_param( 'taxonomy' ) ),
 				'rating'      => (int) $req->get_param( 'rating' ),
 				'search'      => sanitize_text_field( (string) $req->get_param( 'search' ) ),
-				'per_page'    => (int) ( $req->get_param( 'per_page' ) ?: 20 ),
+				'per_page'    => (int) ( $req->get_param( 'per_page' ) ?: Settings::get( 'admin_per_page', 20 ) ),
 				'page'        => (int) ( $req->get_param( 'page' ) ?: 1 ),
 				'orderby'     => sanitize_key( (string) $req->get_param( 'orderby' ) ),
 				'order'       => sanitize_key( (string) $req->get_param( 'order' ) ),
@@ -442,6 +478,41 @@ class RestController {
 		$result['counts'] = ReviewRepository::status_counts();
 
 		return new WP_REST_Response( $result, 200 );
+	}
+
+	/**
+	 * Paged spam-log read for the admin log view.
+	 *
+	 * @param WP_REST_Request $req
+	 * @return WP_REST_Response
+	 */
+	public function spam_log( WP_REST_Request $req ) {
+		$result = SpamLog::query(
+			[
+				'source'   => (string) $req->get_param( 'source' ),
+				'outcome'  => (string) $req->get_param( 'outcome' ),
+				'search'   => sanitize_text_field( (string) $req->get_param( 'search' ) ),
+				'per_page' => (int) ( $req->get_param( 'per_page' ) ?: Settings::get( 'admin_per_page', 20 ) ),
+				'page'     => (int) ( $req->get_param( 'page' ) ?: 1 ),
+			]
+		);
+		$result['enabled'] = SpamLog::enabled();
+		$result['items']   = array_map( [ $this, 'spam_log_shape' ], $result['items'] );
+		return new WP_REST_Response( $result, 200 );
+	}
+
+	private function spam_log_shape( array $r ) {
+		$type       = (string) ( $r['object_type'] ?? '' );
+		$oid        = (int) ( $r['object_id'] ?? 0 );
+		$r['label'] = ( '' !== $type && $oid > 0 ) ? Targets::label( $type, $oid ) : '';
+		$r['link']  = ( '' !== $type && $oid > 0 ) ? Targets::link( $type, $oid ) : '';
+		return $r;
+	}
+
+	/** Empty the spam log. */
+	public function spam_log_clear() {
+		SpamLog::clear_all();
+		return new WP_REST_Response( [ 'ok' => true, 'total' => 0, 'items' => [] ], 200 );
 	}
 
 	/**
@@ -909,6 +980,7 @@ class RestController {
 			'min_content_length' => max( 0, (int) ( $in['min_content_length'] ?? 0 ) ),
 			'auto_append'        => ! empty( $in['auto_append'] ),
 			'reviews_per_page'   => max( 1, min( 50, (int) ( $in['reviews_per_page'] ?? $d['reviews_per_page'] ) ) ),
+			'admin_per_page'     => max( 5, min( 200, (int) ( $in['admin_per_page'] ?? $d['admin_per_page'] ) ) ),
 			'load_mode'          => in_array( ( $in['load_mode'] ?? '' ), [ 'all', 'load_more', 'paginate' ], true ) ? $in['load_mode'] : $d['load_mode'],
 			'replace_comments'   => ! empty( $in['replace_comments'] ),
 			// CSS never needs '<'; removing it prevents a </style> breakout.
@@ -1041,6 +1113,8 @@ class RestController {
 			'trusted_autoapprove' => ! empty( $in['trusted_autoapprove'] ),
 			'hold_threshold'      => max( 1, (int) ( $in['hold_threshold'] ?? $d['hold_threshold'] ) ),
 			'spam_threshold'      => max( 1, (int) ( $in['spam_threshold'] ?? $d['spam_threshold'] ) ),
+			'spam_log_enabled'        => ! empty( $in['spam_log_enabled'] ),
+			'spam_log_retention_days' => max( 1, min( 365, (int) ( $in['spam_log_retention_days'] ?? $d['spam_log_retention_days'] ) ) ),
 			'captcha_provider'    => in_array( ( $in['captcha_provider'] ?? '' ), [ 'none', 'recaptcha_v2', 'recaptcha_v3', 'hcaptcha', 'turnstile' ], true ) ? $in['captcha_provider'] : 'none',
 			'captcha_site_key'    => sanitize_text_field( (string) ( $in['captcha_site_key'] ?? '' ) ),
 			'captcha_secret_key'  => sanitize_text_field( (string) ( $in['captcha_secret_key'] ?? '' ) ),

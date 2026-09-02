@@ -175,6 +175,14 @@ export default function SettingsPanel( { boot, notify } ) {
 							<TextControl type="number" label={ __( 'Spam threshold (score ≥ ⇒ spam)', 'advery-reviews' ) } help={ __( 'Example: 5 (one strong signal like a blocked word).', 'advery-reviews' ) } value={ as.spam_threshold } onChange={ ( v ) => setAs( { spam_threshold: parseInt( v, 10 ) || 1 } ) } __nextHasNoMarginBottom />
 						</div>
 						<hr />
+						<div className="advery-rv-fieldgroup-title">{ __( 'Spam log', 'advery-reviews' ) }</div>
+						<ToggleControl label={ __( 'Keep a spam log', 'advery-reviews' ) } help={ __( 'Records each blocked, held, or spam-marked submission (from the review form and native comments) so you can see what was filtered and why. It stores the visitor’s IP and the submitted text, so it is off by default; the rows are removed automatically after the retention period below. View them under the “Spam log” menu.', 'advery-reviews' ) } checked={ !! as.spam_log_enabled } onChange={ ( v ) => setAs( { spam_log_enabled: v } ) } __nextHasNoMarginBottom />
+						{ as.spam_log_enabled && (
+							<div className="advery-rv-fields">
+								<TextControl type="number" label={ __( 'Keep entries for (days)', 'advery-reviews' ) } help={ __( 'A daily task removes anything older. Example: 10.', 'advery-reviews' ) } value={ as.spam_log_retention_days } onChange={ ( v ) => setAs( { spam_log_retention_days: parseInt( v, 10 ) || 1 } ) } __nextHasNoMarginBottom />
+							</div>
+						) }
+						<hr />
 						<SelectControl label={ __( 'CAPTCHA provider', 'advery-reviews' ) } help={ __( 'Optional. hCaptcha & Cloudflare Turnstile are free and privacy-friendly; reCAPTCHA is Google’s. Keys come from the provider dashboard. Not required — other layers already protect you.', 'advery-reviews' ) } value={ as.captcha_provider } options={ [ { label: __( 'None', 'advery-reviews' ), value: 'none' }, { label: 'reCAPTCHA v3', value: 'recaptcha_v3' }, { label: 'reCAPTCHA v2', value: 'recaptcha_v2' }, { label: 'hCaptcha', value: 'hcaptcha' }, { label: 'Cloudflare Turnstile', value: 'turnstile' } ] } onChange={ ( v ) => setAs( { captcha_provider: v } ) } __nextHasNoMarginBottom />
 						{ as.captcha_provider !== 'none' && (
 							<>
@@ -195,6 +203,7 @@ export default function SettingsPanel( { boot, notify } ) {
 						<div className="advery-rv-fields advery-rv-fields--wide">
 							<TextControl type="number" label={ __( 'Reviews shown per page', 'advery-reviews' ) } help={ __( 'Example: 10. With “Load more”/pagination, the rest load on demand.', 'advery-reviews' ) } value={ s.reviews_per_page } onChange={ ( v ) => set( { reviews_per_page: parseInt( v, 10 ) || 10 } ) } __nextHasNoMarginBottom />
 							<SelectControl label={ __( 'Loading mode', 'advery-reviews' ) } help={ __( 'All = at once. Load more = a button. Pagination = numbered pages. The URL never changes and the first page is server-rendered, so SEO is unaffected.', 'advery-reviews' ) } value={ s.load_mode } options={ [ { label: __( 'All on one page', 'advery-reviews' ), value: 'all' }, { label: __( '“Load more” button (AJAX)', 'advery-reviews' ), value: 'load_more' }, { label: __( 'Numbered pagination (AJAX)', 'advery-reviews' ), value: 'paginate' } ] } onChange={ ( v ) => set( { load_mode: v } ) } __nextHasNoMarginBottom />
+							<TextControl type="number" label={ __( 'Rows per page in the admin (reviews & spam log)', 'advery-reviews' ) } help={ __( 'How many rows the admin Reviews list and the Spam log show per page. Example: 20.', 'advery-reviews' ) } value={ s.admin_per_page } onChange={ ( v ) => set( { admin_per_page: parseInt( v, 10 ) || 20 } ) } __nextHasNoMarginBottom />
 						</div>
 						<ToggleControl label={ __( 'Replace the theme’s native comments with reviews', 'advery-reviews' ) } help={ __( 'Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over.', 'advery-reviews' ) } checked={ !! s.replace_comments } onChange={ ( v ) => set( { replace_comments: v } ) } __nextHasNoMarginBottom />
 					</>

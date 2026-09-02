@@ -2,27 +2,27 @@
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.30.0\n"
+"Project-Id-Version: Advery Reviews 0.31.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-02T22:56:00+00:00\n"
+"POT-Creation-Date: 2026-09-02T23:35:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
 
 #. Plugin Name of the plugin
 #: advery-reviews.php
-#: includes/Admin/AdminPage.php:22
+#: includes/Admin/AdminPage.php:23
 #: includes/Admin/DashboardWidget.php:19
 #: includes/Admin/PostMetabox.php:38
 #: includes/Admin/TermMetabox.php:46
 #: includes/Integrations/Elementor/ReviewsWidget.php:26
 #: assets/block.js:13
-#: build/index.js:2
+#: build/index.js:4
 msgid "Advery Reviews"
 msgstr ""
 
@@ -42,32 +42,38 @@ msgstr ""
 msgid "Advery"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:23
+#: includes/Admin/AdminPage.php:24
 #: includes/Integrations/Elementor/ReviewsWidget.php:44
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:47
 #: includes/Admin/AdminPage.php:48
+#: includes/Admin/AdminPage.php:49
 msgid "All Reviews"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:58
 #: includes/Admin/AdminPage.php:59
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:60
+#: build/index.js:4
 msgid "Reports"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:69
 #: includes/Admin/AdminPage.php:70
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:71
+#: build/index.js:4
+msgid "Spam log"
+msgstr ""
+
+#: includes/Admin/AdminPage.php:81
+#: includes/Admin/AdminPage.php:82
+#: build/index.js:4
 msgid "Settings"
 msgstr ""
 
-#: includes/Admin/AdminPage.php:80
-#: includes/Admin/AdminPage.php:81
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:92
+#: includes/Admin/AdminPage.php:93
+#: build/index.js:4
 msgid "Migration"
 msgstr ""
 
@@ -120,7 +126,7 @@ msgid "Review"
 msgstr ""
 
 #: includes/Admin/PostMetabox.php:99
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rating"
 msgstr ""
 
@@ -135,13 +141,14 @@ msgstr ""
 
 #: includes/Admin/PostMetabox.php:102
 #: build/index.js:1
-#: build/index.js:2
+#: build/index.js:4
 msgid "Pending"
 msgstr ""
 
 #: includes/Admin/PostMetabox.php:103
 #: build/index.js:1
 #: build/index.js:2
+#: build/index.js:4
 msgid "Spam"
 msgstr ""
 
@@ -326,19 +333,19 @@ msgstr ""
 msgid "Moderate: %s"
 msgstr ""
 
-#: includes/Frontend/CommentGuard.php:72
+#: includes/Frontend/CommentGuard.php:73
 msgid "Comments are closed."
 msgstr ""
 
-#: includes/Frontend/CommentGuard.php:73
+#: includes/Frontend/CommentGuard.php:74
 msgid "Comments closed"
 msgstr ""
 
-#: includes/Frontend/CommentGuard.php:88
+#: includes/Frontend/CommentGuard.php:108
 msgid "Your comment could not be accepted."
 msgstr ""
 
-#: includes/Frontend/CommentGuard.php:91
+#: includes/Frontend/CommentGuard.php:111
 msgid "Comment blocked"
 msgstr ""
 
@@ -348,7 +355,7 @@ msgstr ""
 
 #: includes/Frontend/Display.php:86
 #: includes/Frontend/Display.php:319
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submit review"
 msgstr ""
 
@@ -393,7 +400,7 @@ msgid "Your rating"
 msgstr ""
 
 #: includes/Frontend/Display.php:303
-#: build/index.js:2
+#: build/index.js:4
 msgid "Your name"
 msgstr ""
 
@@ -410,7 +417,7 @@ msgid "Your review"
 msgstr ""
 
 #: includes/Frontend/Display.php:323
-#: includes/Rest/RestController.php:242
+#: includes/Rest/RestController.php:261
 msgid "Please log in to leave a review."
 msgstr ""
 
@@ -458,12 +465,12 @@ msgid "Post / product / term ID"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:97
-#: build/index.js:2
+#: build/index.js:4
 msgid "Appearance"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:103
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layout style"
 msgstr ""
 
@@ -473,37 +480,37 @@ msgid "Use global setting"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:108
-#: build/index.js:2
+#: build/index.js:4
 msgid "Cards (modern)"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:109
-#: build/index.js:2
+#: build/index.js:4
 msgid "Classic list"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:117
-#: build/index.js:2
+#: build/index.js:4
 msgid "Avatar style"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:122
-#: build/index.js:2
+#: build/index.js:4
 msgid "Initials (local, no request)"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:123
-#: build/index.js:2
+#: build/index.js:4
 msgid "One default image"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:124
-#: build/index.js:2
+#: build/index.js:4
 msgid "Gravatar (external request)"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:125
-#: build/index.js:2
+#: build/index.js:4
 msgid "No avatar"
 msgstr ""
 
@@ -520,7 +527,7 @@ msgid "Text on accent"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:144
-#: build/index.js:2
+#: build/index.js:4
 msgid "Star color"
 msgstr ""
 
@@ -529,12 +536,12 @@ msgid "Text color"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:146
-#: build/index.js:2
+#: build/index.js:4
 msgid "Card / form background"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:147
-#: build/index.js:2
+#: build/index.js:4
 msgid "Borders & dividers"
 msgstr ""
 
@@ -572,67 +579,67 @@ msgstr ""
 msgid "Reviews (%d)"
 msgstr ""
 
-#: includes/Rest/RestController.php:223
+#: includes/Rest/RestController.php:242
 msgid "Your session expired. Please refresh and try again."
 msgstr ""
 
-#: includes/Rest/RestController.php:230
+#: includes/Rest/RestController.php:249
 msgid "Rejected."
 msgstr ""
 
-#: includes/Rest/RestController.php:237
+#: includes/Rest/RestController.php:256
 msgid "Reviews are not enabled here."
 msgstr ""
 
-#: includes/Rest/RestController.php:257
+#: includes/Rest/RestController.php:276
 msgid "Please choose a rating."
 msgstr ""
 
-#: includes/Rest/RestController.php:260
+#: includes/Rest/RestController.php:279
 msgid "Please write your review."
 msgstr ""
 
-#: includes/Rest/RestController.php:275
+#: includes/Rest/RestController.php:294
 msgid "Please enter your name and a valid email."
 msgstr ""
 
-#: includes/Rest/RestController.php:281
+#: includes/Rest/RestController.php:300
 msgid "You have already reviewed this."
 msgstr ""
 
-#: includes/Rest/RestController.php:310
+#: includes/Rest/RestController.php:346
 msgid "Your review could not be accepted."
 msgstr ""
 
-#: includes/Rest/RestController.php:348
+#: includes/Rest/RestController.php:384
 msgid "Could not save your review."
 msgstr ""
 
-#: includes/Rest/RestController.php:361
+#: includes/Rest/RestController.php:397
 msgid "Thanks! Your review is published."
 msgstr ""
 
-#: includes/Rest/RestController.php:362
+#: includes/Rest/RestController.php:398
 msgid "Thanks! Your review is awaiting moderation."
 msgstr ""
 
-#: includes/Rest/RestController.php:458
+#: includes/Rest/RestController.php:529
 msgid "Invalid target."
 msgstr ""
 
-#: includes/Rest/RestController.php:463
+#: includes/Rest/RestController.php:534
 msgid "Please write the review."
 msgstr ""
 
-#: includes/Rest/RestController.php:497
+#: includes/Rest/RestController.php:568
 msgid "Could not save."
 msgstr ""
 
-#: includes/Rest/RestController.php:806
+#: includes/Rest/RestController.php:877
 msgid "No reviews to summarize."
 msgstr ""
 
-#: includes/Rest/RestController.php:815
+#: includes/Rest/RestController.php:886
 msgid "Review not found."
 msgstr ""
 
@@ -669,7 +676,7 @@ msgid "All"
 msgstr ""
 
 #: build/index.js:1
-#: build/index.js:2
+#: build/index.js:4
 msgid "Approved"
 msgstr ""
 
@@ -732,15 +739,19 @@ msgid "AI check"
 msgstr ""
 
 #: build/index.js:1
+#: build/index.js:3
 msgid "Previous"
 msgstr ""
 
+#. translators: 1: current page, 2: total pages
 #: build/index.js:1
+#: build/index.js:4
 #, js-format
 msgid "Page %1$d of %2$d"
 msgstr ""
 
 #: build/index.js:1
+#: build/index.js:4
 msgid "Next"
 msgstr ""
 
@@ -781,6 +792,7 @@ msgid "Time range"
 msgstr ""
 
 #: build/index.js:1
+#: build/index.js:2
 msgid "Refresh"
 msgstr ""
 
@@ -835,1186 +847,1306 @@ msgid "No activity in the last 12 months."
 msgstr ""
 
 #: build/index.js:2
+msgid "Review form"
+msgstr ""
+
+#: build/index.js:2
+msgid "Native comment"
+msgstr ""
+
+#: build/index.js:2
+msgid "Rejected"
+msgstr ""
+
+#: build/index.js:2
+msgid "Held"
+msgstr ""
+
+#: build/index.js:2
+msgid "Permanently delete every row in the spam log? This cannot be undone."
+msgstr ""
+
+#: build/index.js:2
+msgid "Spam log cleared."
+msgstr ""
+
+#: build/index.js:2
+msgid "The spam log is turned off, so nothing new is being recorded. Turn on “Keep a spam log” under Settings → Anti-spam to start logging blocked submissions."
+msgstr ""
+
+#: build/index.js:2
+msgid "Open settings"
+msgstr ""
+
+#: build/index.js:2
+#: build/index.js:3
+msgid "Source"
+msgstr ""
+
+#: build/index.js:2
+msgid "All sources"
+msgstr ""
+
+#: build/index.js:2
+#: build/index.js:3
+msgid "Result"
+msgstr ""
+
+#: build/index.js:2
+msgid "All results"
+msgstr ""
+
+#: build/index.js:2
+msgid "Search (text, IP, email, reason)"
+msgstr ""
+
+#: build/index.js:2
+msgid "Clear log"
+msgstr ""
+
+#: build/index.js:2
+msgid "Nothing logged yet. Blocked, held, or spam submissions will appear here."
+msgstr ""
+
+#: build/index.js:2
+msgid "No entries."
+msgstr ""
+
+#. translators: %d: number of log rows
+#: build/index.js:3
+#, js-format
+msgid "%d entries"
+msgstr ""
+
+#: build/index.js:3
+msgid "When"
+msgstr ""
+
+#: build/index.js:3
+msgid "Target"
+msgstr ""
+
+#: build/index.js:3
+msgid "IP"
+msgstr ""
+
+#: build/index.js:3
+msgid "Reason"
+msgstr ""
+
+#: build/index.js:3
+msgid "Content"
+msgstr ""
+
+#: build/index.js:4
 msgid "Tables optimized."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Removed"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "orphaned reviews."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Collection"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submission rules"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Anti-spam"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Display"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Schema"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Email reports"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Custom CSS"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maintenance"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Settings sections"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tick each post type that should accept reviews — the review form and list then appear on those pages. Example: tick “Post” for a blog, or a “Service” custom type for a services site."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tick a taxonomy to allow reviews on its term (archive) pages — e.g. reviewing a whole “Brand” or “City” page. Leave off if not needed."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "WooCommerce products"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Collect reviews on your products and read WooCommerce’s own star ratings. Turn off to leave products entirely to WooCommerce."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Take over the product “Reviews” tab"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Show this plugin’s reviews (with our stars and card skin) in the WooCommerce product Reviews tab instead of Woo’s own list. Schema is unaffected — WooCommerce still owns the product’s structured data, so there’s never a duplicate rating. For the rating to reflect these reviews in search results, also enable “Merge WooCommerce native ratings” under Schema."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Who can submit"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: “Anyone” for a public shop (visitors give a name + email); “Logged-in users only” for a members site to cut spam."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Anyone (name + email)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Logged-in users only"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderation"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Manual (default & recommended): a new review waits as “Pending” until you approve it. Auto-approve: published immediately — faster, riskier. AI-assisted: the AI judges each review as approve / needs-review / spam (needs the AI section set up; on any AI error it safely falls back to “Pending”)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold for approval (manual)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto-approve"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI-assisted approval"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "One review per user / email"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Stops the same person reviewing one item repeatedly. Matched by their account when logged in, otherwise by email."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rating required"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: the visitor must pick a star rating. Off: text-only comments (no stars) are allowed too."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Length limits and injection/link protection are under Anti-spam."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layered and score-based: each check adds points to a “spam score”, and the two thresholds decide whether a review is held or marked spam. The defaults are sensible."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Native WordPress comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Guard the built-in WordPress comment form"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off — don’t touch native comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Filter — apply the anti-spam rules to native comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Disable — refuse all native comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Spam bots POST straight to wp-comments-post.php, bypassing your review form — and “comments closed” is per-post, so any open post still accepts them. “Filter” runs the link, blocked-word and blocked/disposable-email rules above on native comments too (blocked → rejected, links/throwaway emails → spam or held). “Disable” refuses every native comment and hides the comment form site-wide. Logged-in users who can moderate comments are never blocked."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Timing check (reject too-fast bot submissions)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A real person needs a few seconds to write a review; bots submit instantly. Recommended: on."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Minimum seconds to fill the form"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 3. Faster than this is treated as a likely bot."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Links"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max links allowed in a review (0 = none)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recommended: 0."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "When over the link limit"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Ignore"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold for moderation"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Mark as spam"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject with a message"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Detects real, marked-up and obfuscated links (http://…, www., <a>, [url], 1.2.3.4, “example dot com”, “example[.]com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Strict link endings / patterns (optional)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Leave empty for the safe default. One per line. A domain ending — .com, ru, .co.uk — makes a plain “word.ending” (e.g. shop.com) count as a link too. Advanced: a line starting with re: is a regular expression, e.g. re:\\bt\\.me/. Use this only if bots are posting bare domains like “myshop.ru” without http:// — it can also flag look-alikes (a sentence with “file.com” in it)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Length limits"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Minimum review length (characters)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 10."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maximum review length (characters)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 1500."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maximum author name length (characters)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 35."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocklists"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocked words / phrases (one per line; prefix re: for regex)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "One per line. Example: viagra. Advanced: re:\\bcasino\\b for a regular expression."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocked emails / domains (one per line)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A full address (spammer@bad.com) or a whole domain (bad.ru)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Block disposable email domains"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocks throwaway inboxes (mailinator.com, 10minutemail.com, …)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject duplicate content"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocks the same review text being posted again on the same item."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto-approve trusted authors"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A logged-in visitor who already has one approved review skips moderation next time (but a blocked link still rejects it)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rate limiting"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps how many reviews one person/IP can post in a short time."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Window (seconds)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 600 = 10 minutes."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max submissions per window (per IP/email)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 3."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max per day (0 = off)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 20."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Score thresholds"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold threshold (score ≥ ⇒ hold)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 2."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Spam threshold (score ≥ ⇒ spam)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 5 (one strong signal like a blocked word)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
+msgid "Keep a spam log"
+msgstr ""
+
+#: build/index.js:4
+msgid "Records each blocked, held, or spam-marked submission (from the review form and native comments) so you can see what was filtered and why. It stores the visitor’s IP and the submitted text, so it is off by default; the rows are removed automatically after the retention period below. View them under the “Spam log” menu."
+msgstr ""
+
+#: build/index.js:4
+msgid "Keep entries for (days)"
+msgstr ""
+
+#: build/index.js:4
+msgid "A daily task removes anything older. Example: 10."
+msgstr ""
+
+#: build/index.js:4
 msgid "CAPTCHA provider"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optional. hCaptcha & Cloudflare Turnstile are free and privacy-friendly; reCAPTCHA is Google’s. Keys come from the provider dashboard. Not required — other layers already protect you."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "None"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Site key"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The public key from your CAPTCHA dashboard."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Secret key"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The private key (used server-side; never shown to visitors)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "reCAPTCHA v3 score threshold (0–1)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject below this. Example: 0.5."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Use Akismet as an extra signal (if configured)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "If Akismet is installed with an API key, its verdict is one more spam signal."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Automatically append to content"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [advery_reviews] shortcode, the block, or the Elementor widget."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews shown per page"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 10. With “Load more”/pagination, the rest load on demand."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Loading mode"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "All = at once. Load more = a button. Pagination = numbered pages. The URL never changes and the first page is server-rendered, so SEO is unaffected."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "All on one page"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "“Load more” button (AJAX)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Numbered pagination (AJAX)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
+msgid "Rows per page in the admin (reviews & spam log)"
+msgstr ""
+
+#: build/index.js:4
+msgid "How many rows the admin Reviews list and the Spam log show per page. Example: 20."
+msgstr ""
+
+#: build/index.js:4
 msgid "Replace the theme’s native comments with reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Style the front-end review widget to match your theme — all live via CSS variables, no coding. Leave a color blank to inherit the theme’s own color."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layout"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Cards = each review in its own bordered card (modern). Classic = a simple divided list."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Density"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Comfortable = roomier. Compact = tighter."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Comfortable"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Compact"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Colors"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Accent (buttons, links)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submit button, “load more”, active page. e.g. #2271b1."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text on the accent"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text/icon on top of the accent. Usually white."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The rating stars. e.g. #f5a623."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text (blank = theme)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Body text of reviews. Blank inherits the theme."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blank keeps a subtle default."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Sizes"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Star size (px)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Base font size (px)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Corner radius (px)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max width (px, 0 = full width)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps the whole widget so the reviews and the form share one width. 0 = fill the container."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviewer avatar"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "How each reviewer’s picture shows. “Gravatar” is the only option that contacts an external service — with the others the front end makes no avatar request at all."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Default avatar image URL"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Shown for every reviewer. Example: https://your-site.com/wp-content/uploads/avatar.png"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Note: Gravatar loads reviewer images from gravatar.com by email — an external request on every review. Account photos in WordPress are served through Gravatar too."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Live preview"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Absolutely wonderful experience — the team was friendly and helpful."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tone & prompts"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Provider"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Ollama runs locally — no API key needed. Install a model, then put its name in the Model field."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Get your API key:"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example models:"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Full model list & docs:"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "OpenAI-compatible gateway. If the endpoint differs from the default, set it in Base URL below."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "API key"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Not needed for Ollama (local). Leave blank."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Paste the secret key from your provider’s dashboard (link above). Stored on your server only."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Model (blank = provider default)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "e.g. %s — any model name your provider supports."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Daily call limit (0 = unlimited)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps AI cost. Example: 200/day."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Base URL (optional override)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Only for self-hosted / proxy / OpenAI-compatible endpoints. Example (Ollama): http://localhost:11434/v1."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Save, then test the connection"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Working. Sample reply: "
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Usage"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI tasks run"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "today"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "tokens (in+out)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "estimated cost"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tokens come from the provider’s response; cost is an estimate from public list prices (0 for local models). Not a billing source of truth."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "About your business (context for replies)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.” Available in prompts as {business_context}."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Variables you can use in any prompt"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Type these tokens into a prompt and they’re replaced for each review before it’s sent to the AI."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reply voice per content type"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "If a content type is a DIRECTORY of other businesses (you are not the business), tick it — AI replies then speak as the platform, never on the business’s behalf. Leave OFF for your own products/services."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "“%1$s” is a third-party directory listing"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default). Use the variables above."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reply drafting"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderation assist"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Translate"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Summarize"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Prompt (blank = built-in default)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Outputs star-rating structured data so Google can show rating stars in search results. Works with or without the Advery Schema Plus plugin."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Enable rating/review schema"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Master switch for the JSON-LD output below."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "How to output schema"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto (recommended): uses Advery Schema Plus (detected) so ratings merge into your page’s connected @graph. Standalone: prints its own JSON-LD. Core-only: only via Advery Schema Plus. Off: none."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto/Standalone: prints its own JSON-LD (Advery Schema Plus not installed, which is fine). Example: leave on “Auto”."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto — core if present, else standalone"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Standalone — always our own JSON-LD"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Core only — via Advery Schema Plus"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Standalone @type for non-product items"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Examples: LocalBusiness, Service, Product, Organization, Book, Recipe. Products always use “Product”."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Core-only is selected but Advery Schema Plus is not active — no schema will be output. Switch to Auto or Standalone."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Merge WooCommerce native ratings into the aggregate"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Combines your collected product reviews with WooCommerce’s own ratings into one aggregateRating in Woo’s product schema."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Email me instantly on each new review"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Sends a notification the moment a review is submitted (spam is not emailed)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recipient email (blank = site admin)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: reviews@yoursite.com. Blank uses your WordPress admin email."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Digest email"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "An optional summary of new reviews, sent on a schedule (via WP-Cron)."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Weekly"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Monthly"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The whole widget container"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The rating summary bar (average + stars + count)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The big average-rating number"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A row of stars (in the summary and each review)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “N reviews” text"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The list that holds all reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A single review"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A reviewer’s name"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A review’s title"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A review’s body text"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The owner’s reply block under a review"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “write a review” form"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The clickable rating stars in the form"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The submit button"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “load more” button"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The numbered pagination bar"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Widget CSS classes"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Target these classes in your CSS above. Each maps to a part of the front-end widget."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews are removed automatically when their post/term is deleted. “Purge” removes reviews whose target no longer exists; “Optimize” compacts the database tables."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Purge orphaned reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optimize tables"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Settings saved."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Save settings"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "— none —"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import from a file (CSV / JSON)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import review data prepared elsewhere — a spreadsheet, another platform’s export, or a dataset collected outside WordPress. After choosing a file you’ll map its columns and set a unique key so re-imports update instead of duplicating."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Loaded %1$d rows, %2$d columns."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Could not parse the file: "
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%1$d rows · %2$d columns"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Target (which post each review belongs to)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Identify the target by"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Post ID"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Lookup (slug / title / meta)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Column holding that value"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Match by"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Slug"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Title"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Custom field (meta)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Meta key"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Treat targets as"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto (by post type)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Posts"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Products"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Unique key (for de-duplication)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Source label"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "e.g. google, trustpilot — stored with each imported review."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Column with the source review id"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Field mapping"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Author name"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Author email"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Review text"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Date"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Default status"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Update reviews already imported (same source + id)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Without a unique id column, re-imports can create duplicates."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Load a file and choose the target column first."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Imported %1$d, updated %2$d, skipped %3$d."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import rows"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "imported %1$d, updated %2$d, skipped %3$d…"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import existing comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d WordPress comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d WooCommerce reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d already imported"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Include WordPress post comments (%d)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Include WooCommerce product reviews (%d)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Update items already imported"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: re-importing refreshes reviews you imported before. Off: they’re skipped."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Delete the original comments after importing"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off (recommended): keep a copy in the comment tables. On: permanently remove the source comments once imported."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The original comments will be permanently deleted after import."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Delete the source comments after importing? This cannot be undone."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import now"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "imported %1$d · updated %2$d · skipped %3$d…"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Export reviews back to comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recreate native WordPress / WooCommerce comments from the reviews you collected here — handy if another tool reads the comment tables. Safe to run repeatedly; it won’t loop or duplicate."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d reviews eligible"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d already exported"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Exported %d reviews to comments."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Export to comments"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "exported %d…"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Backup (CSV)"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Download every review as a CSV file — a spreadsheet you can keep as a backup or move to another site."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Download CSV"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Failed to load."
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Total"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderate and reply to reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "See which pages and businesses get the most reviews"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
+msgid "See what the anti-spam filter blocked and why"
+msgstr ""
+
+#: build/index.js:4
 msgid "Configure how reviews work"
 msgstr ""
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import, export and migrate reviews"
 msgstr ""

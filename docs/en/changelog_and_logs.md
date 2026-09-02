@@ -12,6 +12,17 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.32.0 (Spam log + efficient queries + configurable admin page size — queue item B+C)
+- **New “Spam log” (opt-in, auto-purged).** A dedicated menu + screen that records every submission the anti-spam layer **rejected, held, or marked as spam** — from both the review form and (in Filter mode) native WordPress comments — so you can see *what* was filtered and *why*.
+  - Each row stores: time, source (review / native comment), result (rejected / spam / held), the **target** page (linked), the visitor **IP**, the **reason** (e.g. `links(1)`, `blocklisted-word`, `disposable-email`) and a capped **content** snippet.
+  - The admin view is filterable (source / result / free-text search across content, IP, email, reason) and paged.
+  - **Off by default** — the rows include IPs and submitted text (personal data), so you enable it deliberately under **Settings → Anti-spam → Spam log**, with a configurable **retention (days)**.
+  - A **daily WP-Cron job** auto-purges rows older than the retention window; the event is scheduled only while the log is on and removed when you turn it off or deactivate the plugin. A **“Clear log”** button empties it on demand.
+- **New table** `{prefix}advery_review_spam_log` (DB schema → 1.5.0, additive/`dbDelta`), kept separate from the lean reviews table and indexed by time (for the paged view + purge) and by IP (to spot a repeat offender). All reads are prepared and paged. Dropped on uninstall.
+- **Configurable admin page size (item C).** New **Settings → Display → “Rows per page in the admin”** (`admin_per_page`, default 20) now drives both the admin **Reviews** list (previously hard-coded to 20) and the **Spam log** — no more fixed page size.
+- **Verified live:** the spam-log table was created (DB 1.5.0); a link comment was blocked and logged (`reject`, `links(1)`), a disposable-email comment logged (`spam`); the daily purge removed a 20-day-old row while keeping a fresh one; the purge cron schedules when enabled and unschedules when disabled; the admin screen renders in Persian RTL with colored result pills, linked targets, filters and pagination. Test data cleaned up.
+- 30 new strings translated to Persian.
+
 ### Version 0.31.1 (Persian translation clarity pass — Anti-spam settings)
 - **Rewrote confusing Persian help/labels in the Anti-spam section** with clearer wording and a consistent, polite tone (the user flagged several as hard to follow).
 - **Fixed a real display bug:** the Persian for the “Blocked words / phrases” help had an exploded backslash run (`re:\\\\…\\bcasino…`) instead of `re:\bcasino\b`, so the regex example rendered as gibberish. Now correct.

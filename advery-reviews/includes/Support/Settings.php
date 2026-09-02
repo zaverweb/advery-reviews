@@ -31,7 +31,8 @@ class Settings {
 
 			// Front-end display.
 			'auto_append'        => true,      // append the widget to enabled post types
-			'reviews_per_page'   => 10,
+			'reviews_per_page'   => 10,        // front-end widget page size
+			'admin_per_page'     => 20,        // admin lists (reviews + spam log) page size
 			'load_mode'          => 'all',     // 'all' | 'load_more' | 'paginate'
 			'replace_comments'   => false,     // take over the native WP comments area
 			'custom_css'         => '',        // owner CSS, printed where the widget renders
@@ -251,6 +252,9 @@ class Settings {
 			'trusted_autoapprove' => true,
 			'hold_threshold'      => 2,       // score ≥ ⇒ hold for moderation
 			'spam_threshold'      => 5,       // score ≥ ⇒ mark spam
+			// Diagnostic spam log (opt-in; contains IPs + text, so default OFF).
+			'spam_log_enabled'        => false,
+			'spam_log_retention_days' => 10,  // daily WP-Cron purges rows older than this
 			// CAPTCHA
 			'captcha_provider'    => 'none',  // none|recaptcha_v2|recaptcha_v3|hcaptcha|turnstile
 			'captcha_site_key'    => '',

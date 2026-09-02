@@ -16,13 +16,13 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: advery-reviews.php
-#: includes/Admin/AdminPage.php:22
+#: includes/Admin/AdminPage.php:23
 #: includes/Admin/DashboardWidget.php:19
 #: includes/Admin/PostMetabox.php:38
 #: includes/Admin/TermMetabox.php:46
 #: includes/Integrations/Elementor/ReviewsWidget.php:26
 #: assets/block.js:13
-#: build/index.js:2
+#: build/index.js:4
 msgid "Advery Reviews"
 msgstr "Advery Reviews"
 
@@ -42,32 +42,32 @@ msgstr "امتیاز و نظرِ سریع و مستقل برای هر پست‌�
 msgid "Advery"
 msgstr "Advery"
 
-#: includes/Admin/AdminPage.php:23
+#: includes/Admin/AdminPage.php:24
 #: includes/Integrations/Elementor/ReviewsWidget.php:44
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews"
 msgstr "نظرات"
 
-#: includes/Admin/AdminPage.php:47
 #: includes/Admin/AdminPage.php:48
+#: includes/Admin/AdminPage.php:49
 msgid "All Reviews"
 msgstr "همه‌ی نظرات"
 
-#: includes/Admin/AdminPage.php:58
 #: includes/Admin/AdminPage.php:59
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:60
+#: build/index.js:4
 msgid "Reports"
 msgstr "گزارش‌ها"
 
-#: includes/Admin/AdminPage.php:69
-#: includes/Admin/AdminPage.php:70
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:81
+#: includes/Admin/AdminPage.php:82
+#: build/index.js:4
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: includes/Admin/AdminPage.php:80
-#: includes/Admin/AdminPage.php:81
-#: build/index.js:2
+#: includes/Admin/AdminPage.php:92
+#: includes/Admin/AdminPage.php:93
+#: build/index.js:4
 msgid "Migration"
 msgstr "مهاجرت"
 
@@ -120,7 +120,7 @@ msgid "Review"
 msgstr "نظر"
 
 #: includes/Admin/PostMetabox.php:99
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rating"
 msgstr "امتیاز"
 
@@ -135,13 +135,14 @@ msgstr "تأیید"
 
 #: includes/Admin/PostMetabox.php:102
 #: build/index.js:1
-#: build/index.js:2
+#: build/index.js:4
 msgid "Pending"
 msgstr "در انتظار"
 
 #: includes/Admin/PostMetabox.php:103
 #: build/index.js:1
 #: build/index.js:2
+#: build/index.js:4
 msgid "Spam"
 msgstr "اسپم"
 
@@ -324,7 +325,7 @@ msgstr "در حالِ ارسال…"
 
 #: includes/Frontend/Display.php:86
 #: includes/Frontend/Display.php:319
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submit review"
 msgstr "ثبتِ نظر"
 
@@ -369,7 +370,7 @@ msgid "Your rating"
 msgstr "امتیازِ شما"
 
 #: includes/Frontend/Display.php:303
-#: build/index.js:2
+#: build/index.js:4
 msgid "Your name"
 msgstr "نامِ شما"
 
@@ -386,7 +387,7 @@ msgid "Your review"
 msgstr "نظرِ شما"
 
 #: includes/Frontend/Display.php:323
-#: includes/Rest/RestController.php:242
+#: includes/Rest/RestController.php:261
 msgid "Please log in to leave a review."
 msgstr "برای ثبتِ نظر وارد شوید."
 
@@ -434,12 +435,12 @@ msgid "Post / product / term ID"
 msgstr "شناسه‌ی پست / محصول / ترم"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:97
-#: build/index.js:2
+#: build/index.js:4
 msgid "Appearance"
 msgstr "ظاهر"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:103
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layout style"
 msgstr "سبکِ چیدمان"
 
@@ -449,37 +450,37 @@ msgid "Use global setting"
 msgstr "استفاده از تنظیمِ سراسری"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:108
-#: build/index.js:2
+#: build/index.js:4
 msgid "Cards (modern)"
 msgstr "کارتی (مدرن)"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:109
-#: build/index.js:2
+#: build/index.js:4
 msgid "Classic list"
 msgstr "فهرستِ کلاسیک"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:117
-#: build/index.js:2
+#: build/index.js:4
 msgid "Avatar style"
 msgstr "سبکِ آواتار"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:122
-#: build/index.js:2
+#: build/index.js:4
 msgid "Initials (local, no request)"
 msgstr "حروفِ اول (محلی، بدونِ درخواست)"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:123
-#: build/index.js:2
+#: build/index.js:4
 msgid "One default image"
 msgstr "یک عکسِ پیش‌فرض"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:124
-#: build/index.js:2
+#: build/index.js:4
 msgid "Gravatar (external request)"
 msgstr "گراواتار (درخواستِ خارجی)"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:125
-#: build/index.js:2
+#: build/index.js:4
 msgid "No avatar"
 msgstr "بدونِ آواتار"
 
@@ -496,7 +497,7 @@ msgid "Text on accent"
 msgstr "متن روی تأکید"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:144
-#: build/index.js:2
+#: build/index.js:4
 msgid "Star color"
 msgstr "رنگِ ستاره"
 
@@ -505,12 +506,12 @@ msgid "Text color"
 msgstr "رنگِ متن"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:146
-#: build/index.js:2
+#: build/index.js:4
 msgid "Card / form background"
 msgstr "پس‌زمینه‌ی کارت / فرم"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:147
-#: build/index.js:2
+#: build/index.js:4
 msgid "Borders & dividers"
 msgstr "حاشیه‌ها و جداکننده‌ها"
 
@@ -548,67 +549,67 @@ msgstr "نظرات برای این نوعِ محتوا فعال نیست. آن �
 msgid "Reviews (%d)"
 msgstr "نظرات (%d)"
 
-#: includes/Rest/RestController.php:223
+#: includes/Rest/RestController.php:242
 msgid "Your session expired. Please refresh and try again."
 msgstr "نشستِ شما منقضی شد. صفحه را تازه کرده و دوباره تلاش کنید."
 
-#: includes/Rest/RestController.php:230
+#: includes/Rest/RestController.php:249
 msgid "Rejected."
 msgstr "رد شد."
 
-#: includes/Rest/RestController.php:237
+#: includes/Rest/RestController.php:256
 msgid "Reviews are not enabled here."
 msgstr "نظرات اینجا فعال نیست."
 
-#: includes/Rest/RestController.php:257
+#: includes/Rest/RestController.php:276
 msgid "Please choose a rating."
 msgstr "لطفاً یک امتیاز انتخاب کنید."
 
-#: includes/Rest/RestController.php:260
+#: includes/Rest/RestController.php:279
 msgid "Please write your review."
 msgstr "لطفاً نظرتان را بنویسید."
 
-#: includes/Rest/RestController.php:275
+#: includes/Rest/RestController.php:294
 msgid "Please enter your name and a valid email."
 msgstr "لطفاً نام و یک ایمیلِ معتبر وارد کنید."
 
-#: includes/Rest/RestController.php:281
+#: includes/Rest/RestController.php:300
 msgid "You have already reviewed this."
 msgstr "شما قبلاً برای این مورد نظر داده‌اید."
 
-#: includes/Rest/RestController.php:310
+#: includes/Rest/RestController.php:346
 msgid "Your review could not be accepted."
 msgstr "نظرِ شما پذیرفته نشد."
 
-#: includes/Rest/RestController.php:348
+#: includes/Rest/RestController.php:384
 msgid "Could not save your review."
 msgstr "ذخیره‌ی نظرِ شما ممکن نشد."
 
-#: includes/Rest/RestController.php:361
+#: includes/Rest/RestController.php:397
 msgid "Thanks! Your review is published."
 msgstr "ممنون! نظرِ شما منتشر شد."
 
-#: includes/Rest/RestController.php:362
+#: includes/Rest/RestController.php:398
 msgid "Thanks! Your review is awaiting moderation."
 msgstr "ممنون! نظرِ شما در انتظارِ بررسی است."
 
-#: includes/Rest/RestController.php:458
+#: includes/Rest/RestController.php:529
 msgid "Invalid target."
 msgstr "هدفِ نامعتبر."
 
-#: includes/Rest/RestController.php:463
+#: includes/Rest/RestController.php:534
 msgid "Please write the review."
 msgstr "لطفاً نظر را بنویسید."
 
-#: includes/Rest/RestController.php:497
+#: includes/Rest/RestController.php:568
 msgid "Could not save."
 msgstr "ذخیره ممکن نشد."
 
-#: includes/Rest/RestController.php:806
+#: includes/Rest/RestController.php:877
 msgid "No reviews to summarize."
 msgstr "نظری برای خلاصه‌سازی نیست."
 
-#: includes/Rest/RestController.php:815
+#: includes/Rest/RestController.php:886
 msgid "Review not found."
 msgstr "نظر یافت نشد."
 
@@ -645,7 +646,7 @@ msgid "All"
 msgstr "همه"
 
 #: build/index.js:1
-#: build/index.js:2
+#: build/index.js:4
 msgid "Approved"
 msgstr "تأییدشده"
 
@@ -708,15 +709,19 @@ msgid "AI check"
 msgstr "بررسیِ AI"
 
 #: build/index.js:1
+#: build/index.js:3
 msgid "Previous"
 msgstr "قبلی"
 
+#. translators: 1: current page, 2: total pages
 #: build/index.js:1
+#: build/index.js:4
 #, js-format
 msgid "Page %1$d of %2$d"
 msgstr "صفحه‌ی %1$d از %2$d"
 
 #: build/index.js:1
+#: build/index.js:4
 msgid "Next"
 msgstr "بعدی"
 
@@ -757,6 +762,7 @@ msgid "Time range"
 msgstr "بازه‌ی زمانی"
 
 #: build/index.js:1
+#: build/index.js:2
 msgid "Refresh"
 msgstr "به‌روزرسانی"
 
@@ -810,1152 +816,1152 @@ msgstr "نظراتِ جدید در هر ماه (۱۲ ماهِ اخیر، همه�
 msgid "No activity in the last 12 months."
 msgstr "در ۱۲ ماهِ اخیر فعالیتی نبوده است."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tables optimized."
 msgstr "جدول‌ها بهینه شدند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Removed"
 msgstr "حذف شد"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "orphaned reviews."
 msgstr "نظرِ بی‌صاحب."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Collection"
 msgstr "جمع‌آوری"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submission rules"
 msgstr "قوانینِ ثبت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Anti-spam"
 msgstr "ضدِ اسپم"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Display"
 msgstr "نمایش"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI"
 msgstr "هوشِ مصنوعی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Schema"
 msgstr "اسکیما"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Email reports"
 msgstr "گزارش‌های ایمیلی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Custom CSS"
 msgstr "CSS سفارشی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maintenance"
 msgstr "نگهداری"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Settings sections"
 msgstr "بخش‌های تنظیمات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tick each post type that should accept reviews — the review form and list then appear on those pages. Example: tick “Post” for a blog, or a “Service” custom type for a services site."
 msgstr "هر پست‌تایپی که باید نظر بپذیرد را تیک بزنید — فرم و لیستِ نظرات آن‌گاه روی آن صفحه‌ها نمایش داده می‌شود. مثال: برای یک بلاگ «نوشته» را، یا برای سایتِ خدماتی یک پست‌تایپِ کاستومِ «خدمت» را تیک بزنید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tick a taxonomy to allow reviews on its term (archive) pages — e.g. reviewing a whole “Brand” or “City” page. Leave off if not needed."
 msgstr "یک تکسونومی را تیک بزنید تا نظر روی صفحه‌های ترم (آرشیو)ِ آن مجاز شود — مثلاً نظر دادن به کلِ صفحه‌ی یک «برند» یا «شهر». اگر لازم نیست خاموش بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "WooCommerce products"
 msgstr "محصولاتِ ووکامرس"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Collect reviews on your products and read WooCommerce’s own star ratings. Turn off to leave products entirely to WooCommerce."
 msgstr "روی محصولاتتان نظر جمع کنید و امتیازهای ستاره‌ایِ خودِ ووکامرس را بخوانید. خاموش کنید تا محصولات کاملاً به ووکامرس واگذار شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Take over the product “Reviews” tab"
 msgstr "در دست گرفتنِ تبِ «نظرات»ِ محصول"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Show this plugin’s reviews (with our stars and card skin) in the WooCommerce product Reviews tab instead of Woo’s own list. Schema is unaffected — WooCommerce still owns the product’s structured data, so there’s never a duplicate rating. For the rating to reflect these reviews in search results, also enable “Merge WooCommerce native ratings” under Schema."
 msgstr "نظراتِ این افزونه (با ستاره‌ها و اسکینِ کارتیِ ما) را در تبِ نظراتِ محصولِ ووکامرس نمایش بده، به‌جای لیستِ خودِ Woo. اسکیما دست‌نخورده می‌ماند — دیتای ساختاریافته‌ی محصول همچنان مالِ ووکامرس است، پس هرگز امتیازِ دوتایی نمی‌شود. برای اینکه امتیاز در نتایجِ جستجو این نظرها را بازتاب دهد، «ادغامِ امتیازهای بومیِ ووکامرس» را هم در بخشِ اسکیما فعال کن."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Who can submit"
 msgstr "چه کسی می‌تواند ثبت کند"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: “Anyone” for a public shop (visitors give a name + email); “Logged-in users only” for a members site to cut spam."
 msgstr "مثال: «هرکسی» برای فروشگاهِ عمومی (بازدیدکننده نام + ایمیل می‌دهد)؛ «فقط کاربرانِ واردشده» برای سایتِ عضویتی جهتِ کاهشِ اسپم."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Anyone (name + email)"
 msgstr "هرکسی (نام + ایمیل)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Logged-in users only"
 msgstr "فقط کاربرانِ واردشده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderation"
 msgstr "مدیریتِ نظرات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Manual (default & recommended): a new review waits as “Pending” until you approve it. Auto-approve: published immediately — faster, riskier. AI-assisted: the AI judges each review as approve / needs-review / spam (needs the AI section set up; on any AI error it safely falls back to “Pending”)."
 msgstr "دستی (پیش‌فرض و توصیه‌شده): نظرِ جدید تا تأییدِ شما «در انتظار» می‌ماند. تأییدِ خودکار: بلافاصله منتشر می‌شود — سریع‌تر، پرریسک‌تر. با کمکِ AI: هوشِ مصنوعی هر نظر را تأیید / نیازمندِ بررسی / اسپم دسته‌بندی می‌کند (به راه‌اندازیِ بخشِ AI نیاز دارد؛ روی هر خطای AI با اطمینان به «در انتظار» برمی‌گردد)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold for approval (manual)"
 msgstr "نگه‌داشتن برای تأیید (دستی)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto-approve"
 msgstr "تأییدِ خودکار"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI-assisted approval"
 msgstr "تأیید با کمکِ AI"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "One review per user / email"
 msgstr "یک نظر به‌ازای هر کاربر / ایمیل"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Stops the same person reviewing one item repeatedly. Matched by their account when logged in, otherwise by email."
 msgstr "جلوی نظر دادنِ مکررِ یک نفر به یک آیتم را می‌گیرد. در حالتِ واردشده با حساب، وگرنه با ایمیل تطبیق داده می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rating required"
 msgstr "امتیاز اجباری"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: the visitor must pick a star rating. Off: text-only comments (no stars) are allowed too."
 msgstr "روشن: بازدیدکننده باید امتیازِ ستاره بدهد. خاموش: نظرِ فقط‌متنی (بدونِ ستاره) هم مجاز است."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Length limits and injection/link protection are under Anti-spam."
 msgstr "محدودیت‌های طول و حفاظت در برابرِ تزریق/لینک زیرِ بخشِ ضدِ اسپم است."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layered and score-based: each check adds points to a “spam score”, and the two thresholds decide whether a review is held or marked spam. The defaults are sensible."
 msgstr "لایه‌ای و امتیازی: هر بررسی به «امتیازِ اسپم» امتیاز اضافه می‌کند و دو آستانه تعیین می‌کنند نظر نگه داشته شود یا اسپم شود. پیش‌فرض‌ها منطقی‌اند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Timing check (reject too-fast bot submissions)"
 msgstr "بررسیِ زمان (ردِ ثبت‌های خیلی‌سریعِ ربات)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A real person needs a few seconds to write a review; bots submit instantly. Recommended: on."
 msgstr "یک انسانِ واقعی چند ثانیه برای نوشتنِ نظر لازم دارد؛ ربات‌ها آنی ثبت می‌کنند. توصیه: روشن."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Minimum seconds to fill the form"
 msgstr "حداقل ثانیه برای پر کردنِ فرم"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 3. Faster than this is treated as a likely bot."
 msgstr "مثال: ۳. سریع‌تر از این احتمالاً ربات تلقی می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Links"
 msgstr "لینک‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max links allowed in a review (0 = none)"
 msgstr "حداکثر لینکِ مجاز در یک نظر (۰ = هیچ)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recommended: 0."
 msgstr "توصیه: ۰."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "When over the link limit"
 msgstr "وقتی از حدِ لینک عبور شد"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Ignore"
 msgstr "نادیده گرفتن"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold for moderation"
 msgstr "نگه‌داشتن برای بررسی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Mark as spam"
 msgstr "علامتِ اسپم"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject with a message"
 msgstr "رد با پیام"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Length limits"
 msgstr "محدودیت‌های طول"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Minimum review length (characters)"
 msgstr "حداقل طولِ نظر (کاراکتر)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 10."
 msgstr "مثال: ۱۰."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maximum review length (characters)"
 msgstr "حداکثر طولِ نظر (کاراکتر)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 1500."
 msgstr "مثال: ۱۵۰۰."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Maximum author name length (characters)"
 msgstr "حداکثر طولِ نامِ نویسنده (کاراکتر)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 35."
 msgstr "مثال: ۳۵."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocklists"
 msgstr "فهرست‌های مسدود"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocked words / phrases (one per line; prefix re: for regex)"
 msgstr "کلمات/عباراتِ مسدود (هر خط یکی؛ پیشوندِ re: برای regex)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "One per line. Example: viagra. Advanced: re:\\bcasino\\b for a regular expression."
 msgstr "هر خط یک مورد. مثال: viagra. حالتِ پیشرفته: برای یک عبارتِ باقاعده (regex) از پیشوندِ re: استفاده کنید، مانندِ re:\\bcasino\\b."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocked emails / domains (one per line)"
 msgstr "ایمیل‌ها/دامنه‌های مسدود (هر خط یکی)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A full address (spammer@bad.com) or a whole domain (bad.ru)."
 msgstr "یک آدرسِ کامل (spammer@bad.com) یا یک دامنه‌ی کامل (bad.ru)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Block disposable email domains"
 msgstr "مسدود کردنِ دامنه‌های ایمیلِ یکبارمصرف"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocks throwaway inboxes (mailinator.com, 10minutemail.com, …)."
 msgstr "صندوق‌های یکبارمصرف (mailinator.com، 10minutemail.com، …) را می‌بندد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject duplicate content"
 msgstr "ردِ محتوای تکراری"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blocks the same review text being posted again on the same item."
 msgstr "جلوی ثبتِ دوباره‌ی همان متنِ نظر روی همان آیتم را می‌گیرد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto-approve trusted authors"
 msgstr "تأییدِ خودکارِ نویسندگانِ معتمد"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A logged-in visitor who already has one approved review skips moderation next time (but a blocked link still rejects it)."
 msgstr "بازدیدکننده‌ی واردشده‌ای که پیش‌تر یک نظرِ تأییدشده داشته باشد، دفعه‌ی بعد بدونِ نیاز به بررسی منتشر می‌شود (اما اگر نظرش لینکِ مسدود داشته باشد، باز هم رد می‌شود)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Rate limiting"
 msgstr "محدودیتِ نرخ"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps how many reviews one person/IP can post in a short time."
 msgstr "سقفِ تعدادِ نظری که یک نفر/IP در زمانِ کوتاه می‌تواند ثبت کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Window (seconds)"
 msgstr "پنجره (ثانیه)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 600 = 10 minutes."
 msgstr "مثال: ۶۰۰ = ۱۰ دقیقه."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max submissions per window (per IP/email)"
 msgstr "حداکثر ثبت در هر پنجره (به‌ازای IP/ایمیل)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 3."
 msgstr "مثال: ۳."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max per day (0 = off)"
 msgstr "حداکثر در روز (۰ = خاموش)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 20."
 msgstr "مثال: ۲۰."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Score thresholds"
 msgstr "آستانه‌های امتیاز"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Hold threshold (score ≥ ⇒ hold)"
 msgstr "آستانه‌ی نگه‌داشتن (امتیاز ≥ ⇐ نگه‌داشتن)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 2."
 msgstr "مثال: ۲."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Spam threshold (score ≥ ⇒ spam)"
 msgstr "آستانه‌ی اسپم (امتیاز ≥ ⇐ اسپم)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 5 (one strong signal like a blocked word)."
 msgstr "مثال: ۵ (یک سیگنالِ قوی مثلِ کلمه‌ی مسدود)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "CAPTCHA provider"
 msgstr "ارائه‌دهنده‌ی CAPTCHA"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optional. hCaptcha & Cloudflare Turnstile are free and privacy-friendly; reCAPTCHA is Google’s. Keys come from the provider dashboard. Not required — other layers already protect you."
 msgstr "اختیاری. hCaptcha و Cloudflare Turnstile رایگان و حریم‌خصوصی‌پسندند؛ reCAPTCHA مالِ گوگل است. کلیدها از داشبوردِ ارائه‌دهنده می‌آیند. الزامی نیست — لایه‌های دیگر از قبل از شما محافظت می‌کنند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "None"
 msgstr "هیچ‌کدام"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Site key"
 msgstr "کلیدِ سایت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The public key from your CAPTCHA dashboard."
 msgstr "کلیدِ عمومی از داشبوردِ CAPTCHA شما."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Secret key"
 msgstr "کلیدِ مخفی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The private key (used server-side; never shown to visitors)."
 msgstr "کلیدِ خصوصی (سمتِ سرور استفاده می‌شود؛ هرگز به بازدیدکننده نشان داده نمی‌شود)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "reCAPTCHA v3 score threshold (0–1)"
 msgstr "آستانه‌ی امتیازِ reCAPTCHA v3 (۰–۱)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reject below this. Example: 0.5."
 msgstr "زیرِ این مقدار رد شود. مثال: ۰٫۵."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Use Akismet as an extra signal (if configured)"
 msgstr "استفاده از Akismet به‌عنوان یک بررسیِ کمکی (در صورتِ پیکربندی)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "If Akismet is installed with an API key, its verdict is one more spam signal."
 msgstr "اگر افزونه‌ی Akismet با یک کلیدِ API نصب و فعال باشد، نتیجه‌ی آن هم به‌عنوان یک نشانه‌ی دیگر در تشخیصِ اسپم به کار می‌رود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Automatically append to content"
 msgstr "افزودنِ خودکار به محتوا"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [advery_reviews] shortcode, the block, or the Elementor widget."
 msgstr "روشن: ویجت بعد از محتوای پست‌تایپ‌های فعال اضافه می‌شود. خاموش: خودتان آن را با شورت‌کدِ [advery_reviews]، بلاک یا ویجتِ المنتور قرار دهید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews shown per page"
 msgstr "تعدادِ نظرِ نمایش‌داده در هر صفحه"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: 10. With “Load more”/pagination, the rest load on demand."
 msgstr "مثال: ۱۰. با «نمایشِ بیشتر»/صفحه‌بندی، بقیه هنگامِ نیاز بارگذاری می‌شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Loading mode"
 msgstr "حالتِ بارگذاری"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "All = at once. Load more = a button. Pagination = numbered pages. The URL never changes and the first page is server-rendered, so SEO is unaffected."
 msgstr "همه = یکجا. نمایشِ بیشتر = یک دکمه. صفحه‌بندی = صفحه‌های شماره‌دار. URL هرگز عوض نمی‌شود و صفحه‌ی اول سمتِ سرور رندر می‌شود، پس سئو تحتِ تأثیر قرار نمی‌گیرد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "All on one page"
 msgstr "همه در یک صفحه"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "“Load more” button (AJAX)"
 msgstr "دکمه‌ی «نمایشِ بیشتر» (AJAX)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Numbered pagination (AJAX)"
 msgstr "صفحه‌بندیِ شماره‌دار (AJAX)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Replace the theme’s native comments with reviews"
 msgstr "جایگزینیِ کامنت‌های بومیِ قالب با نظرات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Takes over the comments area on enabled post types — no theme editing or page builder needed. WooCommerce products are never taken over."
 msgstr "بخشِ کامنتِ پست‌تایپ‌های فعال را در دست می‌گیرد — بدونِ نیاز به ویرایشِ قالب یا صفحه‌ساز. محصولاتِ ووکامرس هرگز در دست گرفته نمی‌شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Style the front-end review widget to match your theme — all live via CSS variables, no coding. Leave a color blank to inherit the theme’s own color."
 msgstr "ویجتِ نظرِ فرانت را با قالبت هماهنگ کن — همه به‌صورتِ زنده با CSS variables، بدونِ کدنویسی. یک رنگ را خالی بگذار تا رنگِ خودِ قالب را به ارث ببرد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Layout"
 msgstr "چیدمان"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Cards = each review in its own bordered card (modern). Classic = a simple divided list."
 msgstr "کارتی = هر نظر در کارتِ حاشیه‌دارِ خودش (مدرن). کلاسیک = فهرستِ ساده‌ی خط‌کشی‌شده."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Density"
 msgstr "فشردگی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Comfortable = roomier. Compact = tighter."
 msgstr "راحت = بازتر. فشرده = جمع‌وجورتر."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Comfortable"
 msgstr "راحت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Compact"
 msgstr "فشرده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Colors"
 msgstr "رنگ‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Accent (buttons, links)"
 msgstr "تأکید (دکمه‌ها، لینک‌ها)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Submit button, “load more”, active page. e.g. #2271b1."
 msgstr "دکمه‌ی ثبت، «نمایشِ بیشتر»، صفحه‌ی فعال. مثلاً #2271b1."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text on the accent"
 msgstr "متن روی تأکید"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text/icon on top of the accent. Usually white."
 msgstr "متن/آیکون روی رنگِ تأکید. معمولاً سفید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The rating stars. e.g. #f5a623."
 msgstr "ستاره‌های امتیاز. مثلاً #f5a623."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Text (blank = theme)"
 msgstr "متن (خالی = قالب)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Body text of reviews. Blank inherits the theme."
 msgstr "متنِ اصلیِ نظرها. خالی از قالب ارث می‌برد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Blank keeps a subtle default."
 msgstr "خالی، پیش‌فرضِ ملایم را نگه می‌دارد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Sizes"
 msgstr "اندازه‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Star size (px)"
 msgstr "اندازه‌ی ستاره (پیکسل)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Base font size (px)"
 msgstr "اندازه‌ی پایه‌ی فونت (پیکسل)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Corner radius (px)"
 msgstr "گردیِ گوشه (پیکسل)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Max width (px, 0 = full width)"
 msgstr "حداکثر عرض (پیکسل، ۰ = تمام‌عرض)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps the whole widget so the reviews and the form share one width. 0 = fill the container."
 msgstr "کلِ ویجت را محدود می‌کند تا نظرها و فرم یک عرض داشته باشند. ۰ = پر کردنِ کانتینر."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviewer avatar"
 msgstr "آواتارِ نظردهنده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "How each reviewer’s picture shows. “Gravatar” is the only option that contacts an external service — with the others the front end makes no avatar request at all."
 msgstr "عکسِ هر نظردهنده چطور نمایش داده شود. «گراواتار» تنها گزینه‌ای است که با سرویسِ خارجی تماس می‌گیرد — با بقیه‌ی گزینه‌ها فرانت هیچ درخواستِ آواتاری نمی‌فرستد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Default avatar image URL"
 msgstr "آدرسِ عکسِ آواتارِ پیش‌فرض"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Shown for every reviewer. Example: https://your-site.com/wp-content/uploads/avatar.png"
 msgstr "برای همه‌ی نظردهنده‌ها نشان داده می‌شود. مثال: https://your-site.com/wp-content/uploads/avatar.png"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Note: Gravatar loads reviewer images from gravatar.com by email — an external request on every review. Account photos in WordPress are served through Gravatar too."
 msgstr "نکته: گراواتار عکسِ نظردهنده‌ها را با ایمیل از gravatar.com می‌گیرد — یک درخواستِ خارجی برای هر نظر. عکسِ حسابِ کاربری در وردپرس هم از راهِ گراواتار سرو می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Live preview"
 msgstr "پیش‌نمایشِ زنده"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d reviews"
 msgstr "%d نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Absolutely wonderful experience — the team was friendly and helpful."
 msgstr "تجربه‌ای واقعاً عالی — تیم دوستانه و کمک‌کننده بود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI works on REAL reviews only — drafting your replies, assisting moderation, translating and summarizing. It never generates fake reviews."
 msgstr "AI فقط روی نظراتِ واقعی کار می‌کند — پیش‌نویسِ پاسخ‌های شما، کمک به بررسی، ترجمه و خلاصه‌سازی. هرگز نظرِ جعلی نمی‌سازد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tone & prompts"
 msgstr "لحن و پرامت‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Provider"
 msgstr "ارائه‌دهنده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Ollama runs locally — no API key needed. Install a model, then put its name in the Model field."
 msgstr "Ollama به‌صورتِ محلی اجرا می‌شود — به کلید API نیاز نیست. یک مدل نصب کنید، سپس نامش را در فیلدِ مدل بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Get your API key:"
 msgstr "کلید API را بگیرید:"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example models:"
 msgstr "مدل‌های نمونه:"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Full model list & docs:"
 msgstr "فهرستِ کاملِ مدل‌ها و مستندات:"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "OpenAI-compatible gateway. If the endpoint differs from the default, set it in Base URL below."
 msgstr "درگاهِ سازگار با OpenAI. اگر اندپوینت با پیش‌فرض فرق دارد، آن را در Base URLِ پایین بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "API key"
 msgstr "کلیدِ API"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Not needed for Ollama (local). Leave blank."
 msgstr "برای Ollama (محلی) لازم نیست. خالی بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Paste the secret key from your provider’s dashboard (link above). Stored on your server only."
 msgstr "کلیدِ مخفی را از داشبوردِ ارائه‌دهنده‌تان (لینکِ بالا) بچسبانید. فقط روی سرورِ شما ذخیره می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Model (blank = provider default)"
 msgstr "مدل (خالی = پیش‌فرضِ ارائه‌دهنده)"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "e.g. %s — any model name your provider supports."
 msgstr "مثلاً %s — هر نامِ مدلی که ارائه‌دهنده‌تان پشتیبانی می‌کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Daily call limit (0 = unlimited)"
 msgstr "سقفِ فراخوانیِ روزانه (۰ = نامحدود)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Caps AI cost. Example: 200/day."
 msgstr "هزینه‌ی AI را محدود می‌کند. مثال: ۲۰۰ در روز."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Base URL (optional override)"
 msgstr "Base URL (بازنویسیِ اختیاری)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Only for self-hosted / proxy / OpenAI-compatible endpoints. Example (Ollama): http://localhost:11434/v1."
 msgstr "فقط برای اندپوینت‌های self-hosted / proxy / سازگار با OpenAI. مثال (Ollama): http://localhost:11434/v1."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Save, then test the connection"
 msgstr "ذخیره کنید، سپس اتصال را تست کنید"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Click Save first, then this drafts a sample reply to confirm your key/model work."
 msgstr "اول ذخیره را بزنید، سپس این یک پاسخِ نمونه پیش‌نویس می‌کند تا درست‌کارکردنِ کلید/مدلتان تأیید شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Working. Sample reply: "
 msgstr "کار می‌کند. پاسخِ نمونه: "
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Usage"
 msgstr "مصرف"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "AI tasks run"
 msgstr "کارهای AI انجام‌شده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "today"
 msgstr "امروز"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "tokens (in+out)"
 msgstr "توکن (ورودی+خروجی)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "estimated cost"
 msgstr "هزینه‌ی تخمینی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Tokens come from the provider’s response; cost is an estimate from public list prices (0 for local models). Not a billing source of truth."
 msgstr "توکن‌ها از پاسخِ ارائه‌دهنده می‌آیند؛ هزینه تخمینی از قیمت‌های عمومی است (۰ برای مدل‌های محلی). مرجعِ صورتحساب نیست."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "About your business (context for replies)"
 msgstr "درباره‌ی کسب‌وکارِ شما (زمینه برای پاسخ‌ها)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optional. Example: “Family-run bakery in Toronto, open since 2015, known for sourdough.” Available in prompts as {business_context}."
 msgstr "اختیاری. مثال: «نانواییِ خانوادگی در تورنتو، فعال از ۲۰۱۵، معروف به نانِ خمیرترش.» در پرامت‌ها با {business_context} در دسترس است."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Variables you can use in any prompt"
 msgstr "متغیرهایی که در هر پرامت می‌توانید استفاده کنید"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Type these tokens into a prompt and they’re replaced for each review before it’s sent to the AI."
 msgstr "این توکن‌ها را در پرامت تایپ کنید تا برای هر نظر، پیش از ارسال به AI، جایگزین شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reply voice per content type"
 msgstr "لحنِ پاسخ به‌ازای نوعِ محتوا"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "If a content type is a DIRECTORY of other businesses (you are not the business), tick it — AI replies then speak as the platform, never on the business’s behalf. Leave OFF for your own products/services."
 msgstr "اگر یک نوعِ محتوا دایرکتوریِ کسب‌وکارهای دیگر است (شما آن کسب‌وکار نیستید)، تیک بزنید — پاسخ‌های AI آن‌گاه از زبانِ پلتفرم حرف می‌زنند، نه از طرفِ کسب‌وکار. برای محصولات/خدماتِ خودتان خاموش بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "“%1$s” is a third-party directory listing"
 msgstr "«%1$s» یک آیتمِ دایرکتوریِ شخصِ ثالث است"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Turn each task on/off and optionally replace its prompt (the grey placeholder is the built-in default). Use the variables above."
 msgstr "هر وظیفه را روشن/خاموش کنید و در صورتِ تمایل پرامتش را جایگزین کنید (متنِ خاکستری پیش‌فرضِ داخلی است). از متغیرهای بالا استفاده کنید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reply drafting"
 msgstr "پیش‌نویسِ پاسخ"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderation assist"
 msgstr "کمک به بررسی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Translate"
 msgstr "ترجمه"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Summarize"
 msgstr "خلاصه‌سازی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Prompt (blank = built-in default)"
 msgstr "پرامت (خالی = پیش‌فرضِ داخلی)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Outputs star-rating structured data so Google can show rating stars in search results. Works with or without the Advery Schema Plus plugin."
 msgstr "داده‌ی ساختاریافته‌ی امتیازِ ستاره‌ای تولید می‌کند تا گوگل بتواند ستاره‌های امتیاز را در نتایجِ جستجو نشان دهد. با یا بدونِ افزونه‌ی Advery Schema Plus کار می‌کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Enable rating/review schema"
 msgstr "فعال‌سازیِ اسکیمای امتیاز/نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Master switch for the JSON-LD output below."
 msgstr "کلیدِ اصلی برای خروجیِ JSON-LDِ زیر."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "How to output schema"
 msgstr "نحوه‌ی خروجیِ اسکیما"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto (recommended): uses Advery Schema Plus (detected) so ratings merge into your page’s connected @graph. Standalone: prints its own JSON-LD. Core-only: only via Advery Schema Plus. Off: none."
 msgstr "خودکار (توصیه‌شده): از Advery Schema Plus (شناسایی‌شده) استفاده می‌کند تا امتیازها در @graphِ متصلِ صفحه‌ی شما ادغام شوند. مستقل: JSON-LDِ خودش را چاپ می‌کند. فقط‌هسته: فقط از راهِ Advery Schema Plus. خاموش: هیچ."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto/Standalone: prints its own JSON-LD (Advery Schema Plus not installed, which is fine). Example: leave on “Auto”."
 msgstr "خودکار/مستقل: JSON-LDِ خودش را چاپ می‌کند (Advery Schema Plus نصب نیست، که اشکالی ندارد). مثال: روی «خودکار» بگذارید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto — core if present, else standalone"
 msgstr "خودکار — هسته اگر باشد، وگرنه مستقل"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Standalone — always our own JSON-LD"
 msgstr "مستقل — همیشه JSON-LDِ خودمان"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Core only — via Advery Schema Plus"
 msgstr "فقط‌هسته — از راهِ Advery Schema Plus"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off"
 msgstr "خاموش"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Standalone @type for non-product items"
 msgstr "‏@typeِ مستقل برای آیتم‌های غیرِ محصول"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Examples: LocalBusiness, Service, Product, Organization, Book, Recipe. Products always use “Product”."
 msgstr "مثال‌ها: LocalBusiness، Service، Product، Organization، Book، Recipe. محصولات همیشه از «Product» استفاده می‌کنند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Core-only is selected but Advery Schema Plus is not active — no schema will be output. Switch to Auto or Standalone."
 msgstr "«فقط‌هسته» انتخاب شده اما Advery Schema Plus فعال نیست — هیچ اسکیمایی خروجی نمی‌شود. به خودکار یا مستقل تغییر دهید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Merge WooCommerce native ratings into the aggregate"
 msgstr "ادغامِ امتیازهای بومیِ ووکامرس در تجمیع"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Combines your collected product reviews with WooCommerce’s own ratings into one aggregateRating in Woo’s product schema."
 msgstr "نظراتِ محصولِ جمع‌شده‌ی شما را با امتیازهای خودِ ووکامرس در یک aggregateRating در اسکیمای محصولِ ووکامرس ترکیب می‌کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Email me instantly on each new review"
 msgstr "ایمیلِ فوری روی هر نظرِ جدید"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Sends a notification the moment a review is submitted (spam is not emailed)."
 msgstr "لحظه‌ای که نظری ثبت شود یک اعلان می‌فرستد (برای اسپم ایمیل نمی‌رود)."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recipient email (blank = site admin)"
 msgstr "ایمیلِ گیرنده (خالی = مدیرِ سایت)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Example: reviews@yoursite.com. Blank uses your WordPress admin email."
 msgstr "مثال: reviews@yoursite.com. خالی از ایمیلِ مدیرِ وردپرسِ شما استفاده می‌کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Digest email"
 msgstr "ایمیلِ خلاصه"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "An optional summary of new reviews, sent on a schedule (via WP-Cron)."
 msgstr "خلاصه‌ی اختیاریِ نظراتِ جدید، که طبقِ زمان‌بندی (با WP-Cron) فرستاده می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Weekly"
 msgstr "هفتگی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Monthly"
 msgstr "ماهانه"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The whole widget container"
 msgstr "کلِ کانتینرِ ویجت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The rating summary bar (average + stars + count)"
 msgstr "نوارِ خلاصه‌ی امتیاز (میانگین + ستاره + شمارش)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The big average-rating number"
 msgstr "عددِ بزرگِ میانگینِ امتیاز"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A row of stars (in the summary and each review)"
 msgstr "یک ردیف ستاره (در خلاصه و هر نظر)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “N reviews” text"
 msgstr "متنِ «N نظر»"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The list that holds all reviews"
 msgstr "فهرستی که همه‌ی نظرها را نگه می‌دارد"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A single review"
 msgstr "یک نظرِ تکی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A reviewer’s name"
 msgstr "نامِ یک نظردهنده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A review’s title"
 msgstr "عنوانِ یک نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "A review’s body text"
 msgstr "متنِ اصلیِ یک نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The owner’s reply block under a review"
 msgstr "بلاکِ پاسخِ مالک زیرِ یک نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “write a review” form"
 msgstr "فرمِ «نوشتنِ نظر»"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The clickable rating stars in the form"
 msgstr "ستاره‌های امتیازِ قابلِ کلیک در فرم"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The submit button"
 msgstr "دکمه‌ی ثبت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The “load more” button"
 msgstr "دکمه‌ی «نمایشِ بیشتر»"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The numbered pagination bar"
 msgstr "نوارِ صفحه‌بندیِ شماره‌دار"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
 msgstr "بازنویسی‌های پیشرفته، هرجا ویجت نمایش داده شود چاپ می‌شود. برای رنگ، گردی و فاصله بهتر است تبِ ظاهر را استفاده کنید (بدونِ کد). مثال: .advery-reviews__stars { color: #e11; }"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Widget CSS classes"
 msgstr "کلاس‌های CSSِ ویجت"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Target these classes in your CSS above. Each maps to a part of the front-end widget."
 msgstr "این کلاس‌ها را در CSSِ بالا هدف بگیرید. هرکدام به بخشی از ویجتِ فرانت‌اند نگاشت می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Reviews are removed automatically when their post/term is deleted. “Purge” removes reviews whose target no longer exists; “Optimize” compacts the database tables."
 msgstr "نظرات هنگامِ حذفِ پست/ترمِ خود به‌صورتِ خودکار حذف می‌شوند. «پاک‌سازی» نظراتی را که هدفشان دیگر وجود ندارد حذف می‌کند؛ «بهینه‌سازی» جدول‌های دیتابیس را فشرده می‌کند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Purge orphaned reviews"
 msgstr "پاک‌سازیِ نظراتِ بی‌صاحب"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Optimize tables"
 msgstr "بهینه‌سازیِ جدول‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Settings saved."
 msgstr "تنظیمات ذخیره شد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Save settings"
 msgstr "ذخیره‌ی تنظیمات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "— none —"
 msgstr "— هیچ —"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import from a file (CSV / JSON)"
 msgstr "درون‌ریزی از فایل (CSV / JSON)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import review data prepared elsewhere — a spreadsheet, another platform’s export, or a dataset collected outside WordPress. After choosing a file you’ll map its columns and set a unique key so re-imports update instead of duplicating."
 msgstr "داده‌ی نظرِ آماده‌شده در جای دیگر را درون‌ریزی کنید — یک صفحه‌گسترده، خروجیِ پلتفرمی دیگر، یا داده‌ای که بیرونِ وردپرس جمع شده. بعد از انتخابِ فایل، ستون‌هایش را نگاشت می‌کنید و یک کلیدِ یکتا می‌گذارید تا درون‌ریزیِ مجدد به‌جای تکرار، به‌روزرسانی کند."
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Loaded %1$d rows, %2$d columns."
 msgstr "‏%1$d ردیف، %2$d ستون بارگذاری شد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Could not parse the file: "
 msgstr "تجزیه‌ی فایل ممکن نشد: "
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%1$d rows · %2$d columns"
 msgstr "‏%1$d ردیف · %2$d ستون"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Target (which post each review belongs to)"
 msgstr "هدف (هر نظر به کدام پست تعلق دارد)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Identify the target by"
 msgstr "شناساییِ هدف با"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Post ID"
 msgstr "شناسه‌ی پست"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Lookup (slug / title / meta)"
 msgstr "جستجو (اسلاگ / عنوان / متا)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Column holding that value"
 msgstr "ستونِ حاویِ آن مقدار"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Match by"
 msgstr "تطبیق با"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Slug"
 msgstr "اسلاگ"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Title"
 msgstr "عنوان"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Custom field (meta)"
 msgstr "فیلدِ سفارشی (متا)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Meta key"
 msgstr "کلیدِ متا"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Treat targets as"
 msgstr "درنظرگرفتنِ هدف‌ها به‌عنوانِ"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Auto (by post type)"
 msgstr "خودکار (بر اساسِ پست‌تایپ)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Posts"
 msgstr "نوشته‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Products"
 msgstr "محصولات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Unique key (for de-duplication)"
 msgstr "کلیدِ یکتا (برای حذفِ تکراری)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Source label"
 msgstr "برچسبِ منبع"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "e.g. google, trustpilot — stored with each imported review."
 msgstr "مثلاً google، trustpilot — با هر نظرِ درون‌ریزی‌شده ذخیره می‌شود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Column with the source review id"
 msgstr "ستونِ شناسه‌ی نظرِ منبع"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Field mapping"
 msgstr "نگاشتِ فیلدها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Author name"
 msgstr "نامِ نویسنده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Author email"
 msgstr "ایمیلِ نویسنده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Review text"
 msgstr "متنِ نظر"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Date"
 msgstr "تاریخ"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Default status"
 msgstr "وضعیتِ پیش‌فرض"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Update reviews already imported (same source + id)"
 msgstr "به‌روزرسانیِ نظراتِ قبلاً درون‌ریزی‌شده (همان منبع + شناسه)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Without a unique id column, re-imports can create duplicates."
 msgstr "بدونِ ستونِ شناسه‌ی یکتا، درون‌ریزیِ مجدد ممکن است تکراری بسازد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Load a file and choose the target column first."
 msgstr "اول یک فایل بارگذاری کنید و ستونِ هدف را انتخاب کنید."
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Imported %1$d, updated %2$d, skipped %3$d."
 msgstr "درون‌ریزی %1$d، به‌روزرسانی %2$d، ردشده %3$d."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import rows"
 msgstr "درون‌ریزیِ ردیف‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "imported %1$d, updated %2$d, skipped %3$d…"
 msgstr "درون‌ریزی %1$d، به‌روزرسانی %2$d، ردشده %3$d…"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
 msgstr "نظرات را به Advery Reviews وارد یا از آن خارج کنید. همه‌چیزِ اینجا برای اجرای چندباره امن است — درون‌ریزی‌ها داده‌ی شما را کپی می‌کنند و هرگز تکراری نمی‌سازند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import existing comments"
 msgstr "درون‌ریزیِ کامنت‌های موجود"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
 msgstr "کامنت‌های فعلیِ وردپرس و نظراتِ ووکامرس را به Advery Reviews بیاورید. نسخه‌های اصلی سرِ جایشان می‌مانند و اجرای دوباره فقط به‌روزرسانی می‌کند — هرگز تکراری نمی‌سازد."
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d WordPress comments"
 msgstr "%d کامنتِ وردپرس"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d WooCommerce reviews"
 msgstr "%d نظرِ ووکامرس"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d already imported"
 msgstr "%d از قبل درون‌ریزی‌شده"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Include WordPress post comments (%d)"
 msgstr "شاملِ کامنت‌های نوشته‌ی وردپرس (%d)"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Include WooCommerce product reviews (%d)"
 msgstr "شاملِ نظراتِ محصولِ ووکامرس (%d)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Update items already imported"
 msgstr "به‌روزرسانیِ آیتم‌های قبلاً درون‌ریزی‌شده"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "On: re-importing refreshes reviews you imported before. Off: they’re skipped."
 msgstr "روشن: درون‌ریزیِ مجدد نظراتی که قبلاً وارد کردید را تازه می‌کند. خاموش: رد می‌شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Delete the original comments after importing"
 msgstr "حذفِ کامنت‌های اصلی پس از درون‌ریزی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off (recommended): keep a copy in the comment tables. On: permanently remove the source comments once imported."
 msgstr "خاموش (توصیه‌شده): یک نسخه در جدول‌های کامنت نگه دارید. روشن: کامنت‌های منبع پس از درون‌ریزی برای همیشه حذف می‌شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "The original comments will be permanently deleted after import."
 msgstr "کامنت‌های اصلی پس از درون‌ریزی برای همیشه حذف خواهند شد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Delete the source comments after importing? This cannot be undone."
 msgstr "کامنت‌های منبع بعد از درون‌ریزی حذف شوند؟ این کار قابلِ بازگشت نیست."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import now"
 msgstr "همین حالا درون‌ریزی کن"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "imported %1$d · updated %2$d · skipped %3$d…"
 msgstr "درون‌ریزی %1$d · به‌روزرسانی %2$d · ردشده %3$d…"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Export reviews back to comments"
 msgstr "برون‌بریِ نظرات به کامنت‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Recreate native WordPress / WooCommerce comments from the reviews you collected here — handy if another tool reads the comment tables. Safe to run repeatedly; it won’t loop or duplicate."
 msgstr "از نظراتی که اینجا جمع کرده‌اید کامنت‌های بومیِ وردپرس / ووکامرس را بازسازی می‌کند — وقتی ابزارِ دیگری جدول‌های کامنت را می‌خواند مفید است. برای اجرای مکرر امن است؛ حلقه یا تکرار نمی‌سازد."
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d reviews eligible"
 msgstr "%d نظرِ واجدِ شرایط"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "%d already exported"
 msgstr "%d از قبل برون‌بری‌شده"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "Exported %d reviews to comments."
 msgstr "%d نظر به کامنت‌ها برون‌بری شد."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Export to comments"
 msgstr "برون‌بری به کامنت‌ها"
 
-#: build/index.js:2
+#: build/index.js:4
 #, js-format
 msgid "exported %d…"
 msgstr "برون‌بری %d…"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Backup (CSV)"
 msgstr "پشتیبان (CSV)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Download every review as a CSV file — a spreadsheet you can keep as a backup or move to another site."
 msgstr "همه‌ی نظرات را به‌صورتِ فایلِ CSV دانلود کنید — صفحه‌گسترده‌ای که می‌توانید به‌عنوانِ پشتیبان نگه دارید یا به سایتِ دیگری منتقل کنید."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Download CSV"
 msgstr "دانلودِ CSV"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Failed to load."
 msgstr "بارگذاری ناموفق بود."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Total"
 msgstr "کل"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Moderate and reply to reviews"
 msgstr "بررسی و پاسخ به نظرات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "See which pages and businesses get the most reviews"
 msgstr "ببینید کدام صفحه‌ها و کسب‌وکارها بیشترین نظر را می‌گیرند"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Configure how reviews work"
 msgstr "پیکربندیِ نحوه‌ی کارِ نظرات"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Import, export and migrate reviews"
 msgstr "درون‌ریزی، برون‌بری و مهاجرتِ نظرات"
 
@@ -1967,54 +1973,180 @@ msgstr "درجِ لینک در دیدگاه‌ها مجاز نیست."
 msgid "Your comment was blocked by the site’s content policy."
 msgstr "دیدگاهِ شما بر اساسِ سیاستِ محتوایی سایت مسدود شد."
 
-#: includes/Frontend/CommentGuard.php:72
+#: includes/Frontend/CommentGuard.php:73
 msgid "Comments are closed."
 msgstr "امکانِ ثبتِ دیدگاه بسته است."
 
-#: includes/Frontend/CommentGuard.php:73
+#: includes/Frontend/CommentGuard.php:74
 msgid "Comments closed"
 msgstr "دیدگاه‌ها بسته است"
 
-#: includes/Frontend/CommentGuard.php:88
+#: includes/Frontend/CommentGuard.php:108
 msgid "Your comment could not be accepted."
 msgstr "دیدگاهِ شما پذیرفته نشد."
 
-#: includes/Frontend/CommentGuard.php:91
+#: includes/Frontend/CommentGuard.php:111
 msgid "Comment blocked"
 msgstr "دیدگاه مسدود شد"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Native WordPress comments"
 msgstr "دیدگاه‌های بومیِ وردپرس"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Guard the built-in WordPress comment form"
 msgstr "محافظت از فرمِ دیدگاهِ داخلیِ وردپرس"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Off — don’t touch native comments"
 msgstr "خاموش — دیدگاه‌های بومی دست‌نخورده می‌مانند"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Filter — apply the anti-spam rules to native comments"
 msgstr "فیلتر — اعمالِ قوانینِ ضدِاسپم روی دیدگاه‌های بومی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Disable — refuse all native comments"
 msgstr "غیرفعال — ردِ همه‌ی دیدگاه‌های بومی"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Spam bots POST straight to wp-comments-post.php, bypassing your review form — and “comments closed” is per-post, so any open post still accepts them. “Filter” runs the link, blocked-word and blocked/disposable-email rules above on native comments too (blocked → rejected, links/throwaway emails → spam or held). “Disable” refuses every native comment and hides the comment form site-wide. Logged-in users who can moderate comments are never blocked."
 msgstr "ربات‌های اسپم معمولاً بدونِ بازکردنِ صفحه یا فرمِ نظر، مستقیماً به آدرسِ wp-comments-post.php درخواستِ POST می‌فرستند و از این راه فرمِ نظرِ شما را دور می‌زنند؛ ضمنِ اینکه «بستنِ دیدگاه» در وردپرس برای هر نوشته جداگانه تنظیم می‌شود، پس هر نوشته‌ای که دیدگاهش باز مانده باشد همچنان دیدگاه می‌پذیرد. گزینه‌ی «فیلتر» همان قوانینِ بالا — لینک، واژه‌های ممنوع و ایمیل‌های ممنوع یا یک‌بارمصرف — را روی دیدگاه‌های بومیِ وردپرس هم اعمال می‌کند: موردِ ممنوع رد می‌شود و لینک یا ایمیلِ یک‌بارمصرف به اسپم یا صفِ بررسی می‌رود. گزینه‌ی «غیرفعال» همه‌ی دیدگاه‌های بومی را رد کرده و فرمِ دیدگاه را در کلِّ سایت پنهان می‌کند. کاربرانِ واردشده‌ای که دسترسیِ مدیریتِ دیدگاه‌ها را دارند هرگز مسدود نمی‌شوند."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Detects real, marked-up and obfuscated links (http://…, www., <a>, [url], 1.2.3.4, “example dot com”, “example[.]com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
 msgstr "لینک‌های واقعی، تگ‌دار و مبهم‌شده را در متنِ نظر، عنوان و نام تشخیص می‌دهد (http://…، www.، <a>، [url]، 1.2.3.4، «example dot com»، «example[.]com»). «رد» آن‌ها را برای همه مسدود می‌کند؛ «اسپم»/«در انتظار» آن‌ها را پنهان نگه می‌دارد تا خودت بررسی کنی."
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Strict link endings / patterns (optional)"
 msgstr "پسوندها/الگوهای سخت‌گیرانه‌ی لینک (اختیاری)"
 
-#: build/index.js:2
+#: build/index.js:4
 msgid "Leave empty for the safe default. One per line. A domain ending — .com, ru, .co.uk — makes a plain “word.ending” (e.g. shop.com) count as a link too. Advanced: a line starting with re: is a regular expression, e.g. re:\\bt\\.me/. Use this only if bots are posting bare domains like “myshop.ru” without http:// — it can also flag look-alikes (a sentence with “file.com” in it)."
 msgstr "برای حفظِ پیش‌فرضِ امن، این فیلد را خالی بگذارید. هر خط یک مورد. یک پسوندِ دامنه — مانندِ ‎.com‎ یا ‎ru‎ یا ‎.co.uk‎ — باعث می‌شود «کلمه.پسوند»ِ ساده (مثلِ ‎shop.com‎) هم لینک شمرده شود. حالتِ پیشرفته: خطی که با ‎re:‎ آغاز شود یک عبارتِ باقاعده (regex) است، مثلِ ‎re:\\bt\\.me/‎. این گزینه را فقط زمانی به کار ببرید که ربات‌ها دامنه‌های خام مانندِ «myshop.ru» را بدونِ ‎http://‎ می‌فرستند — توجه کنید که ممکن است مواردِ مشابه را هم علامت بزند (جمله‌ای که در آن «file.com» آمده باشد)."
+
+#: includes/Admin/AdminPage.php:70
+#: includes/Admin/AdminPage.php:71
+#: build/index.js:4
+msgid "Spam log"
+msgstr "لاگِ اسپم"
+
+#: build/index.js:2
+msgid "Review form"
+msgstr "فرمِ نظر"
+
+#: build/index.js:2
+msgid "Native comment"
+msgstr "دیدگاهِ بومی"
+
+#: build/index.js:2
+msgid "Rejected"
+msgstr "ردشده"
+
+#: build/index.js:2
+msgid "Held"
+msgstr "در انتظار"
+
+#: build/index.js:2
+msgid "Permanently delete every row in the spam log? This cannot be undone."
+msgstr "همه‌ی ردیف‌های لاگِ اسپم برای همیشه حذف شوند؟ این کار قابلِ بازگشت نیست."
+
+#: build/index.js:2
+msgid "Spam log cleared."
+msgstr "لاگِ اسپم پاک شد."
+
+#: build/index.js:2
+msgid "The spam log is turned off, so nothing new is being recorded. Turn on “Keep a spam log” under Settings → Anti-spam to start logging blocked submissions."
+msgstr "لاگِ اسپم خاموش است، پس چیزِ جدیدی ثبت نمی‌شود. برای شروعِ ثبتِ مواردِ مسدودشده، گزینه‌ی «نگه‌داشتنِ لاگِ اسپم» را در تنظیمات ← ضدِاسپم روشن کنید."
+
+#: build/index.js:2
+msgid "Open settings"
+msgstr "بازکردنِ تنظیمات"
+
+#: build/index.js:2
+#: build/index.js:3
+msgid "Source"
+msgstr "منبع"
+
+#: build/index.js:2
+msgid "All sources"
+msgstr "همه‌ی منابع"
+
+#: build/index.js:2
+#: build/index.js:3
+msgid "Result"
+msgstr "نتیجه"
+
+#: build/index.js:2
+msgid "All results"
+msgstr "همه‌ی نتایج"
+
+#: build/index.js:2
+msgid "Search (text, IP, email, reason)"
+msgstr "جستجو (متن، IP، ایمیل، دلیل)"
+
+#: build/index.js:2
+msgid "Clear log"
+msgstr "پاک‌کردنِ لاگ"
+
+#: build/index.js:2
+msgid "Nothing logged yet. Blocked, held, or spam submissions will appear here."
+msgstr "هنوز چیزی ثبت نشده. مواردِ مسدود، در انتظار یا اسپم اینجا نمایش داده می‌شوند."
+
+#: build/index.js:2
+msgid "No entries."
+msgstr "موردی نیست."
+
+#. translators: %d: number of log rows
+#: build/index.js:3
+#, js-format
+msgid "%d entries"
+msgstr "%d مورد"
+
+#: build/index.js:3
+msgid "When"
+msgstr "زمان"
+
+#: build/index.js:3
+msgid "Target"
+msgstr "هدف"
+
+#: build/index.js:3
+msgid "IP"
+msgstr "IP"
+
+#: build/index.js:3
+msgid "Reason"
+msgstr "دلیل"
+
+#: build/index.js:3
+msgid "Content"
+msgstr "محتوا"
+
+#: build/index.js:4
+msgid "Keep a spam log"
+msgstr "نگه‌داشتنِ لاگِ اسپم"
+
+#: build/index.js:4
+msgid "Records each blocked, held, or spam-marked submission (from the review form and native comments) so you can see what was filtered and why. It stores the visitor’s IP and the submitted text, so it is off by default; the rows are removed automatically after the retention period below. View them under the “Spam log” menu."
+msgstr "هر موردِ مسدود، در انتظار یا علامت‌خورده به‌عنوان اسپم را (از فرمِ نظر و دیدگاه‌های بومی) ثبت می‌کند تا ببینید چه چیزی و چرا فیلتر شده است. چون IP و متنِ ارسالیِ بازدیدکننده را ذخیره می‌کند، به‌صورتِ پیش‌فرض خاموش است؛ ردیف‌ها پس از دوره‌ی نگهداریِ زیر به‌صورتِ خودکار حذف می‌شوند. آن‌ها را از منویِ «لاگِ اسپم» ببینید."
+
+#: build/index.js:4
+msgid "Keep entries for (days)"
+msgstr "مدتِ نگهداریِ ردیف‌ها (روز)"
+
+#: build/index.js:4
+msgid "A daily task removes anything older. Example: 10."
+msgstr "یک کارِ روزانه هر ردیفِ قدیمی‌تر را حذف می‌کند. مثال: ۱۰."
+
+#: build/index.js:4
+msgid "Rows per page in the admin (reviews & spam log)"
+msgstr "تعدادِ ردیف در هر صفحه‌ی پیشخوان (نظرات و لاگِ اسپم)"
+
+#: build/index.js:4
+msgid "How many rows the admin Reviews list and the Spam log show per page. Example: 20."
+msgstr "لیستِ نظرات و لاگِ اسپم در پیشخوان در هر صفحه چند ردیف نشان دهند. مثال: ۲۰."
+
+#: build/index.js:4
+msgid "See what the anti-spam filter blocked and why"
+msgstr "ببینید فیلترِ ضدِاسپم چه چیزی را و چرا مسدود کرده است"

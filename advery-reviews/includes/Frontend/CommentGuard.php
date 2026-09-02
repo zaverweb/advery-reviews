@@ -3,6 +3,7 @@ namespace Advery\Reviews\Frontend;
 
 use Advery\Reviews\Support\Settings;
 use Advery\Reviews\AntiSpam\SpamGuard;
+use Advery\Reviews\AntiSpam\SpamLog;
 
 /**
  * Guards WordPress's OWN native comment form. Our review form is already
@@ -83,6 +84,25 @@ class CommentGuard {
 				'author_url'   => (string) ( $commentdata['comment_author_url'] ?? '' ),
 			]
 		);
+
+		// Diagnostic log (opt-in) of anything we stop or hold on the native form.
+		if ( in_array( $result['outcome'], [ 'reject', 'spam', 'hold' ], true ) ) {
+			$post_id = (int) ( $commentdata['comment_post_ID'] ?? 0 );
+			$pt      = $post_id ? get_post_type( $post_id ) : '';
+			SpamLog::record(
+				[
+					'source'       => 'comment',
+					'outcome'      => $result['outcome'],
+					'object_type'  => ( 'product' === $pt ) ? 'product' : 'post',
+					'object_id'    => $post_id,
+					'author_name'  => (string) ( $commentdata['comment_author'] ?? '' ),
+					'author_email' => (string) ( $commentdata['comment_author_email'] ?? '' ),
+					'author_ip'    => (string) ( $commentdata['comment_author_IP'] ?? '' ),
+					'reason'       => implode( ', ', (array) ( $result['reasons'] ?? [] ) ),
+					'content'      => (string) ( $commentdata['comment_content'] ?? '' ),
+				]
+			);
+		}
 
 		if ( 'reject' === $result['outcome'] ) {
 			$message = $result['message'] ?? __( 'Your comment could not be accepted.', 'advery-reviews' );

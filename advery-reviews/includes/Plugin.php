@@ -40,6 +40,9 @@ class Plugin {
 		// Guard the native WP comment form against direct-POST spam (or disable it).
 		( new CommentGuard() )->register();
 
+		// Diagnostic spam log + its daily auto-purge cron (opt-in; idle when off).
+		( new \Advery\Reviews\AntiSpam\SpamLog() )->register();
+
 		// Table hygiene: remove reviews when their post/term is deleted.
 		( new Maintenance() )->register();
 

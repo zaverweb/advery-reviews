@@ -10,7 +10,7 @@ namespace Advery\Reviews\Database;
 class Installer {
 
 	const DB_VERSION_OPTION = 'advery_reviews_db_version';
-	const DB_VERSION        = '1.4.0';
+	const DB_VERSION        = '1.5.0';
 
 	public static function reviews_table() {
 		global $wpdb;
@@ -22,12 +22,18 @@ class Installer {
 		return $wpdb->prefix . 'advery_review_stats';
 	}
 
+	public static function spam_log_table() {
+		global $wpdb;
+		return $wpdb->prefix . 'advery_review_spam_log';
+	}
+
 	public static function install() {
 		global $wpdb;
 
 		$charset_collate = $wpdb->get_charset_collate();
 		$reviews         = self::reviews_table();
 		$stats           = self::stats_table();
+		$spam_log        = self::spam_log_table();
 
 		$sql_reviews = "CREATE TABLE {$reviews} (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -67,9 +73,31 @@ class Installer {
 			PRIMARY KEY  (object_type, object_id)
 		) {$charset_collate};";
 
+		// Diagnostic log of blocked/held submissions (opt-in, auto-purged). Kept
+		// in its own table so it never touches the lean reviews table and can be
+		// truncated freely. Indexed by time (for the paged admin view + purge) and
+		// by IP (to spot a repeat offender).
+		$sql_spam_log = "CREATE TABLE {$spam_log} (
+			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			source varchar(20) NOT NULL DEFAULT 'review',
+			outcome varchar(20) NOT NULL DEFAULT 'spam',
+			object_type varchar(20) NOT NULL DEFAULT '',
+			object_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			author_name varchar(150) NOT NULL DEFAULT '',
+			author_email varchar(200) NOT NULL DEFAULT '',
+			author_ip varchar(45) NOT NULL DEFAULT '',
+			reason varchar(191) NOT NULL DEFAULT '',
+			content text NOT NULL,
+			PRIMARY KEY  (id),
+			KEY created (created_at),
+			KEY ip (author_ip)
+		) {$charset_collate};";
+
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql_reviews );
 		dbDelta( $sql_stats );
+		dbDelta( $sql_spam_log );
 
 		update_option( self::DB_VERSION_OPTION, self::DB_VERSION );
 	}

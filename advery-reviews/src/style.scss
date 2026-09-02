@@ -650,3 +650,65 @@
 	.advery-rv-rep-toolbar select { max-width: none; }
 	.advery-rv-rep-rankrow__count { align-self: flex-start; }
 }
+
+/* Spam log */
+.advery-rv-spamlog__bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: flex-end;
+	margin-bottom: 14px;
+}
+.advery-rv-spamlog__bar .components-base-control { margin-bottom: 0; }
+.advery-rv-spamlog__bar-actions {
+	display: flex;
+	gap: 8px;
+	margin-left: auto;
+}
+.advery-rv-tablewrap {
+	overflow-x: auto;
+	background: var(--rv-surface);
+	border: 1px solid var(--rv-border);
+	border-radius: var(--rv-radius);
+	box-shadow: var(--rv-shadow);
+}
+.advery-rv-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+.advery-rv-table th,
+.advery-rv-table td {
+	text-align: start;
+	padding: 9px 12px;
+	border-bottom: 1px solid var(--rv-border);
+	vertical-align: top;
+}
+.advery-rv-table th {
+	background: var(--rv-soft);
+	color: var(--rv-muted);
+	font-weight: 600;
+	white-space: nowrap;
+}
+.advery-rv-table tr:last-child td { border-bottom: 0; }
+.advery-rv-spamlog__when { white-space: nowrap; color: var(--rv-muted); }
+.advery-rv-spamlog__ip { font-family: monospace; white-space: nowrap; }
+.advery-rv-spamlog__reason { color: var(--rv-muted); }
+.advery-rv-spamlog__content {
+	max-width: 340px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.advery-rv-muted { color: var(--rv-muted); }
+.advery-rv-pill {
+	display: inline-block;
+	padding: 2px 9px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.6;
+}
+.advery-rv-pill.is-reject { background: #fde8e8; color: #9b1c1c; }
+.advery-rv-pill.is-spam { background: #fde7d8; color: #9a5b00; }
+.advery-rv-pill.is-hold { background: #e6f0fb; color: #135e96; }

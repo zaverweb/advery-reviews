@@ -14,6 +14,7 @@ class AdminPage {
 
 	const MENU_SLUG      = 'advery-reviews';
 	const REPORTS_SLUG   = 'advery-reviews-reports';
+	const SPAMLOG_SLUG   = 'advery-reviews-spamlog';
 	const SETTINGS_SLUG  = 'advery-reviews-settings';
 	const MIGRATION_SLUG = 'advery-reviews-migration';
 
@@ -61,6 +62,17 @@ class AdminPage {
 			self::REPORTS_SLUG,
 			function () {
 				$this->render_root( 'reports' );
+			}
+		);
+
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Spam log', 'advery-reviews' ),
+			__( 'Spam log', 'advery-reviews' ),
+			'manage_options',
+			self::SPAMLOG_SLUG,
+			function () {
+				$this->render_root( 'spamlog' );
 			}
 		);
 
@@ -122,6 +134,7 @@ class AdminPage {
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'menuSlug'  => self::MENU_SLUG,
 				'reportsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::REPORTS_SLUG ) ),
+				'spamLogUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::SPAMLOG_SLUG ) ),
 				'settingsUrl'  => esc_url_raw( admin_url( 'admin.php?page=' . self::SETTINGS_SLUG ) ),
 				'migrationUrl' => esc_url_raw( admin_url( 'admin.php?page=' . self::MIGRATION_SLUG ) ),
 				'reviewsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::MENU_SLUG ) ),

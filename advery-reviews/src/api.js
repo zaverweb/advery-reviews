@@ -34,6 +34,13 @@ export const api = {
 		).toString();
 		return apiFetch( { path: `${ base }/reports${ q ? '?' + q : '' }` } );
 	},
+	spamLog: ( params ) => {
+		const q = new URLSearchParams(
+			Object.entries( params || {} ).filter( ( [ , v ] ) => v !== '' && v != null )
+		).toString();
+		return apiFetch( { path: `${ base }/spam-log${ q ? '?' + q : '' }` } );
+	},
+	spamLogClear: () => apiFetch( { path: `${ base }/spam-log/clear`, method: 'POST' } ),
 	searchObjects: ( q ) =>
 		apiFetch( { path: `${ base }/objects?q=${ encodeURIComponent( q ) }` } ),
 	migrationPreview: () => apiFetch( { path: `${ base }/migration/preview` } ),
