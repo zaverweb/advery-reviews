@@ -12,6 +12,14 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.31.1 (Persian translation clarity pass — Anti-spam settings)
+- **Rewrote confusing Persian help/labels in the Anti-spam section** with clearer wording and a consistent, polite tone (the user flagged several as hard to follow).
+- **Fixed a real display bug:** the Persian for the “Blocked words / phrases” help had an exploded backslash run (`re:\\\\…\\bcasino…`) instead of `re:\bcasino\b`, so the regex example rendered as gibberish. Now correct.
+- **Fixed a misleading translation:** “trusted authors skip moderation next time” was translated as if the review *is rejected* next time; it now correctly reads “is published next time without needing review (but a blocked link still rejects it)”.
+- **Consistent tone for the native-comment options:** the Off/Filter/Disable labels and the strict-link help used informal commands (“don’t touch”, “apply”, “leave empty”); rephrased as neutral, polite noun phrases matching the rest of the panel.
+- **Clearer Akismet + native-comment-guard descriptions.**
+- Translation-only (English source unchanged); regenerated `.mo` + the React-admin `.json`. Verified the exact new strings are present in both the compiled MO and the served JSON.
+
 ### Version 0.31.0 (Configurable strict link endings / patterns — queue item A)
 - **Re-adds opt-in strict link blocking** that was removed in v0.29.1, but **owner-controlled** so it can’t cause silent false positives. A new **Anti-spam → Links → “Strict link endings / patterns (optional)”** field lets the owner list, one per line:
   - a **domain ending** — `.com`, `ru`, `.co.uk` — which makes a plain `word.ending` (e.g. `shop.com`, `myshop.ru`) count as a link even without `http://`/`www.`;

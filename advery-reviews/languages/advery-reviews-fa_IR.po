@@ -1032,7 +1032,7 @@ msgstr "کلمات/عباراتِ مسدود (هر خط یکی؛ پیشوندِ 
 
 #: build/index.js:2
 msgid "One per line. Example: viagra. Advanced: re:\\bcasino\\b for a regular expression."
-msgstr "هر خط یکی. مثال: viagra. پیشرفته: re:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\bcasino\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\b برای یک عبارتِ باقاعده."
+msgstr "هر خط یک مورد. مثال: viagra. حالتِ پیشرفته: برای یک عبارتِ باقاعده (regex) از پیشوندِ re: استفاده کنید، مانندِ re:\\bcasino\\b."
 
 #: build/index.js:2
 msgid "Blocked emails / domains (one per line)"
@@ -1064,7 +1064,7 @@ msgstr "تأییدِ خودکارِ نویسندگانِ معتمد"
 
 #: build/index.js:2
 msgid "A logged-in visitor who already has one approved review skips moderation next time (but a blocked link still rejects it)."
-msgstr "بازدیدکننده‌ی واردشده‌ای که یک نظرِ تأییدشده دارد دفعه‌ی بعد از بررسی رد می‌شود (اما لینکِ مسدود همچنان باعثِ ردش می‌شود)."
+msgstr "بازدیدکننده‌ی واردشده‌ای که پیش‌تر یک نظرِ تأییدشده داشته باشد، دفعه‌ی بعد بدونِ نیاز به بررسی منتشر می‌شود (اما اگر نظرش لینکِ مسدود داشته باشد، باز هم رد می‌شود)."
 
 #: build/index.js:2
 msgid "Rate limiting"
@@ -1156,11 +1156,11 @@ msgstr "زیرِ این مقدار رد شود. مثال: ۰٫۵."
 
 #: build/index.js:2
 msgid "Use Akismet as an extra signal (if configured)"
-msgstr "استفاده از Akismet به‌عنوانِ سیگنالِ اضافه (اگر پیکربندی شده باشد)"
+msgstr "استفاده از Akismet به‌عنوان یک بررسیِ کمکی (در صورتِ پیکربندی)"
 
 #: build/index.js:2
 msgid "If Akismet is installed with an API key, its verdict is one more spam signal."
-msgstr "اگر Akismet با کلید API نصب باشد، حکمِ آن یک سیگنالِ اسپمِ دیگر است."
+msgstr "اگر افزونه‌ی Akismet با یک کلیدِ API نصب و فعال باشد، نتیجه‌ی آن هم به‌عنوان یک نشانه‌ی دیگر در تشخیصِ اسپم به کار می‌رود."
 
 #: build/index.js:2
 msgid "Automatically append to content"
@@ -1993,19 +1993,19 @@ msgstr "محافظت از فرمِ دیدگاهِ داخلیِ وردپرس"
 
 #: build/index.js:2
 msgid "Off — don’t touch native comments"
-msgstr "خاموش — به دیدگاه‌های بومی دست نزن"
+msgstr "خاموش — دیدگاه‌های بومی دست‌نخورده می‌مانند"
 
 #: build/index.js:2
 msgid "Filter — apply the anti-spam rules to native comments"
-msgstr "فیلتر — قوانینِ ضدِاسپم را روی دیدگاه‌های بومی هم اعمال کن"
+msgstr "فیلتر — اعمالِ قوانینِ ضدِاسپم روی دیدگاه‌های بومی"
 
 #: build/index.js:2
 msgid "Disable — refuse all native comments"
-msgstr "غیرفعال — همه‌ی دیدگاه‌های بومی را رد کن"
+msgstr "غیرفعال — ردِ همه‌ی دیدگاه‌های بومی"
 
 #: build/index.js:2
 msgid "Spam bots POST straight to wp-comments-post.php, bypassing your review form — and “comments closed” is per-post, so any open post still accepts them. “Filter” runs the link, blocked-word and blocked/disposable-email rules above on native comments too (blocked → rejected, links/throwaway emails → spam or held). “Disable” refuses every native comment and hides the comment form site-wide. Logged-in users who can moderate comments are never blocked."
-msgstr "ربات‌های اسپم مستقیماً به wp-comments-post.php درخواستِ POST می‌فرستند و فرمِ نظرِ شما را دور می‌زنند — و «بستنِ دیدگاه» برای هر نوشته جداگانه است، پس هر نوشته‌ی باز همچنان دیدگاه می‌پذیرد. «فیلتر» قوانینِ لینک، واژه‌های ممنوع و ایمیل‌های ممنوع/موقتیِ بالا را روی دیدگاه‌های بومی هم اجرا می‌کند (ممنوع → رد، لینک/ایمیلِ یک‌بارمصرف → اسپم یا در انتظار). «غیرفعال» هر دیدگاهِ بومی را رد کرده و فرمِ دیدگاه را در کلِّ سایت پنهان می‌کند. کاربرانِ واردشده‌ای که اجازه‌ی مدیریتِ دیدگاه‌ها را دارند هرگز مسدود نمی‌شوند."
+msgstr "ربات‌های اسپم معمولاً بدونِ بازکردنِ صفحه یا فرمِ نظر، مستقیماً به آدرسِ wp-comments-post.php درخواستِ POST می‌فرستند و از این راه فرمِ نظرِ شما را دور می‌زنند؛ ضمنِ اینکه «بستنِ دیدگاه» در وردپرس برای هر نوشته جداگانه تنظیم می‌شود، پس هر نوشته‌ای که دیدگاهش باز مانده باشد همچنان دیدگاه می‌پذیرد. گزینه‌ی «فیلتر» همان قوانینِ بالا — لینک، واژه‌های ممنوع و ایمیل‌های ممنوع یا یک‌بارمصرف — را روی دیدگاه‌های بومیِ وردپرس هم اعمال می‌کند: موردِ ممنوع رد می‌شود و لینک یا ایمیلِ یک‌بارمصرف به اسپم یا صفِ بررسی می‌رود. گزینه‌ی «غیرفعال» همه‌ی دیدگاه‌های بومی را رد کرده و فرمِ دیدگاه را در کلِّ سایت پنهان می‌کند. کاربرانِ واردشده‌ای که دسترسیِ مدیریتِ دیدگاه‌ها را دارند هرگز مسدود نمی‌شوند."
 
 #: build/index.js:2
 msgid "Detects real, marked-up and obfuscated links (http://…, www., <a>, [url], 1.2.3.4, “example dot com”, “example[.]com”) across review, title and name. “Reject” blocks them for everyone; “Spam”/“Hold” keep them hidden for you to review."
@@ -2017,4 +2017,4 @@ msgstr "پسوندها/الگوهای سخت‌گیرانه‌ی لینک (اخ�
 
 #: build/index.js:2
 msgid "Leave empty for the safe default. One per line. A domain ending — .com, ru, .co.uk — makes a plain “word.ending” (e.g. shop.com) count as a link too. Advanced: a line starting with re: is a regular expression, e.g. re:\\bt\\.me/. Use this only if bots are posting bare domains like “myshop.ru” without http:// — it can also flag look-alikes (a sentence with “file.com” in it)."
-msgstr "برای پیش‌فرضِ امن خالی بگذار. هر خط یک مورد. یک پسوندِ دامنه — ‎.com‎، ru‎، ‎.co.uk‎ — باعث می‌شود «کلمه.پسوند»ِ ساده (مثلِ shop.com) هم لینک شمرده شود. پیشرفته: خطی که با ‎re:‎ شروع شود یک عبارتِ باقاعده (regex) است، مثلِ ‎re:\\bt\\.me/‎. این را فقط وقتی به کار ببر که ربات‌ها دامنه‌های خام مثلِ «myshop.ru» را بدونِ http:// می‌فرستند — ممکن است شبیه‌ها را هم علامت بزند (جمله‌ای که «file.com» داشته باشد)."
+msgstr "برای حفظِ پیش‌فرضِ امن، این فیلد را خالی بگذارید. هر خط یک مورد. یک پسوندِ دامنه — مانندِ ‎.com‎ یا ‎ru‎ یا ‎.co.uk‎ — باعث می‌شود «کلمه.پسوند»ِ ساده (مثلِ ‎shop.com‎) هم لینک شمرده شود. حالتِ پیشرفته: خطی که با ‎re:‎ آغاز شود یک عبارتِ باقاعده (regex) است، مثلِ ‎re:\\bt\\.me/‎. این گزینه را فقط زمانی به کار ببرید که ربات‌ها دامنه‌های خام مانندِ «myshop.ru» را بدونِ ‎http://‎ می‌فرستند — توجه کنید که ممکن است مواردِ مشابه را هم علامت بزند (جمله‌ای که در آن «file.com» آمده باشد)."
