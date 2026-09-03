@@ -1,18 +1,18 @@
 # Copyright (C) 2026 Zaver Web
-# This file is distributed under the same license as the Advery Reviews plugin.
+# This file is distributed under the same license as the Zaver Web Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.32.0\n"
+"Project-Id-Version: Zaver Web Reviews 0.33.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-03T02:43:43+00:00\n"
+"POT-Creation-Date: 2026-09-03T04:11:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: advery-reviews\n"
+"X-Domain: zaverweb-reviews\n"
 
 #. Plugin Name of the plugin
 #: advery-reviews.php
@@ -23,12 +23,13 @@ msgstr ""
 #: includes/Integrations/Elementor/ReviewsWidget.php:26
 #: assets/block.js:13
 #: build/index.js:4
-msgid "Advery Reviews"
+msgid "Zaver Web Reviews"
 msgstr ""
 
 #. Plugin URI of the plugin
+#. Author URI of the plugin
 #: advery-reviews.php
-msgid "https://advery.ca"
+msgid "https://zaverweb.com"
 msgstr ""
 
 #. Description of the plugin
@@ -39,11 +40,6 @@ msgstr ""
 #. Author of the plugin
 #: advery-reviews.php
 msgid "Zaver Web"
-msgstr ""
-
-#. Author URI of the plugin
-#: advery-reviews.php
-msgid "https://zaverweb.com"
 msgstr ""
 
 #: includes/Admin/AdminPage.php:24
@@ -271,11 +267,11 @@ msgid "Your comment was blocked by the site’s content policy."
 msgstr ""
 
 #: includes/Email/Digest.php:28
-msgid "Once Weekly (Advery)"
+msgid "Once Weekly (Zaver Web)"
 msgstr ""
 
 #: includes/Email/Digest.php:29
-msgid "Once Monthly (Advery)"
+msgid "Once Monthly (Zaver Web)"
 msgstr ""
 
 #. translators: 1: site name, 2: frequency
@@ -585,11 +581,11 @@ msgid "Max width"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:221
-msgid "Advery Reviews will appear here on a page that is an enabled review target."
+msgid "Zaver Web Reviews will appear here on a page that is an enabled review target."
 msgstr ""
 
 #: includes/Integrations/GutenbergBlock.php:69
-msgid "Reviews are not enabled for this content type. Enable it in Advery Reviews → Settings."
+msgid "Reviews are not enabled for this content type. Enable it in Zaver Web Reviews → Settings."
 msgstr ""
 
 #. translators: %d: number of reviews
@@ -1366,7 +1362,7 @@ msgid "Automatically append to content"
 msgstr ""
 
 #: build/index.js:4
-msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [advery_reviews] shortcode, the block, or the Elementor widget."
+msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [zaverweb_reviews] shortcode, the block, or the Elementor widget."
 msgstr ""
 
 #: build/index.js:4
@@ -1849,7 +1845,7 @@ msgid "The numbered pagination bar"
 msgstr ""
 
 #: build/index.js:4
-msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
+msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .zaverweb-reviews__stars { color: #e11; }"
 msgstr ""
 
 #: build/index.js:4
@@ -2029,7 +2025,7 @@ msgid "imported %1$d, updated %2$d, skipped %3$d…"
 msgstr ""
 
 #: build/index.js:4
-msgid "Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
+msgid "Move reviews in and out of Zaver Web Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
 msgstr ""
 
 #: build/index.js:4
@@ -2037,7 +2033,7 @@ msgid "Import existing comments"
 msgstr ""
 
 #: build/index.js:4
-msgid "Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
+msgid "Bring your current WordPress comments and WooCommerce reviews into Zaver Web Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
 msgstr ""
 
 #: build/index.js:4

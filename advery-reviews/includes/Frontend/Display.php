@@ -1,15 +1,15 @@
 <?php
-namespace Advery\Reviews\Frontend;
+namespace ZaverWeb\Reviews\Frontend;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Support\Avatar;
-use Advery\Reviews\AntiSpam\SpamGuard;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Support\Avatar;
+use ZaverWeb\Reviews\AntiSpam\SpamGuard;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
- * Front-end rendering: a `[advery_reviews]` shortcode (and optional auto-append
+ * Front-end rendering: a `[zaverweb_reviews]` shortcode (and optional auto-append
  * to enabled post types) that shows the rating summary, the approved reviews,
  * and a submission form. A small vanilla-JS file (no framework on the front
  * end) handles the star picker and the REST submission.
@@ -29,7 +29,7 @@ class Display {
 	}
 
 	public function register() {
-		add_shortcode( 'advery_reviews', [ $this, 'shortcode' ] );
+		add_shortcode( 'zaverweb_reviews', [ $this, 'shortcode' ] );
 		add_filter( 'the_content', [ $this, 'maybe_append' ], 20 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
 	}
@@ -49,11 +49,11 @@ class Display {
 	 * (late-enqueued assets print in the footer). Idempotent.
 	 */
 	public function ensure_assets() {
-		if ( wp_style_is( 'advery-reviews-front', 'enqueued' ) ) {
+		if ( wp_style_is( 'zaverweb-reviews-front', 'enqueued' ) ) {
 			return;
 		}
-		wp_enqueue_style( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.css', [], ADVERY_REVIEWS_VERSION );
-		wp_enqueue_script( 'advery-reviews-front', ADVERY_REVIEWS_URL . 'assets/front.js', [], ADVERY_REVIEWS_VERSION, true );
+		wp_enqueue_style( 'zaverweb-reviews-front', ZAVERWEB_REVIEWS_URL . 'assets/front.css', [], ZAVERWEB_REVIEWS_VERSION );
+		wp_enqueue_script( 'zaverweb-reviews-front', ZAVERWEB_REVIEWS_URL . 'assets/front.js', [], ZAVERWEB_REVIEWS_VERSION, true );
 
 		$as       = Settings::antispam();
 		$provider = ( '' !== $as['captcha_site_key'] ) ? $as['captcha_provider'] : 'none';
@@ -64,30 +64,30 @@ class Display {
 		// below can still override anything.
 		$appearance = Settings::appearance_css();
 		if ( '' !== $appearance ) {
-			wp_add_inline_style( 'advery-reviews-front', $appearance );
+			wp_add_inline_style( 'zaverweb-reviews-front', $appearance );
 		}
 
 		// Owner custom CSS, printed inline against our stylesheet handle.
 		$css = (string) Settings::get( 'custom_css', '' );
 		if ( '' !== trim( $css ) ) {
-			wp_add_inline_style( 'advery-reviews-front', $css );
+			wp_add_inline_style( 'zaverweb-reviews-front', $css );
 		}
 
 		wp_localize_script(
-			'advery-reviews-front',
-			'AdveryReviewsFront',
+			'zaverweb-reviews-front',
+			'ZaverWebReviewsFront',
 			[
-				'rest'     => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/submit' ) ),
-				'listBase' => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE . '/list' ) ),
+				'rest'     => esc_url_raw( rest_url( ZAVERWEB_REVIEWS_REST_NAMESPACE . '/submit' ) ),
+				'listBase' => esc_url_raw( rest_url( ZAVERWEB_REVIEWS_REST_NAMESPACE . '/list' ) ),
 				'nonce'    => wp_create_nonce( 'wp_rest' ),
 				'captcha'  => [ 'provider' => $provider, 'siteKey' => $provider !== 'none' ? $as['captcha_site_key'] : '' ],
 				'i18n'     => [
-					'sending'  => __( 'Sending…', 'advery-reviews' ),
-					'submit'   => __( 'Submit review', 'advery-reviews' ),
-					'error'    => __( 'Something went wrong. Please try again.', 'advery-reviews' ),
-					'loadMore' => __( 'Load more reviews', 'advery-reviews' ),
-					'loading'  => __( 'Loading…', 'advery-reviews' ),
-					'anonymous' => __( 'Anonymous', 'advery-reviews' ),
+					'sending'  => __( 'Sending…', 'zaverweb-reviews' ),
+					'submit'   => __( 'Submit review', 'zaverweb-reviews' ),
+					'error'    => __( 'Something went wrong. Please try again.', 'zaverweb-reviews' ),
+					'loadMore' => __( 'Load more reviews', 'zaverweb-reviews' ),
+					'loading'  => __( 'Loading…', 'zaverweb-reviews' ),
+					'anonymous' => __( 'Anonymous', 'zaverweb-reviews' ),
 				],
 			]
 		);
@@ -119,7 +119,7 @@ class Display {
 				break;
 		}
 		if ( $src ) {
-			wp_enqueue_script( 'advery-reviews-captcha', $src, [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			wp_enqueue_script( 'zaverweb-reviews-captcha', $src, [], null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		}
 	}
 
@@ -153,13 +153,13 @@ class Display {
 	}
 
 	/**
-	 * `[advery_reviews]` — optional type/id atts, else the current target.
+	 * `[zaverweb_reviews]` — optional type/id atts, else the current target.
 	 *
 	 * @param array $atts
 	 * @return string
 	 */
 	public function shortcode( $atts ) {
-		$atts   = shortcode_atts( [ 'type' => '', 'id' => 0 ], $atts, 'advery_reviews' );
+		$atts   = shortcode_atts( [ 'type' => '', 'id' => 0 ], $atts, 'zaverweb_reviews' );
 		$type   = $atts['type'] ? sanitize_key( $atts['type'] ) : '';
 		$id     = (int) $atts['id'];
 
@@ -234,44 +234,44 @@ class Display {
 
 		ob_start();
 		?>
-		<div class="advery-reviews advery-reviews--<?php echo esc_attr( $skin ); ?>" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>" data-load-mode="<?php echo esc_attr( $mode ); ?>" data-per-page="<?php echo esc_attr( $per ); ?>" data-total="<?php echo esc_attr( $total ); ?>" data-page="1">
-			<div class="advery-reviews__summary">
-				<span class="advery-reviews__avg"><?php echo esc_html( number_format_i18n( $agg['avg'], 1 ) ); ?></span>
-				<span class="advery-reviews__stars" aria-hidden="true"><?php echo esc_html( $this->stars( $agg['avg'] ) ); ?></span>
-				<span class="advery-reviews__count">
+		<div class="zaverweb-reviews zaverweb-reviews--<?php echo esc_attr( $skin ); ?>" data-object-type="<?php echo esc_attr( $object_type ); ?>" data-object-id="<?php echo esc_attr( $object_id ); ?>" data-load-mode="<?php echo esc_attr( $mode ); ?>" data-per-page="<?php echo esc_attr( $per ); ?>" data-total="<?php echo esc_attr( $total ); ?>" data-page="1">
+			<div class="zaverweb-reviews__summary">
+				<span class="zaverweb-reviews__avg"><?php echo esc_html( number_format_i18n( $agg['avg'], 1 ) ); ?></span>
+				<span class="zaverweb-reviews__stars" aria-hidden="true"><?php echo esc_html( $this->stars( $agg['avg'] ) ); ?></span>
+				<span class="zaverweb-reviews__count">
 					<?php
 					printf(
 						/* translators: %d: review count */
-						esc_html( _n( '%d review', '%d reviews', $agg['review_count'], 'advery-reviews' ) ),
+						esc_html( _n( '%d review', '%d reviews', $agg['review_count'], 'zaverweb-reviews' ) ),
 						(int) $agg['review_count']
 					);
 					?>
 				</span>
 			</div>
 
-			<ul class="advery-reviews__list">
+			<ul class="zaverweb-reviews__list">
 				<?php foreach ( $reviews as $r ) : ?>
-					<li class="advery-reviews__item">
-						<div class="advery-reviews__item-head">
+					<li class="zaverweb-reviews__item">
+						<div class="zaverweb-reviews__item-head">
 							<?php echo Avatar::html( $r, $avatar_override ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built with esc_* internally ?>
-							<div class="advery-reviews__meta-col">
-								<strong class="advery-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
+							<div class="zaverweb-reviews__meta-col">
+								<strong class="zaverweb-reviews__author"><?php echo esc_html( $r['author_name'] ); ?></strong>
 								<?php if ( ! empty( $r['created_at'] ) ) : ?>
-									<span class="advery-reviews__date"><?php echo esc_html( $this->review_date( $r['created_at'] ) ); ?></span>
+									<span class="zaverweb-reviews__date"><?php echo esc_html( $this->review_date( $r['created_at'] ) ); ?></span>
 								<?php endif; ?>
 							</div>
 							<?php if ( $r['rating'] > 0 ) : ?>
-								<span class="advery-reviews__stars" aria-label="<?php echo esc_attr( sprintf( '%d / 5', $r['rating'] ) ); ?>"><?php echo esc_html( $this->stars( $r['rating'] ) ); ?></span>
+								<span class="zaverweb-reviews__stars" aria-label="<?php echo esc_attr( sprintf( '%d / 5', $r['rating'] ) ); ?>"><?php echo esc_html( $this->stars( $r['rating'] ) ); ?></span>
 							<?php endif; ?>
 						</div>
 						<?php if ( $r['title'] ) : ?>
-							<div class="advery-reviews__title"><?php echo esc_html( $r['title'] ); ?></div>
+							<div class="zaverweb-reviews__title"><?php echo esc_html( $r['title'] ); ?></div>
 						<?php endif; ?>
-						<div class="advery-reviews__content"><?php echo wp_kses_post( wpautop( $r['content'] ) ); ?></div>
+						<div class="zaverweb-reviews__content"><?php echo wp_kses_post( wpautop( $r['content'] ) ); ?></div>
 						<?php if ( ! empty( $r['meta']['reply'] ) ) : ?>
-							<div class="advery-reviews__reply">
-								<span class="advery-reviews__reply-label"><?php esc_html_e( 'Response from the owner', 'advery-reviews' ); ?></span>
-								<div class="advery-reviews__reply-text"><?php echo wp_kses_post( wpautop( $r['meta']['reply'] ) ); ?></div>
+							<div class="zaverweb-reviews__reply">
+								<span class="zaverweb-reviews__reply-label"><?php esc_html_e( 'Response from the owner', 'zaverweb-reviews' ); ?></span>
+								<div class="zaverweb-reviews__reply-text"><?php echo wp_kses_post( wpautop( $r['meta']['reply'] ) ); ?></div>
 							</div>
 						<?php endif; ?>
 					</li>
@@ -279,36 +279,36 @@ class Display {
 			</ul>
 
 			<?php if ( 'load_more' === $mode && $total > $per ) : ?>
-				<div class="advery-reviews__more">
-					<button type="button" class="advery-reviews__loadmore"><?php esc_html_e( 'Load more reviews', 'advery-reviews' ); ?></button>
+				<div class="zaverweb-reviews__more">
+					<button type="button" class="zaverweb-reviews__loadmore"><?php esc_html_e( 'Load more reviews', 'zaverweb-reviews' ); ?></button>
 				</div>
 			<?php elseif ( 'paginate' === $mode && $pages > 1 ) : ?>
-				<nav class="advery-reviews__pager" aria-label="<?php esc_attr_e( 'Reviews pages', 'advery-reviews' ); ?>">
+				<nav class="zaverweb-reviews__pager" aria-label="<?php esc_attr_e( 'Reviews pages', 'zaverweb-reviews' ); ?>">
 					<?php for ( $p = 1; $p <= $pages; $p++ ) : ?>
-						<button type="button" class="advery-reviews__page<?php echo 1 === $p ? ' is-active' : ''; ?>" data-page="<?php echo (int) $p; ?>"><?php echo (int) $p; ?></button>
+						<button type="button" class="zaverweb-reviews__page<?php echo 1 === $p ? ' is-active' : ''; ?>" data-page="<?php echo (int) $p; ?>"><?php echo (int) $p; ?></button>
 					<?php endfor; ?>
 				</nav>
 			<?php endif; ?>
 
 			<?php if ( $can ) : ?>
-				<form class="advery-reviews__form">
-					<h3><?php esc_html_e( 'Write a review', 'advery-reviews' ); ?></h3>
-					<div class="advery-reviews__rating-input" role="radiogroup" aria-label="<?php esc_attr_e( 'Your rating', 'advery-reviews' ); ?>">
+				<form class="zaverweb-reviews__form">
+					<h3><?php esc_html_e( 'Write a review', 'zaverweb-reviews' ); ?></h3>
+					<div class="zaverweb-reviews__rating-input" role="radiogroup" aria-label="<?php esc_attr_e( 'Your rating', 'zaverweb-reviews' ); ?>">
 						<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
-							<button type="button" class="advery-reviews__star-btn" data-value="<?php echo (int) $i; ?>" aria-label="<?php echo esc_attr( sprintf( '%d', $i ) ); ?>">☆</button>
+							<button type="button" class="zaverweb-reviews__star-btn" data-value="<?php echo (int) $i; ?>" aria-label="<?php echo esc_attr( sprintf( '%d', $i ) ); ?>">☆</button>
 						<?php endfor; ?>
 						<input type="hidden" name="rating" value="0" />
 					</div>
 					<?php if ( ! $logged ) : ?>
-						<input type="text" name="author_name" placeholder="<?php esc_attr_e( 'Your name', 'advery-reviews' ); ?>" required />
-						<input type="email" name="author_email" placeholder="<?php esc_attr_e( 'Your email', 'advery-reviews' ); ?>" required />
+						<input type="text" name="author_name" placeholder="<?php esc_attr_e( 'Your name', 'zaverweb-reviews' ); ?>" required />
+						<input type="email" name="author_email" placeholder="<?php esc_attr_e( 'Your email', 'zaverweb-reviews' ); ?>" required />
 					<?php endif; ?>
-					<input type="text" name="title" placeholder="<?php esc_attr_e( 'Title (optional)', 'advery-reviews' ); ?>" />
-					<textarea name="content" rows="4" placeholder="<?php esc_attr_e( 'Your review', 'advery-reviews' ); ?>" required></textarea>
+					<input type="text" name="title" placeholder="<?php esc_attr_e( 'Title (optional)', 'zaverweb-reviews' ); ?>" />
+					<textarea name="content" rows="4" placeholder="<?php esc_attr_e( 'Your review', 'zaverweb-reviews' ); ?>" required></textarea>
 					<?php // Honeypot. Neutral name (no "website"/"url"/"email") so browsers never autofill it for a real visitor; hidden with an RTL-safe clip (never a negative offset that widens the page). Inline style is a belt-and-suspenders in case the stylesheet is cached/overridden. ?>
-					<input type="text" name="advery_hp" class="advery-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;" />
-					<input type="hidden" name="advery_ts" value="<?php echo esc_attr( $token['ts'] ); ?>" />
-					<input type="hidden" name="advery_tk" value="<?php echo esc_attr( $token['tk'] ); ?>" />
+					<input type="text" name="zaverweb_hp" class="zaverweb-reviews__hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;" />
+					<input type="hidden" name="zaverweb_ts" value="<?php echo esc_attr( $token['ts'] ); ?>" />
+					<input type="hidden" name="zaverweb_tk" value="<?php echo esc_attr( $token['tk'] ); ?>" />
 					<?php if ( 'recaptcha_v2' === $captcha ) : ?>
 						<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $as['captcha_site_key'] ); ?>"></div>
 					<?php elseif ( 'hcaptcha' === $captcha ) : ?>
@@ -316,11 +316,11 @@ class Display {
 					<?php elseif ( 'turnstile' === $captcha ) : ?>
 						<div class="cf-turnstile" data-sitekey="<?php echo esc_attr( $as['captcha_site_key'] ); ?>"></div>
 					<?php endif; ?>
-					<button type="submit" class="advery-reviews__submit"><?php esc_html_e( 'Submit review', 'advery-reviews' ); ?></button>
-					<p class="advery-reviews__msg" role="status" aria-live="polite"></p>
+					<button type="submit" class="zaverweb-reviews__submit"><?php esc_html_e( 'Submit review', 'zaverweb-reviews' ); ?></button>
+					<p class="zaverweb-reviews__msg" role="status" aria-live="polite"></p>
 				</form>
 			<?php else : ?>
-				<p class="advery-reviews__login"><?php esc_html_e( 'Please log in to leave a review.', 'advery-reviews' ); ?></p>
+				<p class="zaverweb-reviews__login"><?php esc_html_e( 'Please log in to leave a review.', 'zaverweb-reviews' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php

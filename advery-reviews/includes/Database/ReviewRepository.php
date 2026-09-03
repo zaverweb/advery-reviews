@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Database;
+namespace ZaverWeb\Reviews\Database;
 
 /**
  * CRUD and queries for reviews. Every write that can change what is publicly

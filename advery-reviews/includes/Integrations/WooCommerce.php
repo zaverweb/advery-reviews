@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Integrations;
+namespace ZaverWeb\Reviews\Integrations;
 
 /**
  * Thin read-only bridge to WooCommerce's native product ratings (which Woo

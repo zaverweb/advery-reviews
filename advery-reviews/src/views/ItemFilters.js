@@ -44,16 +44,16 @@ export function ContentTypeSelect( { boot, value, onChange } ) {
 	const taxonomies = ( ( boot && boot.taxonomies ) || [] ).filter( ( tx ) => enabledTax.has( tx.slug ) );
 
 	return (
-		<label className="advery-rv-itemfilter">
-			<span className="advery-rv-itemfilter__label">{ __( 'Item type', 'advery-reviews' ) }</span>
+		<label className="zaverweb-rv-itemfilter">
+			<span className="zaverweb-rv-itemfilter__label">{ __( 'Item type', 'zaverweb-reviews' ) }</span>
 			<select
-				className="advery-rv-itemfilter__select"
+				className="zaverweb-rv-itemfilter__select"
 				value={ value }
 				onChange={ ( e ) => onChange( e.target.value ) }
 			>
-				<option value="">{ __( 'All item types', 'advery-reviews' ) }</option>
+				<option value="">{ __( 'All item types', 'zaverweb-reviews' ) }</option>
 				{ postTypes.length > 0 && (
-					<optgroup label={ __( 'Post types', 'advery-reviews' ) }>
+					<optgroup label={ __( 'Post types', 'zaverweb-reviews' ) }>
 						{ postTypes.map( ( pt ) => (
 							<option key={ 'pt:' + pt.slug } value={ 'pt:' + pt.slug }>
 								{ pt.label }
@@ -62,7 +62,7 @@ export function ContentTypeSelect( { boot, value, onChange } ) {
 					</optgroup>
 				) }
 				{ taxonomies.length > 0 && (
-					<optgroup label={ __( 'Taxonomies', 'advery-reviews' ) }>
+					<optgroup label={ __( 'Taxonomies', 'zaverweb-reviews' ) }>
 						{ taxonomies.map( ( tx ) => (
 							<option key={ 'tax:' + tx.slug } value={ 'tax:' + tx.slug }>
 								{ tx.label }
@@ -110,9 +110,9 @@ export function ObjectSearch( { onSelect } ) {
 	};
 
 	return (
-		<div className="advery-rv-objsearch">
+		<div className="zaverweb-rv-objsearch">
 			<ComboboxControl
-				label={ __( 'Filter by a specific item', 'advery-reviews' ) }
+				label={ __( 'Filter by a specific item', 'zaverweb-reviews' ) }
 				value={ value }
 				options={ options }
 				onFilterValueChange={ onFilter }

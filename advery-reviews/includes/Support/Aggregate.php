@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
-use Advery\Reviews\Database\StatsRepository;
-use Advery\Reviews\Integrations\WooCommerce;
+use ZaverWeb\Reviews\Database\StatsRepository;
+use ZaverWeb\Reviews\Integrations\WooCommerce;
 
 /**
  * Computes the public rating aggregate for one object, combining the plugin's

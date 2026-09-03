@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Database;
+namespace ZaverWeb\Reviews\Database;
 
 /**
  * Maintains and reads the per-object aggregate cache (count + average). The

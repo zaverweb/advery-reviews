@@ -8,7 +8,7 @@ import SpamLogPanel from './views/SpamLogPanel';
 import SettingsPanel from './views/SettingsPanel';
 import MigrationPanel from './views/MigrationPanel';
 
-const cfg = window.AdveryReviewsConfig || {};
+const cfg = window.ZaverWebReviewsConfig || {};
 
 /**
  * Which screen a WordPress admin URL points at (from its `page` query var), so
@@ -57,7 +57,7 @@ export default function App( { screen: initialScreen = 'reviews' } ) {
 			e.preventDefault();
 		}
 		if ( href && window.history && window.history.pushState ) {
-			window.history.pushState( { adveryScreen: key }, '', href );
+			window.history.pushState( { zaverwebScreen: key }, '', href );
 			setScreen( key );
 			window.scrollTo( 0, 0 );
 		} else if ( href ) {
@@ -75,7 +75,7 @@ export default function App( { screen: initialScreen = 'reviews' } ) {
 	// Keep the WordPress admin sub-menu highlight in sync with the active screen
 	// (pushState doesn't reload, so WP wouldn't otherwise move the "current" mark).
 	useEffect( () => {
-		const menuSlug = cfg.menuSlug || 'advery-reviews';
+		const menuSlug = cfg.menuSlug || 'zaverweb-reviews';
 		const want = 'reviews' === screen ? menuSlug : menuSlug + '-' + screen;
 		try {
 			document.querySelectorAll( '#adminmenu a[href*="page=' + menuSlug + '"]' ).forEach( ( a ) => {
@@ -100,7 +100,7 @@ export default function App( { screen: initialScreen = 'reviews' } ) {
 			setCounts( data.counts || {} );
 			setError( null );
 		} catch ( e ) {
-			setError( e.message || __( 'Failed to load.', 'advery-reviews' ) );
+			setError( e.message || __( 'Failed to load.', 'zaverweb-reviews' ) );
 		} finally {
 			setLoading( false );
 		}
@@ -118,7 +118,7 @@ export default function App( { screen: initialScreen = 'reviews' } ) {
 
 	if ( loading ) {
 		return (
-			<div className="advery-rv-loading">
+			<div className="zaverweb-rv-loading">
 				<Spinner />
 			</div>
 		);
@@ -133,51 +133,51 @@ export default function App( { screen: initialScreen = 'reviews' } ) {
 
 	const total = ( counts.pending || 0 ) + ( counts.approved || 0 ) + ( counts.spam || 0 ) + ( counts.trash || 0 );
 	const tiles = [
-		{ key: 'pending', label: __( 'Pending', 'advery-reviews' ), value: counts.pending || 0, tone: 'amber' },
-		{ key: 'approved', label: __( 'Approved', 'advery-reviews' ), value: counts.approved || 0, tone: 'green' },
-		{ key: 'spam', label: __( 'Spam', 'advery-reviews' ), value: counts.spam || 0, tone: 'red' },
-		{ key: 'total', label: __( 'Total', 'advery-reviews' ), value: total, tone: 'blue' },
+		{ key: 'pending', label: __( 'Pending', 'zaverweb-reviews' ), value: counts.pending || 0, tone: 'amber' },
+		{ key: 'approved', label: __( 'Approved', 'zaverweb-reviews' ), value: counts.approved || 0, tone: 'green' },
+		{ key: 'spam', label: __( 'Spam', 'zaverweb-reviews' ), value: counts.spam || 0, tone: 'red' },
+		{ key: 'total', label: __( 'Total', 'zaverweb-reviews' ), value: total, tone: 'blue' },
 	];
 
 	const nav = [
-		{ key: 'reviews', label: __( 'Reviews', 'advery-reviews' ), href: cfg.reviewsUrl },
-		{ key: 'reports', label: __( 'Reports', 'advery-reviews' ), href: cfg.reportsUrl },
-		{ key: 'spamlog', label: __( 'Spam log', 'advery-reviews' ), href: cfg.spamLogUrl },
-		{ key: 'settings', label: __( 'Settings', 'advery-reviews' ), href: cfg.settingsUrl },
-		{ key: 'migration', label: __( 'Migration', 'advery-reviews' ), href: cfg.migrationUrl },
+		{ key: 'reviews', label: __( 'Reviews', 'zaverweb-reviews' ), href: cfg.reviewsUrl },
+		{ key: 'reports', label: __( 'Reports', 'zaverweb-reviews' ), href: cfg.reportsUrl },
+		{ key: 'spamlog', label: __( 'Spam log', 'zaverweb-reviews' ), href: cfg.spamLogUrl },
+		{ key: 'settings', label: __( 'Settings', 'zaverweb-reviews' ), href: cfg.settingsUrl },
+		{ key: 'migration', label: __( 'Migration', 'zaverweb-reviews' ), href: cfg.migrationUrl },
 	];
 
 	const titles = {
-		reviews: __( 'Moderate and reply to reviews', 'advery-reviews' ),
-		reports: __( 'See which pages and businesses get the most reviews', 'advery-reviews' ),
-		spamlog: __( 'See what the anti-spam filter blocked and why', 'advery-reviews' ),
-		settings: __( 'Configure how reviews work', 'advery-reviews' ),
-		migration: __( 'Import, export and migrate reviews', 'advery-reviews' ),
+		reviews: __( 'Moderate and reply to reviews', 'zaverweb-reviews' ),
+		reports: __( 'See which pages and businesses get the most reviews', 'zaverweb-reviews' ),
+		spamlog: __( 'See what the anti-spam filter blocked and why', 'zaverweb-reviews' ),
+		settings: __( 'Configure how reviews work', 'zaverweb-reviews' ),
+		migration: __( 'Import, export and migrate reviews', 'zaverweb-reviews' ),
 	};
 
 	return (
-		<div className="advery-rv">
-			<header className="advery-rv__head">
-				<div className="advery-rv__brand">
-					<span className="advery-rv__logo" aria-hidden="true">★</span>
+		<div className="zaverweb-rv">
+			<header className="zaverweb-rv__head">
+				<div className="zaverweb-rv__brand">
+					<span className="zaverweb-rv__logo" aria-hidden="true">★</span>
 					<div>
-						<h1 className="advery-rv__title">{ __( 'Advery Reviews', 'advery-reviews' ) }</h1>
-						<p className="advery-rv__sub">{ titles[ screen ] || '' }</p>
+						<h1 className="zaverweb-rv__title">{ __( 'Zaver Web Reviews', 'zaverweb-reviews' ) }</h1>
+						<p className="zaverweb-rv__sub">{ titles[ screen ] || '' }</p>
 					</div>
 				</div>
-				<div className="advery-rv__tiles">
+				<div className="zaverweb-rv__tiles">
 					{ tiles.map( ( t ) => (
-						<a key={ t.key } className={ 'advery-rv__tile is-' + t.tone } href={ cfg.reviewsUrl || '#' } onClick={ ( e ) => navTo( 'reviews', cfg.reviewsUrl, e ) }>
-							<span className="advery-rv__tile-value">{ t.value }</span>
-							<span className="advery-rv__tile-label">{ t.label }</span>
+						<a key={ t.key } className={ 'zaverweb-rv__tile is-' + t.tone } href={ cfg.reviewsUrl || '#' } onClick={ ( e ) => navTo( 'reviews', cfg.reviewsUrl, e ) }>
+							<span className="zaverweb-rv__tile-value">{ t.value }</span>
+							<span className="zaverweb-rv__tile-label">{ t.label }</span>
 						</a>
 					) ) }
 				</div>
 			</header>
 
-			<nav className="advery-rv__nav">
+			<nav className="zaverweb-rv__nav">
 				{ nav.map( ( n ) => (
-					<a key={ n.key } href={ n.href || '#' } className={ 'advery-rv__navlink' + ( screen === n.key ? ' is-active' : '' ) } onClick={ ( e ) => navTo( n.key, n.href, e ) }>
+					<a key={ n.key } href={ n.href || '#' } className={ 'zaverweb-rv__navlink' + ( screen === n.key ? ' is-active' : '' ) } onClick={ ( e ) => navTo( n.key, n.href, e ) }>
 						{ n.label }
 					</a>
 				) ) }

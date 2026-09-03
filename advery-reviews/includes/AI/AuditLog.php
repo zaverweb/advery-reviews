@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI;
+namespace ZaverWeb\Reviews\AI;
 
 /**
  * A light audit log + daily rate cap for AI calls. Stored in a single option:
@@ -9,7 +9,7 @@ namespace Advery\Reviews\AI;
  */
 class AuditLog {
 
-	const OPTION = 'advery_reviews_ai_log';
+	const OPTION = 'zaverweb_reviews_ai_log';
 	const KEEP   = 30;
 
 	private static function state() {

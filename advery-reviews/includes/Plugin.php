@@ -1,24 +1,24 @@
 <?php
-namespace Advery\Reviews;
+namespace ZaverWeb\Reviews;
 
-use Advery\Reviews\Frontend\Display;
-use Advery\Reviews\Frontend\CommentsTakeover;
-use Advery\Reviews\Frontend\CommentGuard;
-use Advery\Reviews\Support\Maintenance;
-use Advery\Reviews\Schema\SchemaBridge;
-use Advery\Reviews\Schema\StandaloneSchema;
-use Advery\Reviews\Integrations\WooSchema;
-use Advery\Reviews\Integrations\WooTakeover;
-use Advery\Reviews\Integrations\ElementorBridge;
-use Advery\Reviews\Integrations\GutenbergBlock;
-use Advery\Reviews\Email\Notifier;
-use Advery\Reviews\Email\Digest;
-use Advery\Reviews\Admin\AdminPage;
-use Advery\Reviews\Admin\DashboardWidget;
-use Advery\Reviews\Admin\PostMetabox;
-use Advery\Reviews\Admin\TermMetabox;
-use Advery\Reviews\Rest\RestController;
-use Advery\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Frontend\Display;
+use ZaverWeb\Reviews\Frontend\CommentsTakeover;
+use ZaverWeb\Reviews\Frontend\CommentGuard;
+use ZaverWeb\Reviews\Support\Maintenance;
+use ZaverWeb\Reviews\Schema\SchemaBridge;
+use ZaverWeb\Reviews\Schema\StandaloneSchema;
+use ZaverWeb\Reviews\Integrations\WooSchema;
+use ZaverWeb\Reviews\Integrations\WooTakeover;
+use ZaverWeb\Reviews\Integrations\ElementorBridge;
+use ZaverWeb\Reviews\Integrations\GutenbergBlock;
+use ZaverWeb\Reviews\Email\Notifier;
+use ZaverWeb\Reviews\Email\Digest;
+use ZaverWeb\Reviews\Admin\AdminPage;
+use ZaverWeb\Reviews\Admin\DashboardWidget;
+use ZaverWeb\Reviews\Admin\PostMetabox;
+use ZaverWeb\Reviews\Admin\TermMetabox;
+use ZaverWeb\Reviews\Rest\RestController;
+use ZaverWeb\Reviews\Database\Installer;
 
 /**
  * Bootstrapper: wires the plugin's subsystems and nothing else. The plugin is
@@ -29,7 +29,11 @@ use Advery\Reviews\Database\Installer;
 class Plugin {
 
 	public function boot() {
-		load_plugin_textdomain( 'advery-reviews', false, dirname( plugin_basename( ADVERY_REVIEWS_FILE ) ) . '/languages' );
+		load_plugin_textdomain( 'zaverweb-reviews', false, dirname( plugin_basename( ZAVERWEB_REVIEWS_FILE ) ) . '/languages' );
+
+		// One-time rebrand migration (advery_* → zaverweb_* tables/options/cron).
+		// No-op once migrated or on a fresh install.
+		Installer::maybe_migrate();
 
 		// Front-end display + submission.
 		( new Display() )->register();
@@ -41,7 +45,7 @@ class Plugin {
 		( new CommentGuard() )->register();
 
 		// Diagnostic spam log + its daily auto-purge cron (opt-in; idle when off).
-		( new \Advery\Reviews\AntiSpam\SpamLog() )->register();
+		( new \ZaverWeb\Reviews\AntiSpam\SpamLog() )->register();
 
 		// Table hygiene: remove reviews when their post/term is deleted.
 		( new Maintenance() )->register();

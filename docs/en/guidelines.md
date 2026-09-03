@@ -1,4 +1,4 @@
-# Advery Reviews — Development Guidelines
+# Zaver Web Reviews — Development Guidelines
 
 ## Compatibility
 - WordPress 6.x and 7.x, tested up to 7.1. PHP 7.4+ (no syntax/features newer than 7.4; nullsafe/enums/named-args are avoided).

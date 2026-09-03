@@ -1,26 +1,26 @@
 <?php
-namespace Advery\Reviews\Rest;
+namespace ZaverWeb\Reviews\Rest;
 
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Support\Sanitizer;
-use Advery\Reviews\Database\ReviewRepository;
-use Advery\Reviews\Database\StatsRepository;
-use Advery\Reviews\AntiSpam\SpamGuard;
-use Advery\Reviews\AntiSpam\SpamLog;
-use Advery\Reviews\Support\Maintenance;
-use Advery\Reviews\Migration\CommentImporter;
-use Advery\Reviews\Migration\CommentExporter;
-use Advery\Reviews\Migration\CsvExporter;
-use Advery\Reviews\Migration\DataImporter;
-use Advery\Reviews\AI\Client as AIClient;
-use Advery\Reviews\AI\Tasks as AITasks;
-use Advery\Reviews\AI\AuditLog;
-use Advery\Reviews\Email\Digest;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Support\Sanitizer;
+use ZaverWeb\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Database\StatsRepository;
+use ZaverWeb\Reviews\AntiSpam\SpamGuard;
+use ZaverWeb\Reviews\AntiSpam\SpamLog;
+use ZaverWeb\Reviews\Support\Maintenance;
+use ZaverWeb\Reviews\Migration\CommentImporter;
+use ZaverWeb\Reviews\Migration\CommentExporter;
+use ZaverWeb\Reviews\Migration\CsvExporter;
+use ZaverWeb\Reviews\Migration\DataImporter;
+use ZaverWeb\Reviews\AI\Client as AIClient;
+use ZaverWeb\Reviews\AI\Tasks as AITasks;
+use ZaverWeb\Reviews\AI\AuditLog;
+use ZaverWeb\Reviews\Email\Digest;
 
 /**
  * REST API for both the public submission/display and the React moderation
@@ -29,7 +29,7 @@ use Advery\Reviews\Email\Digest;
 class RestController {
 
 	public function register_routes() {
-		$ns = ADVERY_REVIEWS_REST_NAMESPACE;
+		$ns = ZAVERWEB_REVIEWS_REST_NAMESPACE;
 
 		// ---- Public ----
 		register_rest_route(
@@ -239,26 +239,26 @@ class RestController {
 		// Nonce (best-effort; the form prints a fresh one).
 		$nonce = $req->get_header( 'X-WP-Nonce' );
 		if ( ! $nonce || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
-			return new WP_Error( 'advery_reviews_nonce', __( 'Your session expired. Please refresh and try again.', 'advery-reviews' ), [ 'status' => 403 ] );
+			return new WP_Error( 'zaverweb_reviews_nonce', __( 'Your session expired. Please refresh and try again.', 'zaverweb-reviews' ), [ 'status' => 403 ] );
 		}
 
-		// Honeypot: bots fill hidden fields. Neutral field name (advery_hp) so a
+		// Honeypot: bots fill hidden fields. Neutral field name (zaverweb_hp) so a
 		// real visitor's browser never autofills it (an older `website_hp` was
 		// autofilled with saved URLs, rejecting genuine reviewers).
-		if ( '' !== trim( (string) $req->get_param( 'advery_hp' ) ) ) {
-			return new WP_Error( 'advery_reviews_spam', __( 'Rejected.', 'advery-reviews' ), [ 'status' => 400 ] );
+		if ( '' !== trim( (string) $req->get_param( 'zaverweb_hp' ) ) ) {
+			return new WP_Error( 'zaverweb_reviews_spam', __( 'Rejected.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 
 		$object_type = sanitize_key( (string) $req->get_param( 'object_type' ) );
 		$object_id   = (int) $req->get_param( 'object_id' );
 
 		if ( ! Targets::is_enabled( $object_type, $object_id ) ) {
-			return new WP_Error( 'advery_reviews_target', __( 'Reviews are not enabled here.', 'advery-reviews' ), [ 'status' => 400 ] );
+			return new WP_Error( 'zaverweb_reviews_target', __( 'Reviews are not enabled here.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 
 		$logged_in = is_user_logged_in();
 		if ( 'logged_in' === Settings::get( 'who_can_submit' ) && ! $logged_in ) {
-			return new WP_Error( 'advery_reviews_login', __( 'Please log in to leave a review.', 'advery-reviews' ), [ 'status' => 401 ] );
+			return new WP_Error( 'zaverweb_reviews_login', __( 'Please log in to leave a review.', 'zaverweb-reviews' ), [ 'status' => 401 ] );
 		}
 
 		$as     = Settings::antispam();
@@ -273,10 +273,10 @@ class RestController {
 		$title       = Sanitizer::text( $raw_title, 120 );
 
 		if ( Settings::get( 'rating_required' ) && $rating < 1 ) {
-			return new WP_Error( 'advery_reviews_rating', __( 'Please choose a rating.', 'advery-reviews' ), [ 'status' => 400 ] );
+			return new WP_Error( 'zaverweb_reviews_rating', __( 'Please choose a rating.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 		if ( '' === $content ) {
-			return new WP_Error( 'advery_reviews_content', __( 'Please write your review.', 'advery-reviews' ), [ 'status' => 400 ] );
+			return new WP_Error( 'zaverweb_reviews_content', __( 'Please write your review.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 
 		if ( $logged_in ) {
@@ -291,13 +291,13 @@ class RestController {
 			$author_name  = Sanitizer::text( $raw_name, (int) $as['max_name_chars'] );
 			$author_email = Sanitizer::email( (string) $req->get_param( 'author_email' ) );
 			if ( '' === $author_name || '' === $author_email ) {
-				return new WP_Error( 'advery_reviews_author', __( 'Please enter your name and a valid email.', 'advery-reviews' ), [ 'status' => 400 ] );
+				return new WP_Error( 'zaverweb_reviews_author', __( 'Please enter your name and a valid email.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 			}
 		}
 
 		if ( Settings::get( 'one_per_user' )
 			&& ReviewRepository::has_reviewed( $object_type, $object_id, $user_id, $author_email ) ) {
-			return new WP_Error( 'advery_reviews_dupe', __( 'You have already reviewed this.', 'advery-reviews' ), [ 'status' => 409 ] );
+			return new WP_Error( 'zaverweb_reviews_dupe', __( 'You have already reviewed this.', 'zaverweb-reviews' ), [ 'status' => 409 ] );
 		}
 
 		$ip = $this->client_ip();
@@ -316,9 +316,9 @@ class RestController {
 				'author_email'   => $author_email,
 				'author_user_id' => $user_id,
 				'author_ip'      => $ip,
-				'ts'             => (int) $req->get_param( 'advery_ts' ),
-				'tk'             => (string) $req->get_param( 'advery_tk' ),
-				'advery_hp'      => (string) $req->get_param( 'advery_hp' ),
+				'ts'             => (int) $req->get_param( 'zaverweb_ts' ),
+				'tk'             => (string) $req->get_param( 'zaverweb_tk' ),
+				'zaverweb_hp'      => (string) $req->get_param( 'zaverweb_hp' ),
 				'captcha_token'  => (string) $req->get_param( 'captcha_token' ),
 			]
 		);
@@ -342,8 +342,8 @@ class RestController {
 
 		if ( 'reject' === $guard['outcome'] ) {
 			return new WP_Error(
-				'advery_reviews_rejected',
-				isset( $guard['message'] ) ? $guard['message'] : __( 'Your review could not be accepted.', 'advery-reviews' ),
+				'zaverweb_reviews_rejected',
+				isset( $guard['message'] ) ? $guard['message'] : __( 'Your review could not be accepted.', 'zaverweb-reviews' ),
 				[ 'status' => 400 ]
 			);
 		}
@@ -381,12 +381,12 @@ class RestController {
 		);
 
 		if ( ! $id ) {
-			return new WP_Error( 'advery_reviews_failed', __( 'Could not save your review.', 'advery-reviews' ), [ 'status' => 500 ] );
+			return new WP_Error( 'zaverweb_reviews_failed', __( 'Could not save your review.', 'zaverweb-reviews' ), [ 'status' => 500 ] );
 		}
 
 		// Don't email the owner for auto-classified spam.
 		if ( 'spam' !== $status ) {
-			do_action( 'advery_reviews_created', $id );
+			do_action( 'zaverweb_reviews_created', $id );
 		}
 
 		return new WP_REST_Response(
@@ -394,8 +394,8 @@ class RestController {
 				'ok'      => true,
 				'status'  => $status,
 				'message' => 'approved' === $status
-					? __( 'Thanks! Your review is published.', 'advery-reviews' )
-					: __( 'Thanks! Your review is awaiting moderation.', 'advery-reviews' ),
+					? __( 'Thanks! Your review is published.', 'zaverweb-reviews' )
+					: __( 'Thanks! Your review is awaiting moderation.', 'zaverweb-reviews' ),
 			],
 			201
 		);
@@ -439,7 +439,7 @@ class RestController {
 				'counts'     => ReviewRepository::status_counts(),
 				'wooActive'  => Targets::woo_active(),
 				'coreActive' => defined( 'ADVERY_SCHEMA_VERSION' ),
-				'version'    => ADVERY_REVIEWS_VERSION,
+				'version'    => ZAVERWEB_REVIEWS_VERSION,
 				'ai'         => [
 					'configured' => AIClient::configured(),
 					'today'      => AuditLog::today(),
@@ -526,12 +526,12 @@ class RestController {
 		$object_type = sanitize_key( (string) $req->get_param( 'object_type' ) );
 		$object_id   = (int) $req->get_param( 'object_id' );
 		if ( ! in_array( $object_type, [ 'post', 'product', 'term' ], true ) || $object_id <= 0 ) {
-			return new WP_Error( 'advery_reviews_target', __( 'Invalid target.', 'advery-reviews' ), [ 'status' => 400 ] );
+			return new WP_Error( 'zaverweb_reviews_target', __( 'Invalid target.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 
-		$content = \Advery\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'content' ), 20000 );
+		$content = \ZaverWeb\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'content' ), 20000 );
 		if ( '' === $content ) {
-			return new WP_Error( 'advery_reviews_content', __( 'Please write the review.', 'advery-reviews' ), [ 'status' => 400 ] );
+			return new WP_Error( 'zaverweb_reviews_content', __( 'Please write the review.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 		}
 		$status = in_array( ( $req->get_param( 'status' ) ?? '' ), ReviewRepository::STATUSES, true ) ? $req->get_param( 'status' ) : 'approved';
 
@@ -540,12 +540,12 @@ class RestController {
 		if ( $req->get_param( 'as_current_user' ) ) {
 			$user         = wp_get_current_user();
 			$user_id      = (int) $user->ID;
-			$author_name  = \Advery\Reviews\Support\Sanitizer::text( (string) $user->display_name, 150 );
-			$author_email = \Advery\Reviews\Support\Sanitizer::email( (string) $user->user_email );
+			$author_name  = \ZaverWeb\Reviews\Support\Sanitizer::text( (string) $user->display_name, 150 );
+			$author_email = \ZaverWeb\Reviews\Support\Sanitizer::email( (string) $user->user_email );
 		} else {
 			$user_id      = 0;
-			$author_name  = \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 );
-			$author_email = \Advery\Reviews\Support\Sanitizer::email( (string) $req->get_param( 'author_email' ) );
+			$author_name  = \ZaverWeb\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'author_name' ), 150 );
+			$author_email = \ZaverWeb\Reviews\Support\Sanitizer::email( (string) $req->get_param( 'author_email' ) );
 		}
 
 		$id = ReviewRepository::create(
@@ -556,7 +556,7 @@ class RestController {
 				'author_name'    => $author_name,
 				'author_email'   => $author_email,
 				'author_user_id' => $user_id,
-				'title'          => \Advery\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'title' ), 200 ),
+				'title'          => \ZaverWeb\Reviews\Support\Sanitizer::text( (string) $req->get_param( 'title' ), 200 ),
 				'content'        => $content,
 				'status'         => $status,
 				'created_at'     => $req->get_param( 'created_at' ) ? gmdate( 'Y-m-d H:i:s', (int) strtotime( (string) $req->get_param( 'created_at' ) ) ) : '',
@@ -565,7 +565,7 @@ class RestController {
 		);
 
 		if ( ! $id ) {
-			return new WP_Error( 'advery_reviews_failed', __( 'Could not save.', 'advery-reviews' ), [ 'status' => 500 ] );
+			return new WP_Error( 'zaverweb_reviews_failed', __( 'Could not save.', 'zaverweb-reviews' ), [ 'status' => 500 ] );
 		}
 		return new WP_REST_Response( [ 'ok' => true, 'id' => $id, 'counts' => ReviewRepository::status_counts() ], 201 );
 	}
@@ -791,7 +791,7 @@ class RestController {
 	public function export_csv() {
 		return new WP_REST_Response(
 			[
-				'filename' => 'advery-reviews-' . gmdate( 'Ymd-His' ) . '.csv',
+				'filename' => 'zaverweb-reviews-' . gmdate( 'Ymd-His' ) . '.csv',
 				'csv'      => CsvExporter::generate(),
 			],
 			200
@@ -874,7 +874,7 @@ class RestController {
 				$parts[] = '- (' . $r['rating'] . '/5) ' . $r['content'];
 			}
 			if ( empty( $parts ) ) {
-				return new WP_Error( 'advery_ai_none', __( 'No reviews to summarize.', 'advery-reviews' ), [ 'status' => 400 ] );
+				return new WP_Error( 'zaverweb_ai_none', __( 'No reviews to summarize.', 'zaverweb-reviews' ), [ 'status' => 400 ] );
 			}
 			$out = AIClient::run( 'summarize', [ 'content' => implode( "\n", $parts ) ] );
 			return $this->ai_result( $out );
@@ -883,7 +883,7 @@ class RestController {
 		// reply / translate / moderate operate on a single review.
 		$review = ReviewRepository::find( (int) $req->get_param( 'review_id' ) );
 		if ( ! $review ) {
-			return new WP_Error( 'advery_ai_review', __( 'Review not found.', 'advery-reviews' ), [ 'status' => 404 ] );
+			return new WP_Error( 'zaverweb_ai_review', __( 'Review not found.', 'zaverweb-reviews' ), [ 'status' => 404 ] );
 		}
 		$ctx = [
 			'business'         => Targets::label( $review['object_type'], $review['object_id'] ),
@@ -948,7 +948,7 @@ class RestController {
 	 */
 	public function save_reply( WP_REST_Request $req ) {
 		$id   = (int) $req['id'];
-		$text = \Advery\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'text' ), 2000 );
+		$text = \ZaverWeb\Reviews\Support\Sanitizer::content( (string) $req->get_param( 'text' ), 2000 );
 		$by   = wp_get_current_user()->display_name;
 		$ok   = ReviewRepository::set_reply( $id, $text, $by );
 		return new WP_REST_Response( [ 'ok' => $ok ], $ok ? 200 : 400 );
@@ -1139,7 +1139,7 @@ class RestController {
 			'content'     => wp_kses_post( $r['content'] ),
 			'created_at'  => $r['created_at'],
 			'date'        => $ts ? date_i18n( get_option( 'date_format' ), $ts ) : '',
-			'avatar'      => \Advery\Reviews\Support\Avatar::html( $r ),
+			'avatar'      => \ZaverWeb\Reviews\Support\Avatar::html( $r ),
 		];
 	}
 

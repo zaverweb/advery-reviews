@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Migration;
+namespace ZaverWeb\Reviews\Migration;
 
-use Advery\Reviews\Database\Installer;
-use Advery\Reviews\Database\ReviewRepository;
-use Advery\Reviews\Support\Sanitizer;
+use ZaverWeb\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Sanitizer;
 
 /**
  * Imports existing WordPress post comments and WooCommerce product reviews into
@@ -16,7 +16,7 @@ use Advery\Reviews\Support\Sanitizer;
 class CommentImporter {
 
 	/** Comment meta flag set on comments the plugin exported (loop guard). */
-	const EXPORTED_FLAG = '_advery_exported';
+	const EXPORTED_FLAG = '_zaverweb_exported';
 
 	/**
 	 * How many comments are available to import, and how many are already in.
@@ -135,7 +135,7 @@ class CommentImporter {
 		// own flags) so nothing is lost.
 		$extra = [];
 		foreach ( get_comment_meta( $comment->comment_ID ) as $key => $vals ) {
-			if ( in_array( $key, [ 'rating', self::EXPORTED_FLAG, '_advery_review_id' ], true ) ) {
+			if ( in_array( $key, [ 'rating', self::EXPORTED_FLAG, '_zaverweb_review_id' ], true ) ) {
 				continue;
 			}
 			$extra[ $key ] = is_array( $vals ) && 1 === count( $vals ) ? $vals[0] : $vals;

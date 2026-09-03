@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
 /**
  * Ollama (self-hosted) via its OpenAI-compatible endpoint. No API key needed;

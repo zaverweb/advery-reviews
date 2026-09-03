@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Migration;
+namespace ZaverWeb\Reviews\Migration;
 
-use Advery\Reviews\Database\Installer;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Reverse migration: recreates native WordPress comments / WooCommerce reviews
@@ -119,7 +119,7 @@ class CommentExporter {
 				'comment_approved'     => $approved,
 				'comment_date'         => $row['created_at'],
 				'user_id'              => (int) $row['author_user_id'],
-				'comment_agent'        => 'AdveryReviews',
+				'comment_agent'        => 'ZaverWebReviews',
 			]
 		);
 
@@ -132,7 +132,7 @@ class CommentExporter {
 		}
 		// Loop guard + back-reference.
 		add_comment_meta( $comment_id, CommentImporter::EXPORTED_FLAG, 1 );
-		add_comment_meta( $comment_id, '_advery_review_id', (int) $row['id'] );
+		add_comment_meta( $comment_id, '_zaverweb_review_id', (int) $row['id'] );
 
 		return (int) $comment_id;
 	}

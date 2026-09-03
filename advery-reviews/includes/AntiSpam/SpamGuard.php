@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\AntiSpam;
+namespace ZaverWeb\Reviews\AntiSpam;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Layered, score-based spam evaluation. Cheap local checks run first and each
@@ -24,7 +24,7 @@ class SpamGuard {
 
 	/** A stable secret for signing the timing token (per-site). */
 	private static function secret() {
-		return wp_hash( 'advery-reviews-timing' );
+		return wp_hash( 'zaverweb-reviews-timing' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class SpamGuard {
 			return self::reject(
 				sprintf(
 					/* translators: %d: minimum characters */
-					__( 'Your review is too short (at least %d characters).', 'advery-reviews' ),
+					__( 'Your review is too short (at least %d characters).', 'zaverweb-reviews' ),
 					(int) $as['min_chars']
 				)
 			);
@@ -89,7 +89,7 @@ class SpamGuard {
 			return self::reject(
 				sprintf(
 					/* translators: %d: maximum characters */
-					__( 'Your review is too long (at most %d characters).', 'advery-reviews' ),
+					__( 'Your review is too long (at most %d characters).', 'zaverweb-reviews' ),
 					(int) $as['max_chars']
 				)
 			);
@@ -98,7 +98,7 @@ class SpamGuard {
 		// CAPTCHA (if configured).
 		if ( 'none' !== $as['captcha_provider'] && '' !== $as['captcha_secret_key'] ) {
 			if ( ! CaptchaVerifier::verify( $as, (string) ( $sub['captcha_token'] ?? '' ), $ip ) ) {
-				return self::reject( __( 'CAPTCHA verification failed. Please try again.', 'advery-reviews' ) );
+				return self::reject( __( 'CAPTCHA verification failed. Please try again.', 'zaverweb-reviews' ) );
 			}
 		}
 
@@ -109,7 +109,7 @@ class SpamGuard {
 			$recent       = ReviewRepository::count_recent( $ip, $email, $since_window );
 			$today        = ReviewRepository::count_recent( $ip, $email, $since_day );
 			if ( $recent >= (int) $as['rate_max'] || ( $as['rate_day_max'] > 0 && $today >= (int) $as['rate_day_max'] ) ) {
-				return self::reject( __( 'You are submitting too quickly. Please try again later.', 'advery-reviews' ) );
+				return self::reject( __( 'You are submitting too quickly. Please try again later.', 'zaverweb-reviews' ) );
 			}
 		}
 
@@ -123,7 +123,7 @@ class SpamGuard {
 		$link_hit = ( $links > (int) $as['max_links'] && 'off' !== $as['link_action'] );
 
 		if ( $link_hit && 'reject' === $as['link_action'] ) {
-			return self::reject( __( 'Links are not allowed in reviews.', 'advery-reviews' ) );
+			return self::reject( __( 'Links are not allowed in reviews.', 'zaverweb-reviews' ) );
 		}
 
 		// --- Trusted fast-track ---
@@ -138,7 +138,7 @@ class SpamGuard {
 		// --- Scored signals ---
 
 		// Honeypot already handled at the REST layer, but double-check here.
-		if ( '' !== trim( (string) ( $sub['advery_hp'] ?? '' ) ) ) {
+		if ( '' !== trim( (string) ( $sub['zaverweb_hp'] ?? '' ) ) ) {
 			$score += 10;
 			$reasons[] = 'honeypot';
 		}
@@ -240,7 +240,7 @@ class SpamGuard {
 			return [
 				'outcome' => 'reject',
 				'reasons' => [ 'links(' . $links . ')' ],
-				'message' => __( 'Links are not allowed in comments.', 'advery-reviews' ),
+				'message' => __( 'Links are not allowed in comments.', 'zaverweb-reviews' ),
 			];
 		}
 		if ( $link_hit ) {
@@ -253,7 +253,7 @@ class SpamGuard {
 			return [
 				'outcome' => 'reject',
 				'reasons' => [ 'blocklisted-word' ],
-				'message' => __( 'Your comment was blocked by the site’s content policy.', 'advery-reviews' ),
+				'message' => __( 'Your comment was blocked by the site’s content policy.', 'zaverweb-reviews' ),
 			];
 		}
 

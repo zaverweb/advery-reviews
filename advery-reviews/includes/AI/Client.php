@@ -1,15 +1,15 @@
 <?php
-namespace Advery\Reviews\AI;
+namespace ZaverWeb\Reviews\AI;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\AI\Providers\Anthropic;
-use Advery\Reviews\AI\Providers\OpenAI;
-use Advery\Reviews\AI\Providers\OpenRouter;
-use Advery\Reviews\AI\Providers\Ollama;
-use Advery\Reviews\AI\Providers\Gemini;
-use Advery\Reviews\AI\Providers\Deepseek;
-use Advery\Reviews\AI\Providers\Gapgpt;
-use Advery\Reviews\AI\Providers\Avalai;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\AI\Providers\Anthropic;
+use ZaverWeb\Reviews\AI\Providers\OpenAI;
+use ZaverWeb\Reviews\AI\Providers\OpenRouter;
+use ZaverWeb\Reviews\AI\Providers\Ollama;
+use ZaverWeb\Reviews\AI\Providers\Gemini;
+use ZaverWeb\Reviews\AI\Providers\Deepseek;
+use ZaverWeb\Reviews\AI\Providers\Gapgpt;
+use ZaverWeb\Reviews\AI\Providers\Avalai;
 
 /**
  * The single entry point for AI work: picks the configured provider, enforces
@@ -70,25 +70,25 @@ class Client {
 	 */
 	public static function run( $task, array $ctx ) {
 		if ( ! in_array( $task, Tasks::TASKS, true ) ) {
-			return new \WP_Error( 'advery_ai_task', __( 'Unknown AI task.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_task', __( 'Unknown AI task.', 'zaverweb-reviews' ) );
 		}
 
 		$ai       = Settings::ai();
 		$task_cfg = $ai['tasks'][ $task ] ?? [];
 
 		if ( empty( $task_cfg['enabled'] ) ) {
-			return new \WP_Error( 'advery_ai_disabled', __( 'This AI task is turned off.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_disabled', __( 'This AI task is turned off.', 'zaverweb-reviews' ) );
 		}
 		if ( ! self::configured() ) {
-			return new \WP_Error( 'advery_ai_config', __( 'AI is not configured (add a provider and API key in Settings → AI).', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_config', __( 'AI is not configured (add a provider and API key in Settings → AI).', 'zaverweb-reviews' ) );
 		}
 		if ( ! AuditLog::under_cap( $ai['daily_cap'] ) ) {
-			return new \WP_Error( 'advery_ai_cap', __( 'The daily AI limit has been reached.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_cap', __( 'The daily AI limit has been reached.', 'zaverweb-reviews' ) );
 		}
 
 		$provider = self::provider( $ai['provider'] );
 		if ( ! $provider ) {
-			return new \WP_Error( 'advery_ai_provider', __( 'Unknown AI provider.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_provider', __( 'Unknown AI provider.', 'zaverweb-reviews' ) );
 		}
 
 		$system = ! empty( $task_cfg['prompt'] ) ? $task_cfg['prompt'] : Tasks::default_prompt( $task );

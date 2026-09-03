@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
 /**
  * OpenRouter — OpenAI-compatible gateway to many models.

@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Integrations;
+namespace ZaverWeb\Reviews\Integrations;
 
 /**
- * Registers the Advery Reviews Elementor widget when Elementor is active.
+ * Registers the Zaver Web Reviews Elementor widget when Elementor is active.
  * Elementor is optional and feature-detected — nothing here loads (and the
  * widget class, which extends an Elementor base class, is never required)
  * unless Elementor fires its registration hook.
@@ -23,7 +23,7 @@ class ElementorBridge {
 		if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
 			return;
 		}
-		require_once ADVERY_REVIEWS_PATH . 'includes/Integrations/Elementor/ReviewsWidget.php';
+		require_once ZAVERWEB_REVIEWS_PATH . 'includes/Integrations/Elementor/ReviewsWidget.php';
 		if ( method_exists( $widgets_manager, 'register' ) ) {
 			$widgets_manager->register( new Elementor\ReviewsWidget() );
 		}
@@ -36,7 +36,7 @@ class ElementorBridge {
 		if ( ! class_exists( '\Elementor\Widget_Base' ) || ! method_exists( $widgets_manager, 'register_widget_type' ) ) {
 			return;
 		}
-		require_once ADVERY_REVIEWS_PATH . 'includes/Integrations/Elementor/ReviewsWidget.php';
+		require_once ZAVERWEB_REVIEWS_PATH . 'includes/Integrations/Elementor/ReviewsWidget.php';
 		$widgets_manager->register_widget_type( new Elementor\ReviewsWidget() );
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Database;
+namespace ZaverWeb\Reviews\Database;
 
 /**
  * Creates the plugin's two dedicated tables and upgrades them when the schema
@@ -9,22 +9,22 @@ namespace Advery\Reviews\Database;
  */
 class Installer {
 
-	const DB_VERSION_OPTION = 'advery_reviews_db_version';
+	const DB_VERSION_OPTION = 'zaverweb_reviews_db_version';
 	const DB_VERSION        = '1.5.0';
 
 	public static function reviews_table() {
 		global $wpdb;
-		return $wpdb->prefix . 'advery_reviews';
+		return $wpdb->prefix . 'zaverweb_reviews';
 	}
 
 	public static function stats_table() {
 		global $wpdb;
-		return $wpdb->prefix . 'advery_review_stats';
+		return $wpdb->prefix . 'zaverweb_review_stats';
 	}
 
 	public static function spam_log_table() {
 		global $wpdb;
-		return $wpdb->prefix . 'advery_review_spam_log';
+		return $wpdb->prefix . 'zaverweb_review_spam_log';
 	}
 
 	public static function install() {
@@ -109,5 +109,65 @@ class Installer {
 		if ( get_option( self::DB_VERSION_OPTION ) !== self::DB_VERSION ) {
 			self::install();
 		}
+	}
+
+	/**
+	 * One-time migration from the plugin's former "advery" identifiers (tables,
+	 * options and cron events) to the "zaverweb" ones after the rebrand. Runs
+	 * early on every load but is a no-op once the new DB-version option exists, so
+	 * it costs a single option read on a migrated or fresh site. Data is moved,
+	 * never copied-then-lost: tables are renamed in place and options carried over.
+	 */
+	public static function maybe_migrate() {
+		global $wpdb;
+
+		// Already on the new scheme (migrated, or a fresh install did install()).
+		if ( get_option( self::DB_VERSION_OPTION ) ) {
+			return;
+		}
+		// Nothing from the old scheme to migrate → let normal install() handle it.
+		if ( false === get_option( 'advery_reviews_settings' ) && false === get_option( 'advery_reviews_db_version' ) ) {
+			return;
+		}
+
+		$renames = [
+			'advery_reviews'          => 'zaverweb_reviews',
+			'advery_review_stats'     => 'zaverweb_review_stats',
+			'advery_review_spam_log'  => 'zaverweb_review_spam_log',
+		];
+		foreach ( $renames as $old => $new ) {
+			$old_t = $wpdb->prefix . $old;
+			$new_t = $wpdb->prefix . $new;
+			$has_old = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $old_t ) ) === $old_t;
+			$has_new = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $new_t ) ) === $new_t;
+			if ( $has_old && ! $has_new ) {
+				$wpdb->query( "RENAME TABLE `{$old_t}` TO `{$new_t}`" ); // phpcs:ignore WordPress.DB
+			}
+		}
+
+		// Carry options over (only if a new value isn't already present).
+		$opt_map = [
+			'advery_reviews_settings'    => 'zaverweb_reviews_settings',
+			'advery_reviews_digest_last' => 'zaverweb_reviews_digest_last',
+		];
+		foreach ( $opt_map as $old => $new ) {
+			$val = get_option( $old, null );
+			if ( null !== $val && false === get_option( $new, false ) ) {
+				update_option( $new, $val );
+			}
+		}
+
+		// Unschedule the old-named cron events; the Digest/SpamLog subsystems
+		// reschedule under the new names on this same load, per current settings.
+		wp_clear_scheduled_hook( 'advery_reviews_digest' );
+		wp_clear_scheduled_hook( 'advery_reviews_spam_log_purge' );
+
+		// Drop the old options.
+		delete_option( 'advery_reviews_settings' );
+		delete_option( 'advery_reviews_digest_last' );
+		delete_option( 'advery_reviews_db_version' );
+
+		// Create anything still missing and stamp the new DB version.
+		self::install();
 	}
 }

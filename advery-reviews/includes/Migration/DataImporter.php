@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Migration;
+namespace ZaverWeb\Reviews\Migration;
 
-use Advery\Reviews\Database\ReviewRepository;
-use Advery\Reviews\Support\Sanitizer;
-use Advery\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Sanitizer;
+use ZaverWeb\Reviews\Support\Settings;
 
 /**
  * A generic importer for review data assembled elsewhere (CSV/JSON exported

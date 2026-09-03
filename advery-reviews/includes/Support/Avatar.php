@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
 /**
  * Renders the reviewer avatar for the configured mode, in one place so the
@@ -26,7 +26,7 @@ class Avatar {
 			$id  = isset( $r['author_user_id'] ) ? (int) $r['author_user_id'] : 0;
 			$src = $id ? $id : (string) ( $r['author_email'] ?? '' );
 			// The ONLY branch that issues an external request.
-			$html = get_avatar( $src, 40, '', $r['author_name'] ?? '', [ 'class' => 'advery-reviews__avatar-img', 'loading' => 'lazy' ] );
+			$html = get_avatar( $src, 40, '', $r['author_name'] ?? '', [ 'class' => 'zaverweb-reviews__avatar-img', 'loading' => 'lazy' ] );
 			return $html ? $html : self::initials( $r );
 		}
 
@@ -34,7 +34,7 @@ class Avatar {
 			$url = (string) Settings::get( 'avatar_default', '' );
 			if ( '' !== $url ) {
 				return sprintf(
-					'<img class="advery-reviews__avatar-img" src="%s" alt="" width="40" height="40" loading="lazy" />',
+					'<img class="zaverweb-reviews__avatar-img" src="%s" alt="" width="40" height="40" loading="lazy" />',
 					esc_url( $url )
 				);
 			}
@@ -52,6 +52,6 @@ class Avatar {
 	private static function initials( array $r ) {
 		$name    = trim( (string) ( $r['author_name'] ?? '' ) );
 		$initial = '' !== $name ? mb_substr( $name, 0, 1 ) : '?';
-		return '<span class="advery-reviews__avatar" aria-hidden="true">' . esc_html( mb_strtoupper( $initial ) ) . '</span>';
+		return '<span class="zaverweb-reviews__avatar" aria-hidden="true">' . esc_html( mb_strtoupper( $initial ) ) . '</span>';
 	}
 }

@@ -1,15 +1,15 @@
 import apiFetch from '@wordpress/api-fetch';
 
-const config = window.AdveryReviewsConfig || {};
+const config = window.ZaverWebReviewsConfig || {};
 
 apiFetch.use( apiFetch.createNonceMiddleware( config.nonce ) );
 apiFetch.use(
 	apiFetch.createRootURLMiddleware(
-		( config.restUrl || '' ).replace( /\/advery-reviews\/v1$/, '/' )
+		( config.restUrl || '' ).replace( /\/zaverweb-reviews\/v1$/, '/' )
 	)
 );
 
-const base = 'advery-reviews/v1';
+const base = 'zaverweb-reviews/v1';
 
 export const api = {
 	bootstrap: () => apiFetch( { path: `${ base }/bootstrap` } ),

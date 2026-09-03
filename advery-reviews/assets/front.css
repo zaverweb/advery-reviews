@@ -1,229 +1,229 @@
-/* Advery Reviews — front-end widget. Every color, radius, spacing and size is
-   driven by CSS custom properties (the `--ar-*` vars), so the whole widget can
+/* Zaver Web Reviews — front-end widget. Every color, radius, spacing and size is
+   driven by CSS custom properties (the `--zw-*` vars), so the whole widget can
    be restyled from the Appearance settings without editing CSS. Each var has a
    sensible fallback, so the widget looks right even with no settings. */
-.advery-reviews {
-	--ar-accent: #2271b1;
-	--ar-accent-ink: #ffffff;
-	--ar-star: #f5a623;
-	--ar-text: inherit;
-	--ar-muted: #767676;
-	--ar-surface: rgba( 0, 0, 0, 0.02 );
-	--ar-reply-surface: rgba( 0, 0, 0, 0.03 );
-	--ar-border: rgba( 0, 0, 0, 0.10 );
-	--ar-field-border: #cccccc;
-	--ar-radius: 8px;
-	--ar-font-size: 15px;
-	--ar-star-size: 18px;
-	--ar-gap: 0.9em;
-	--ar-form-pad: 1.2em;
+.zaverweb-reviews {
+	--zw-accent: #2271b1;
+	--zw-accent-ink: #ffffff;
+	--zw-star: #f5a623;
+	--zw-text: inherit;
+	--zw-muted: #767676;
+	--zw-surface: rgba( 0, 0, 0, 0.02 );
+	--zw-reply-surface: rgba( 0, 0, 0, 0.03 );
+	--zw-border: rgba( 0, 0, 0, 0.10 );
+	--zw-field-border: #cccccc;
+	--zw-radius: 8px;
+	--zw-font-size: 15px;
+	--zw-star-size: 18px;
+	--zw-gap: 0.9em;
+	--zw-form-pad: 1.2em;
 
 	margin: 2em 0;
-	font-size: var(--ar-font-size);
-	color: var(--ar-text);
+	font-size: var(--zw-font-size);
+	color: var(--zw-text);
 	/* Caps the whole widget (list + form together) so they always share the
 	   same width; unset (Max width = 0) means full width. */
-	max-width: var(--ar-max-width, 100%);
+	max-width: var(--zw-max-width, 100%);
 }
-.advery-reviews__heading {
+.zaverweb-reviews__heading {
 	margin: 0 0 0.6em;
 	font-size: 1.3em;
 	font-weight: 700;
 }
-.advery-reviews__summary {
+.zaverweb-reviews__summary {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	margin-bottom: 1em;
 	padding-bottom: 0.6em;
-	border-bottom: 1px solid var(--ar-border);
+	border-bottom: 1px solid var(--zw-border);
 }
-.advery-reviews__avg {
+.zaverweb-reviews__avg {
 	font-size: 1.6em;
 	font-weight: 700;
 	line-height: 1;
 }
-.advery-reviews__stars {
-	color: var(--ar-star);
+.zaverweb-reviews__stars {
+	color: var(--zw-star);
 	letter-spacing: 1px;
-	font-size: var(--ar-star-size);
+	font-size: var(--zw-star-size);
 	line-height: 1;
 }
-.advery-reviews__count {
-	color: var(--ar-muted);
+.zaverweb-reviews__count {
+	color: var(--zw-muted);
 }
-.advery-reviews__list {
+.zaverweb-reviews__list {
 	list-style: none;
 	margin: 0 0 1.5em;
 	padding: 0;
 	transition: opacity 0.15s ease;
 }
-.advery-reviews__item {
-	padding: var(--ar-gap) 0;
-	border-bottom: 1px solid var(--ar-border);
+.zaverweb-reviews__item {
+	padding: var(--zw-gap) 0;
+	border-bottom: 1px solid var(--zw-border);
 }
-.advery-reviews__item-head {
+.zaverweb-reviews__item-head {
 	display: flex;
 	align-items: center;
 	gap: 8px;
 	flex-wrap: wrap;
 }
-.advery-reviews__avatar,
-.advery-reviews__avatar-img {
+.zaverweb-reviews__avatar,
+.zaverweb-reviews__avatar-img {
 	flex: 0 0 auto;
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	object-fit: cover;
 }
-.advery-reviews__avatar {
+.zaverweb-reviews__avatar {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--ar-surface);
-	border: 1px solid var(--ar-border);
-	color: var(--ar-accent);
+	background: var(--zw-surface);
+	border: 1px solid var(--zw-border);
+	color: var(--zw-accent);
 	font-weight: 700;
 	font-size: 1.05em;
 	line-height: 1;
 }
-.advery-reviews__meta-col {
+.zaverweb-reviews__meta-col {
 	display: flex;
 	flex-direction: column;
 	line-height: 1.25;
 	min-width: 0;
 }
-.advery-reviews__date {
+.zaverweb-reviews__date {
 	font-size: 0.8em;
-	color: var(--ar-muted);
+	color: var(--zw-muted);
 }
 /* Push the stars to the trailing edge of the header. */
-.advery-reviews__item-head .advery-reviews__stars {
+.zaverweb-reviews__item-head .zaverweb-reviews__stars {
 	margin-inline-start: auto;
 }
-.advery-reviews__title {
+.zaverweb-reviews__title {
 	font-weight: 600;
 	margin-top: 0.2em;
 }
 
 /* Card skin — each review in its own surface with border, radius and a soft
-   shadow (all from the --ar-* variables, so it follows the Appearance colors). */
-.advery-reviews--card .advery-reviews__list {
+   shadow (all from the --zw-* variables, so it follows the Appearance colors). */
+.zaverweb-reviews--card .zaverweb-reviews__list {
 	display: flex;
 	flex-direction: column;
 	gap: 14px;
 }
-.advery-reviews--card .advery-reviews__item {
-	background: var(--ar-surface);
-	border: 1px solid var(--ar-border);
-	border-radius: var(--ar-radius);
+.zaverweb-reviews--card .zaverweb-reviews__item {
+	background: var(--zw-surface);
+	border: 1px solid var(--zw-border);
+	border-radius: var(--zw-radius);
 	padding: 1em 1.15em;
 	box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.05 );
 	transition: box-shadow 0.15s ease;
 }
-.advery-reviews--card .advery-reviews__item:hover {
+.zaverweb-reviews--card .zaverweb-reviews__item:hover {
 	box-shadow: 0 4px 14px rgba( 0, 0, 0, 0.08 );
 }
-.advery-reviews--card .advery-reviews__item-head {
+.zaverweb-reviews--card .zaverweb-reviews__item-head {
 	margin-bottom: 0.55em;
 }
-.advery-reviews--card .advery-reviews__content {
+.zaverweb-reviews--card .zaverweb-reviews__content {
 	margin: 0;
 }
-.advery-reviews--card .advery-reviews__reply {
+.zaverweb-reviews--card .zaverweb-reviews__reply {
 	margin: 0.7em 0 0;
 }
-.advery-reviews__content {
-	color: var(--ar-text);
+.zaverweb-reviews__content {
+	color: var(--zw-text);
 }
 
 /* Minimal skin — airy and borderless: no card, generous spacing, a hairline
    divider between reviews, the author name in the accent color and a small
    upper-case date. Clean and editorial. */
-.advery-reviews--minimal .advery-reviews__list {
+.zaverweb-reviews--minimal .zaverweb-reviews__list {
 	display: flex;
 	flex-direction: column;
 	gap: 0;
 }
-.advery-reviews--minimal .advery-reviews__item {
+.zaverweb-reviews--minimal .zaverweb-reviews__item {
 	border: 0;
 	padding: 1.4em 0;
 }
-.advery-reviews--minimal .advery-reviews__item + .advery-reviews__item {
-	border-top: 1px solid var(--ar-border);
+.zaverweb-reviews--minimal .zaverweb-reviews__item + .zaverweb-reviews__item {
+	border-top: 1px solid var(--zw-border);
 }
-.advery-reviews--minimal .advery-reviews__author {
-	color: var(--ar-accent);
+.zaverweb-reviews--minimal .zaverweb-reviews__author {
+	color: var(--zw-accent);
 }
-.advery-reviews--minimal .advery-reviews__date {
+.zaverweb-reviews--minimal .zaverweb-reviews__date {
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
 	font-size: 0.72em;
 }
-.advery-reviews--minimal .advery-reviews__content {
+.zaverweb-reviews--minimal .zaverweb-reviews__content {
 	margin-top: 0.5em;
 	line-height: 1.75;
 }
-.advery-reviews--minimal .advery-reviews__item-head {
+.zaverweb-reviews--minimal .zaverweb-reviews__item-head {
 	margin-bottom: 0.2em;
 }
 
 /* Bubble skin — chat-style: the review text sits in a rounded, tinted speech
    bubble with a little tail pointing up to the author header above it. */
-.advery-reviews--bubble .advery-reviews__list {
+.zaverweb-reviews--bubble .zaverweb-reviews__list {
 	display: flex;
 	flex-direction: column;
 	gap: 18px;
 }
-.advery-reviews--bubble .advery-reviews__item {
+.zaverweb-reviews--bubble .zaverweb-reviews__item {
 	border: 0;
 	padding: 0.2em 0 0.6em;
 }
-.advery-reviews--bubble .advery-reviews__item-head {
+.zaverweb-reviews--bubble .zaverweb-reviews__item-head {
 	margin-bottom: 0.7em;
 }
-.advery-reviews--bubble .advery-reviews__content {
+.zaverweb-reviews--bubble .zaverweb-reviews__content {
 	position: relative;
-	background: var(--ar-surface);
-	border: 1px solid var(--ar-border);
+	background: var(--zw-surface);
+	border: 1px solid var(--zw-border);
 	border-radius: 16px;
 	padding: 0.9em 1.1em;
 }
-.advery-reviews--bubble .advery-reviews__content::before {
+.zaverweb-reviews--bubble .zaverweb-reviews__content::before {
 	content: "";
 	position: absolute;
 	top: -7px;
 	inset-inline-start: 22px;
 	width: 13px;
 	height: 13px;
-	background: var(--ar-surface);
-	border-inline-start: 1px solid var(--ar-border);
-	border-top: 1px solid var(--ar-border);
+	background: var(--zw-surface);
+	border-inline-start: 1px solid var(--zw-border);
+	border-top: 1px solid var(--zw-border);
 	transform: rotate(45deg);
 }
-.advery-reviews--bubble .advery-reviews__reply {
+.zaverweb-reviews--bubble .zaverweb-reviews__reply {
 	margin-top: 0.8em;
 }
 
 /* Quote skin — centered testimonials: each review is a card with a large
    decorative quotation mark, the avatar/name/stars stacked and centered, and
    the text centered below. Great for a testimonials section. */
-.advery-reviews--quote .advery-reviews__list {
+.zaverweb-reviews--quote .zaverweb-reviews__list {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 16px;
 	margin-bottom: 1.5em;
 }
-.advery-reviews--quote .advery-reviews__item {
+.zaverweb-reviews--quote .zaverweb-reviews__item {
 	position: relative;
-	background: var(--ar-surface);
-	border: 1px solid var(--ar-border);
-	border-radius: var(--ar-radius);
+	background: var(--zw-surface);
+	border: 1px solid var(--zw-border);
+	border-radius: var(--zw-radius);
 	padding: 1.9em 1.4em 1.3em;
 	text-align: center;
 	overflow: hidden;
 }
-.advery-reviews--quote .advery-reviews__item::before {
+.zaverweb-reviews--quote .zaverweb-reviews__item::before {
 	content: "\201C";
 	position: absolute;
 	top: 0.08em;
@@ -231,128 +231,128 @@
 	font-family: Georgia, "Times New Roman", serif;
 	font-size: 3.2em;
 	line-height: 1;
-	color: var(--ar-accent);
+	color: var(--zw-accent);
 	opacity: 0.22;
 }
-.advery-reviews--quote .advery-reviews__item-head {
+.zaverweb-reviews--quote .zaverweb-reviews__item-head {
 	flex-direction: column;
 	align-items: center;
 	gap: 4px;
 	margin-bottom: 0.5em;
 }
-.advery-reviews--quote .advery-reviews__meta-col {
+.zaverweb-reviews--quote .zaverweb-reviews__meta-col {
 	align-items: center;
 	text-align: center;
 }
-.advery-reviews--quote .advery-reviews__item-head .advery-reviews__stars {
+.zaverweb-reviews--quote .zaverweb-reviews__item-head .zaverweb-reviews__stars {
 	margin-inline-start: 0;
 }
-.advery-reviews--quote .advery-reviews__content {
+.zaverweb-reviews--quote .zaverweb-reviews__content {
 	margin: 0.4em auto 0;
 	max-width: 62ch;
 }
-.advery-reviews--quote .advery-reviews__reply {
+.zaverweb-reviews--quote .zaverweb-reviews__reply {
 	text-align: start;
 	margin-inline-start: 0;
 	margin-top: 0.9em;
 }
 
-.advery-reviews__more {
+.zaverweb-reviews__more {
 	margin: 0.5em 0 1.5em;
 	text-align: center;
 }
-.advery-reviews__loadmore {
+.zaverweb-reviews__loadmore {
 	background: none;
-	border: 1px solid var(--ar-accent);
-	color: var(--ar-accent);
-	border-radius: var(--ar-radius);
+	border: 1px solid var(--zw-accent);
+	color: var(--zw-accent);
+	border-radius: var(--zw-radius);
 	padding: 0.5em 1.4em;
 	cursor: pointer;
 	font-size: 0.95em;
 }
-.advery-reviews__loadmore:disabled {
+.zaverweb-reviews__loadmore:disabled {
 	opacity: 0.6;
 	cursor: default;
 }
-.advery-reviews__pager {
+.zaverweb-reviews__pager {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 4px;
 	margin: 0.5em 0 1.5em;
 }
-.advery-reviews__page {
+.zaverweb-reviews__page {
 	min-width: 34px;
 	background: none;
-	border: 1px solid var(--ar-field-border);
-	border-radius: var(--ar-radius);
+	border: 1px solid var(--zw-field-border);
+	border-radius: var(--zw-radius);
 	padding: 0.35em 0.6em;
 	cursor: pointer;
 }
-.advery-reviews__page.is-active {
-	background: var(--ar-accent);
-	border-color: var(--ar-accent);
-	color: var(--ar-accent-ink);
+.zaverweb-reviews__page.is-active {
+	background: var(--zw-accent);
+	border-color: var(--zw-accent);
+	color: var(--zw-accent-ink);
 }
 
-.advery-reviews__reply {
+.zaverweb-reviews__reply {
 	margin: 0.6em 0 0.2em 1.2em;
 	padding: 0.6em 0.9em;
-	background: var(--ar-reply-surface);
-	border-inline-start: 3px solid var(--ar-border);
-	border-radius: var(--ar-radius);
+	background: var(--zw-reply-surface);
+	border-inline-start: 3px solid var(--zw-border);
+	border-radius: var(--zw-radius);
 }
-.advery-reviews__reply-label {
+.zaverweb-reviews__reply-label {
 	display: block;
 	font-size: 0.8em;
 	font-weight: 700;
-	color: var(--ar-muted);
+	color: var(--zw-muted);
 	margin-bottom: 0.2em;
 }
-.advery-reviews__reply-text p:last-child {
+.zaverweb-reviews__reply-text p:last-child {
 	margin-bottom: 0;
 }
 
-.advery-reviews__form {
-	background: var(--ar-surface);
-	border: 1px solid var(--ar-border);
-	border-radius: var(--ar-radius);
-	padding: var(--ar-form-pad);
+.zaverweb-reviews__form {
+	background: var(--zw-surface);
+	border: 1px solid var(--zw-border);
+	border-radius: var(--zw-radius);
+	padding: var(--zw-form-pad);
 	max-width: 100%; /* matches the reviews above — the container sets the cap */
 	margin-top: 1.4em;
 }
-.advery-reviews__form h3 {
+.zaverweb-reviews__form h3 {
 	margin-top: 0;
 }
-.advery-reviews__form input[type="text"],
-.advery-reviews__form input[type="email"],
-.advery-reviews__form textarea {
+.zaverweb-reviews__form input[type="text"],
+.zaverweb-reviews__form input[type="email"],
+.zaverweb-reviews__form textarea {
 	display: block;
 	width: 100%;
 	margin-bottom: 0.7em;
 	padding: 0.6em;
-	border: 1px solid var(--ar-field-border);
-	border-radius: var(--ar-radius);
+	border: 1px solid var(--zw-field-border);
+	border-radius: var(--zw-radius);
 	box-sizing: border-box;
 }
-.advery-reviews__rating-input {
+.zaverweb-reviews__rating-input {
 	margin-bottom: 0.8em;
 }
-.advery-reviews__star-btn {
+.zaverweb-reviews__star-btn {
 	background: none;
 	border: none;
 	font-size: 1.7em;
 	line-height: 1;
-	color: var(--ar-star);
+	color: var(--zw-star);
 	cursor: pointer;
 	padding: 0 2px;
 }
-.advery-reviews__star-btn.is-on {
-	color: var(--ar-star);
+.zaverweb-reviews__star-btn.is-on {
+	color: var(--zw-star);
 }
 /* Honeypot: hidden with the accessible clip pattern — never a negative offset
    like left:-9999px, which in an RTL page widens the document and causes a
    horizontal scrollbar. */
-.advery-reviews__hp {
+.zaverweb-reviews__hp {
 	position: absolute !important;
 	width: 1px !important;
 	height: 1px !important;
@@ -363,43 +363,43 @@
 	clip: rect(0 0 0 0) !important;
 	white-space: nowrap !important;
 }
-.advery-reviews__submit {
-	background: var(--ar-accent);
-	color: var(--ar-accent-ink);
+.zaverweb-reviews__submit {
+	background: var(--zw-accent);
+	color: var(--zw-accent-ink);
 	border: none;
-	border-radius: var(--ar-radius);
+	border-radius: var(--zw-radius);
 	padding: 0.6em 1.4em;
 	font-size: 1em;
 	cursor: pointer;
 }
-.advery-reviews__submit:disabled {
+.zaverweb-reviews__submit:disabled {
 	opacity: 0.6;
 	cursor: default;
 }
-.advery-reviews__msg {
+.zaverweb-reviews__msg {
 	margin: 0.8em 0 0;
 	min-height: 1.2em;
 }
-.advery-reviews__msg.is-success {
+.zaverweb-reviews__msg.is-success {
 	color: #1a7f37;
 }
-.advery-reviews__msg.is-error {
+.zaverweb-reviews__msg.is-error {
 	color: #c0392b;
 }
 
 /* Responsive: the form is never wider than its container, the summary can wrap,
    and on narrow screens padding tightens and the owner-reply indent shrinks. */
-.advery-reviews__form {
+.zaverweb-reviews__form {
 	width: 100%;
 }
 @media ( max-width: 600px ) {
-	.advery-reviews__summary {
+	.zaverweb-reviews__summary {
 		flex-wrap: wrap;
 	}
-	.advery-reviews__form {
-		padding: calc( var(--ar-form-pad) * 0.8 );
+	.zaverweb-reviews__form {
+		padding: calc( var(--zw-form-pad) * 0.8 );
 	}
-	.advery-reviews__reply {
+	.zaverweb-reviews__reply {
 		margin-inline-start: 0.4em;
 	}
 }

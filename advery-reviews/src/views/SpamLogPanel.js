@@ -3,16 +3,16 @@ import { __, sprintf } from '@wordpress/i18n';
 import { SelectControl, TextControl, Button, Spinner, Notice } from '@wordpress/components';
 import { api } from '../api';
 
-const cfg = window.AdveryReviewsConfig || {};
+const cfg = window.ZaverWebReviewsConfig || {};
 
 const SOURCE_LABELS = {
-	review: __( 'Review form', 'advery-reviews' ),
-	comment: __( 'Native comment', 'advery-reviews' ),
+	review: __( 'Review form', 'zaverweb-reviews' ),
+	comment: __( 'Native comment', 'zaverweb-reviews' ),
 };
 const OUTCOME_LABELS = {
-	reject: __( 'Rejected', 'advery-reviews' ),
-	spam: __( 'Spam', 'advery-reviews' ),
-	hold: __( 'Held', 'advery-reviews' ),
+	reject: __( 'Rejected', 'zaverweb-reviews' ),
+	spam: __( 'Spam', 'zaverweb-reviews' ),
+	hold: __( 'Held', 'zaverweb-reviews' ),
 };
 
 function fmtDate( s ) {
@@ -63,13 +63,13 @@ export default function SpamLogPanel( { notify } ) {
 
 	const clearLog = useCallback( async () => {
 		// eslint-disable-next-line no-alert
-		if ( ! window.confirm( __( 'Permanently delete every row in the spam log? This cannot be undone.', 'advery-reviews' ) ) ) {
+		if ( ! window.confirm( __( 'Permanently delete every row in the spam log? This cannot be undone.', 'zaverweb-reviews' ) ) ) {
 			return;
 		}
 		setBusy( true );
 		try {
 			await api.spamLogClear();
-			notify( 'success', __( 'Spam log cleared.', 'advery-reviews' ) );
+			notify( 'success', __( 'Spam log cleared.', 'zaverweb-reviews' ) );
 			setPage( 1 );
 			load();
 		} catch ( e ) {
@@ -86,25 +86,25 @@ export default function SpamLogPanel( { notify } ) {
 	const enabled = data ? data.enabled : true;
 
 	return (
-		<div className="advery-rv-panel advery-rv-spamlog">
+		<div className="zaverweb-rv-panel zaverweb-rv-spamlog">
 			{ ! enabled && (
 				<Notice status="warning" isDismissible={ false }>
-					{ __( 'The spam log is turned off, so nothing new is being recorded. Turn on “Keep a spam log” under Settings → Anti-spam to start logging blocked submissions.', 'advery-reviews' ) }
+					{ __( 'The spam log is turned off, so nothing new is being recorded. Turn on “Keep a spam log” under Settings → Anti-spam to start logging blocked submissions.', 'zaverweb-reviews' ) }
 					{ cfg.settingsUrl && (
 						<>
 							{ ' ' }
-							<a href={ cfg.settingsUrl }>{ __( 'Open settings', 'advery-reviews' ) }</a>
+							<a href={ cfg.settingsUrl }>{ __( 'Open settings', 'zaverweb-reviews' ) }</a>
 						</>
 					) }
 				</Notice>
 			) }
 
-			<div className="advery-rv-spamlog__bar">
+			<div className="zaverweb-rv-spamlog__bar">
 				<SelectControl
-					label={ __( 'Source', 'advery-reviews' ) }
+					label={ __( 'Source', 'zaverweb-reviews' ) }
 					value={ source }
 					options={ [
-						{ label: __( 'All sources', 'advery-reviews' ), value: '' },
+						{ label: __( 'All sources', 'zaverweb-reviews' ), value: '' },
 						{ label: SOURCE_LABELS.review, value: 'review' },
 						{ label: SOURCE_LABELS.comment, value: 'comment' },
 					] }
@@ -112,10 +112,10 @@ export default function SpamLogPanel( { notify } ) {
 					__nextHasNoMarginBottom
 				/>
 				<SelectControl
-					label={ __( 'Result', 'advery-reviews' ) }
+					label={ __( 'Result', 'zaverweb-reviews' ) }
 					value={ outcome }
 					options={ [
-						{ label: __( 'All results', 'advery-reviews' ), value: '' },
+						{ label: __( 'All results', 'zaverweb-reviews' ), value: '' },
 						{ label: OUTCOME_LABELS.reject, value: 'reject' },
 						{ label: OUTCOME_LABELS.spam, value: 'spam' },
 						{ label: OUTCOME_LABELS.hold, value: 'hold' },
@@ -124,58 +124,58 @@ export default function SpamLogPanel( { notify } ) {
 					__nextHasNoMarginBottom
 				/>
 				<TextControl
-					label={ __( 'Search (text, IP, email, reason)', 'advery-reviews' ) }
+					label={ __( 'Search (text, IP, email, reason)', 'zaverweb-reviews' ) }
 					value={ search }
 					onChange={ setSearch }
 					__nextHasNoMarginBottom
 				/>
-				<div className="advery-rv-spamlog__bar-actions">
+				<div className="zaverweb-rv-spamlog__bar-actions">
 					<Button variant="secondary" onClick={ load } disabled={ loading }>
-						{ __( 'Refresh', 'advery-reviews' ) }
+						{ __( 'Refresh', 'zaverweb-reviews' ) }
 					</Button>
 					<Button variant="secondary" isDestructive onClick={ clearLog } disabled={ busy || total === 0 }>
-						{ __( 'Clear log', 'advery-reviews' ) }
+						{ __( 'Clear log', 'zaverweb-reviews' ) }
 					</Button>
 				</div>
 			</div>
 
 			{ loading ? (
-				<div className="advery-rv-loading"><Spinner /></div>
+				<div className="zaverweb-rv-loading"><Spinner /></div>
 			) : items.length === 0 ? (
-				<p className="advery-rv-hint">
+				<p className="zaverweb-rv-hint">
 					{ enabled
-						? __( 'Nothing logged yet. Blocked, held, or spam submissions will appear here.', 'advery-reviews' )
-						: __( 'No entries.', 'advery-reviews' ) }
+						? __( 'Nothing logged yet. Blocked, held, or spam submissions will appear here.', 'zaverweb-reviews' )
+						: __( 'No entries.', 'zaverweb-reviews' ) }
 				</p>
 			) : (
 				<>
-					<p className="advery-rv-hint">
+					<p className="zaverweb-rv-hint">
 						{ sprintf(
 							/* translators: %d: number of log rows */
-							__( '%d entries', 'advery-reviews' ),
+							__( '%d entries', 'zaverweb-reviews' ),
 							total
 						) }
 					</p>
-					<div className="advery-rv-tablewrap">
-						<table className="advery-rv-table advery-rv-spamlog__table">
+					<div className="zaverweb-rv-tablewrap">
+						<table className="zaverweb-rv-table zaverweb-rv-spamlog__table">
 							<thead>
 								<tr>
-									<th>{ __( 'When', 'advery-reviews' ) }</th>
-									<th>{ __( 'Source', 'advery-reviews' ) }</th>
-									<th>{ __( 'Result', 'advery-reviews' ) }</th>
-									<th>{ __( 'Target', 'advery-reviews' ) }</th>
-									<th>{ __( 'IP', 'advery-reviews' ) }</th>
-									<th>{ __( 'Reason', 'advery-reviews' ) }</th>
-									<th>{ __( 'Content', 'advery-reviews' ) }</th>
+									<th>{ __( 'When', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'Source', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'Result', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'Target', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'IP', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'Reason', 'zaverweb-reviews' ) }</th>
+									<th>{ __( 'Content', 'zaverweb-reviews' ) }</th>
 								</tr>
 							</thead>
 							<tbody>
 								{ items.map( ( r ) => (
 									<tr key={ r.id }>
-										<td className="advery-rv-spamlog__when">{ fmtDate( r.created_at ) }</td>
+										<td className="zaverweb-rv-spamlog__when">{ fmtDate( r.created_at ) }</td>
 										<td>{ SOURCE_LABELS[ r.source ] || r.source }</td>
 										<td>
-											<span className={ 'advery-rv-pill is-' + r.outcome }>
+											<span className={ 'zaverweb-rv-pill is-' + r.outcome }>
 												{ OUTCOME_LABELS[ r.outcome ] || r.outcome }
 											</span>
 										</td>
@@ -187,12 +187,12 @@ export default function SpamLogPanel( { notify } ) {
 													r.label
 												)
 											) : (
-												<span className="advery-rv-muted">—</span>
+												<span className="zaverweb-rv-muted">—</span>
 											) }
 										</td>
-										<td className="advery-rv-spamlog__ip">{ r.author_ip || '—' }</td>
-										<td className="advery-rv-spamlog__reason">{ r.reason || '—' }</td>
-										<td className="advery-rv-spamlog__content" title={ r.content }>{ r.content }</td>
+										<td className="zaverweb-rv-spamlog__ip">{ r.author_ip || '—' }</td>
+										<td className="zaverweb-rv-spamlog__reason">{ r.reason || '—' }</td>
+										<td className="zaverweb-rv-spamlog__content" title={ r.content }>{ r.content }</td>
 									</tr>
 								) ) }
 							</tbody>
@@ -200,20 +200,20 @@ export default function SpamLogPanel( { notify } ) {
 					</div>
 
 					{ totalPages > 1 && (
-						<div className="advery-rv-pager">
+						<div className="zaverweb-rv-pager">
 							<Button variant="secondary" disabled={ page <= 1 } onClick={ () => setPage( ( p ) => Math.max( 1, p - 1 ) ) }>
-								{ __( 'Previous', 'advery-reviews' ) }
+								{ __( 'Previous', 'zaverweb-reviews' ) }
 							</Button>
-							<span className="advery-rv-pager__info">
+							<span className="zaverweb-rv-pager__info">
 								{ sprintf(
 									/* translators: 1: current page, 2: total pages */
-									__( 'Page %1$d of %2$d', 'advery-reviews' ),
+									__( 'Page %1$d of %2$d', 'zaverweb-reviews' ),
 									page,
 									totalPages
 								) }
 							</span>
 							<Button variant="secondary" disabled={ page >= totalPages } onClick={ () => setPage( ( p ) => Math.min( totalPages, p + 1 ) ) }>
-								{ __( 'Next', 'advery-reviews' ) }
+								{ __( 'Next', 'zaverweb-reviews' ) }
 							</Button>
 						</div>
 					) }

@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Admin;
+namespace ZaverWeb\Reviews\Admin;
 
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * A "Recent Reviews" widget on the WordPress dashboard home: status counts and
@@ -15,8 +15,8 @@ class DashboardWidget {
 			return;
 		}
 		wp_add_dashboard_widget(
-			'advery_reviews_dashboard',
-			__( 'Advery Reviews', 'advery-reviews' ),
+			'zaverweb_reviews_dashboard',
+			__( 'Zaver Web Reviews', 'zaverweb-reviews' ),
 			[ $this, 'render' ]
 		);
 	}
@@ -24,20 +24,20 @@ class DashboardWidget {
 	public function render() {
 		$counts = ReviewRepository::status_counts();
 		$recent = ReviewRepository::recent( 5 );
-		$admin  = admin_url( 'admin.php?page=advery-reviews' );
+		$admin  = admin_url( 'admin.php?page=zaverweb-reviews' );
 
 		printf(
 			'<p><strong>%1$s</strong> %2$s · <strong>%3$s</strong> %4$s · <strong>%5$s</strong> %6$s</p>',
 			(int) $counts['pending'],
-			esc_html__( 'pending', 'advery-reviews' ),
+			esc_html__( 'pending', 'zaverweb-reviews' ),
 			(int) $counts['approved'],
-			esc_html__( 'approved', 'advery-reviews' ),
+			esc_html__( 'approved', 'zaverweb-reviews' ),
 			(int) $counts['spam'],
-			esc_html__( 'spam', 'advery-reviews' )
+			esc_html__( 'spam', 'zaverweb-reviews' )
 		);
 
 		if ( empty( $recent ) ) {
-			echo '<p>' . esc_html__( 'No reviews yet.', 'advery-reviews' ) . '</p>';
+			echo '<p>' . esc_html__( 'No reviews yet.', 'zaverweb-reviews' ) . '</p>';
 		} else {
 			echo '<ul style="margin:0;">';
 			foreach ( $recent as $r ) {
@@ -56,7 +56,7 @@ class DashboardWidget {
 		printf(
 			'<p><a href="%1$s" class="button button-primary">%2$s</a></p>',
 			esc_url( $admin ),
-			esc_html__( 'Manage reviews', 'advery-reviews' )
+			esc_html__( 'Manage reviews', 'zaverweb-reviews' )
 		);
 	}
 }

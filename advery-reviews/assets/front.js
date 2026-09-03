@@ -1,11 +1,11 @@
-/* Advery Reviews — front-end star picker, REST submission, and AJAX loading.
+/* Zaver Web Reviews — front-end star picker, REST submission, and AJAX loading.
    No framework. The page URL never changes (no query params / history writes),
    so pagination and "load more" don't fragment SEO; the first page is already
    server-rendered for crawlers. */
 ( function () {
 	'use strict';
 
-	var cfg = window.AdveryReviewsFront || {};
+	var cfg = window.ZaverWebReviewsFront || {};
 
 	function stars( n ) {
 		n = Math.max( 0, Math.min( 5, parseInt( n, 10 ) || 0 ) );
@@ -24,8 +24,8 @@
 	}
 
 	function renderItem( r ) {
-		var li = el( 'li', 'advery-reviews__item' );
-		var head = el( 'div', 'advery-reviews__item-head' );
+		var li = el( 'li', 'zaverweb-reviews__item' );
+		var head = el( 'div', 'zaverweb-reviews__item-head' );
 		if ( r.avatar ) {
 			var av = document.createElement( 'span' );
 			av.innerHTML = r.avatar; // server-built, escaped
@@ -33,20 +33,20 @@
 				head.appendChild( av.firstChild );
 			}
 		}
-		var metaCol = el( 'div', 'advery-reviews__meta-col' );
-		metaCol.appendChild( el( 'strong', 'advery-reviews__author', r.author_name || ( cfg.i18n && cfg.i18n.anonymous ) || '' ) );
+		var metaCol = el( 'div', 'zaverweb-reviews__meta-col' );
+		metaCol.appendChild( el( 'strong', 'zaverweb-reviews__author', r.author_name || ( cfg.i18n && cfg.i18n.anonymous ) || '' ) );
 		if ( r.date ) {
-			metaCol.appendChild( el( 'span', 'advery-reviews__date', r.date ) );
+			metaCol.appendChild( el( 'span', 'zaverweb-reviews__date', r.date ) );
 		}
 		head.appendChild( metaCol );
 		if ( r.rating > 0 ) {
-			head.appendChild( el( 'span', 'advery-reviews__stars', stars( r.rating ) ) );
+			head.appendChild( el( 'span', 'zaverweb-reviews__stars', stars( r.rating ) ) );
 		}
 		li.appendChild( head );
 		if ( r.title ) {
-			li.appendChild( el( 'div', 'advery-reviews__title', r.title ) );
+			li.appendChild( el( 'div', 'zaverweb-reviews__title', r.title ) );
 		}
-		var content = el( 'div', 'advery-reviews__content' );
+		var content = el( 'div', 'zaverweb-reviews__content' );
 		content.innerHTML = r.content || ''; // server-sanitized (kses allowlist)
 		li.appendChild( content );
 		return li;
@@ -64,11 +64,11 @@
 	}
 
 	function initLoading( root ) {
-		var list = root.querySelector( '.advery-reviews__list' );
+		var list = root.querySelector( '.zaverweb-reviews__list' );
 		var mode = root.getAttribute( 'data-load-mode' );
 
 		if ( mode === 'load_more' ) {
-			var btn = root.querySelector( '.advery-reviews__loadmore' );
+			var btn = root.querySelector( '.zaverweb-reviews__loadmore' );
 			if ( ! btn ) {
 				return;
 			}
@@ -96,12 +96,12 @@
 				} );
 			} );
 		} else if ( mode === 'paginate' ) {
-			var pager = root.querySelector( '.advery-reviews__pager' );
+			var pager = root.querySelector( '.zaverweb-reviews__pager' );
 			if ( ! pager ) {
 				return;
 			}
 			pager.addEventListener( 'click', function ( e ) {
-				var b = e.target.closest( '.advery-reviews__page' );
+				var b = e.target.closest( '.zaverweb-reviews__page' );
 				if ( ! b ) {
 					return;
 				}
@@ -114,7 +114,7 @@
 					} );
 					list.style.opacity = '';
 					root.setAttribute( 'data-page', page );
-					Array.prototype.forEach.call( pager.querySelectorAll( '.advery-reviews__page' ), function ( x ) {
+					Array.prototype.forEach.call( pager.querySelectorAll( '.zaverweb-reviews__page' ), function ( x ) {
 						x.classList.toggle( 'is-active', x === b );
 					} );
 					if ( root.scrollIntoView ) {
@@ -128,13 +128,13 @@
 	}
 
 	function initForm( root ) {
-		var form = root.querySelector( '.advery-reviews__form' );
+		var form = root.querySelector( '.zaverweb-reviews__form' );
 		if ( ! form ) {
 			return;
 		}
 
 		var ratingInput = form.querySelector( 'input[name="rating"]' );
-		var starButtons = Array.prototype.slice.call( form.querySelectorAll( '.advery-reviews__star-btn' ) );
+		var starButtons = Array.prototype.slice.call( form.querySelectorAll( '.zaverweb-reviews__star-btn' ) );
 
 		function paint( value ) {
 			starButtons.forEach( function ( btn ) {
@@ -157,12 +157,12 @@
 			paint( parseInt( ratingInput.value, 10 ) || 0 );
 		} );
 
-		var msg = form.querySelector( '.advery-reviews__msg' );
-		var submit = form.querySelector( '.advery-reviews__submit' );
+		var msg = form.querySelector( '.zaverweb-reviews__msg' );
+		var submit = form.querySelector( '.zaverweb-reviews__submit' );
 
 		form.addEventListener( 'submit', function ( e ) {
 			e.preventDefault();
-			msg.className = 'advery-reviews__msg';
+			msg.className = 'zaverweb-reviews__msg';
 			msg.textContent = cfg.i18n ? cfg.i18n.sending : 'Sending…';
 			submit.disabled = true;
 			getCaptchaToken().then( send );
@@ -177,9 +177,9 @@
 				content: valueOf( form, 'content' ),
 				author_name: valueOf( form, 'author_name' ),
 				author_email: valueOf( form, 'author_email' ),
-				advery_hp: valueOf( form, 'advery_hp' ),
-				advery_ts: valueOf( form, 'advery_ts' ),
-				advery_tk: valueOf( form, 'advery_tk' ),
+				zaverweb_hp: valueOf( form, 'zaverweb_hp' ),
+				zaverweb_ts: valueOf( form, 'zaverweb_ts' ),
+				zaverweb_tk: valueOf( form, 'zaverweb_tk' ),
 				captcha_token: captchaToken
 			};
 
@@ -199,16 +199,16 @@
 						form.reset();
 						paint( 0 );
 						ratingInput.value = 0;
-						msg.className = 'advery-reviews__msg is-success';
+						msg.className = 'zaverweb-reviews__msg is-success';
 						msg.textContent = res.body.message || 'Thanks!';
 					} else {
-						msg.className = 'advery-reviews__msg is-error';
+						msg.className = 'zaverweb-reviews__msg is-error';
 						msg.textContent = ( res.body && res.body.message ) || ( cfg.i18n ? cfg.i18n.error : 'Error' );
 					}
 				} )
 				.catch( function () {
 					submit.disabled = false;
-					msg.className = 'advery-reviews__msg is-error';
+					msg.className = 'zaverweb-reviews__msg is-error';
 					msg.textContent = cfg.i18n ? cfg.i18n.error : 'Error';
 				} );
 		}
@@ -240,7 +240,7 @@
 	}
 
 	document.addEventListener( 'DOMContentLoaded', function () {
-		Array.prototype.slice.call( document.querySelectorAll( '.advery-reviews' ) ).forEach( function ( root ) {
+		Array.prototype.slice.call( document.querySelectorAll( '.zaverweb-reviews' ) ).forEach( function ( root ) {
 			initForm( root );
 			initLoading( root );
 		} );

@@ -1,4 +1,4 @@
-# Advery Reviews — Architecture
+# Zaver Web Reviews — Architecture
 
 ## Purpose
 A fast, self-contained ratings & reviews plugin for any post type, taxonomy term, or WooCommerce product. Fully standalone; when **Advery Schema Plus ≥ 2.21.0** is active it also injects `aggregateRating` / `review` into the JSON-LD graph.

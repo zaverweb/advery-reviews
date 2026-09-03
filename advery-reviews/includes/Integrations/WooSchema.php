@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Integrations;
+namespace ZaverWeb\Reviews\Integrations;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Merges the plugin's collected product reviews into WooCommerce's OWN product
@@ -57,7 +57,7 @@ class WooSchema {
 		foreach ( ReviewRepository::approved_for( 'product', $id, 5 ) as $r ) {
 			$node = [
 				'@type'         => 'Review',
-				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'advery-reviews' ) ],
+				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'zaverweb-reviews' ) ],
 				'datePublished' => mysql2date( 'Y-m-d', $r['created_at'] ),
 			];
 			if ( $r['rating'] > 0 ) {

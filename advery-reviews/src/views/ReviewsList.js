@@ -11,11 +11,11 @@ import { api } from '../api';
 import { ContentTypeSelect, ObjectSearch, parseContentType } from './ItemFilters';
 
 const STATUS_TABS = [
-	{ key: '', label: __( 'All', 'advery-reviews' ) },
-	{ key: 'pending', label: __( 'Pending', 'advery-reviews' ) },
-	{ key: 'approved', label: __( 'Approved', 'advery-reviews' ) },
-	{ key: 'spam', label: __( 'Spam', 'advery-reviews' ) },
-	{ key: 'trash', label: __( 'Trash', 'advery-reviews' ) },
+	{ key: '', label: __( 'All', 'zaverweb-reviews' ) },
+	{ key: 'pending', label: __( 'Pending', 'zaverweb-reviews' ) },
+	{ key: 'approved', label: __( 'Approved', 'zaverweb-reviews' ) },
+	{ key: 'spam', label: __( 'Spam', 'zaverweb-reviews' ) },
+	{ key: 'trash', label: __( 'Trash', 'zaverweb-reviews' ) },
 ];
 
 function stars( n ) {
@@ -86,7 +86,7 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 		}
 		try {
 			const res = await api.bulk( selected, action );
-			notify( 'success', sprintf( __( '%d updated.', 'advery-reviews' ), res.done ) );
+			notify( 'success', sprintf( __( '%d updated.', 'zaverweb-reviews' ), res.done ) );
 			await load();
 		} catch ( e ) {
 			notify( 'error', e.message );
@@ -116,7 +116,7 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 	const saveReply = async ( r ) => {
 		try {
 			await api.saveReply( r.id, replyText );
-			notify( 'success', __( 'Reply saved.', 'advery-reviews' ) );
+			notify( 'success', __( 'Reply saved.', 'zaverweb-reviews' ) );
 			setReplyFor( 0 );
 			await load();
 		} catch ( e ) {
@@ -127,7 +127,7 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 		setAiBusy( 'mod' + r.id );
 		try {
 			const res = await api.ai( 'moderate', { review_id: r.id } );
-			notify( 'success', __( 'AI verdict: ', 'advery-reviews' ) + ( res.verdict || '' ) );
+			notify( 'success', __( 'AI verdict: ', 'zaverweb-reviews' ) + ( res.verdict || '' ) );
 		} catch ( e ) {
 			notify( 'error', e.message );
 		} finally {
@@ -138,13 +138,13 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 	const totalPages = Math.max( 1, Math.ceil( data.total / perPage ) );
 
 	return (
-		<div className="advery-rv-list">
-			<div className="advery-rv-toolbar">
-				<div className="advery-rv-tabs">
+		<div className="zaverweb-rv-list">
+			<div className="zaverweb-rv-toolbar">
+				<div className="zaverweb-rv-tabs">
 					{ STATUS_TABS.map( ( t ) => (
 						<button
 							key={ t.key }
-							className={ 'advery-rv-tab' + ( status === t.key ? ' is-active' : '' ) }
+							className={ 'zaverweb-rv-tab' + ( status === t.key ? ' is-active' : '' ) }
 							onClick={ () => {
 								setStatus( t.key );
 								setPage( 1 );
@@ -152,12 +152,12 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 						>
 							{ t.label }
 							{ t.key && counts[ t.key ] != null && (
-								<span className="advery-rv-tab__count">{ counts[ t.key ] }</span>
+								<span className="zaverweb-rv-tab__count">{ counts[ t.key ] }</span>
 							) }
 						</button>
 					) ) }
 				</div>
-				<div className="advery-rv-filters">
+				<div className="zaverweb-rv-filters">
 					<ContentTypeSelect
 						boot={ boot }
 						value={ contentType }
@@ -178,91 +178,91 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 							setSearch( v );
 							setPage( 1 );
 						} }
-						placeholder={ __( 'Search review text…', 'advery-reviews' ) }
+						placeholder={ __( 'Search review text…', 'zaverweb-reviews' ) }
 						__nextHasNoMarginBottom
 					/>
 				</div>
 			</div>
 
 			{ selected.length > 0 && (
-				<div className="advery-rv-bulk">
-					<span>{ sprintf( __( '%d selected', 'advery-reviews' ), selected.length ) }</span>
-					<Button variant="secondary" onClick={ () => runBulk( 'approved' ) }>{ __( 'Approve', 'advery-reviews' ) }</Button>
-					<Button variant="secondary" onClick={ () => runBulk( 'pending' ) }>{ __( 'Pending', 'advery-reviews' ) }</Button>
-					<Button variant="secondary" onClick={ () => runBulk( 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button>
-					<Button isDestructive variant="secondary" onClick={ () => runBulk( 'delete' ) }>{ __( 'Delete', 'advery-reviews' ) }</Button>
+				<div className="zaverweb-rv-bulk">
+					<span>{ sprintf( __( '%d selected', 'zaverweb-reviews' ), selected.length ) }</span>
+					<Button variant="secondary" onClick={ () => runBulk( 'approved' ) }>{ __( 'Approve', 'zaverweb-reviews' ) }</Button>
+					<Button variant="secondary" onClick={ () => runBulk( 'pending' ) }>{ __( 'Pending', 'zaverweb-reviews' ) }</Button>
+					<Button variant="secondary" onClick={ () => runBulk( 'spam' ) }>{ __( 'Spam', 'zaverweb-reviews' ) }</Button>
+					<Button isDestructive variant="secondary" onClick={ () => runBulk( 'delete' ) }>{ __( 'Delete', 'zaverweb-reviews' ) }</Button>
 				</div>
 			) }
 
 			{ loading ? (
-				<div className="advery-rv-loading"><Spinner /></div>
+				<div className="zaverweb-rv-loading"><Spinner /></div>
 			) : data.items.length === 0 ? (
-				<div className="advery-rv-empty">{ __( 'No reviews found.', 'advery-reviews' ) }</div>
+				<div className="zaverweb-rv-empty">{ __( 'No reviews found.', 'zaverweb-reviews' ) }</div>
 			) : (
-				<div className="advery-rv-cards">
+				<div className="zaverweb-rv-cards">
 					{ data.items.map( ( r ) => (
-						<article key={ r.id } className={ 'advery-rv-card is-' + r.status }>
-							<div className="advery-rv-card__select">
+						<article key={ r.id } className={ 'zaverweb-rv-card is-' + r.status }>
+							<div className="zaverweb-rv-card__select">
 								<CheckboxControl
 									checked={ selected.includes( r.id ) }
 									onChange={ () => toggle( r.id ) }
 									__nextHasNoMarginBottom
 								/>
 							</div>
-							<div className="advery-rv-card__avatar" aria-hidden="true">
+							<div className="zaverweb-rv-card__avatar" aria-hidden="true">
 								{ ( r.author_name || '?' ).trim().charAt( 0 ).toUpperCase() }
 							</div>
-							<div className="advery-rv-card__body">
-								<div className="advery-rv-card__head">
-									<span className="advery-rv-card__author">{ r.author_name }</span>
-									<span className="advery-rv-card__stars">{ stars( r.rating ) }</span>
-									<span className={ 'advery-rv-badge is-' + r.status }>{ r.status }</span>
+							<div className="zaverweb-rv-card__body">
+								<div className="zaverweb-rv-card__head">
+									<span className="zaverweb-rv-card__author">{ r.author_name }</span>
+									<span className="zaverweb-rv-card__stars">{ stars( r.rating ) }</span>
+									<span className={ 'zaverweb-rv-badge is-' + r.status }>{ r.status }</span>
 									{ r.spam_score > 0 && (
-										<span className="advery-rv-spam" title={ r.meta && r.meta.spam_reasons ? r.meta.spam_reasons.join( ', ' ) : '' }>
-											{ __( 'spam', 'advery-reviews' ) } { r.spam_score }
+										<span className="zaverweb-rv-spam" title={ r.meta && r.meta.spam_reasons ? r.meta.spam_reasons.join( ', ' ) : '' }>
+											{ __( 'spam', 'zaverweb-reviews' ) } { r.spam_score }
 										</span>
 									) }
 								</div>
-								{ r.title && <div className="advery-rv-card__title">{ r.title }</div> }
-								<div className="advery-rv-card__content">{ r.content.replace( /<[^>]+>/g, '' ) }</div>
-								<div className="advery-rv-card__meta">
+								{ r.title && <div className="zaverweb-rv-card__title">{ r.title }</div> }
+								<div className="zaverweb-rv-card__content">{ r.content.replace( /<[^>]+>/g, '' ) }</div>
+								<div className="zaverweb-rv-card__meta">
 									{ r.author_email } · { r.created_at } ·{ ' ' }
 									{ r.link ? <a href={ r.link } target="_blank" rel="noreferrer">{ r.label }</a> : r.label }
-									<span className="advery-rv-card__type"> ({ r.object_type })</span>
+									<span className="zaverweb-rv-card__type"> ({ r.object_type })</span>
 								</div>
 
 								{ replyFor !== r.id && r.meta && r.meta.reply && (
-									<div className="advery-rv-existing-reply">
-										<strong>{ __( 'Your reply:', 'advery-reviews' ) }</strong> { r.meta.reply }
+									<div className="zaverweb-rv-existing-reply">
+										<strong>{ __( 'Your reply:', 'zaverweb-reviews' ) }</strong> { r.meta.reply }
 									</div>
 								) }
 
 								{ replyFor === r.id && (
-									<div className="advery-rv-reply-editor">
+									<div className="zaverweb-rv-reply-editor">
 										<TextareaControl
-											label={ __( 'Owner reply', 'advery-reviews' ) }
+											label={ __( 'Owner reply', 'zaverweb-reviews' ) }
 											rows={ 3 }
 											value={ replyText }
 											onChange={ setReplyText }
 											__nextHasNoMarginBottom
 										/>
-										<div className="advery-rv-reply-actions">
-											<Button variant="secondary" isBusy={ aiBusy === 'draft' } onClick={ () => draftReply( r ) }>{ __( 'Draft with AI', 'advery-reviews' ) }</Button>
-											<Button variant="primary" onClick={ () => saveReply( r ) }>{ __( 'Save reply', 'advery-reviews' ) }</Button>
-											<Button variant="tertiary" onClick={ () => setReplyFor( 0 ) }>{ __( 'Cancel', 'advery-reviews' ) }</Button>
+										<div className="zaverweb-rv-reply-actions">
+											<Button variant="secondary" isBusy={ aiBusy === 'draft' } onClick={ () => draftReply( r ) }>{ __( 'Draft with AI', 'zaverweb-reviews' ) }</Button>
+											<Button variant="primary" onClick={ () => saveReply( r ) }>{ __( 'Save reply', 'zaverweb-reviews' ) }</Button>
+											<Button variant="tertiary" onClick={ () => setReplyFor( 0 ) }>{ __( 'Cancel', 'zaverweb-reviews' ) }</Button>
 										</div>
 									</div>
 								) }
 
-								<div className="advery-rv-card__actions">
-									{ r.status !== 'approved' && <Button variant="link" onClick={ () => act( r.id, 'approved' ) }>{ __( 'Approve', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'pending' && <Button variant="link" onClick={ () => act( r.id, 'pending' ) }>{ __( 'Pending', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'spam' && <Button variant="link" onClick={ () => act( r.id, 'spam' ) }>{ __( 'Spam', 'advery-reviews' ) }</Button> }
-									{ r.status !== 'trash' && <Button variant="link" onClick={ () => act( r.id, 'trash' ) }>{ __( 'Trash', 'advery-reviews' ) }</Button> }
-									<Button variant="link" isDestructive onClick={ () => act( r.id, 'delete' ) }>{ __( 'Delete', 'advery-reviews' ) }</Button>
-									<span className="advery-rv-card__sep" />
-									<Button variant="link" onClick={ () => openReply( r ) }>{ ( r.meta && r.meta.reply ) ? __( 'Edit reply', 'advery-reviews' ) : __( 'Reply', 'advery-reviews' ) }</Button>
-									<Button variant="link" isBusy={ aiBusy === 'mod' + r.id } onClick={ () => aiModerate( r ) }>{ __( 'AI check', 'advery-reviews' ) }</Button>
+								<div className="zaverweb-rv-card__actions">
+									{ r.status !== 'approved' && <Button variant="link" onClick={ () => act( r.id, 'approved' ) }>{ __( 'Approve', 'zaverweb-reviews' ) }</Button> }
+									{ r.status !== 'pending' && <Button variant="link" onClick={ () => act( r.id, 'pending' ) }>{ __( 'Pending', 'zaverweb-reviews' ) }</Button> }
+									{ r.status !== 'spam' && <Button variant="link" onClick={ () => act( r.id, 'spam' ) }>{ __( 'Spam', 'zaverweb-reviews' ) }</Button> }
+									{ r.status !== 'trash' && <Button variant="link" onClick={ () => act( r.id, 'trash' ) }>{ __( 'Trash', 'zaverweb-reviews' ) }</Button> }
+									<Button variant="link" isDestructive onClick={ () => act( r.id, 'delete' ) }>{ __( 'Delete', 'zaverweb-reviews' ) }</Button>
+									<span className="zaverweb-rv-card__sep" />
+									<Button variant="link" onClick={ () => openReply( r ) }>{ ( r.meta && r.meta.reply ) ? __( 'Edit reply', 'zaverweb-reviews' ) : __( 'Reply', 'zaverweb-reviews' ) }</Button>
+									<Button variant="link" isBusy={ aiBusy === 'mod' + r.id } onClick={ () => aiModerate( r ) }>{ __( 'AI check', 'zaverweb-reviews' ) }</Button>
 								</div>
 							</div>
 						</article>
@@ -271,10 +271,10 @@ export default function ReviewsList( { boot, counts, setCounts, notify } ) {
 			) }
 
 			{ totalPages > 1 && (
-				<div className="advery-rv-pager">
-					<Button variant="secondary" disabled={ page <= 1 } onClick={ () => setPage( page - 1 ) }>{ __( 'Previous', 'advery-reviews' ) }</Button>
-					<span>{ sprintf( __( 'Page %1$d of %2$d', 'advery-reviews' ), page, totalPages ) }</span>
-					<Button variant="secondary" disabled={ page >= totalPages } onClick={ () => setPage( page + 1 ) }>{ __( 'Next', 'advery-reviews' ) }</Button>
+				<div className="zaverweb-rv-pager">
+					<Button variant="secondary" disabled={ page <= 1 } onClick={ () => setPage( page - 1 ) }>{ __( 'Previous', 'zaverweb-reviews' ) }</Button>
+					<span>{ sprintf( __( 'Page %1$d of %2$d', 'zaverweb-reviews' ), page, totalPages ) }</span>
+					<Button variant="secondary" disabled={ page >= totalPages } onClick={ () => setPage( page + 1 ) }>{ __( 'Next', 'zaverweb-reviews' ) }</Button>
 				</div>
 			) }
 		</div>

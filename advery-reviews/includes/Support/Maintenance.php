@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
-use Advery\Reviews\Database\Installer;
-use Advery\Reviews\Database\StatsRepository;
+use ZaverWeb\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Database\StatsRepository;
 
 /**
  * Table hygiene: when the object a review points at goes away (a post/product

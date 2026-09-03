@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Email;
+namespace ZaverWeb\Reviews\Email;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Optional weekly / monthly digest email summarising the reviews received in
@@ -12,8 +12,8 @@ use Advery\Reviews\Database\ReviewRepository;
  */
 class Digest {
 
-	const HOOK      = 'advery_reviews_digest';
-	const LAST_SENT = 'advery_reviews_digest_last';
+	const HOOK      = 'zaverweb_reviews_digest';
+	const LAST_SENT = 'zaverweb_reviews_digest_last';
 
 	public function register() {
 		add_filter( 'cron_schedules', [ $this, 'schedules' ] );
@@ -25,8 +25,8 @@ class Digest {
 	 * @return array
 	 */
 	public function schedules( $schedules ) {
-		$schedules['advery_weekly']  = [ 'interval' => WEEK_IN_SECONDS, 'display' => __( 'Once Weekly (Advery)', 'advery-reviews' ) ];
-		$schedules['advery_monthly'] = [ 'interval' => 30 * DAY_IN_SECONDS, 'display' => __( 'Once Monthly (Advery)', 'advery-reviews' ) ];
+		$schedules['zaverweb_weekly']  = [ 'interval' => WEEK_IN_SECONDS, 'display' => __( 'Once Weekly (Zaver Web)', 'zaverweb-reviews' ) ];
+		$schedules['zaverweb_monthly'] = [ 'interval' => 30 * DAY_IN_SECONDS, 'display' => __( 'Once Monthly (Zaver Web)', 'zaverweb-reviews' ) ];
 		return $schedules;
 	}
 
@@ -39,9 +39,9 @@ class Digest {
 
 		$freq = Settings::get( 'digest_frequency', 'off' );
 		if ( 'weekly' === $freq ) {
-			wp_schedule_event( time() + WEEK_IN_SECONDS, 'advery_weekly', self::HOOK );
+			wp_schedule_event( time() + WEEK_IN_SECONDS, 'zaverweb_weekly', self::HOOK );
 		} elseif ( 'monthly' === $freq ) {
-			wp_schedule_event( time() + 30 * DAY_IN_SECONDS, 'advery_monthly', self::HOOK );
+			wp_schedule_event( time() + 30 * DAY_IN_SECONDS, 'zaverweb_monthly', self::HOOK );
 		}
 	}
 
@@ -79,7 +79,7 @@ class Digest {
 
 		$subject = sprintf(
 			/* translators: 1: site name, 2: frequency */
-			__( '[%1$s] %2$s review digest', 'advery-reviews' ),
+			__( '[%1$s] %2$s review digest', 'zaverweb-reviews' ),
 			$blog,
 			ucfirst( $freq )
 		);
@@ -87,11 +87,11 @@ class Digest {
 		$body = [];
 		$body[] = sprintf(
 			/* translators: %d: number of new reviews */
-			_n( '%d new review this period.', '%d new reviews this period.', count( $reviews ), 'advery-reviews' ),
+			_n( '%d new review this period.', '%d new reviews this period.', count( $reviews ), 'zaverweb-reviews' ),
 			count( $reviews )
 		);
 		$body[] = sprintf(
-			__( 'Pending: %1$d · Approved: %2$d · Spam: %3$d', 'advery-reviews' ),
+			__( 'Pending: %1$d · Approved: %2$d · Spam: %3$d', 'zaverweb-reviews' ),
 			$counts['pending'],
 			$counts['approved'],
 			$counts['spam']
@@ -110,7 +110,7 @@ class Digest {
 		}
 
 		$body[] = '';
-		$body[] = sprintf( __( 'Manage: %s', 'advery-reviews' ), admin_url( 'admin.php?page=advery-reviews' ) );
+		$body[] = sprintf( __( 'Manage: %s', 'zaverweb-reviews' ), admin_url( 'admin.php?page=zaverweb-reviews' ) );
 
 		wp_mail( Settings::recipient(), $subject, implode( "\n", $body ) );
 	}

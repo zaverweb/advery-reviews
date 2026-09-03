@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
 /**
  * Reads and writes the single settings option. Everything about who can submit,
@@ -9,7 +9,7 @@ namespace Advery\Reviews\Support;
  */
 class Settings {
 
-	const OPTION = 'advery_reviews_settings';
+	const OPTION = 'zaverweb_reviews_settings';
 
 	/**
 	 * @return array
@@ -111,7 +111,7 @@ class Settings {
 
 	/**
 	 * Front-end widget appearance. These map 1:1 to CSS custom properties on the
-	 * `.advery-reviews` container, so the whole widget restyles from settings
+	 * `.zaverweb-reviews` container, so the whole widget restyles from settings
 	 * without touching CSS. Empty color ⇒ the stylesheet default is kept.
 	 *
 	 * @return array
@@ -147,7 +147,7 @@ class Settings {
 	 * stylesheet stays purely var-driven. Only non-empty values are emitted, so
 	 * blanks fall back to the stylesheet defaults.
 	 *
-	 * @return string A `.advery-reviews{ … }` rule, or '' when all defaults.
+	 * @return string A `.zaverweb-reviews{ … }` rule, or '' when all defaults.
 	 */
 	public static function appearance_css() {
 		$a    = self::appearance();
@@ -160,45 +160,45 @@ class Settings {
 		};
 
 		if ( $c = $color( $a['accent'] ) ) {
-			$vars['--ar-accent'] = $c;
+			$vars['--zw-accent'] = $c;
 		}
 		if ( $c = $color( $a['accent_ink'] ) ) {
-			$vars['--ar-accent-ink'] = $c;
+			$vars['--zw-accent-ink'] = $c;
 		}
 		if ( $c = $color( $a['star'] ) ) {
-			$vars['--ar-star'] = $c;
+			$vars['--zw-star'] = $c;
 		}
 		if ( $c = $color( $a['text'] ) ) {
-			$vars['--ar-text'] = $c;
+			$vars['--zw-text'] = $c;
 		}
 		if ( $c = $color( $a['surface'] ) ) {
-			$vars['--ar-surface'] = $c;
+			$vars['--zw-surface'] = $c;
 		}
 		if ( $c = $color( $a['border'] ) ) {
-			$vars['--ar-border'] = $c;
+			$vars['--zw-border'] = $c;
 		}
 
 		$radius = max( 0, min( 40, (int) $a['radius'] ) );
-		$vars['--ar-radius'] = $radius . 'px';
+		$vars['--zw-radius'] = $radius . 'px';
 
 		$font = max( 12, min( 20, (int) $a['font_size'] ) );
-		$vars['--ar-font-size'] = $font . 'px';
+		$vars['--zw-font-size'] = $font . 'px';
 
 		$star = max( 12, min( 40, (int) $a['star_size'] ) );
-		$vars['--ar-star-size'] = $star . 'px';
+		$vars['--zw-star-size'] = $star . 'px';
 
 		// Density → spacing vars.
 		if ( 'compact' === $a['density'] ) {
-			$vars['--ar-gap']      = '0.5em';
-			$vars['--ar-form-pad'] = '0.9em';
+			$vars['--zw-gap']      = '0.5em';
+			$vars['--zw-form-pad'] = '0.9em';
 		} else {
-			$vars['--ar-gap']      = '0.9em';
-			$vars['--ar-form-pad'] = '1.2em';
+			$vars['--zw-gap']      = '0.9em';
+			$vars['--zw-form-pad'] = '1.2em';
 		}
 
 		$mw = max( 0, min( 2000, (int) $a['max_width'] ) );
 		if ( $mw > 0 ) {
-			$vars['--ar-max-width'] = $mw . 'px';
+			$vars['--zw-max-width'] = $mw . 'px';
 		}
 
 		if ( empty( $vars ) ) {
@@ -209,7 +209,7 @@ class Settings {
 		foreach ( $vars as $k => $v ) {
 			$decls .= $k . ':' . $v . ';';
 		}
-		return '.advery-reviews{' . $decls . '}';
+		return '.zaverweb-reviews{' . $decls . '}';
 	}
 
 	/**

@@ -1,27 +1,27 @@
 <?php
-namespace Advery\Reviews\Admin;
+namespace ZaverWeb\Reviews\Admin;
 
-use Advery\Reviews\Database\Installer;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
- * The "Advery Reviews" admin menu with three focused sub-pages — Reviews,
+ * The "Zaver Web Reviews" admin menu with three focused sub-pages — Reviews,
  * Settings and Migration — each its own screen so nothing is one giant scroll.
  * PHP prints a root node tagged with which screen to show and enqueues the
  * built React bundle; the app renders the rest.
  */
 class AdminPage {
 
-	const MENU_SLUG      = 'advery-reviews';
-	const REPORTS_SLUG   = 'advery-reviews-reports';
-	const SPAMLOG_SLUG   = 'advery-reviews-spamlog';
-	const SETTINGS_SLUG  = 'advery-reviews-settings';
-	const MIGRATION_SLUG = 'advery-reviews-migration';
+	const MENU_SLUG      = 'zaverweb-reviews';
+	const REPORTS_SLUG   = 'zaverweb-reviews-reports';
+	const SPAMLOG_SLUG   = 'zaverweb-reviews-spamlog';
+	const SETTINGS_SLUG  = 'zaverweb-reviews-settings';
+	const MIGRATION_SLUG = 'zaverweb-reviews-migration';
 
 	public function register_menu() {
 		$pending = ReviewRepository::status_counts()['pending'] ?? 0;
-		$title   = __( 'Advery Reviews', 'advery-reviews' );
-		$menu    = __( 'Reviews', 'advery-reviews' );
+		$title   = __( 'Zaver Web Reviews', 'zaverweb-reviews' );
+		$menu    = __( 'Reviews', 'zaverweb-reviews' );
 
 		if ( $pending > 0 ) {
 			$menu .= sprintf(
@@ -45,8 +45,8 @@ class AdminPage {
 		// Rename the auto-created first submenu item to "All Reviews".
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'All Reviews', 'advery-reviews' ),
-			__( 'All Reviews', 'advery-reviews' ),
+			__( 'All Reviews', 'zaverweb-reviews' ),
+			__( 'All Reviews', 'zaverweb-reviews' ),
 			'manage_options',
 			self::MENU_SLUG,
 			function () {
@@ -56,8 +56,8 @@ class AdminPage {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Reports', 'advery-reviews' ),
-			__( 'Reports', 'advery-reviews' ),
+			__( 'Reports', 'zaverweb-reviews' ),
+			__( 'Reports', 'zaverweb-reviews' ),
 			'manage_options',
 			self::REPORTS_SLUG,
 			function () {
@@ -67,8 +67,8 @@ class AdminPage {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Spam log', 'advery-reviews' ),
-			__( 'Spam log', 'advery-reviews' ),
+			__( 'Spam log', 'zaverweb-reviews' ),
+			__( 'Spam log', 'zaverweb-reviews' ),
 			'manage_options',
 			self::SPAMLOG_SLUG,
 			function () {
@@ -78,8 +78,8 @@ class AdminPage {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Settings', 'advery-reviews' ),
-			__( 'Settings', 'advery-reviews' ),
+			__( 'Settings', 'zaverweb-reviews' ),
+			__( 'Settings', 'zaverweb-reviews' ),
 			'manage_options',
 			self::SETTINGS_SLUG,
 			function () {
@@ -89,8 +89,8 @@ class AdminPage {
 
 		add_submenu_page(
 			self::MENU_SLUG,
-			__( 'Migration', 'advery-reviews' ),
-			__( 'Migration', 'advery-reviews' ),
+			__( 'Migration', 'zaverweb-reviews' ),
+			__( 'Migration', 'zaverweb-reviews' ),
 			'manage_options',
 			self::MIGRATION_SLUG,
 			function () {
@@ -109,28 +109,28 @@ class AdminPage {
 			return;
 		}
 
-		$asset_file = ADVERY_REVIEWS_PATH . 'build/index.asset.php';
+		$asset_file = ZAVERWEB_REVIEWS_PATH . 'build/index.asset.php';
 		$asset      = is_readable( $asset_file )
 			? require $asset_file
-			: [ 'dependencies' => [ 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n' ], 'version' => ADVERY_REVIEWS_VERSION ];
+			: [ 'dependencies' => [ 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n' ], 'version' => ZAVERWEB_REVIEWS_VERSION ];
 
 		wp_enqueue_script(
-			'advery-reviews-admin',
-			ADVERY_REVIEWS_URL . 'build/index.js',
+			'zaverweb-reviews-admin',
+			ZAVERWEB_REVIEWS_URL . 'build/index.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true
 		);
 		wp_enqueue_style( 'wp-components' );
-		if ( is_readable( ADVERY_REVIEWS_PATH . 'build/style-index.css' ) ) {
-			wp_enqueue_style( 'advery-reviews-admin', ADVERY_REVIEWS_URL . 'build/style-index.css', [ 'wp-components' ], $asset['version'] );
+		if ( is_readable( ZAVERWEB_REVIEWS_PATH . 'build/style-index.css' ) ) {
+			wp_enqueue_style( 'zaverweb-reviews-admin', ZAVERWEB_REVIEWS_URL . 'build/style-index.css', [ 'wp-components' ], $asset['version'] );
 		}
 
 		wp_localize_script(
-			'advery-reviews-admin',
-			'AdveryReviewsConfig',
+			'zaverweb-reviews-admin',
+			'ZaverWebReviewsConfig',
 			[
-				'restUrl'   => esc_url_raw( rest_url( ADVERY_REVIEWS_REST_NAMESPACE ) ),
+				'restUrl'   => esc_url_raw( rest_url( ZAVERWEB_REVIEWS_REST_NAMESPACE ) ),
 				'nonce'     => wp_create_nonce( 'wp_rest' ),
 				'menuSlug'  => self::MENU_SLUG,
 				'reportsUrl'   => esc_url_raw( admin_url( 'admin.php?page=' . self::REPORTS_SLUG ) ),
@@ -141,13 +141,13 @@ class AdminPage {
 			]
 		);
 
-		wp_set_script_translations( 'advery-reviews-admin', 'advery-reviews', ADVERY_REVIEWS_PATH . 'languages' );
+		wp_set_script_translations( 'zaverweb-reviews-admin', 'zaverweb-reviews', ZAVERWEB_REVIEWS_PATH . 'languages' );
 	}
 
 	/**
 	 * @param string $screen 'reviews' | 'settings' | 'migration'
 	 */
 	public function render_root( $screen ) {
-		printf( '<div class="wrap"><div id="advery-reviews-root" data-screen="%s"></div></div>', esc_attr( $screen ) );
+		printf( '<div class="wrap"><div id="zaverweb-reviews-root" data-screen="%s"></div></div>', esc_attr( $screen ) );
 	}
 }

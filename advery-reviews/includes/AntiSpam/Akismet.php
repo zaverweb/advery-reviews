@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AntiSpam;
+namespace ZaverWeb\Reviews\AntiSpam;
 
 /**
  * Optional Akismet signal. If the site has Akismet installed and configured
@@ -50,7 +50,7 @@ class Akismet {
 
 		$response = wp_remote_post(
 			sprintf( 'https://%s.rest.akismet.com/1.1/comment-check', $key ),
-			[ 'timeout' => 8, 'body' => $body, 'headers' => [ 'User-Agent' => 'Advery Reviews/' . ADVERY_REVIEWS_VERSION ] ]
+			[ 'timeout' => 8, 'body' => $body, 'headers' => [ 'User-Agent' => 'Zaver Web Reviews/' . ZAVERWEB_REVIEWS_VERSION ] ]
 		);
 
 		if ( is_wp_error( $response ) ) {

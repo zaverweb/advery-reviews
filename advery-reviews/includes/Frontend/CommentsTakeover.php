@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Frontend;
+namespace ZaverWeb\Reviews\Frontend;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
 
 /**
  * Optionally takes over the theme's native comments area with the reviews
@@ -29,7 +29,7 @@ class CommentsTakeover {
 		// products — Woo has its own review system and reviews tab, so we never
 		// take that over.
 		if ( $target && 'product' !== $target[0] ) {
-			return ADVERY_REVIEWS_PATH . 'includes/Frontend/comments-template.php';
+			return ZAVERWEB_REVIEWS_PATH . 'includes/Frontend/comments-template.php';
 		}
 		return $theme_template;
 	}

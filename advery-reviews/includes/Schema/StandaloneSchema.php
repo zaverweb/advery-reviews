@@ -1,10 +1,10 @@
 <?php
-namespace Advery\Reviews\Schema;
+namespace ZaverWeb\Reviews\Schema;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Emits our OWN JSON-LD (`aggregateRating` + a few `review` nodes) so the plugin
@@ -63,7 +63,7 @@ class StandaloneSchema {
 		];
 		if ( $url ) {
 			$node['url'] = $url;
-			$node['@id'] = $url . '#advery-reviews';
+			$node['@id'] = $url . '#zaverweb-reviews';
 		}
 		$node['aggregateRating'] = [
 			'@type'       => 'AggregateRating',
@@ -77,7 +77,7 @@ class StandaloneSchema {
 			$node['review'] = $reviews;
 		}
 
-		echo "\n<!-- Advery Reviews schema -->\n";
+		echo "\n<!-- Zaver Web Reviews schema -->\n";
 		echo '<script type="application/ld+json">' . wp_json_encode( $node, JSON_UNESCAPED_UNICODE ) . "</script>\n";
 	}
 
@@ -91,7 +91,7 @@ class StandaloneSchema {
 		foreach ( ReviewRepository::approved_for( $object_type, $object_id, 5 ) as $r ) {
 			$node = [
 				'@type'         => 'Review',
-				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'advery-reviews' ) ],
+				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'zaverweb-reviews' ) ],
 				'datePublished' => mysql2date( 'Y-m-d', $r['created_at'] ),
 			];
 			if ( $r['rating'] > 0 ) {

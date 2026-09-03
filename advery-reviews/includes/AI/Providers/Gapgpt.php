@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
 /**
  * GapGPT — an OpenAI-compatible gateway (popular in Iran). Uses the OpenAI

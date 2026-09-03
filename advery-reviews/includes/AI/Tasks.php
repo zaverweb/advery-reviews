@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI;
+namespace ZaverWeb\Reviews\AI;
 
 /**
  * The prompt system. Each task has a clear default system prompt tuned to sound
@@ -111,15 +111,15 @@ class Tasks {
 	 */
 	public static function variables() {
 		return [
-			'{business}'         => __( 'Name of the item being reviewed (post / product / term title)', 'advery-reviews' ),
-			'{reviewer_name}'    => __( 'Name the reviewer submitted', 'advery-reviews' ),
-			'{rating}'           => __( 'The review’s star rating, 1–5 (0 when none)', 'advery-reviews' ),
-			'{review}'           => __( 'The review text', 'advery-reviews' ),
-			'{site_name}'        => __( 'Your site name', 'advery-reviews' ),
-			'{site_description}' => __( 'Your site tagline / description', 'advery-reviews' ),
-			'{business_context}' => __( 'The “About your business” text from AI settings', 'advery-reviews' ),
-			'{target}'           => __( 'Target language (translate task only)', 'advery-reviews' ),
-			'{field:KEY}'        => __( 'Any custom field of the reviewed post/term — replace KEY with the meta key (e.g. {field:phone})', 'advery-reviews' ),
+			'{business}'         => __( 'Name of the item being reviewed (post / product / term title)', 'zaverweb-reviews' ),
+			'{reviewer_name}'    => __( 'Name the reviewer submitted', 'zaverweb-reviews' ),
+			'{rating}'           => __( 'The review’s star rating, 1–5 (0 when none)', 'zaverweb-reviews' ),
+			'{review}'           => __( 'The review text', 'zaverweb-reviews' ),
+			'{site_name}'        => __( 'Your site name', 'zaverweb-reviews' ),
+			'{site_description}' => __( 'Your site tagline / description', 'zaverweb-reviews' ),
+			'{business_context}' => __( 'The “About your business” text from AI settings', 'zaverweb-reviews' ),
+			'{target}'           => __( 'Target language (translate task only)', 'zaverweb-reviews' ),
+			'{field:KEY}'        => __( 'Any custom field of the reviewed post/term — replace KEY with the meta key (e.g. {field:phone})', 'zaverweb-reviews' ),
 		];
 	}
 

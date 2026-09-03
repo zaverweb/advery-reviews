@@ -37,7 +37,7 @@ export default function MigrationPanel( { boot, notify } ) {
 		if ( ! sources.length ) {
 			return;
 		}
-		if ( deleteSource && ! window.confirm( __( 'Delete the source comments after importing? This cannot be undone.', 'advery-reviews' ) ) ) {
+		if ( deleteSource && ! window.confirm( __( 'Delete the source comments after importing? This cannot be undone.', 'zaverweb-reviews' ) ) ) {
 			return;
 		}
 		setRunning( 'import' );
@@ -63,7 +63,7 @@ export default function MigrationPanel( { boot, notify } ) {
 					break;
 				}
 			}
-			notify( 'success', sprintf( __( 'Imported %1$d, updated %2$d, skipped %3$d.', 'advery-reviews' ), totals.imported, totals.updated, totals.skipped ) );
+			notify( 'success', sprintf( __( 'Imported %1$d, updated %2$d, skipped %3$d.', 'zaverweb-reviews' ), totals.imported, totals.updated, totals.skipped ) );
 			await loadPreview();
 		} catch ( e ) {
 			notify( 'error', e.message );
@@ -88,7 +88,7 @@ export default function MigrationPanel( { boot, notify } ) {
 					break;
 				}
 			}
-			notify( 'success', sprintf( __( 'Exported %d reviews to comments.', 'advery-reviews' ), exported ) );
+			notify( 'success', sprintf( __( 'Exported %d reviews to comments.', 'zaverweb-reviews' ), exported ) );
 			await loadPreview();
 		} catch ( e ) {
 			notify( 'error', e.message );
@@ -106,7 +106,7 @@ export default function MigrationPanel( { boot, notify } ) {
 			const url = URL.createObjectURL( blob );
 			const a = document.createElement( 'a' );
 			a.href = url;
-			a.download = res.filename || 'advery-reviews.csv';
+			a.download = res.filename || 'zaverweb-reviews.csv';
 			document.body.appendChild( a );
 			a.click();
 			document.body.removeChild( a );
@@ -119,82 +119,82 @@ export default function MigrationPanel( { boot, notify } ) {
 	};
 
 	if ( ! preview ) {
-		return <div className="advery-rv-loading"><Spinner /></div>;
+		return <div className="zaverweb-rv-loading"><Spinner /></div>;
 	}
 
 	return (
-		<div className="advery-rv-migration">
-			<p className="advery-rv-mig-intro">
-				{ __( 'Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates.', 'advery-reviews' ) }
+		<div className="zaverweb-rv-migration">
+			<p className="zaverweb-rv-mig-intro">
+				{ __( 'Move reviews in and out of Zaver Web Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates.', 'zaverweb-reviews' ) }
 			</p>
 
-			<div className="advery-rv-mig-card">
-				<div className="advery-rv-mig-card__head">
-					<span className="advery-rv-mig-card__icon" aria-hidden="true">⬇️</span>
+			<div className="zaverweb-rv-mig-card">
+				<div className="zaverweb-rv-mig-card__head">
+					<span className="zaverweb-rv-mig-card__icon" aria-hidden="true">⬇️</span>
 					<div>
-						<h3 className="advery-rv-mig-card__title">{ __( 'Import existing comments', 'advery-reviews' ) }</h3>
-						<p className="advery-rv-mig-card__desc">
-							{ __( 'Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates.', 'advery-reviews' ) }
+						<h3 className="zaverweb-rv-mig-card__title">{ __( 'Import existing comments', 'zaverweb-reviews' ) }</h3>
+						<p className="zaverweb-rv-mig-card__desc">
+							{ __( 'Bring your current WordPress comments and WooCommerce reviews into Zaver Web Reviews. Your originals stay in place, and running this again only updates — it never duplicates.', 'zaverweb-reviews' ) }
 						</p>
 					</div>
 				</div>
-				<div className="advery-rv-mig-card__body">
-					<p className="advery-rv-stat-row">
-						<span>{ sprintf( __( '%d WordPress comments', 'advery-reviews' ), preview.import.wp ) }</span>
-						<span>{ sprintf( __( '%d WooCommerce reviews', 'advery-reviews' ), preview.import.wc ) }</span>
-						<span>{ sprintf( __( '%d already imported', 'advery-reviews' ), preview.import.imported ) }</span>
+				<div className="zaverweb-rv-mig-card__body">
+					<p className="zaverweb-rv-stat-row">
+						<span>{ sprintf( __( '%d WordPress comments', 'zaverweb-reviews' ), preview.import.wp ) }</span>
+						<span>{ sprintf( __( '%d WooCommerce reviews', 'zaverweb-reviews' ), preview.import.wc ) }</span>
+						<span>{ sprintf( __( '%d already imported', 'zaverweb-reviews' ), preview.import.imported ) }</span>
 					</p>
-					<CheckboxControl label={ sprintf( __( 'Include WordPress post comments (%d)', 'advery-reviews' ), preview.import.wp ) } checked={ sources.includes( 'wp_comment' ) } onChange={ ( on ) => toggleSource( 'wp_comment', on ) } __nextHasNoMarginBottom />
-					<CheckboxControl label={ sprintf( __( 'Include WooCommerce product reviews (%d)', 'advery-reviews' ), preview.import.wc ) } checked={ sources.includes( 'wc_review' ) } onChange={ ( on ) => toggleSource( 'wc_review', on ) } __nextHasNoMarginBottom />
-					<ToggleControl label={ __( 'Update items already imported', 'advery-reviews' ) } help={ __( 'On: re-importing refreshes reviews you imported before. Off: they’re skipped.', 'advery-reviews' ) } checked={ updateExisting } onChange={ setUpdateExisting } __nextHasNoMarginBottom />
-					<ToggleControl label={ __( 'Delete the original comments after importing', 'advery-reviews' ) } help={ __( 'Off (recommended): keep a copy in the comment tables. On: permanently remove the source comments once imported.', 'advery-reviews' ) } checked={ deleteSource } onChange={ setDeleteSource } __nextHasNoMarginBottom />
+					<CheckboxControl label={ sprintf( __( 'Include WordPress post comments (%d)', 'zaverweb-reviews' ), preview.import.wp ) } checked={ sources.includes( 'wp_comment' ) } onChange={ ( on ) => toggleSource( 'wp_comment', on ) } __nextHasNoMarginBottom />
+					<CheckboxControl label={ sprintf( __( 'Include WooCommerce product reviews (%d)', 'zaverweb-reviews' ), preview.import.wc ) } checked={ sources.includes( 'wc_review' ) } onChange={ ( on ) => toggleSource( 'wc_review', on ) } __nextHasNoMarginBottom />
+					<ToggleControl label={ __( 'Update items already imported', 'zaverweb-reviews' ) } help={ __( 'On: re-importing refreshes reviews you imported before. Off: they’re skipped.', 'zaverweb-reviews' ) } checked={ updateExisting } onChange={ setUpdateExisting } __nextHasNoMarginBottom />
+					<ToggleControl label={ __( 'Delete the original comments after importing', 'zaverweb-reviews' ) } help={ __( 'Off (recommended): keep a copy in the comment tables. On: permanently remove the source comments once imported.', 'zaverweb-reviews' ) } checked={ deleteSource } onChange={ setDeleteSource } __nextHasNoMarginBottom />
 					{ deleteSource && (
-						<Notice status="warning" isDismissible={ false }>{ __( 'The original comments will be permanently deleted after import.', 'advery-reviews' ) }</Notice>
+						<Notice status="warning" isDismissible={ false }>{ __( 'The original comments will be permanently deleted after import.', 'zaverweb-reviews' ) }</Notice>
 					) }
-					<div className="advery-rv-mig-actions">
-						<Button variant="primary" isBusy={ running === 'import' } disabled={ !! running || ! sources.length } onClick={ runImport }>{ __( 'Import now', 'advery-reviews' ) }</Button>
+					<div className="zaverweb-rv-mig-actions">
+						<Button variant="primary" isBusy={ running === 'import' } disabled={ !! running || ! sources.length } onClick={ runImport }>{ __( 'Import now', 'zaverweb-reviews' ) }</Button>
 						{ running === 'import' && progress && (
-							<span className="advery-rv-mig-progress">{ sprintf( __( 'imported %1$d · updated %2$d · skipped %3$d…', 'advery-reviews' ), progress.imported, progress.updated, progress.skipped ) }</span>
+							<span className="zaverweb-rv-mig-progress">{ sprintf( __( 'imported %1$d · updated %2$d · skipped %3$d…', 'zaverweb-reviews' ), progress.imported, progress.updated, progress.skipped ) }</span>
 						) }
 					</div>
 				</div>
 			</div>
 
-			<div className="advery-rv-mig-card">
-				<div className="advery-rv-mig-card__head">
-					<span className="advery-rv-mig-card__icon" aria-hidden="true">⬆️</span>
+			<div className="zaverweb-rv-mig-card">
+				<div className="zaverweb-rv-mig-card__head">
+					<span className="zaverweb-rv-mig-card__icon" aria-hidden="true">⬆️</span>
 					<div>
-						<h3 className="advery-rv-mig-card__title">{ __( 'Export reviews back to comments', 'advery-reviews' ) }</h3>
-						<p className="advery-rv-mig-card__desc">
-							{ __( 'Recreate native WordPress / WooCommerce comments from the reviews you collected here — handy if another tool reads the comment tables. Safe to run repeatedly; it won’t loop or duplicate.', 'advery-reviews' ) }
+						<h3 className="zaverweb-rv-mig-card__title">{ __( 'Export reviews back to comments', 'zaverweb-reviews' ) }</h3>
+						<p className="zaverweb-rv-mig-card__desc">
+							{ __( 'Recreate native WordPress / WooCommerce comments from the reviews you collected here — handy if another tool reads the comment tables. Safe to run repeatedly; it won’t loop or duplicate.', 'zaverweb-reviews' ) }
 						</p>
 					</div>
 				</div>
-				<div className="advery-rv-mig-card__body">
-					<p className="advery-rv-stat-row">
-						<span>{ sprintf( __( '%d reviews eligible', 'advery-reviews' ), preview.export.eligible ) }</span>
-						<span>{ sprintf( __( '%d already exported', 'advery-reviews' ), preview.export.exported ) }</span>
+				<div className="zaverweb-rv-mig-card__body">
+					<p className="zaverweb-rv-stat-row">
+						<span>{ sprintf( __( '%d reviews eligible', 'zaverweb-reviews' ), preview.export.eligible ) }</span>
+						<span>{ sprintf( __( '%d already exported', 'zaverweb-reviews' ), preview.export.exported ) }</span>
 					</p>
-					<div className="advery-rv-mig-actions">
-						<Button variant="secondary" isBusy={ running === 'export' } disabled={ !! running } onClick={ runExport }>{ __( 'Export to comments', 'advery-reviews' ) }</Button>
+					<div className="zaverweb-rv-mig-actions">
+						<Button variant="secondary" isBusy={ running === 'export' } disabled={ !! running } onClick={ runExport }>{ __( 'Export to comments', 'zaverweb-reviews' ) }</Button>
 						{ running === 'export' && progress && (
-							<span className="advery-rv-mig-progress">{ sprintf( __( 'exported %d…', 'advery-reviews' ), progress.exported ) }</span>
+							<span className="zaverweb-rv-mig-progress">{ sprintf( __( 'exported %d…', 'zaverweb-reviews' ), progress.exported ) }</span>
 						) }
 					</div>
 				</div>
 			</div>
 
-			<div className="advery-rv-mig-card">
-				<div className="advery-rv-mig-card__head">
-					<span className="advery-rv-mig-card__icon" aria-hidden="true">💾</span>
+			<div className="zaverweb-rv-mig-card">
+				<div className="zaverweb-rv-mig-card__head">
+					<span className="zaverweb-rv-mig-card__icon" aria-hidden="true">💾</span>
 					<div>
-						<h3 className="advery-rv-mig-card__title">{ __( 'Backup (CSV)', 'advery-reviews' ) }</h3>
-						<p className="advery-rv-mig-card__desc">{ __( 'Download every review as a CSV file — a spreadsheet you can keep as a backup or move to another site.', 'advery-reviews' ) }</p>
+						<h3 className="zaverweb-rv-mig-card__title">{ __( 'Backup (CSV)', 'zaverweb-reviews' ) }</h3>
+						<p className="zaverweb-rv-mig-card__desc">{ __( 'Download every review as a CSV file — a spreadsheet you can keep as a backup or move to another site.', 'zaverweb-reviews' ) }</p>
 					</div>
 				</div>
-				<div className="advery-rv-mig-card__body">
-					<div className="advery-rv-mig-actions">
-						<Button variant="secondary" isBusy={ running === 'csv' } disabled={ !! running } onClick={ downloadCsv }>{ __( 'Download CSV', 'advery-reviews' ) }</Button>
+				<div className="zaverweb-rv-mig-card__body">
+					<div className="zaverweb-rv-mig-actions">
+						<Button variant="secondary" isBusy={ running === 'csv' } disabled={ !! running } onClick={ downloadCsv }>{ __( 'Download CSV', 'zaverweb-reviews' ) }</Button>
 					</div>
 				</div>
 			</div>

@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Integrations;
+namespace ZaverWeb\Reviews\Integrations;
 
-use Advery\Reviews\Frontend\Display;
-use Advery\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Frontend\Display;
+use ZaverWeb\Reviews\Support\Targets;
 
 /**
  * A dynamic (server-rendered) Gutenberg block that places the reviews widget.
@@ -22,18 +22,18 @@ class GutenbergBlock {
 		}
 
 		wp_register_script(
-			'advery-reviews-block',
-			ADVERY_REVIEWS_URL . 'assets/block.js',
+			'zaverweb-reviews-block',
+			ZAVERWEB_REVIEWS_URL . 'assets/block.js',
 			[ 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-server-side-render', 'wp-i18n' ],
-			ADVERY_REVIEWS_VERSION,
+			ZAVERWEB_REVIEWS_VERSION,
 			true
 		);
 
 		register_block_type(
-			'advery/reviews',
+			'zaverweb/reviews',
 			[
 				'api_version'     => 2,
-				'editor_script'   => 'advery-reviews-block',
+				'editor_script'   => 'zaverweb-reviews-block',
 				'render_callback' => [ $this, 'render' ],
 				'attributes'      => [
 					'source' => [ 'type' => 'string', 'default' => 'current' ],
@@ -66,7 +66,7 @@ class GutenbergBlock {
 		if ( ! Targets::is_enabled( $object_type, $post_id ) ) {
 			// Show a hint in the editor; nothing on the front end.
 			return current_user_can( 'edit_posts' )
-				? '<div class="advery-reviews advery-reviews--placeholder">' . esc_html__( 'Reviews are not enabled for this content type. Enable it in Advery Reviews → Settings.', 'advery-reviews' ) . '</div>'
+				? '<div class="zaverweb-reviews zaverweb-reviews--placeholder">' . esc_html__( 'Reviews are not enabled for this content type. Enable it in Zaver Web Reviews → Settings.', 'zaverweb-reviews' ) . '</div>'
 				: '';
 		}
 

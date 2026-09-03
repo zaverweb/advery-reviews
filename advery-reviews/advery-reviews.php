@@ -1,17 +1,17 @@
 <?php
 /**
- * Plugin Name:       Advery Reviews
- * Plugin URI:        https://advery.ca
+ * Plugin Name:       Zaver Web Reviews
+ * Plugin URI:        https://zaverweb.com
  * Description:       Fast, self-contained ratings & reviews for any post type, taxonomy term, or WooCommerce product. Collects reviews in its own optimized tables (not one comment split across many meta rows), reads WooCommerce's native ratings, and — when Advery Schema Plus is active — injects aggregateRating/review into the JSON-LD graph. Configurable submission rules, a smooth React moderation panel, a dashboard widget, a pending-count menu badge, and instant + digest email reports.
- * Version:           0.33.0
+ * Version:           1.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Zaver Web
  * Author URI:        https://zaverweb.com
- * Text Domain:       advery-reviews
+ * Text Domain:       zaverweb-reviews
  * Domain Path:       /languages
  *
- * @package Advery\Reviews
+ * @package ZaverWeb\Reviews
  */
 
 // Exit if accessed directly.
@@ -19,23 +19,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ADVERY_REVIEWS_VERSION', '0.33.0' );
-define( 'ADVERY_REVIEWS_FILE', __FILE__ );
-define( 'ADVERY_REVIEWS_PATH', plugin_dir_path( __FILE__ ) );
-define( 'ADVERY_REVIEWS_URL', plugin_dir_url( __FILE__ ) );
-define( 'ADVERY_REVIEWS_REST_NAMESPACE', 'advery-reviews/v1' );
+define( 'ZAVERWEB_REVIEWS_VERSION', '1.0.0' );
+define( 'ZAVERWEB_REVIEWS_FILE', __FILE__ );
+define( 'ZAVERWEB_REVIEWS_PATH', plugin_dir_path( __FILE__ ) );
+define( 'ZAVERWEB_REVIEWS_URL', plugin_dir_url( __FILE__ ) );
+define( 'ZAVERWEB_REVIEWS_REST_NAMESPACE', 'zaverweb-reviews/v1' );
 
 /**
- * PSR-4 autoloader for the Advery\Reviews\ namespace.
+ * PSR-4 autoloader for the ZaverWeb\Reviews\ namespace.
  */
 spl_autoload_register(
 	function ( $class ) {
-		$prefix = 'Advery\\Reviews\\';
+		$prefix = 'ZaverWeb\\Reviews\\';
 		$len    = strlen( $prefix );
 		if ( 0 !== strncmp( $prefix, $class, $len ) ) {
 			return;
 		}
-		$file = ADVERY_REVIEWS_PATH . 'includes/' . str_replace( '\\', '/', substr( $class, $len ) ) . '.php';
+		$file = ZAVERWEB_REVIEWS_PATH . 'includes/' . str_replace( '\\', '/', substr( $class, $len ) ) . '.php';
 		if ( is_readable( $file ) ) {
 			require $file;
 		}
@@ -46,8 +46,8 @@ spl_autoload_register(
 register_activation_hook(
 	__FILE__,
 	function () {
-		\Advery\Reviews\Database\Installer::install();
-		\Advery\Reviews\Email\Digest::reschedule();
+		\ZaverWeb\Reviews\Database\Installer::install();
+		\ZaverWeb\Reviews\Email\Digest::reschedule();
 	}
 );
 
@@ -55,14 +55,14 @@ register_activation_hook(
 register_deactivation_hook(
 	__FILE__,
 	function () {
-		\Advery\Reviews\Email\Digest::clear();
-		\Advery\Reviews\AntiSpam\SpamLog::clear_cron();
+		\ZaverWeb\Reviews\Email\Digest::clear();
+		\ZaverWeb\Reviews\AntiSpam\SpamLog::clear_cron();
 	}
 );
 
 add_action(
 	'plugins_loaded',
 	function () {
-		( new \Advery\Reviews\Plugin() )->boot();
+		( new \ZaverWeb\Reviews\Plugin() )->boot();
 	}
 );

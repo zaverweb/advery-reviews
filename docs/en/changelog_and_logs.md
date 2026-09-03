@@ -12,6 +12,15 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 1.0.0 (Official release — full rebrand to Zaver Web + naming/collision audit)
+- **First stable release.** The plugin is now **Zaver Web Reviews**, by **Zaver Web** (https://zaverweb.com).
+- **Complete rename of every internal identifier** from `advery` to `zaverweb`, so nothing collides with the wider Advery product family or any other plugin: PHP namespace (`Advery\Reviews` → `ZaverWeb\Reviews`), constants (`ADVERY_REVIEWS_*` → `ZAVERWEB_REVIEWS_*`), DB tables (`{prefix}advery_reviews` / `_review_stats` / `_review_spam_log` → `zaverweb_*`), option keys, text domain (`advery-reviews` → `zaverweb-reviews`), REST namespace (`advery-reviews/v1` → `zaverweb-reviews/v1`), the shortcode (`[advery_reviews]` → `[zaverweb_reviews]`), the Gutenberg block (`advery/reviews` → `zaverweb/reviews`), all hooks/cron events, script/style handles, JS globals, honeypot/timing field names, and CSS classes/variables (`.advery-*` → `.zaverweb-*`, `--ar-*` → `--zw-*`).
+- **Automatic, lossless data migration.** On the first load after updating, the plugin renames its tables in place, carries the settings and digest state over to the new option keys, reschedules its cron events under the new names, and removes the old options — no data loss and no manual step. Verified live: 13 reviews and all settings preserved.
+- **Naming/collision audit passed:** no functions in the global namespace (everything is namespaced), and every option, table, hook, shortcode, block, cron event, REST route, enqueue handle, JS global (all IIFE-wrapped) and CSS class/variable is uniquely `zaverweb`-prefixed.
+- **The one deliberate exception:** the plugin still *consumes* the core’s `advery_schema_render_node` filter (and checks `ADVERY_SCHEMA_VERSION`) — those belong to **Advery Schema Plus**’s public API, so they are unchanged; the schema integration keeps working exactly as before.
+- **Breaking changes for existing sites (one-time):** if you placed reviews with the `[advery_reviews]` shortcode, update it to `[zaverweb_reviews]`; any **custom CSS** targeting the old `.advery-reviews*` classes or `--ar-*` variables must be updated to `.zaverweb-reviews*` / `--zw-*`; external code calling the old REST namespace or hooks must use the new names. The plugin **folder** stays `advery-reviews` (so the update is in-place, not a re-install).
+- Verified live end-to-end after the rename: data migration, REST under the new namespace (old one 404s), the front-end widget (`.zaverweb-reviews`), and the admin app all work; Persian translations carried over under the new text domain.
+
 ### Version 0.33.0 (Three new front-end skins + author is now Zaver Web)
 - **Three new layout skins** join Cards and Classic, all driven by the same `--ar-*` appearance variables (colors, radius, spacing all follow your settings):
   - **Minimal** — airy and borderless: no card, generous spacing, a hairline divider between reviews, the author name in your accent color and a small upper-case date.

@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
 /**
  * Resolves *what* is being reviewed on the current request and validates a

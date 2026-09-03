@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\AntiSpam;
+namespace ZaverWeb\Reviews\AntiSpam;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Database\Installer;
 
 /**
  * Optional, opt-in diagnostic log of submissions the anti-spam layer blocked,
@@ -17,7 +17,7 @@ use Advery\Reviews\Database\Installer;
  */
 class SpamLog {
 
-	const PURGE_HOOK = 'advery_reviews_spam_log_purge';
+	const PURGE_HOOK = 'zaverweb_reviews_spam_log_purge';
 
 	/** Max characters of the offending text we keep. */
 	const CONTENT_CAP = 2000;

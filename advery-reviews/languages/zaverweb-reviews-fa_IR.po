@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.29.0\n"
+"Project-Id-Version: Zaver Web Reviews 0.29.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Persian <dev@advery.ca>\n"
@@ -11,25 +11,8 @@ msgstr ""
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Language: fa_IR\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: advery-reviews\n"
+"X-Domain: zaverweb-reviews\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#. Plugin Name of the plugin
-#: advery-reviews.php
-#: includes/Admin/AdminPage.php:23
-#: includes/Admin/DashboardWidget.php:19
-#: includes/Admin/PostMetabox.php:38
-#: includes/Admin/TermMetabox.php:46
-#: includes/Integrations/Elementor/ReviewsWidget.php:26
-#: assets/block.js:13
-#: build/index.js:4
-msgid "Advery Reviews"
-msgstr "Advery Reviews"
-
-#. Plugin URI of the plugin
-#: advery-reviews.php
-msgid "https://advery.ca"
-msgstr "https://advery.ca"
 
 #. Description of the plugin
 #: advery-reviews.php
@@ -245,14 +228,6 @@ msgstr "خیلی سریع ثبت می‌کنید. کمی بعد دوباره ت�
 #: includes/AntiSpam/SpamGuard.php:126
 msgid "Links are not allowed in reviews."
 msgstr "درجِ لینک در نظرات مجاز نیست."
-
-#: includes/Email/Digest.php:28
-msgid "Once Weekly (Advery)"
-msgstr "هفتگی (Advery)"
-
-#: includes/Email/Digest.php:29
-msgid "Once Monthly (Advery)"
-msgstr "ماهانه (Advery)"
 
 #. translators: 1: site name, 2: frequency
 #: includes/Email/Digest.php:82
@@ -528,14 +503,6 @@ msgstr "گردیِ گوشه"
 #: includes/Integrations/Elementor/ReviewsWidget.php:175
 msgid "Max width"
 msgstr "حداکثر عرض"
-
-#: includes/Integrations/Elementor/ReviewsWidget.php:221
-msgid "Advery Reviews will appear here on a page that is an enabled review target."
-msgstr "Advery Reviews اینجا روی صفحه‌ای که هدفِ نظرِ فعال باشد نمایش داده می‌شود."
-
-#: includes/Integrations/GutenbergBlock.php:69
-msgid "Reviews are not enabled for this content type. Enable it in Advery Reviews → Settings."
-msgstr "نظرات برای این نوعِ محتوا فعال نیست. آن را در Advery Reviews → تنظیمات فعال کنید."
 
 #. translators: %d: number of reviews
 #: includes/Integrations/WooTakeover.php:50
@@ -1167,10 +1134,6 @@ msgid "Automatically append to content"
 msgstr "افزودنِ خودکار به محتوا"
 
 #: build/index.js:4
-msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [advery_reviews] shortcode, the block, or the Elementor widget."
-msgstr "روشن: ویجت بعد از محتوای پست‌تایپ‌های فعال اضافه می‌شود. خاموش: خودتان آن را با شورت‌کدِ [advery_reviews]، بلاک یا ویجتِ المنتور قرار دهید."
-
-#: build/index.js:4
 msgid "Reviews shown per page"
 msgstr "تعدادِ نظرِ نمایش‌داده در هر صفحه"
 
@@ -1638,10 +1601,6 @@ msgid "The numbered pagination bar"
 msgstr "نوارِ صفحه‌بندیِ شماره‌دار"
 
 #: build/index.js:4
-msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .advery-reviews__stars { color: #e11; }"
-msgstr "بازنویسی‌های پیشرفته، هرجا ویجت نمایش داده شود چاپ می‌شود. برای رنگ، گردی و فاصله بهتر است تبِ ظاهر را استفاده کنید (بدونِ کد). مثال: .advery-reviews__stars { color: #e11; }"
-
-#: build/index.js:4
 msgid "Widget CSS classes"
 msgstr "کلاس‌های CSSِ ویجت"
 
@@ -1818,16 +1777,8 @@ msgid "imported %1$d, updated %2$d, skipped %3$d…"
 msgstr "درون‌ریزی %1$d، به‌روزرسانی %2$d، ردشده %3$d…"
 
 #: build/index.js:4
-msgid "Move reviews in and out of Advery Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
-msgstr "نظرات را به Advery Reviews وارد یا از آن خارج کنید. همه‌چیزِ اینجا برای اجرای چندباره امن است — درون‌ریزی‌ها داده‌ی شما را کپی می‌کنند و هرگز تکراری نمی‌سازند."
-
-#: build/index.js:4
 msgid "Import existing comments"
 msgstr "درون‌ریزیِ کامنت‌های موجود"
-
-#: build/index.js:4
-msgid "Bring your current WordPress comments and WooCommerce reviews into Advery Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
-msgstr "کامنت‌های فعلیِ وردپرس و نظراتِ ووکامرس را به Advery Reviews بیاورید. نسخه‌های اصلی سرِ جایشان می‌مانند و اجرای دوباره فقط به‌روزرسانی می‌کند — هرگز تکراری نمی‌سازد."
 
 #: build/index.js:4
 #, js-format
@@ -2146,6 +2097,7 @@ msgstr "ببینید فیلترِ ضدِاسپم چه چیزی را و چرا م
 msgid "Zaver Web"
 msgstr "Zaver Web"
 
+#. Plugin URI of the plugin
 #. Author URI of the plugin
 #: advery-reviews.php
 msgid "https://zaverweb.com"
@@ -2169,3 +2121,47 @@ msgstr "نقلِ‌قول (توصیه‌نامه)"
 #: build/index.js:4
 msgid "How each review looks. Cards = bordered cards. Classic = a simple divided list. Minimal = airy and borderless. Bubble = chat-style speech bubbles. Quote = centered testimonials with a large quote mark."
 msgstr "ظاهرِ هر نظر. کارت‌ها = کارت‌های حاشیه‌دار. کلاسیک = فهرستِ ساده‌ی خط‌کشیده. مینیمال = هوادار و بی‌حاشیه. حبابی = حباب‌های گفتگویی. نقلِ‌قول = توصیه‌نامه‌های وسط‌چین با علامتِ نقلِ‌قولِ بزرگ."
+
+#. Plugin Name of the plugin
+#: advery-reviews.php
+#: includes/Admin/AdminPage.php:23
+#: includes/Admin/DashboardWidget.php:19
+#: includes/Admin/PostMetabox.php:38
+#: includes/Admin/TermMetabox.php:46
+#: includes/Integrations/Elementor/ReviewsWidget.php:26
+#: assets/block.js:13
+#: build/index.js:4
+msgid "Zaver Web Reviews"
+msgstr "Zaver Web Reviews"
+
+#: includes/Email/Digest.php:28
+msgid "Once Weekly (Zaver Web)"
+msgstr "یک‌بار در هفته (Zaver Web)"
+
+#: includes/Email/Digest.php:29
+msgid "Once Monthly (Zaver Web)"
+msgstr "یک‌بار در ماه (Zaver Web)"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:221
+msgid "Zaver Web Reviews will appear here on a page that is an enabled review target."
+msgstr "نظرهای Zaver Web Reviews در صفحه‌ای که هدفِ فعالِ نظر باشد اینجا نمایش داده می‌شوند."
+
+#: includes/Integrations/GutenbergBlock.php:69
+msgid "Reviews are not enabled for this content type. Enable it in Zaver Web Reviews → Settings."
+msgstr "نظرات برای این نوعِ محتوا فعال نیست. آن را در Zaver Web Reviews ← تنظیمات فعال کنید."
+
+#: build/index.js:4
+msgid "On: the widget is added after the content of enabled post types. Off: place it yourself with the [zaverweb_reviews] shortcode, the block, or the Elementor widget."
+msgstr "روشن: ویجت بعد از محتوای پست‌تایپ‌های فعال افزوده می‌شود. خاموش: خودتان آن را با شورت‌کدِ [zaverweb_reviews]، بلاک، یا ویجتِ المنتور قرار دهید."
+
+#: build/index.js:4
+msgid "Advanced overrides, printed wherever the widget shows. For colors, radius and spacing prefer the Appearance tab (no code). Example: .zaverweb-reviews__stars { color: #e11; }"
+msgstr "بازنویسیِ پیشرفته که هرجا ویجت نمایش داده شود چاپ می‌شود. برای رنگ، گردی و فاصله بهتر است از تبِ ظاهر استفاده کنید (بدونِ کد). مثال: .zaverweb-reviews__stars { color: #e11; }"
+
+#: build/index.js:4
+msgid "Move reviews in and out of Zaver Web Reviews. Everything here is safe to run more than once — imports copy your data and never create duplicates."
+msgstr "نظرات را به Zaver Web Reviews وارد یا از آن خارج کنید. همه‌چیزِ اینجا برای اجرای چندباره امن است — درون‌ریزی‌ها داده‌ی شما را کپی می‌کنند و هرگز تکراری نمی‌سازند."
+
+#: build/index.js:4
+msgid "Bring your current WordPress comments and WooCommerce reviews into Zaver Web Reviews. Your originals stay in place, and running this again only updates — it never duplicates."
+msgstr "کامنت‌های فعلیِ وردپرس و نظراتِ ووکامرس را به Zaver Web Reviews بیاورید. نسخه‌های اصلی سرِ جایشان می‌مانند و اجرای دوباره فقط به‌روزرسانی می‌کند — هرگز تکراری نمی‌سازد."

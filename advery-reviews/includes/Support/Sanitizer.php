@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\Support;
+namespace ZaverWeb\Reviews\Support;
 
 /**
  * Centralised input sanitisation for everything a visitor can submit. Defends

@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
 /**
  * DeepSeek — OpenAI-compatible API (api.deepseek.com). Override the base URL in

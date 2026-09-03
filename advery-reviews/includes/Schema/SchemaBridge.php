@@ -1,10 +1,10 @@
 <?php
-namespace Advery\Reviews\Schema;
+namespace ZaverWeb\Reviews\Schema;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Targets;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Database\ReviewRepository;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Database\ReviewRepository;
 
 /**
  * Injects `aggregateRating` (and a few `review` nodes) into the Advery Schema
@@ -117,7 +117,7 @@ class SchemaBridge {
 		foreach ( ReviewRepository::approved_for( $object_type, $object_id, 5 ) as $r ) {
 			$review = [
 				'@type'         => 'Review',
-				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'advery-reviews' ) ],
+				'author'        => [ '@type' => 'Person', 'name' => $r['author_name'] ?: __( 'Anonymous', 'zaverweb-reviews' ) ],
 				'datePublished' => mysql2date( 'Y-m-d', $r['created_at'] ),
 			];
 			if ( $r['rating'] > 0 ) {

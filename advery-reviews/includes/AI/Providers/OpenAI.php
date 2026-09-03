@@ -1,7 +1,7 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
-use Advery\Reviews\AI\ProviderInterface;
+use ZaverWeb\Reviews\AI\ProviderInterface;
 
 /**
  * OpenAI Chat Completions adapter. Also the base for any OpenAI-compatible
@@ -31,7 +31,7 @@ class OpenAI implements ProviderInterface {
 		$base = ! empty( $opts['base_url'] ) ? untrailingslashit( $opts['base_url'] ) : $this->base;
 
 		if ( '' === $key && false === strpos( $base, 'localhost' ) && false === strpos( $base, '127.0.0.1' ) ) {
-			return new \WP_Error( 'advery_ai_key', __( 'No API key configured.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_key', __( 'No API key configured.', 'zaverweb-reviews' ) );
 		}
 
 		$headers = [ 'content-type' => 'application/json' ];
@@ -63,7 +63,7 @@ class OpenAI implements ProviderInterface {
 		}
 		$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 		if ( isset( $data['error'] ) ) {
-			return new \WP_Error( 'advery_ai_api', is_array( $data['error'] ) ? ( $data['error']['message'] ?? 'API error' ) : (string) $data['error'] );
+			return new \WP_Error( 'zaverweb_ai_api', is_array( $data['error'] ) ? ( $data['error']['message'] ?? 'API error' ) : (string) $data['error'] );
 		}
 		if ( isset( $data['usage'] ) ) {
 			// OpenAI-style usage; Ollama returns prompt_eval_count/eval_count.
@@ -75,6 +75,6 @@ class OpenAI implements ProviderInterface {
 		if ( isset( $data['choices'][0]['message']['content'] ) ) {
 			return (string) $data['choices'][0]['message']['content'];
 		}
-		return new \WP_Error( 'advery_ai_parse', __( 'Unexpected AI response.', 'advery-reviews' ) );
+		return new \WP_Error( 'zaverweb_ai_parse', __( 'Unexpected AI response.', 'zaverweb-reviews' ) );
 	}
 }

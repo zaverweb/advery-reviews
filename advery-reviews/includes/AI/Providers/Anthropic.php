@@ -1,7 +1,7 @@
 <?php
-namespace Advery\Reviews\AI\Providers;
+namespace ZaverWeb\Reviews\AI\Providers;
 
-use Advery\Reviews\AI\ProviderInterface;
+use ZaverWeb\Reviews\AI\ProviderInterface;
 
 /**
  * Anthropic Claude adapter (Messages API).
@@ -25,7 +25,7 @@ class Anthropic implements ProviderInterface {
 	public function chat( $system, $user, array $opts ) {
 		$key = $opts['api_key'] ?? '';
 		if ( '' === $key ) {
-			return new \WP_Error( 'advery_ai_key', __( 'No API key configured.', 'advery-reviews' ) );
+			return new \WP_Error( 'zaverweb_ai_key', __( 'No API key configured.', 'zaverweb-reviews' ) );
 		}
 		$base = ! empty( $opts['base_url'] ) ? untrailingslashit( $opts['base_url'] ) : 'https://api.anthropic.com';
 
@@ -55,7 +55,7 @@ class Anthropic implements ProviderInterface {
 		}
 		$data = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 		if ( isset( $data['error'] ) ) {
-			return new \WP_Error( 'advery_ai_api', $data['error']['message'] ?? 'API error' );
+			return new \WP_Error( 'zaverweb_ai_api', $data['error']['message'] ?? 'API error' );
 		}
 		if ( isset( $data['usage'] ) ) {
 			$this->usage = [
@@ -66,6 +66,6 @@ class Anthropic implements ProviderInterface {
 		if ( isset( $data['content'][0]['text'] ) ) {
 			return (string) $data['content'][0]['text'];
 		}
-		return new \WP_Error( 'advery_ai_parse', __( 'Unexpected AI response.', 'advery-reviews' ) );
+		return new \WP_Error( 'zaverweb_ai_parse', __( 'Unexpected AI response.', 'zaverweb-reviews' ) );
 	}
 }

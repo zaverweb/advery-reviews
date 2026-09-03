@@ -1,7 +1,7 @@
 <?php
-namespace Advery\Reviews\Admin;
+namespace ZaverWeb\Reviews\Admin;
 
-use Advery\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Settings;
 
 /**
  * Adds a reviews section to the Edit Term screen for every enabled taxonomy
@@ -43,11 +43,11 @@ class TermMetabox {
 	 */
 	public function render( $term, $taxonomy ) {
 		$term_id = is_object( $term ) ? (int) $term->term_id : (int) $term;
-		echo '<h2 style="margin-top:24px">' . esc_html__( 'Advery Reviews', 'advery-reviews' ) . '</h2>';
+		echo '<h2 style="margin-top:24px">' . esc_html__( 'Zaver Web Reviews', 'zaverweb-reviews' ) . '</h2>';
 		printf(
-			'<div id="advery-reviews-metabox" class="advery-mb-term" data-object-type="term" data-object-id="%d">%s</div>',
+			'<div id="zaverweb-reviews-metabox" class="zaverweb-mb-term" data-object-type="term" data-object-id="%d">%s</div>',
 			$term_id,
-			esc_html__( 'Loading…', 'advery-reviews' )
+			esc_html__( 'Loading…', 'zaverweb-reviews' )
 		);
 	}
 

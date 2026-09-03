@@ -121,19 +121,19 @@ export default function DataImportPanel( { notify } ) {
 					else if ( /date|time|created/.test( l ) ) { guess.created_at = c; }
 				} );
 				setMapping( ( m ) => ( { ...m, columns: guess } ) );
-				notify( 'success', sprintf( __( 'Loaded %1$d rows, %2$d columns.', 'advery-reviews' ), parsed.rows.length, parsed.columns.length ) );
+				notify( 'success', sprintf( __( 'Loaded %1$d rows, %2$d columns.', 'zaverweb-reviews' ), parsed.rows.length, parsed.columns.length ) );
 			} catch ( err ) {
-				notify( 'error', __( 'Could not parse the file: ', 'advery-reviews' ) + err.message );
+				notify( 'error', __( 'Could not parse the file: ', 'zaverweb-reviews' ) + err.message );
 			}
 		};
 		reader.readAsText( file );
 	};
 
-	const colOptions = [ { label: __( '— none —', 'advery-reviews' ), value: '' }, ...columns.map( ( c ) => ( { label: c, value: c } ) ) ];
+	const colOptions = [ { label: __( '— none —', 'zaverweb-reviews' ), value: '' }, ...columns.map( ( c ) => ( { label: c, value: c } ) ) ];
 
 	const runImport = async () => {
 		if ( ! rows.length || ! mapping.target_column ) {
-			notify( 'error', __( 'Load a file and choose the target column first.', 'advery-reviews' ) );
+			notify( 'error', __( 'Load a file and choose the target column first.', 'zaverweb-reviews' ) );
 			return;
 		}
 		setRunning( true );
@@ -147,7 +147,7 @@ export default function DataImportPanel( { notify } ) {
 				totals.skipped += res.skipped;
 				setProgress( { ...totals } );
 			}
-			notify( 'success', sprintf( __( 'Imported %1$d, updated %2$d, skipped %3$d.', 'advery-reviews' ), totals.imported, totals.updated, totals.skipped ) );
+			notify( 'success', sprintf( __( 'Imported %1$d, updated %2$d, skipped %3$d.', 'zaverweb-reviews' ), totals.imported, totals.updated, totals.skipped ) );
 		} catch ( e ) {
 			notify( 'error', e.message );
 		} finally {
@@ -157,37 +157,37 @@ export default function DataImportPanel( { notify } ) {
 	};
 
 	return (
-		<div className="advery-rv-mig-card">
-			<div className="advery-rv-mig-card__head">
-				<span className="advery-rv-mig-card__icon" aria-hidden="true">📄</span>
+		<div className="zaverweb-rv-mig-card">
+			<div className="zaverweb-rv-mig-card__head">
+				<span className="zaverweb-rv-mig-card__icon" aria-hidden="true">📄</span>
 				<div>
-					<h3 className="advery-rv-mig-card__title">{ __( 'Import from a file (CSV / JSON)', 'advery-reviews' ) }</h3>
-					<p className="advery-rv-mig-card__desc">
-						{ __( 'Import review data prepared elsewhere — a spreadsheet, another platform’s export, or a dataset collected outside WordPress. After choosing a file you’ll map its columns and set a unique key so re-imports update instead of duplicating.', 'advery-reviews' ) }
+					<h3 className="zaverweb-rv-mig-card__title">{ __( 'Import from a file (CSV / JSON)', 'zaverweb-reviews' ) }</h3>
+					<p className="zaverweb-rv-mig-card__desc">
+						{ __( 'Import review data prepared elsewhere — a spreadsheet, another platform’s export, or a dataset collected outside WordPress. After choosing a file you’ll map its columns and set a unique key so re-imports update instead of duplicating.', 'zaverweb-reviews' ) }
 					</p>
 				</div>
 			</div>
-			<div className="advery-rv-mig-card__body">
+			<div className="zaverweb-rv-mig-card__body">
 			<input type="file" accept=".csv,.json,text/csv,application/json" onChange={ onFile } />
 
 			{ columns.length > 0 && (
 				<>
-					<p style={ { marginTop: 12 } }><strong>{ sprintf( __( '%1$d rows · %2$d columns', 'advery-reviews' ), rows.length, columns.length ) }</strong></p>
+					<p style={ { marginTop: 12 } }><strong>{ sprintf( __( '%1$d rows · %2$d columns', 'zaverweb-reviews' ), rows.length, columns.length ) }</strong></p>
 
 					<hr />
-					<strong>{ __( 'Target (which post each review belongs to)', 'advery-reviews' ) }</strong>
+					<strong>{ __( 'Target (which post each review belongs to)', 'zaverweb-reviews' ) }</strong>
 					<SelectControl
-						label={ __( 'Identify the target by', 'advery-reviews' ) }
+						label={ __( 'Identify the target by', 'zaverweb-reviews' ) }
 						value={ mapping.target_mode }
 						options={ [
-							{ label: __( 'Post ID', 'advery-reviews' ), value: 'post_id' },
-							{ label: __( 'Lookup (slug / title / meta)', 'advery-reviews' ), value: 'lookup' },
+							{ label: __( 'Post ID', 'zaverweb-reviews' ), value: 'post_id' },
+							{ label: __( 'Lookup (slug / title / meta)', 'zaverweb-reviews' ), value: 'lookup' },
 						] }
 						onChange={ ( v ) => setMap( { target_mode: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
-						label={ __( 'Column holding that value', 'advery-reviews' ) }
+						label={ __( 'Column holding that value', 'zaverweb-reviews' ) }
 						value={ mapping.target_column }
 						options={ colOptions }
 						onChange={ ( v ) => setMap( { target_column: v } ) }
@@ -196,19 +196,19 @@ export default function DataImportPanel( { notify } ) {
 					{ mapping.target_mode === 'lookup' && (
 						<>
 							<SelectControl
-								label={ __( 'Match by', 'advery-reviews' ) }
+								label={ __( 'Match by', 'zaverweb-reviews' ) }
 								value={ mapping.lookup_by }
 								options={ [
-									{ label: __( 'Slug', 'advery-reviews' ), value: 'slug' },
-									{ label: __( 'Title', 'advery-reviews' ), value: 'title' },
-									{ label: __( 'Custom field (meta)', 'advery-reviews' ), value: 'meta' },
+									{ label: __( 'Slug', 'zaverweb-reviews' ), value: 'slug' },
+									{ label: __( 'Title', 'zaverweb-reviews' ), value: 'title' },
+									{ label: __( 'Custom field (meta)', 'zaverweb-reviews' ), value: 'meta' },
 								] }
 								onChange={ ( v ) => setMap( { lookup_by: v } ) }
 								__nextHasNoMarginBottom
 							/>
 							{ mapping.lookup_by === 'meta' && (
 								<TextControl
-									label={ __( 'Meta key', 'advery-reviews' ) }
+									label={ __( 'Meta key', 'zaverweb-reviews' ) }
 									value={ mapping.lookup_meta_key }
 									onChange={ ( v ) => setMap( { lookup_meta_key: v } ) }
 									__nextHasNoMarginBottom
@@ -217,28 +217,28 @@ export default function DataImportPanel( { notify } ) {
 						</>
 					) }
 					<SelectControl
-						label={ __( 'Treat targets as', 'advery-reviews' ) }
+						label={ __( 'Treat targets as', 'zaverweb-reviews' ) }
 						value={ mapping.object_type }
 						options={ [
-							{ label: __( 'Auto (by post type)', 'advery-reviews' ), value: 'auto' },
-							{ label: __( 'Posts', 'advery-reviews' ), value: 'post' },
-							{ label: __( 'Products', 'advery-reviews' ), value: 'product' },
+							{ label: __( 'Auto (by post type)', 'zaverweb-reviews' ), value: 'auto' },
+							{ label: __( 'Posts', 'zaverweb-reviews' ), value: 'post' },
+							{ label: __( 'Products', 'zaverweb-reviews' ), value: 'product' },
 						] }
 						onChange={ ( v ) => setMap( { object_type: v } ) }
 						__nextHasNoMarginBottom
 					/>
 
 					<hr />
-					<strong>{ __( 'Unique key (for de-duplication)', 'advery-reviews' ) }</strong>
+					<strong>{ __( 'Unique key (for de-duplication)', 'zaverweb-reviews' ) }</strong>
 					<TextControl
-						label={ __( 'Source label', 'advery-reviews' ) }
-						help={ __( 'e.g. google, trustpilot — stored with each imported review.', 'advery-reviews' ) }
+						label={ __( 'Source label', 'zaverweb-reviews' ) }
+						help={ __( 'e.g. google, trustpilot — stored with each imported review.', 'zaverweb-reviews' ) }
 						value={ mapping.external_source }
 						onChange={ ( v ) => setMap( { external_source: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<SelectControl
-						label={ __( 'Column with the source review id', 'advery-reviews' ) }
+						label={ __( 'Column with the source review id', 'zaverweb-reviews' ) }
 						value={ mapping.external_id_column }
 						options={ colOptions }
 						onChange={ ( v ) => setMap( { external_id_column: v } ) }
@@ -246,14 +246,14 @@ export default function DataImportPanel( { notify } ) {
 					/>
 
 					<hr />
-					<strong>{ __( 'Field mapping', 'advery-reviews' ) }</strong>
+					<strong>{ __( 'Field mapping', 'zaverweb-reviews' ) }</strong>
 					{ [
-						[ 'rating', __( 'Rating', 'advery-reviews' ) ],
-						[ 'author_name', __( 'Author name', 'advery-reviews' ) ],
-						[ 'author_email', __( 'Author email', 'advery-reviews' ) ],
-						[ 'title', __( 'Title', 'advery-reviews' ) ],
-						[ 'content', __( 'Review text', 'advery-reviews' ) ],
-						[ 'created_at', __( 'Date', 'advery-reviews' ) ],
+						[ 'rating', __( 'Rating', 'zaverweb-reviews' ) ],
+						[ 'author_name', __( 'Author name', 'zaverweb-reviews' ) ],
+						[ 'author_email', __( 'Author email', 'zaverweb-reviews' ) ],
+						[ 'title', __( 'Title', 'zaverweb-reviews' ) ],
+						[ 'content', __( 'Review text', 'zaverweb-reviews' ) ],
+						[ 'created_at', __( 'Date', 'zaverweb-reviews' ) ],
 					].map( ( [ key, label ] ) => (
 						<SelectControl
 							key={ key }
@@ -265,17 +265,17 @@ export default function DataImportPanel( { notify } ) {
 						/>
 					) ) }
 					<SelectControl
-						label={ __( 'Default status', 'advery-reviews' ) }
+						label={ __( 'Default status', 'zaverweb-reviews' ) }
 						value={ mapping.default_status }
 						options={ [
-							{ label: __( 'Approved', 'advery-reviews' ), value: 'approved' },
-							{ label: __( 'Pending', 'advery-reviews' ), value: 'pending' },
+							{ label: __( 'Approved', 'zaverweb-reviews' ), value: 'approved' },
+							{ label: __( 'Pending', 'zaverweb-reviews' ), value: 'pending' },
 						] }
 						onChange={ ( v ) => setMap( { default_status: v } ) }
 						__nextHasNoMarginBottom
 					/>
 					<ToggleControl
-						label={ __( 'Update reviews already imported (same source + id)', 'advery-reviews' ) }
+						label={ __( 'Update reviews already imported (same source + id)', 'zaverweb-reviews' ) }
 						checked={ updateExisting }
 						onChange={ setUpdateExisting }
 						__nextHasNoMarginBottom
@@ -283,17 +283,17 @@ export default function DataImportPanel( { notify } ) {
 
 					{ ! mapping.external_id_column && (
 						<Notice status="warning" isDismissible={ false }>
-							{ __( 'Without a unique id column, re-imports can create duplicates.', 'advery-reviews' ) }
+							{ __( 'Without a unique id column, re-imports can create duplicates.', 'zaverweb-reviews' ) }
 						</Notice>
 					) }
 
 					<div style={ { marginTop: 12 } }>
 						<Button variant="primary" isBusy={ running } disabled={ running || ! mapping.target_column } onClick={ runImport }>
-							{ __( 'Import rows', 'advery-reviews' ) }
+							{ __( 'Import rows', 'zaverweb-reviews' ) }
 						</Button>
 						{ running && progress && (
 							<span style={ { marginInlineStart: 10 } }>
-								{ sprintf( __( 'imported %1$d, updated %2$d, skipped %3$d…', 'advery-reviews' ), progress.imported, progress.updated, progress.skipped ) }
+								{ sprintf( __( 'imported %1$d, updated %2$d, skipped %3$d…', 'zaverweb-reviews' ), progress.imported, progress.updated, progress.skipped ) }
 							</span>
 						) }
 					</div>

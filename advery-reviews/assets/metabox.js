@@ -1,9 +1,9 @@
-/* Advery Reviews — post-edit metabox. Vanilla JS + REST; no framework. */
+/* Zaver Web Reviews — post-edit metabox. Vanilla JS + REST; no framework. */
 ( function () {
 	'use strict';
-	var cfg = window.AdveryReviewsMeta || {};
+	var cfg = window.ZaverWebReviewsMeta || {};
 	var i18n = cfg.i18n || {};
-	var root = document.getElementById( 'advery-reviews-metabox' );
+	var root = document.getElementById( 'zaverweb-reviews-metabox' );
 	if ( ! root || ! cfg.rest ) {
 		return;
 	}
@@ -40,12 +40,12 @@
 	}
 
 	function render( items ) {
-		var wrap = el( 'div', 'advery-mb' );
+		var wrap = el( 'div', 'zaverweb-mb' );
 
 		if ( ! items.length ) {
-			wrap.appendChild( el( 'p', 'advery-mb__empty', i18n.none || 'No reviews yet.' ) );
+			wrap.appendChild( el( 'p', 'zaverweb-mb__empty', i18n.none || 'No reviews yet.' ) );
 		} else {
-			var list = el( 'ul', 'advery-mb__list' );
+			var list = el( 'ul', 'zaverweb-mb__list' );
 			items.forEach( function ( r ) { list.appendChild( row( r ) ); } );
 			wrap.appendChild( list );
 		}
@@ -55,16 +55,16 @@
 	}
 
 	function row( r ) {
-		var li = el( 'li', 'advery-mb__item is-' + r.status );
-		var head = el( 'div', 'advery-mb__head' );
+		var li = el( 'li', 'zaverweb-mb__item is-' + r.status );
+		var head = el( 'div', 'zaverweb-mb__head' );
 		head.appendChild( el( 'strong', null, r.author_name || '—' ) );
-		if ( r.rating > 0 ) { head.appendChild( el( 'span', 'advery-mb__stars', stars( r.rating ) ) ); }
-		head.appendChild( el( 'span', 'advery-mb__badge is-' + r.status, r.status ) );
+		if ( r.rating > 0 ) { head.appendChild( el( 'span', 'zaverweb-mb__stars', stars( r.rating ) ) ); }
+		head.appendChild( el( 'span', 'zaverweb-mb__badge is-' + r.status, r.status ) );
 		li.appendChild( head );
-		if ( r.title ) { li.appendChild( el( 'div', 'advery-mb__title', r.title ) ); }
-		li.appendChild( el( 'div', 'advery-mb__content', ( r.content || '' ).replace( /<[^>]+>/g, '' ) ) );
+		if ( r.title ) { li.appendChild( el( 'div', 'zaverweb-mb__title', r.title ) ); }
+		li.appendChild( el( 'div', 'zaverweb-mb__content', ( r.content || '' ).replace( /<[^>]+>/g, '' ) ) );
 
-		var actions = el( 'div', 'advery-mb__actions' );
+		var actions = el( 'div', 'zaverweb-mb__actions' );
 		[ [ 'approved', i18n.approve ], [ 'pending', i18n.pending ], [ 'spam', i18n.spam ], [ 'trash', i18n.trash ] ].forEach( function ( a ) {
 			if ( r.status === a[ 0 ] ) { return; }
 			var b = el( 'button', 'button-link', a[ 1 ] );
@@ -72,7 +72,7 @@
 			b.addEventListener( 'click', function () { setStatus( r.id, a[ 0 ] ); } );
 			actions.appendChild( b );
 		} );
-		var del = el( 'button', 'button-link advery-mb__del', i18n.delete );
+		var del = el( 'button', 'button-link zaverweb-mb__del', i18n.delete );
 		del.type = 'button';
 		del.addEventListener( 'click', function () { if ( window.confirm( i18n.delete + '?' ) ) { remove( r.id ); } } );
 		actions.appendChild( del );
@@ -81,7 +81,7 @@
 	}
 
 	function addForm() {
-		var f = el( 'div', 'advery-mb__form' );
+		var f = el( 'div', 'zaverweb-mb__form' );
 		f.appendChild( el( 'h4', null, i18n.add || 'Add a review' ) );
 
 		var name = input( 'text', i18n.name );
@@ -91,7 +91,7 @@
 		// custom details. Toggling it fills + locks the name/email fields; the
 		// operator can still uncheck it to enter arbitrary details.
 		var me = cfg.currentUser || {};
-		var asMeWrap = el( 'label', 'advery-mb__asme' );
+		var asMeWrap = el( 'label', 'zaverweb-mb__asme' );
 		var asMe = document.createElement( 'input' );
 		asMe.type = 'checkbox';
 		asMeWrap.appendChild( asMe );
@@ -120,7 +120,7 @@
 		content.rows = 2; content.placeholder = i18n.content;
 		var save = el( 'button', 'button button-primary', i18n.save );
 		save.type = 'button';
-		var msg = el( 'span', 'advery-mb__msg' );
+		var msg = el( 'span', 'zaverweb-mb__msg' );
 
 		save.addEventListener( 'click', function () {
 			if ( ! content.value.trim() ) { return; }

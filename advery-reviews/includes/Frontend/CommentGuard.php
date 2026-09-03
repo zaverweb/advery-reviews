@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Frontend;
+namespace ZaverWeb\Reviews\Frontend;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\AntiSpam\SpamGuard;
-use Advery\Reviews\AntiSpam\SpamLog;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\AntiSpam\SpamGuard;
+use ZaverWeb\Reviews\AntiSpam\SpamLog;
 
 /**
  * Guards WordPress's OWN native comment form. Our review form is already
@@ -70,8 +70,8 @@ class CommentGuard {
 
 		if ( 'disable' === $mode ) {
 			wp_die(
-				esc_html__( 'Comments are closed.', 'advery-reviews' ),
-				esc_html__( 'Comments closed', 'advery-reviews' ),
+				esc_html__( 'Comments are closed.', 'zaverweb-reviews' ),
+				esc_html__( 'Comments closed', 'zaverweb-reviews' ),
 				[ 'response' => 403 ]
 			);
 		}
@@ -105,10 +105,10 @@ class CommentGuard {
 		}
 
 		if ( 'reject' === $result['outcome'] ) {
-			$message = $result['message'] ?? __( 'Your comment could not be accepted.', 'advery-reviews' );
+			$message = $result['message'] ?? __( 'Your comment could not be accepted.', 'zaverweb-reviews' );
 			wp_die(
 				esc_html( $message ),
-				esc_html__( 'Comment blocked', 'advery-reviews' ),
+				esc_html__( 'Comment blocked', 'zaverweb-reviews' ),
 				[ 'response' => 403, 'back_link' => true ]
 			);
 		}

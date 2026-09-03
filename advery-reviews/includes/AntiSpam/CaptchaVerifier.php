@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AntiSpam;
+namespace ZaverWeb\Reviews\AntiSpam;
 
 /**
  * Server-side verification for the supported CAPTCHA providers. All four use the

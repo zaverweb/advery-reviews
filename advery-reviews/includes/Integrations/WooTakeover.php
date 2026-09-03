@@ -1,9 +1,9 @@
 <?php
-namespace Advery\Reviews\Integrations;
+namespace ZaverWeb\Reviews\Integrations;
 
-use Advery\Reviews\Support\Settings;
-use Advery\Reviews\Support\Aggregate;
-use Advery\Reviews\Frontend\Display;
+use ZaverWeb\Reviews\Support\Settings;
+use ZaverWeb\Reviews\Support\Aggregate;
+use ZaverWeb\Reviews\Frontend\Display;
 
 /**
  * Optionally takes over the WooCommerce product "Reviews" tab so the reviews
@@ -47,7 +47,7 @@ class WooTakeover {
 
 		$tabs['reviews'] = [
 			/* translators: %d: number of reviews */
-			'title'    => sprintf( __( 'Reviews (%d)', 'advery-reviews' ), $count ),
+			'title'    => sprintf( __( 'Reviews (%d)', 'zaverweb-reviews' ), $count ),
 			'priority' => $priority,
 			'callback' => [ $this, 'render' ],
 		];

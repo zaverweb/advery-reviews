@@ -1,7 +1,7 @@
 <?php
-namespace Advery\Reviews\Migration;
+namespace ZaverWeb\Reviews\Migration;
 
-use Advery\Reviews\Database\Installer;
+use ZaverWeb\Reviews\Database\Installer;
 
 /**
  * Exports all reviews to a CSV string (for backup / migration to another site).

@@ -1,8 +1,8 @@
 <?php
-namespace Advery\Reviews\Integrations\Elementor;
+namespace ZaverWeb\Reviews\Integrations\Elementor;
 
-use Advery\Reviews\Frontend\Display;
-use Advery\Reviews\Support\Targets;
+use ZaverWeb\Reviews\Frontend\Display;
+use ZaverWeb\Reviews\Support\Targets;
 
 // This file is only ever required from ElementorBridge, after Elementor has
 // loaded, so \Elementor\Widget_Base is guaranteed to exist here.
@@ -11,7 +11,7 @@ if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
 }
 
 /**
- * Elementor widget that drops the Advery Reviews block onto a page. It renders
+ * Elementor widget that drops the Zaver Web Reviews block onto a page. It renders
  * the exact same server-side markup as the shortcode, so styling, loading modes
  * and schema are identical; the de-dup guard in Display prevents it from also
  * being auto-appended to the content.
@@ -19,11 +19,11 @@ if ( ! class_exists( '\Elementor\Widget_Base' ) ) {
 class ReviewsWidget extends \Elementor\Widget_Base {
 
 	public function get_name() {
-		return 'advery_reviews';
+		return 'zaverweb_reviews';
 	}
 
 	public function get_title() {
-		return __( 'Advery Reviews', 'advery-reviews' );
+		return __( 'Zaver Web Reviews', 'zaverweb-reviews' );
 	}
 
 	public function get_icon() {
@@ -35,33 +35,33 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 	}
 
 	public function get_keywords() {
-		return [ 'reviews', 'ratings', 'testimonials', 'advery' ];
+		return [ 'reviews', 'ratings', 'testimonials', 'zaverweb' ];
 	}
 
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_content',
-			[ 'label' => __( 'Reviews', 'advery-reviews' ) ]
+			[ 'label' => __( 'Reviews', 'zaverweb-reviews' ) ]
 		);
 
 		$this->add_control(
 			'heading',
 			[
-				'label'       => __( 'Heading (optional)', 'advery-reviews' ),
+				'label'       => __( 'Heading (optional)', 'zaverweb-reviews' ),
 				'type'        => \Elementor\Controls_Manager::TEXT,
-				'placeholder' => __( 'e.g. Customer reviews', 'advery-reviews' ),
+				'placeholder' => __( 'e.g. Customer reviews', 'zaverweb-reviews' ),
 			]
 		);
 
 		$this->add_control(
 			'source',
 			[
-				'label'   => __( 'Show reviews for', 'advery-reviews' ),
+				'label'   => __( 'Show reviews for', 'zaverweb-reviews' ),
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => 'current',
 				'options' => [
-					'current' => __( 'The current page', 'advery-reviews' ),
-					'custom'  => __( 'A specific item', 'advery-reviews' ),
+					'current' => __( 'The current page', 'zaverweb-reviews' ),
+					'custom'  => __( 'A specific item', 'zaverweb-reviews' ),
 				],
 			]
 		);
@@ -69,13 +69,13 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'object_type',
 			[
-				'label'     => __( 'Item type', 'advery-reviews' ),
+				'label'     => __( 'Item type', 'zaverweb-reviews' ),
 				'type'      => \Elementor\Controls_Manager::SELECT,
 				'default'   => 'post',
 				'options'   => [
-					'post'    => __( 'Post', 'advery-reviews' ),
-					'product' => __( 'Product', 'advery-reviews' ),
-					'term'    => __( 'Taxonomy term', 'advery-reviews' ),
+					'post'    => __( 'Post', 'zaverweb-reviews' ),
+					'product' => __( 'Product', 'zaverweb-reviews' ),
+					'term'    => __( 'Taxonomy term', 'zaverweb-reviews' ),
 				],
 				'condition' => [ 'source' => 'custom' ],
 			]
@@ -84,7 +84,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'object_id',
 			[
-				'label'       => __( 'Post / product / term ID', 'advery-reviews' ),
+				'label'       => __( 'Post / product / term ID', 'zaverweb-reviews' ),
 				'type'        => \Elementor\Controls_Manager::NUMBER,
 				'condition'   => [ 'source' => 'custom' ],
 			]
@@ -94,22 +94,22 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 
 		$this->start_controls_section(
 			'section_style',
-			[ 'label' => __( 'Appearance', 'advery-reviews' ) ]
+			[ 'label' => __( 'Appearance', 'zaverweb-reviews' ) ]
 		);
 
 		$this->add_control(
 			'skin',
 			[
-				'label'   => __( 'Layout style', 'advery-reviews' ),
+				'label'   => __( 'Layout style', 'zaverweb-reviews' ),
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => 'inherit',
 				'options' => [
-					'inherit' => __( 'Use global setting', 'advery-reviews' ),
-					'card'    => __( 'Cards (modern)', 'advery-reviews' ),
-					'classic' => __( 'Classic list', 'advery-reviews' ),
-					'minimal' => __( 'Minimal', 'advery-reviews' ),
-					'bubble'  => __( 'Bubble (chat)', 'advery-reviews' ),
-					'quote'   => __( 'Quote (testimonial)', 'advery-reviews' ),
+					'inherit' => __( 'Use global setting', 'zaverweb-reviews' ),
+					'card'    => __( 'Cards (modern)', 'zaverweb-reviews' ),
+					'classic' => __( 'Classic list', 'zaverweb-reviews' ),
+					'minimal' => __( 'Minimal', 'zaverweb-reviews' ),
+					'bubble'  => __( 'Bubble (chat)', 'zaverweb-reviews' ),
+					'quote'   => __( 'Quote (testimonial)', 'zaverweb-reviews' ),
 				],
 			]
 		);
@@ -117,15 +117,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'avatar',
 			[
-				'label'   => __( 'Avatar style', 'advery-reviews' ),
+				'label'   => __( 'Avatar style', 'zaverweb-reviews' ),
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => 'inherit',
 				'options' => [
-					'inherit'  => __( 'Use global setting', 'advery-reviews' ),
-					'initials' => __( 'Initials (local, no request)', 'advery-reviews' ),
-					'default'  => __( 'One default image', 'advery-reviews' ),
-					'gravatar' => __( 'Gravatar (external request)', 'advery-reviews' ),
-					'none'     => __( 'No avatar', 'advery-reviews' ),
+					'inherit'  => __( 'Use global setting', 'zaverweb-reviews' ),
+					'initials' => __( 'Initials (local, no request)', 'zaverweb-reviews' ),
+					'default'  => __( 'One default image', 'zaverweb-reviews' ),
+					'gravatar' => __( 'Gravatar (external request)', 'zaverweb-reviews' ),
+					'none'     => __( 'No avatar', 'zaverweb-reviews' ),
 				],
 			]
 		);
@@ -133,7 +133,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'heading_colors',
 			[
-				'label'     => __( 'Colors (override global)', 'advery-reviews' ),
+				'label'     => __( 'Colors (override global)', 'zaverweb-reviews' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -142,12 +142,12 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		// Each control writes a CSS custom property scoped to this widget, so an
 		// empty value simply falls back to the global Appearance settings.
 		$vars = [
-			'accent'     => [ '--ar-accent', __( 'Accent color', 'advery-reviews' ) ],
-			'accent_ink' => [ '--ar-accent-ink', __( 'Text on accent', 'advery-reviews' ) ],
-			'star'       => [ '--ar-star', __( 'Star color', 'advery-reviews' ) ],
-			'text'       => [ '--ar-text', __( 'Text color', 'advery-reviews' ) ],
-			'surface'    => [ '--ar-surface', __( 'Card / form background', 'advery-reviews' ) ],
-			'border'     => [ '--ar-border', __( 'Borders & dividers', 'advery-reviews' ) ],
+			'accent'     => [ '--zw-accent', __( 'Accent color', 'zaverweb-reviews' ) ],
+			'accent_ink' => [ '--zw-accent-ink', __( 'Text on accent', 'zaverweb-reviews' ) ],
+			'star'       => [ '--zw-star', __( 'Star color', 'zaverweb-reviews' ) ],
+			'text'       => [ '--zw-text', __( 'Text color', 'zaverweb-reviews' ) ],
+			'surface'    => [ '--zw-surface', __( 'Card / form background', 'zaverweb-reviews' ) ],
+			'border'     => [ '--zw-border', __( 'Borders & dividers', 'zaverweb-reviews' ) ],
 		];
 		foreach ( $vars as $key => $meta ) {
 			$this->add_control(
@@ -155,7 +155,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 				[
 					'label'     => $meta[1],
 					'type'      => \Elementor\Controls_Manager::COLOR,
-					'selectors' => [ '{{WRAPPER}} .advery-reviews' => $meta[0] . ': {{VALUE}};' ],
+					'selectors' => [ '{{WRAPPER}} .zaverweb-reviews' => $meta[0] . ': {{VALUE}};' ],
 				]
 			);
 		}
@@ -163,16 +163,16 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'heading_sizes',
 			[
-				'label'     => __( 'Sizes (override global)', 'advery-reviews' ),
+				'label'     => __( 'Sizes (override global)', 'zaverweb-reviews' ),
 				'type'      => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
 		);
 		$sliders = [
-			'star_size' => [ '--ar-star-size', __( 'Star size', 'advery-reviews' ), 12, 40 ],
-			'font_size' => [ '--ar-font-size', __( 'Base font size', 'advery-reviews' ), 12, 24 ],
-			'radius'    => [ '--ar-radius', __( 'Corner radius', 'advery-reviews' ), 0, 40 ],
-			'max_width' => [ '--ar-max-width', __( 'Max width', 'advery-reviews' ), 240, 1200 ],
+			'star_size' => [ '--zw-star-size', __( 'Star size', 'zaverweb-reviews' ), 12, 40 ],
+			'font_size' => [ '--zw-font-size', __( 'Base font size', 'zaverweb-reviews' ), 12, 24 ],
+			'radius'    => [ '--zw-radius', __( 'Corner radius', 'zaverweb-reviews' ), 0, 40 ],
+			'max_width' => [ '--zw-max-width', __( 'Max width', 'zaverweb-reviews' ), 240, 1200 ],
 		];
 		foreach ( $sliders as $key => $meta ) {
 			$this->add_control(
@@ -182,7 +182,7 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 					'type'      => \Elementor\Controls_Manager::SLIDER,
 					'size_units' => [ 'px' ],
 					'range'     => [ 'px' => [ 'min' => $meta[2], 'max' => $meta[3] ] ],
-					'selectors' => [ '{{WRAPPER}} .advery-reviews' => $meta[0] . ': {{SIZE}}{{UNIT}};' ],
+					'selectors' => [ '{{WRAPPER}} .zaverweb-reviews' => $meta[0] . ': {{SIZE}}{{UNIT}};' ],
 				]
 			);
 		}
@@ -217,15 +217,15 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 
 		if ( ! $type || ! $id ) {
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-				echo '<div class="advery-reviews advery-reviews--placeholder">' .
-					esc_html__( 'Advery Reviews will appear here on a page that is an enabled review target.', 'advery-reviews' ) .
+				echo '<div class="zaverweb-reviews zaverweb-reviews--placeholder">' .
+					esc_html__( 'Zaver Web Reviews will appear here on a page that is an enabled review target.', 'zaverweb-reviews' ) .
 					'</div>';
 			}
 			return;
 		}
 
 		if ( ! empty( $settings['heading'] ) ) {
-			echo '<h3 class="advery-reviews__heading">' . esc_html( $settings['heading'] ) . '</h3>';
+			echo '<h3 class="zaverweb-reviews__heading">' . esc_html( $settings['heading'] ) . '</h3>';
 		}
 		echo Display::widget( $type, $id, $opts ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}

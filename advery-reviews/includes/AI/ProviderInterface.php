@@ -1,5 +1,5 @@
 <?php
-namespace Advery\Reviews\AI;
+namespace ZaverWeb\Reviews\AI;
 
 /**
  * Contract every AI provider adapter implements. One method: turn a system +
