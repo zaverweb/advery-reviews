@@ -1,15 +1,15 @@
-# Copyright (C) 2026 Advery
+# Copyright (C) 2026 Zaver Web
 # This file is distributed under the same license as the Advery Reviews plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Advery Reviews 0.31.1\n"
+"Project-Id-Version: Advery Reviews 0.32.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advery-reviews\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-02T23:35:42+00:00\n"
+"POT-Creation-Date: 2026-09-03T02:43:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: advery-reviews\n"
@@ -27,7 +27,6 @@ msgid "Advery Reviews"
 msgstr ""
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 #: advery-reviews.php
 msgid "https://advery.ca"
 msgstr ""
@@ -39,7 +38,12 @@ msgstr ""
 
 #. Author of the plugin
 #: advery-reviews.php
-msgid "Advery"
+msgid "Zaver Web"
+msgstr ""
+
+#. Author URI of the plugin
+#: advery-reviews.php
+msgid "https://zaverweb.com"
 msgstr ""
 
 #: includes/Admin/AdminPage.php:24
@@ -475,7 +479,7 @@ msgid "Layout style"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:107
-#: includes/Integrations/Elementor/ReviewsWidget.php:121
+#: includes/Integrations/Elementor/ReviewsWidget.php:124
 msgid "Use global setting"
 msgstr ""
 
@@ -489,83 +493,98 @@ msgstr ""
 msgid "Classic list"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:117
+#: includes/Integrations/Elementor/ReviewsWidget.php:110
+#: build/index.js:4
+msgid "Minimal"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:111
+#: build/index.js:4
+msgid "Bubble (chat)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:112
+#: build/index.js:4
+msgid "Quote (testimonial)"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:120
 #: build/index.js:4
 msgid "Avatar style"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:122
+#: includes/Integrations/Elementor/ReviewsWidget.php:125
 #: build/index.js:4
 msgid "Initials (local, no request)"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:123
+#: includes/Integrations/Elementor/ReviewsWidget.php:126
 #: build/index.js:4
 msgid "One default image"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:124
+#: includes/Integrations/Elementor/ReviewsWidget.php:127
 #: build/index.js:4
 msgid "Gravatar (external request)"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:125
+#: includes/Integrations/Elementor/ReviewsWidget.php:128
 #: build/index.js:4
 msgid "No avatar"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:133
+#: includes/Integrations/Elementor/ReviewsWidget.php:136
 msgid "Colors (override global)"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:142
+#: includes/Integrations/Elementor/ReviewsWidget.php:145
 msgid "Accent color"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:143
-msgid "Text on accent"
-msgstr ""
-
-#: includes/Integrations/Elementor/ReviewsWidget.php:144
-#: build/index.js:4
-msgid "Star color"
-msgstr ""
-
-#: includes/Integrations/Elementor/ReviewsWidget.php:145
-msgid "Text color"
-msgstr ""
-
 #: includes/Integrations/Elementor/ReviewsWidget.php:146
-#: build/index.js:4
-msgid "Card / form background"
+msgid "Text on accent"
 msgstr ""
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:147
 #: build/index.js:4
+msgid "Star color"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:148
+msgid "Text color"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:149
+#: build/index.js:4
+msgid "Card / form background"
+msgstr ""
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:150
+#: build/index.js:4
 msgid "Borders & dividers"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:163
+#: includes/Integrations/Elementor/ReviewsWidget.php:166
 msgid "Sizes (override global)"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:169
+#: includes/Integrations/Elementor/ReviewsWidget.php:172
 msgid "Star size"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:170
+#: includes/Integrations/Elementor/ReviewsWidget.php:173
 msgid "Base font size"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:171
+#: includes/Integrations/Elementor/ReviewsWidget.php:174
 msgid "Corner radius"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:172
+#: includes/Integrations/Elementor/ReviewsWidget.php:175
 msgid "Max width"
 msgstr ""
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:218
+#: includes/Integrations/Elementor/ReviewsWidget.php:221
 msgid "Advery Reviews will appear here on a page that is an enabled review target."
 msgstr ""
 
@@ -1403,7 +1422,7 @@ msgid "Layout"
 msgstr ""
 
 #: build/index.js:4
-msgid "Cards = each review in its own bordered card (modern). Classic = a simple divided list."
+msgid "How each review looks. Cards = bordered cards. Classic = a simple divided list. Minimal = airy and borderless. Bubble = chat-style speech bubbles. Quote = centered testimonials with a large quote mark."
 msgstr ""
 
 #: build/index.js:4

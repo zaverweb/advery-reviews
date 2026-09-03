@@ -27,7 +27,6 @@ msgid "Advery Reviews"
 msgstr "Advery Reviews"
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 #: advery-reviews.php
 msgid "https://advery.ca"
 msgstr "https://advery.ca"
@@ -36,11 +35,6 @@ msgstr "https://advery.ca"
 #: advery-reviews.php
 msgid "Fast, self-contained ratings & reviews for any post type, taxonomy term, or WooCommerce product. Collects reviews in its own optimized tables (not one comment split across many meta rows), reads WooCommerce's native ratings, and — when Advery Schema Plus is active — injects aggregateRating/review into the JSON-LD graph. Configurable submission rules, a smooth React moderation panel, a dashboard widget, a pending-count menu badge, and instant + digest email reports."
 msgstr "امتیاز و نظرِ سریع و مستقل برای هر پست‌تایپ، ترمِ تکسونومی یا محصولِ ووکامرس. نظرات را در جدول‌های بهینه‌ی خودش ذخیره می‌کند (نه یک کامنت پخش‌شده روی چند ردیفِ متا)، امتیازهای بومیِ ووکامرس را می‌خواند و — وقتی Advery Schema Plus فعال باشد — aggregateRating/review را به گرافِ JSON-LD تزریق می‌کند. قوانینِ ثبتِ قابل‌تنظیم، پنلِ مدیریتِ روانِ React، ویجتِ پیشخوان، نشانِ شمارشِ در انتظار در منو، و گزارش‌های ایمیلیِ فوری + خلاصه."
-
-#. Author of the plugin
-#: advery-reviews.php
-msgid "Advery"
-msgstr "Advery"
 
 #: includes/Admin/AdminPage.php:24
 #: includes/Integrations/Elementor/ReviewsWidget.php:44
@@ -445,7 +439,7 @@ msgid "Layout style"
 msgstr "سبکِ چیدمان"
 
 #: includes/Integrations/Elementor/ReviewsWidget.php:107
-#: includes/Integrations/Elementor/ReviewsWidget.php:121
+#: includes/Integrations/Elementor/ReviewsWidget.php:124
 msgid "Use global setting"
 msgstr "استفاده از تنظیمِ سراسری"
 
@@ -459,83 +453,83 @@ msgstr "کارتی (مدرن)"
 msgid "Classic list"
 msgstr "فهرستِ کلاسیک"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:117
+#: includes/Integrations/Elementor/ReviewsWidget.php:120
 #: build/index.js:4
 msgid "Avatar style"
 msgstr "سبکِ آواتار"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:122
+#: includes/Integrations/Elementor/ReviewsWidget.php:125
 #: build/index.js:4
 msgid "Initials (local, no request)"
 msgstr "حروفِ اول (محلی، بدونِ درخواست)"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:123
+#: includes/Integrations/Elementor/ReviewsWidget.php:126
 #: build/index.js:4
 msgid "One default image"
 msgstr "یک عکسِ پیش‌فرض"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:124
+#: includes/Integrations/Elementor/ReviewsWidget.php:127
 #: build/index.js:4
 msgid "Gravatar (external request)"
 msgstr "گراواتار (درخواستِ خارجی)"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:125
+#: includes/Integrations/Elementor/ReviewsWidget.php:128
 #: build/index.js:4
 msgid "No avatar"
 msgstr "بدونِ آواتار"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:133
+#: includes/Integrations/Elementor/ReviewsWidget.php:136
 msgid "Colors (override global)"
 msgstr "رنگ‌ها (بازنویسیِ سراسری)"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:142
+#: includes/Integrations/Elementor/ReviewsWidget.php:145
 msgid "Accent color"
 msgstr "رنگِ تأکید"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:143
+#: includes/Integrations/Elementor/ReviewsWidget.php:146
 msgid "Text on accent"
 msgstr "متن روی تأکید"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:144
+#: includes/Integrations/Elementor/ReviewsWidget.php:147
 #: build/index.js:4
 msgid "Star color"
 msgstr "رنگِ ستاره"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:145
+#: includes/Integrations/Elementor/ReviewsWidget.php:148
 msgid "Text color"
 msgstr "رنگِ متن"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:146
+#: includes/Integrations/Elementor/ReviewsWidget.php:149
 #: build/index.js:4
 msgid "Card / form background"
 msgstr "پس‌زمینه‌ی کارت / فرم"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:147
+#: includes/Integrations/Elementor/ReviewsWidget.php:150
 #: build/index.js:4
 msgid "Borders & dividers"
 msgstr "حاشیه‌ها و جداکننده‌ها"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:163
+#: includes/Integrations/Elementor/ReviewsWidget.php:166
 msgid "Sizes (override global)"
 msgstr "اندازه‌ها (بازنویسیِ سراسری)"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:169
+#: includes/Integrations/Elementor/ReviewsWidget.php:172
 msgid "Star size"
 msgstr "اندازه‌ی ستاره"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:170
+#: includes/Integrations/Elementor/ReviewsWidget.php:173
 msgid "Base font size"
 msgstr "اندازه‌ی پایه‌ی فونت"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:171
+#: includes/Integrations/Elementor/ReviewsWidget.php:174
 msgid "Corner radius"
 msgstr "گردیِ گوشه"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:172
+#: includes/Integrations/Elementor/ReviewsWidget.php:175
 msgid "Max width"
 msgstr "حداکثر عرض"
 
-#: includes/Integrations/Elementor/ReviewsWidget.php:218
+#: includes/Integrations/Elementor/ReviewsWidget.php:221
 msgid "Advery Reviews will appear here on a page that is an enabled review target."
 msgstr "Advery Reviews اینجا روی صفحه‌ای که هدفِ نظرِ فعال باشد نمایش داده می‌شود."
 
@@ -1219,10 +1213,6 @@ msgstr "ویجتِ نظرِ فرانت را با قالبت هماهنگ کن �
 #: build/index.js:4
 msgid "Layout"
 msgstr "چیدمان"
-
-#: build/index.js:4
-msgid "Cards = each review in its own bordered card (modern). Classic = a simple divided list."
-msgstr "کارتی = هر نظر در کارتِ حاشیه‌دارِ خودش (مدرن). کلاسیک = فهرستِ ساده‌ی خط‌کشی‌شده."
 
 #: build/index.js:4
 msgid "Density"
@@ -2150,3 +2140,32 @@ msgstr "لیستِ نظرات و لاگِ اسپم در پیشخوان در هر
 #: build/index.js:4
 msgid "See what the anti-spam filter blocked and why"
 msgstr "ببینید فیلترِ ضدِاسپم چه چیزی را و چرا مسدود کرده است"
+
+#. Author of the plugin
+#: advery-reviews.php
+msgid "Zaver Web"
+msgstr "Zaver Web"
+
+#. Author URI of the plugin
+#: advery-reviews.php
+msgid "https://zaverweb.com"
+msgstr "https://zaverweb.com"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:110
+#: build/index.js:4
+msgid "Minimal"
+msgstr "مینیمال"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:111
+#: build/index.js:4
+msgid "Bubble (chat)"
+msgstr "حبابی (گفتگو)"
+
+#: includes/Integrations/Elementor/ReviewsWidget.php:112
+#: build/index.js:4
+msgid "Quote (testimonial)"
+msgstr "نقلِ‌قول (توصیه‌نامه)"
+
+#: build/index.js:4
+msgid "How each review looks. Cards = bordered cards. Classic = a simple divided list. Minimal = airy and borderless. Bubble = chat-style speech bubbles. Quote = centered testimonials with a large quote mark."
+msgstr "ظاهرِ هر نظر. کارت‌ها = کارت‌های حاشیه‌دار. کلاسیک = فهرستِ ساده‌ی خط‌کشیده. مینیمال = هوادار و بی‌حاشیه. حبابی = حباب‌های گفتگویی. نقلِ‌قول = توصیه‌نامه‌های وسط‌چین با علامتِ نقلِ‌قولِ بزرگ."

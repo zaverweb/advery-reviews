@@ -12,6 +12,16 @@ We record here what each version does, what was deliberately skipped, and any mi
 
 ## Changelog
 
+### Version 0.33.0 (Three new front-end skins + author is now Zaver Web)
+- **Three new layout skins** join Cards and Classic, all driven by the same `--ar-*` appearance variables (colors, radius, spacing all follow your settings):
+  - **Minimal** — airy and borderless: no card, generous spacing, a hairline divider between reviews, the author name in your accent color and a small upper-case date.
+  - **Bubble (chat)** — the review text sits in a rounded, tinted speech bubble with a small tail pointing up to the author header, like a chat message.
+  - **Quote (testimonial)** — centered cards with a large decorative quotation mark, the avatar/name/stars stacked and centered, and the text centered below — ideal for a testimonials section.
+- Selectable under **Settings → Appearance → Layout style**, and per-widget in the Elementor widget’s **Appearance → Layout style** (which can also inherit the global setting). Same markup as the other skins, so loading modes, schema and the owner-reply block are unchanged.
+- **Verified live** on the sample site (RTL): each new skin renders correctly — bubble tails, the centered quote layout with the quote glyph, and the borderless minimal list.
+- **Plugin author is now “Zaver Web” (https://zaverweb.com)** in the plugin header (was “Advery”). No functional change.
+- 5 new strings translated to Persian.
+
 ### Version 0.32.0 (Spam log + efficient queries + configurable admin page size — queue item B+C)
 - **New “Spam log” (opt-in, auto-purged).** A dedicated menu + screen that records every submission the anti-spam layer **rejected, held, or marked as spam** — from both the review form and (in Filter mode) native WordPress comments — so you can see *what* was filtered and *why*.
   - Each row stores: time, source (review / native comment), result (rejected / spam / held), the **target** page (linked), the visitor **IP**, the **reason** (e.g. `links(1)`, `blocklisted-word`, `disposable-email`) and a capped **content** snippet.

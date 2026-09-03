@@ -118,7 +118,7 @@ class Settings {
 	 */
 	public static function appearance_defaults() {
 		return [
-			'skin'         => 'card',    // 'classic' (simple list) | 'card' (modern cards)
+			'skin'         => 'card',    // classic | card | minimal | bubble | quote
 			'accent'       => '#2271b1', // buttons, links, active page, submit
 			'accent_ink'   => '#ffffff', // text on the accent
 			'star'         => '#f5a623', // star color

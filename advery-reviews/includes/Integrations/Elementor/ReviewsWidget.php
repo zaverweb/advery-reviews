@@ -107,6 +107,9 @@ class ReviewsWidget extends \Elementor\Widget_Base {
 					'inherit' => __( 'Use global setting', 'advery-reviews' ),
 					'card'    => __( 'Cards (modern)', 'advery-reviews' ),
 					'classic' => __( 'Classic list', 'advery-reviews' ),
+					'minimal' => __( 'Minimal', 'advery-reviews' ),
+					'bubble'  => __( 'Bubble (chat)', 'advery-reviews' ),
+					'quote'   => __( 'Quote (testimonial)', 'advery-reviews' ),
 				],
 			]
 		);

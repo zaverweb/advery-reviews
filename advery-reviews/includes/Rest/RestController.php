@@ -1021,7 +1021,7 @@ class RestController {
 		};
 
 		return [
-			'skin'       => in_array( ( $in['skin'] ?? '' ), [ 'classic', 'card' ], true ) ? $in['skin'] : $d['skin'],
+			'skin'       => in_array( ( $in['skin'] ?? '' ), [ 'classic', 'card', 'minimal', 'bubble', 'quote' ], true ) ? $in['skin'] : $d['skin'],
 			'accent'     => $color( $in['accent'] ?? $d['accent'] ) ?: $d['accent'],
 			'accent_ink' => $color( $in['accent_ink'] ?? $d['accent_ink'] ) ?: $d['accent_ink'],
 			'star'       => $color( $in['star'] ?? $d['star'] ) ?: $d['star'],

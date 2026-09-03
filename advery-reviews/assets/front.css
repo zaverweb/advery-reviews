@@ -136,6 +136,127 @@
 .advery-reviews__content {
 	color: var(--ar-text);
 }
+
+/* Minimal skin — airy and borderless: no card, generous spacing, a hairline
+   divider between reviews, the author name in the accent color and a small
+   upper-case date. Clean and editorial. */
+.advery-reviews--minimal .advery-reviews__list {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+.advery-reviews--minimal .advery-reviews__item {
+	border: 0;
+	padding: 1.4em 0;
+}
+.advery-reviews--minimal .advery-reviews__item + .advery-reviews__item {
+	border-top: 1px solid var(--ar-border);
+}
+.advery-reviews--minimal .advery-reviews__author {
+	color: var(--ar-accent);
+}
+.advery-reviews--minimal .advery-reviews__date {
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	font-size: 0.72em;
+}
+.advery-reviews--minimal .advery-reviews__content {
+	margin-top: 0.5em;
+	line-height: 1.75;
+}
+.advery-reviews--minimal .advery-reviews__item-head {
+	margin-bottom: 0.2em;
+}
+
+/* Bubble skin — chat-style: the review text sits in a rounded, tinted speech
+   bubble with a little tail pointing up to the author header above it. */
+.advery-reviews--bubble .advery-reviews__list {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+.advery-reviews--bubble .advery-reviews__item {
+	border: 0;
+	padding: 0.2em 0 0.6em;
+}
+.advery-reviews--bubble .advery-reviews__item-head {
+	margin-bottom: 0.7em;
+}
+.advery-reviews--bubble .advery-reviews__content {
+	position: relative;
+	background: var(--ar-surface);
+	border: 1px solid var(--ar-border);
+	border-radius: 16px;
+	padding: 0.9em 1.1em;
+}
+.advery-reviews--bubble .advery-reviews__content::before {
+	content: "";
+	position: absolute;
+	top: -7px;
+	inset-inline-start: 22px;
+	width: 13px;
+	height: 13px;
+	background: var(--ar-surface);
+	border-inline-start: 1px solid var(--ar-border);
+	border-top: 1px solid var(--ar-border);
+	transform: rotate(45deg);
+}
+.advery-reviews--bubble .advery-reviews__reply {
+	margin-top: 0.8em;
+}
+
+/* Quote skin — centered testimonials: each review is a card with a large
+   decorative quotation mark, the avatar/name/stars stacked and centered, and
+   the text centered below. Great for a testimonials section. */
+.advery-reviews--quote .advery-reviews__list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+	margin-bottom: 1.5em;
+}
+.advery-reviews--quote .advery-reviews__item {
+	position: relative;
+	background: var(--ar-surface);
+	border: 1px solid var(--ar-border);
+	border-radius: var(--ar-radius);
+	padding: 1.9em 1.4em 1.3em;
+	text-align: center;
+	overflow: hidden;
+}
+.advery-reviews--quote .advery-reviews__item::before {
+	content: "\201C";
+	position: absolute;
+	top: 0.08em;
+	inset-inline-start: 0.3em;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 3.2em;
+	line-height: 1;
+	color: var(--ar-accent);
+	opacity: 0.22;
+}
+.advery-reviews--quote .advery-reviews__item-head {
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+	margin-bottom: 0.5em;
+}
+.advery-reviews--quote .advery-reviews__meta-col {
+	align-items: center;
+	text-align: center;
+}
+.advery-reviews--quote .advery-reviews__item-head .advery-reviews__stars {
+	margin-inline-start: 0;
+}
+.advery-reviews--quote .advery-reviews__content {
+	margin: 0.4em auto 0;
+	max-width: 62ch;
+}
+.advery-reviews--quote .advery-reviews__reply {
+	text-align: start;
+	margin-inline-start: 0;
+	margin-top: 0.9em;
+}
+
 .advery-reviews__more {
 	margin: 0.5em 0 1.5em;
 	text-align: center;
